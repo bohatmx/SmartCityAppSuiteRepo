@@ -1,0 +1,31 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.boha.library.activities.LanguageActivity">
+
+    <ImageView
+        android:id="@+id/LANG_heroImage"
+        android:src="@drawable/banner2"
+        android:scaleType="centerCrop"
+        android:text="@string/hello_world"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:id="@+id/LANG_handle"
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <Button
+        android:id="@+id/LANG_btn"
+        style="@style/ButtonRed"
+        android:text="Get Languages"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/mon_wider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

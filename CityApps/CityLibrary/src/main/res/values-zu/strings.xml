@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">CityApps</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="select_language">Khetha ulimi</string>
+
+    <string name="welcome">Siyakwamukela!</string>
+    <string name="languages">Izilimi</string>
+    <string name="enter_id">Faka ID Number</string>
+    <string name="enter_pswd">Faka Iphasiwedi</string>
+    <string name="signin">Ngena Ngemvume</string>
+
+</resources>
