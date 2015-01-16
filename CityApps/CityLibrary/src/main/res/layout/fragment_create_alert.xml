@@ -1,0 +1,114 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/grey"
+    android:padding="@dimen/mon_padding"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.boha.library.activities.CreateAlertActivity">
+
+    <RelativeLayout
+        android:id="@+id/ALERT_topTop"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ALERT_heroImage"
+            android:src="@drawable/banner_alert"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mon_hero_height_small" />
+        <TextView
+            android:id="@+id/ALERT_category"
+            style="@style/Title2TextStyleBlue"
+            android:text="@string/alert_cat"
+            android:layout_below="@id/ALERT_heroImage"
+            android:padding="@dimen/mon_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/ALERT_topLayout"
+        android:layout_below="@id/ALERT_topTop"
+        android:background="@color/white"
+        android:paddingTop="@dimen/mon_padding"
+        android:paddingBottom="@dimen/mon_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/traffic_lights" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/ALERT_midLayout"
+        android:layout_below="@id/ALERT_topLayout"
+        android:padding="@dimen/mon_padding"
+        android:background="@color/beige_pale"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/ALERT_message"
+            android:hint="@string/enter_message"
+            android:layout_marginTop="@dimen/mon_padding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_below="@id/ALERT_message"
+            android:layout_marginTop="@dimen/mon_wide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/ALERT_btnTakePicture"
+                style="@style/ButtonNavyBlue"
+                android:text="@string/take_pics"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/ALERT_btnSend"
+                style="@style/ButtonRed"
+                android:text="@string/send_alert"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_toRightOf="@id/ALERT_btnTakePicture"
+                android:layout_width="@dimen/mon_hero_height_small"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/ALERT_botLayout"
+        android:layout_below="@id/ALERT_midLayout"
+        android:padding="@dimen/mon_padding"
+        android:background="@color/white"
+        android:layout_marginTop="@dimen/mon_padding"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <HorizontalScrollView
+            android:id="@+id/ALERT_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/ALERT_layout"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+    </RelativeLayout>
+
+</RelativeLayout>

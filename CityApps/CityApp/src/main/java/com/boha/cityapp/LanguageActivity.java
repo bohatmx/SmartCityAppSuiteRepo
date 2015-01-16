@@ -1,16 +1,19 @@
-package com.boha.library.activities;
+package com.boha.cityapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import com.boha.cityapps.R;
+import com.boha.library.activities.MainPagerActivity;
 import com.boha.library.util.LocaleUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
@@ -27,6 +30,8 @@ public class LanguageActivity extends ActionBarActivity {
     Timer timer;
     Context ctx;
     Button btn;
+    boolean languageHasBeenChosen;
+    int languageIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +40,13 @@ public class LanguageActivity extends ActionBarActivity {
         ctx = getApplicationContext();
 
         handle = findViewById(R.id.LANG_handle);
-        heroImage = (ImageView)findViewById(R.id.LANG_heroImage);
-        btn = (Button)findViewById(R.id.LANG_btn);
+        heroImage = (ImageView) findViewById(R.id.LANG_heroImage);
+        btn = (Button) findViewById(R.id.LANG_btn);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.flashOnce(btn,200,new Util.UtilAnimationListener() {
+                Util.flashOnce(btn, 200, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
                         showPopup();
@@ -50,6 +55,17 @@ public class LanguageActivity extends ActionBarActivity {
             }
         });
 
+
+        languageIndex = getIntent().getIntExtra("languageIndex", -1);
+
+        if (languageIndex == -1) {
+            if (SharedUtil.getName(ctx) != null) {
+                Intent e = new Intent(this, MainPagerActivity.class);
+                startActivity(e);
+                finish();
+            }
+        }
+
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -57,7 +73,33 @@ public class LanguageActivity extends ActionBarActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        heroImage.setImageDrawable(Util.getRandomImage(ctx));
+
+                        Animation an = AnimationUtils.makeOutAnimation(ctx, true);
+                        an.setDuration(300);
+                        an.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                heroImage.setImageDrawable(Util.getNextImage(ctx));
+                                Animation an = AnimationUtils.makeInAnimation(ctx,true);
+                                an.setDuration(500);
+                                heroImage.startAnimation(an);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+                        heroImage.startAnimation(an);
+
+
+
+
                     }
                 });
 
@@ -67,6 +109,7 @@ public class LanguageActivity extends ActionBarActivity {
     }
 
     private void showPopup() {
+
         List<String> list = new ArrayList<>();
         list.add("English");
         list.add("Afrikaans");
@@ -75,22 +118,32 @@ public class LanguageActivity extends ActionBarActivity {
         list.add("xiTsonga");
         list.add("seTswana");
 
-
-        Util.showPopupBasicWithHeroImage(ctx,this,list, handle, getString(R.string.select_language), new Util.UtilPopupListener() {
+        Util.showPopupBasicWithHeroImage(ctx, this, list, handle, getString(R.string.select_language), new Util.UtilPopupListener() {
             @Override
             public void onItemSelected(int index) {
                 SharedUtil.setLanguageIndex(ctx, index);
                 setLocale(index);
-                restart();
+                languageHasBeenChosen = true;
+                languageIndex = index;
+                if (SharedUtil.getName(ctx) == null) {
+                    Intent w = new Intent(ctx,SigninActivity.class);
+                    startActivity(w);
+                } else {
+                    onBackPressed();
+                }
             }
         });
     }
-    private void restart() {
-        Intent i = new Intent(this,MainActivity.class);
-        i.putExtra("restarted", 1);
-        startActivity(i);
+
+    @Override
+    public void onBackPressed() {
+        Intent w = new Intent();
+        w.putExtra("languageIndex", languageIndex);
+        w.putExtra("languageHasBeenChosen", languageHasBeenChosen);
+        setResult(RESULT_OK, w);
         finish();
     }
+
     private void setLocale(int index) {
         switch (index) {
             case 0:
@@ -113,6 +166,7 @@ public class LanguageActivity extends ActionBarActivity {
                 break;
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

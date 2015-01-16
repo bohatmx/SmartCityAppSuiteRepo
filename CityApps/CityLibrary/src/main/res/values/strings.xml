@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">CityApps</string>
+    <string name="app_name">SmartCity</string>
     <string name="title_activity_maps">Map</string>
-    <string name="select_language">Select Language</string>
+    <string name="select_language">Choose Language</string>
     <string name="welcome">Welcome Aboard!</string>
     <string name="languages">Languages</string>
-    <string name="enter_id">Enter ID Number</string>
-    <string name="enter_pswd">Enter Password</string>
+
     <string name="signin">Sign In</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_language">LanguageActivity</string>
+    <string name="create_alert">Create Alert</string>
+
+    <string name="enter_id">Please enter your ID number</string>
+    <string name="enter_pswd">Please enter your password</string>
+    <string name="under_cons">Under Construction. Watch this space!</string>
+    <string name="visiting">Just Visiting</string>
+    <string name="alert_cat">Alert Category</string>
+    <string name="alert_color">Alert Colour</string>
+    <string name="enter_message">Enter message or comment</string>
+    <string name="take_pics">Take Pictures</string>
+    <string name="send_alert">Send Alert</string>
+    <string name="map">Map</string>
+    <string name="city_gallery">City Gallery</string>
+    <string name="comms">Communications</string>
+    <string name="info">Citizen Information</string>
 
 </resources>

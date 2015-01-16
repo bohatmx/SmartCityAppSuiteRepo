@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.boha.cityapps.R;
 import com.boha.library.adapters.PopupListAdapter;
+import com.boha.library.dto.AlertCategoryDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,16 +31,134 @@ import java.util.Random;
  */
 public class Util {
 
-    public static Drawable getRandomImage(Context ctx) {
-        if (images == null) {
-            loadList(ctx);
+    static List<AlertCategoryDTO> alertCategoryList = new ArrayList<>();
+    public static List<AlertCategoryDTO> getCategories() {
+        alertCategoryList.add(new AlertCategoryDTO(1, "Traffic"));
+        alertCategoryList.add(new AlertCategoryDTO(2, "Crime"));
+        alertCategoryList.add(new AlertCategoryDTO(3, "Weather"));
+        alertCategoryList.add(new AlertCategoryDTO(4, "Services"));
+        return alertCategoryList;
+    }
+
+    static int index;
+    public static Drawable getNextImage(Context ctx) {
+
+        Drawable p = null;
+        switch (index) {
+            case 0:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn1);
+                break;
+            case 1:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn2);
+                break;
+            case 2:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn3);
+                break;
+            case 3:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn4);
+                break;
+            case 4:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn6);
+                break;
+
+            case 5:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn8);
+                break;
+            case 6:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn10);
+                break;
+            case 7:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn11);
+                break;
+            case 8:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn12);
+                break;
+            case 9:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn13);
+                break;
+
+            case 10:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn14);
+                break;
+            case 11:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn15);
+                break;
+            case 12:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn16);
+                break;
+            case 13:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn17);
+                break;
+            case 14:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn18);
+                break;
+
+            case 15:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn19);
+                break;
+            case 16:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn20);
+                break;
+            case 17:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn21);
+                break;
+            case 18:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn22);
+                break;
+            case 19:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn23);
+                break;
+
+            case 20:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn24);
+                break;
+            case 21:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn25);
+                break;
+            case 22:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn26);
+                break;
+            case 23:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn27);
+                break;
+            case 24:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn28);
+                break;
+
+            case 25:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn29);
+                break;
+            case 26:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn30);
+                break;
+            case 27:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn31);
+                break;
+            case 28:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn32);
+                break;
+            case 29:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn33);
+                break;
+            case 30:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn34);
+                break;
+            case 31:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn35);
+                break;
+            case 32:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn37);
+                break;
+            default:
+                p =  ctx.getResources().getDrawable(R.drawable.dbn13);
+                break;
+
         }
-        int index = random.nextInt(15);
-        if (index == lastIndex) {
-            getRandomImage(ctx);
+        index++;
+        if (index > 32) {
+            index = 0;
         }
-        lastIndex = index;
-        return images.get(index);
+        return p;
     }
     public static Drawable getRandomBanner(Context ctx) {
         if (banners == null) {
@@ -56,28 +175,6 @@ public class Util {
     private static List<Drawable> images, banners;
     private static int lastIndex, lastBannerIndex;
 
-    private static void loadList(Context ctx) {
-        images = new ArrayList<>();
-        images.add(ctx.getResources().getDrawable(R.drawable.durban2));
-        images.add(ctx.getResources().getDrawable(R.drawable.durban3));
-        images.add(ctx.getResources().getDrawable(R.drawable.durban4));
-        images.add(ctx.getResources().getDrawable(R.drawable.durban5));
-
-        images.add(ctx.getResources().getDrawable(R.drawable.durban6));
-        images.add(ctx.getResources().getDrawable(R.drawable.durban7));
-        images.add(ctx.getResources().getDrawable(R.drawable.durban8));
-        images.add(ctx.getResources().getDrawable(R.drawable.durban9));
-
-        images.add(ctx.getResources().getDrawable(R.drawable.durban11));
-        images.add(ctx.getResources().getDrawable(R.drawable.durban12));
-        images.add(ctx.getResources().getDrawable(R.drawable.durban13));
-        images.add(ctx.getResources().getDrawable(R.drawable.durban14));
-
-        images.add(ctx.getResources().getDrawable(R.drawable.durban15));
-        images.add(ctx.getResources().getDrawable(R.drawable.durban16));
-        images.add(ctx.getResources().getDrawable(R.drawable.durban17));
-
-    }
     private static void loadBanners(Context ctx) {
         banners = new ArrayList<>();
         banners.add(ctx.getResources().getDrawable(R.drawable.banner1));
@@ -147,7 +244,7 @@ public class Util {
         View v = inflater.inflate(R.layout.hero_image, null);
         ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
         TextView txt = (TextView) v.findViewById(R.id.HERO_caption);
-        img.setImageDrawable(getRandomImage(ctx));
+        img.setImageDrawable(getNextImage(ctx));
         txt.setText(caption);
         return v;
     }

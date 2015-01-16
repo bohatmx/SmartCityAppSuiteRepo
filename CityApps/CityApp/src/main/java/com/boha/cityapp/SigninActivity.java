@@ -10,18 +10,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.boha.library.activities.LanguageActivity;
-import com.boha.library.activities.MainActivity;
-import com.boha.library.util.LocaleUtil;
+import com.boha.library.activities.MainPagerActivity;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -35,22 +32,16 @@ public class SigninActivity extends ActionBarActivity {
     Context ctx;
     ProgressBar progressBar;
     Activity activity;
-    Button btn;
+    Button btn, btnVisitor;
+    EditText editID, editPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e("SigninActivity","#### onCreate");
+        Log.e("SigninActivity", "#### onCreate");
         setContentView(R.layout.activity_signin);
         ctx = getApplicationContext();
         activity = this;
-
-        int langIndex = SharedUtil.getLanguageIndex(ctx);
-        if (langIndex == -1) {
-            Intent i = new Intent(this, LanguageActivity.class);
-            startActivity(i);
-            return;
-        }
 
         setFields();
     }
@@ -61,40 +52,56 @@ public class SigninActivity extends ActionBarActivity {
         checkVirginity();
         super.onResume();
     }
+
     private void checkVirginity() {
         int id = SharedUtil.getID(ctx);
         if (id > 0) {
-            Intent i = new Intent(this, MainActivity.class);
+            Intent i = new Intent(this, MainPagerActivity.class);
             startActivity(i);
 
         }
     }
+
     private void setFields() {
-        btn = (Button)findViewById(R.id.SIGNIN_btn);
-        progressBar = (ProgressBar)findViewById(R.id.SIGNIN_progress);
-        heroImage = (ImageView)findViewById(R.id.SIGNIN_heroImage);
-        imgLanguage = (ImageView)findViewById(R.id.SIGNIN_language);
-        txtName = (TextView)findViewById(R.id.SIGNIN_cityName);
+        btn = (Button) findViewById(R.id.SIGNIN_btnUser);
+        btnVisitor = (Button) findViewById(R.id.SIGNIN_btnVisitor);
+
+        editID = (EditText) findViewById(R.id.SIGNIN_editUserID);
+        editPassword = (EditText) findViewById(R.id.SIGNIN_editPIN);
+        progressBar = (ProgressBar) findViewById(R.id.SIGNIN_progress);
+        heroImage = (ImageView) findViewById(R.id.SIGNIN_heroImage);
+        imgLanguage = (ImageView) findViewById(R.id.SIGNIN_language);
+        txtName = (TextView) findViewById(R.id.SIGNIN_cityName);
         handle = findViewById(R.id.SIGNIN_handle);
         progressBar.setVisibility(View.GONE);
 
         int h = Util.getWindowHeight(this);
         Log.w("SigninActivity", "## window height: " + h);
-        heroImage.getLayoutParams().height = h/2;
+        heroImage.getLayoutParams().height = h / 2;
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.flashOnce(btn,200,new Util.UtilAnimationListener() {
+                Util.flashOnce(btn, 200, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        SharedUtil.setID(ctx, 111);
-                        SharedUtil.setName(ctx, "Aubrey M.");
-                        showPopup();
+                        sendSignIn();
                     }
                 });
             }
         });
+        btnVisitor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.flashOnce(btn, 200, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                       Util.showToast(ctx,getString(R.string.under_cons));
+                    }
+                });
+            }
+        });
+
 
         imgLanguage.setVisibility(View.GONE);
 
@@ -105,7 +112,7 @@ public class SigninActivity extends ActionBarActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        heroImage.setImageDrawable(Util.getRandomImage(ctx));
+                        heroImage.setImageDrawable(Util.getNextImage(ctx));
                     }
                 });
 
@@ -114,54 +121,25 @@ public class SigninActivity extends ActionBarActivity {
 
     }
 
+    private void sendSignIn() {
 
-    private void showPopup() {
-        List<String> list = new ArrayList<>();
-        list.add("English");
-        list.add("Afrikaans");
-        list.add("isiZulu");
-        list.add("isiXhosa");
-        list.add("xiTsonga");
-        list.add("seTswana");
-
-
-        Util.showPopupBasicWithHeroImage(ctx,this,list, handle, getString(R.string.select_language), new Util.UtilPopupListener() {
-            @Override
-            public void onItemSelected(int index) {
-                SharedUtil.setLanguageIndex(ctx,index);
-                setLocale(index);
-                startMain();
-            }
-        });
-    }
-    private void setLocale(int index) {
-        switch (index) {
-            case 0:
-                LocaleUtil.setLocale(ctx, LocaleUtil.ENGLISH);
-                break;
-            case 1:
-                LocaleUtil.setLocale(ctx, LocaleUtil.AFRIKAANS);
-                break;
-            case 2:
-                LocaleUtil.setLocale(ctx, LocaleUtil.ZULU);
-                break;
-            case 3:
-                LocaleUtil.setLocale(ctx, LocaleUtil.XHOSA);
-                break;
-            case 4:
-                LocaleUtil.setLocale(ctx, LocaleUtil.XITSONGA);
-                break;
-            case 5:
-                LocaleUtil.setLocale(ctx, LocaleUtil.SETSWANA);
-                break;
+        if (editID.getText().toString().isEmpty()) {
+            Util.showErrorToast(ctx, getString(R.string.enter_id));
+            return;
         }
-    }
-    private void startMain() {
-        Intent i = new Intent(this,MainActivity.class);
-        i.putExtra("restarted", 1);
+        if (editPassword.getText().toString().isEmpty()) {
+            Util.showErrorToast(ctx, getString(R.string.enter_pswd));
+            return;
+        }
+        //TODO - remove after API available
+        //SharedUtil.setID(ctx, 111);
+        //SharedUtil.setName(ctx, "User: " + editID.getText().toString());
+
+        Intent i = new Intent(this, MainPagerActivity.class);
         startActivity(i);
         finish();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_signin, menu);
@@ -170,12 +148,7 @@ public class SigninActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }

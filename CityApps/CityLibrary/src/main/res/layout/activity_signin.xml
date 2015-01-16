@@ -35,11 +35,17 @@
                 android:layout_marginTop="200dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/LANG_dome"
+                android:src="@drawable/dome4"
+                android:layout_margin="@dimen/mon_margin"
+                android:layout_width="48dp"
+                android:layout_height="48dp" />
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_below="@id/SIGNIN_heroLayout"
-            android:padding="@dimen/mon_wide"
+            android:padding="@dimen/mon_padding"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -79,8 +85,8 @@
             <EditText
                 android:id="@+id/SIGNIN_editUserID"
                 android:layout_below="@id/SIGNIN_welcomeLayout"
-                android:layout_marginTop="16dp"
-                android:inputType="textVisiblePassword"
+                android:layout_marginTop="@dimen/mon_padding"
+                android:inputType="number"
                 android:hint="@string/enter_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -89,19 +95,38 @@
                 android:id="@+id/SIGNIN_editPIN"
                 android:layout_below="@id/SIGNIN_editUserID"
                 android:hint="@string/enter_pswd"
-                android:inputType="number"
+                android:inputType="text"
                 android:layout_marginTop="@dimen/mon_padding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <Button
-                android:id="@+id/SIGNIN_btn"
-                android:text="@string/signin"
+            <RelativeLayout
                 android:layout_below="@id/SIGNIN_editPIN"
-                style="@style/ButtonRed"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/mon_margin"
+                android:padding="@dimen/mon_padding"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/SIGNIN_btnUser"
+                    android:text="@string/signin"
+                    style="@style/ButtonRed"
+                    android:layout_marginLeft="@dimen/mon_margin"
+                    android:layout_marginRight="@dimen/mon_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/SIGNIN_btnVisitor"
+                    android:text="@string/visiting"
+                    android:layout_below="@id/SIGNIN_btnUser"
+                    style="@style/ButtonNavyBlue"
+                    android:layout_marginLeft="@dimen/mon_margin"
+                    android:layout_marginRight="@dimen/mon_margin"
+                    android:layout_marginTop="@dimen/mon_padding"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
         </RelativeLayout>
 
         <ProgressBar
@@ -111,6 +136,8 @@
             android:layout_margin="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+
 
     </RelativeLayout>
 </ScrollView>
