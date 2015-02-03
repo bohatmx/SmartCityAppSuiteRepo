@@ -105,7 +105,6 @@ public class PhotoUploadService extends IntentService {
 
     static List<PhotoUploadDTO> list;
     int index;
-   // WebCheckResult webCheckResult;
 
     private void controlImageUploads() {
         if (index < list.size()) {
@@ -117,7 +116,8 @@ public class PhotoUploadService extends IntentService {
                 if (!failedUploads.isEmpty()) {
                     Log.e(LOG, "###### we have failedUploads: " + failedUploads.size());
                     retryCount++;
-                    if (retryCount > MAX_RETRIES) {
+                    if (retryCount < MAX_RETRIES) {
+                        Log.w(LOG, "***** retrying failed upload, retryCount: " + retryCount);
                         list = failedUploads;
                         uploadedList.clear();
                         failedUploads.clear();
