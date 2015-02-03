@@ -14,7 +14,7 @@
             android:id="@+id/TRAFF_grey"
             android:text="@string/alert_color"
             style="@style/Title3TextStyleBlack"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

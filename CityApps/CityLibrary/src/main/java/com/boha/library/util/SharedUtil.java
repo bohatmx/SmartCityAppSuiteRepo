@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.boha.library.dto.ProfileInfoDTO;
+import com.google.gson.Gson;
+
 /**
  * Created by aubreyM on 15/01/13.
  */
@@ -27,41 +30,71 @@ public class SharedUtil {
         Log.i("SharedUtil", "#### language index retrieved: " + j);
         return j;
     }
-    public static void setID(Context ctx, int id) {
+    public static void setID(Context ctx, String id) {
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(ctx);
 
         SharedPreferences.Editor ed = sp.edit();
-        ed.putInt(ID, id);
+        ed.putString(ID, id);
         ed.commit();
 
         Log.w("SharedUtil", "#### id  saved: " + id);
 
     }
-    public static int getID(Context ctx) {
+    public static String getID(Context ctx) {
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(ctx);
-        int j = sp.getInt(ID, 0);
+        String j = sp.getString(ID, null);
+        if (j == null) {
+            Log.i("SharedUtil", "#### id NOT retrieved: ");
+            return null;
+        }
         Log.i("SharedUtil", "#### id retrieved: " + j);
         return j;
     }
-    public static void setName(Context ctx, String name) {
+    public static void savePassword(Context ctx, String password) {
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(ctx);
 
         SharedPreferences.Editor ed = sp.edit();
-        ed.putString(NAME, name);
+        ed.putString(PASSWORD, password);
         ed.commit();
 
-        Log.w("SharedUtil", "#### name  saved: " + name);
+        Log.w("SharedUtil", "#### password  saved: " + password);
 
     }
-    public static String getName(Context ctx) {
+    public static String getPassword(Context ctx) {
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(ctx);
-        String j = sp.getString(NAME, null);
-        Log.i("SharedUtil", "#### name retrieved: " + j);
+        String j = sp.getString(PASSWORD, null);
+        Log.i("SharedUtil", "#### password retrieved: " + j);
         return j;
     }
-    static final String LANGUAGE_INDEX = "langIndex", ID = "id", NAME = "name";
+    public static void saveProfile(Context ctx, ProfileInfoDTO profileInfo) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+
+        String json = gson.toJson(profileInfo);
+
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putString(PROFILE, json);
+        ed.commit();
+
+        Log.w("SharedUtil", "#### profile  saved: " + json);
+
+    }
+    public static ProfileInfoDTO getProfile(Context ctx) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+        String json = sp.getString(PROFILE, null);
+
+        if (json == null) {
+            Log.e("SharedUtil", "#### profile NOT retrieved");
+            return null;
+        }
+        Log.i("SharedUtil", "#### profile retrieved: " + json);
+        return gson.fromJson(json, ProfileInfoDTO.class);
+    }
+    static Gson gson = new Gson();
+    static final String LANGUAGE_INDEX = "langIndex", ID = "id", PASSWORD = "password", PROFILE = "profile";
 }

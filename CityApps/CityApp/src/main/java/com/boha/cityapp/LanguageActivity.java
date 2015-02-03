@@ -4,19 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import com.boha.cityapps.R;
 import com.boha.library.activities.MainPagerActivity;
+import com.boha.library.util.CommsUtil;
 import com.boha.library.util.LocaleUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +60,7 @@ public class LanguageActivity extends ActionBarActivity {
         languageIndex = getIntent().getIntExtra("languageIndex", -1);
 
         if (languageIndex == -1) {
-            if (SharedUtil.getName(ctx) != null) {
+            if (SharedUtil.getProfile(ctx) != null) {
                 Intent e = new Intent(this, MainPagerActivity.class);
                 startActivity(e);
                 finish();
@@ -74,38 +75,64 @@ public class LanguageActivity extends ActionBarActivity {
                     @Override
                     public void run() {
 
-                        Animation an = AnimationUtils.makeOutAnimation(ctx, true);
-                        an.setDuration(300);
-                        an.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                                heroImage.setImageDrawable(Util.getNextImage(ctx));
-                                Animation an = AnimationUtils.makeInAnimation(ctx,true);
-                                an.setDuration(500);
-                                heroImage.startAnimation(an);
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-
-                            }
-                        });
-                        heroImage.startAnimation(an);
-
-
-
-
+                        heroImage.setImageDrawable(Util.getNextImage(ctx));
                     }
                 });
 
             }
         }, 1000, 5000);
 
+       logIn();
+       //getNewsCategories();
+
+    }
+
+    static final String LOG = LanguageActivity.class.getSimpleName();
+
+
+    private void getNewsCategories() {
+
+        CommsUtil.sendRequest(ctx, CommsUtil.NEWS_CATEGORIES, "mobileapp", "mobileapp", false, new CommsUtil.CommsListener() {
+            @Override
+            public void onStringResponse(String response) {
+
+                try {
+//                    NewsCategories nc = gson.fromJson(response, NewsCategories.class);
+//                    Log.i(LOG, "## object from JSON, " + nc.getCategoryNames().size());
+//                    StringBuilder sb = new StringBuilder();
+//                    sb.append("##### News Categories ####\n");
+//                    for (String s : nc.getCategoryNames()) {
+//                        sb.append(s).append("\n");
+//                    }
+//                    Util.showToast(ctx, sb.toString());
+                } catch (Exception e) {
+
+                }
+
+            }
+
+            @Override
+            public void onError(String message) {
+
+            }
+        });
+    }
+
+    Gson gson = new Gson();
+
+    private void logIn() {
+        CommsUtil.sendRequest(ctx, CommsUtil.LOGIN, "7406190168080", "vatawa", false,new CommsUtil.CommsListener() {
+            @Override
+            public void onStringResponse(String response) {
+                Log.e(LOG, "## logIn, response: " + response);
+
+            }
+
+            @Override
+            public void onError(String message) {
+
+            }
+        });
     }
 
     private void showPopup() {
@@ -125,8 +152,8 @@ public class LanguageActivity extends ActionBarActivity {
                 setLocale(index);
                 languageHasBeenChosen = true;
                 languageIndex = index;
-                if (SharedUtil.getName(ctx) == null) {
-                    Intent w = new Intent(ctx,SigninActivity.class);
+                if (SharedUtil.getProfile(ctx) == null) {
+                    Intent w = new Intent(ctx, SigninActivity.class);
                     startActivity(w);
                 } else {
                     onBackPressed();
@@ -176,16 +203,12 @@ public class LanguageActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            getNewsCategories();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

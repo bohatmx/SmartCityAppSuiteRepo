@@ -19,17 +19,26 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="@string/google_maps_key" />
 
         <activity
-            android:name="com.boha.library.activities.MapsActivity"
+            android:name="com.boha.library.activities.AlertMapActivity"
             android:label="@string/title_activity_maps" >
         </activity>
+        <activity android:name="com.boha.library.activities.CreateAlertActivity" >
+        </activity>
+        <activity android:name="com.boha.library.activities.PictureActivity" >
+        </activity>
+
+        <service
+            android:name="com.boha.library.services.PhotoUploadService"
+            android:exported="false" />
 
         <activity
-            android:name="com.boha.library.activities.CreateAlertActivity" >
+            android:name="com.boha.library.activities.AlertPictureGridActivity"
+            android:label="@string/title_activity_alert_picture_grid" >
+        </activity>
+        <activity
+            android:name="com.boha.library.activities.FullPhotoActivity" >
         </activity>
     </application>
 

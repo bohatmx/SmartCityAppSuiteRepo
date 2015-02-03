@@ -216,21 +216,26 @@
     <style name="ButtonNavyBlue" parent="@android:style/TextAppearance.Small">
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:background">@drawable/xbluelight_rounded_corners</item>
+        <item name="android:background">@color/dark_blue</item>
+    </style>
+    <style name="ButtonBlue" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:background">@color/blue</item>
     </style>
 
     <style name="ButtonNavyBlueSmall" parent="@android:style/TextAppearance.Medium">
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">12sp</item>
-        <item name="android:background">@drawable/xbluelight_rounded_corners</item>
+        <item name="android:background">@color/dark_blue</item>
         <item name="android:drawableLeft">@android:drawable/ic_menu_send</item>
     </style>
 
     <style name="ButtonRed" parent="@android:style/TextAppearance.Small">
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:background">@drawable/xred_dark_rounded_corners</item>
+        <item name="android:background">@color/absa_red</item>
     </style>
 
     <style name="ButtonCancel" parent="@android:style/TextAppearance.Small">

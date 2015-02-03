@@ -1,22 +1,54 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package com.boha.library.dto;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
 
 /**
- * Created by aubreyM on 15/01/13.
+ *
+ * @author aubreyM
  */
-public class AlertDTO {
-    Integer alertID, alertCategoryID, citizenID, alertColor;
-    String message, categoryName;
-    Double latitude, longitude;
-    Date alertDate;
+public class AlertDTO implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private Integer alertID;
+    private Date updated;
+    private Integer id;
+    private String description, categoryName;
+    private String title;
+    private Double latitude;
+    private Double longitude;
+    private String thumbnailURL;
+    private String href;
+    private Boolean activeFlag;
+    private Integer categoryID;
+    private Integer cityID;
+    private AlertTypeDTO alertType;
+    private List<PhotoUploadDTO> photoUploadList;
 
-    public Integer getAlertColor() {
-        return alertColor;
+    public List<PhotoUploadDTO> getPhotoUploadList() {
+        return photoUploadList;
     }
 
-    public void setAlertColor(Integer alertColor) {
-        this.alertColor = alertColor;
+    public void setPhotoUploadList(List<PhotoUploadDTO> photoUploadList) {
+        this.photoUploadList = photoUploadList;
+    }
+
+    public AlertDTO() {
+    }
+
+    public AlertTypeDTO getAlertType() {
+        return alertType;
+    }
+
+    public void setAlertType(AlertTypeDTO alertType) {
+        this.alertType = alertType;
     }
 
     public String getCategoryName() {
@@ -27,12 +59,20 @@ public class AlertDTO {
         this.categoryName = categoryName;
     }
 
-    public Integer getCitizenID() {
-        return citizenID;
+    public Integer getCategoryID() {
+        return categoryID;
     }
 
-    public void setCitizenID(Integer citizenID) {
-        this.citizenID = citizenID;
+    public void setCategoryID(Integer categoryID) {
+        this.categoryID = categoryID;
+    }
+
+    public Integer getCityID() {
+        return cityID;
+    }
+
+    public void setCityID(Integer cityID) {
+        this.cityID = cityID;
     }
 
     public Integer getAlertID() {
@@ -43,20 +83,36 @@ public class AlertDTO {
         this.alertID = alertID;
     }
 
-    public Integer getAlertCategoryID() {
-        return alertCategoryID;
+    public Date getUpdated() {
+        return updated;
     }
 
-    public void setAlertCategoryID(Integer alertCategoryID) {
-        this.alertCategoryID = alertCategoryID;
+    public void setUpdated(Date updated) {
+        this.updated = updated;
     }
 
-    public String getMessage() {
-        return message;
+    public Integer getId() {
+        return id;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Double getLatitude() {
@@ -75,11 +131,50 @@ public class AlertDTO {
         this.longitude = longitude;
     }
 
-    public Date getAlertDate() {
-        return alertDate;
+    public String getThumbnailURL() {
+        return thumbnailURL;
     }
 
-    public void setAlertDate(Date alertDate) {
-        this.alertDate = alertDate;
+    public void setThumbnailURL(String thumbnailURL) {
+        this.thumbnailURL = thumbnailURL;
     }
+
+    public String getHref() {
+        return href;
+    }
+
+    public void setHref(String href) {
+        this.href = href;
+    }
+
+    public Boolean getActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
+    }
+
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (alertID != null ? alertID.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof AlertDTO)) {
+            return false;
+        }
+        AlertDTO other = (AlertDTO) object;
+        if ((this.alertID == null && other.alertID != null) || (this.alertID != null && !this.alertID.equals(other.alertID))) {
+            return false;
+        }
+        return true;
+    }
+
+    
 }

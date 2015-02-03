@@ -87,6 +87,8 @@
                 android:layout_below="@id/SIGNIN_welcomeLayout"
                 android:layout_marginTop="@dimen/mon_padding"
                 android:inputType="number"
+                style="@style/Title1TextStyleBlack"
+                android:text="7406190168080"
                 android:hint="@string/enter_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -95,7 +97,9 @@
                 android:id="@+id/SIGNIN_editPIN"
                 android:layout_below="@id/SIGNIN_editUserID"
                 android:hint="@string/enter_pswd"
-                android:inputType="text"
+                android:inputType="textPassword"
+                android:text="vatawa"
+                style="@style/Title1TextStyleRed"
                 android:layout_marginTop="@dimen/mon_padding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -103,14 +107,29 @@
             <RelativeLayout
                 android:layout_below="@id/SIGNIN_editPIN"
                 android:layout_marginTop="@dimen/mon_margin"
-                android:padding="@dimen/mon_padding"
+                android:padding="@dimen/mon_wide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <Button
-                    android:id="@+id/SIGNIN_btnUser"
+                    android:id="@+id/SIGNIN_btnSignin"
                     android:text="@string/signin"
-                    style="@style/ButtonRed"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@android:drawable/ic_menu_send"
+                    android:backgroundTint="@color/absa_red"
+                    android:layout_marginLeft="@dimen/mon_margin"
+                    android:layout_marginRight="@dimen/mon_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
+                <Button
+                    android:id="@+id/SIGNIN_btnRegister"
+                    android:text="Register"
+                    android:layout_marginTop="@dimen/mon_padding"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@android:drawable/ic_menu_add"
+                    android:layout_below="@id/SIGNIN_btnSignin"
                     android:layout_marginLeft="@dimen/mon_margin"
                     android:layout_marginRight="@dimen/mon_margin"
                     android:layout_width="match_parent"
@@ -119,8 +138,9 @@
                 <Button
                     android:id="@+id/SIGNIN_btnVisitor"
                     android:text="@string/visiting"
-                    android:layout_below="@id/SIGNIN_btnUser"
-                    style="@style/ButtonNavyBlue"
+                    android:layout_below="@id/SIGNIN_btnRegister"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@android:drawable/ic_dialog_info"
                     android:layout_marginLeft="@dimen/mon_margin"
                     android:layout_marginRight="@dimen/mon_margin"
                     android:layout_marginTop="@dimen/mon_padding"

@@ -6,7 +6,9 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Environment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +22,10 @@ import android.widget.Toast;
 
 import com.boha.cityapps.R;
 import com.boha.library.adapters.PopupListAdapter;
-import com.boha.library.dto.AlertCategoryDTO;
+import com.boha.library.dto.PhotoUploadDTO;
 
+import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -31,126 +35,159 @@ import java.util.Random;
  */
 public class Util {
 
-    static List<AlertCategoryDTO> alertCategoryList = new ArrayList<>();
-    public static List<AlertCategoryDTO> getCategories() {
-        alertCategoryList.add(new AlertCategoryDTO(1, "Traffic"));
-        alertCategoryList.add(new AlertCategoryDTO(2, "Crime"));
-        alertCategoryList.add(new AlertCategoryDTO(3, "Weather"));
-        alertCategoryList.add(new AlertCategoryDTO(4, "Services"));
-        return alertCategoryList;
+    public static String getAlertImageURL(PhotoUploadDTO p) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(Statics.IMAGE_URL).append("smartcity_images/")
+                .append("city").append(p.getCityID()).append("/alert")
+                .append(p.getAlertID()).append("/")
+                .append(p.getUri());
+        return stringBuilder.toString();
+    }
+
+    static public boolean hasStorage(boolean requireWriteAccess) {
+        String state = Environment.getExternalStorageState();
+        Log.w("Util", "--------- disk storage state is: " + state);
+
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            if (requireWriteAccess) {
+                boolean writable = checkFsWritable();
+                Log.i("Util", "************ storage is writable: " + writable);
+                return writable;
+            } else {
+                return true;
+            }
+        } else if (!requireWriteAccess && Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean checkFsWritable() {
+        // Create a temporary file to see whether a volume is really writeable.
+        // It's important not to put it in the root directory which may have a
+        // limit on the number of files.
+        String directoryName = Environment.getExternalStorageDirectory().toString() + "/DCIM";
+        File directory = new File(directoryName);
+        if (!directory.isDirectory()) {
+            if (!directory.mkdirs()) {
+                return false;
+            }
+        }
+        return directory.canWrite();
     }
 
     static int index;
+
     public static Drawable getNextImage(Context ctx) {
 
         Drawable p = null;
         switch (index) {
             case 0:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn1);
+                p = ctx.getResources().getDrawable(R.drawable.dbn1);
                 break;
             case 1:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn2);
+                p = ctx.getResources().getDrawable(R.drawable.dbn2);
                 break;
             case 2:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn3);
+                p = ctx.getResources().getDrawable(R.drawable.dbn3);
                 break;
             case 3:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn4);
+                p = ctx.getResources().getDrawable(R.drawable.dbn4);
                 break;
             case 4:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn6);
+                p = ctx.getResources().getDrawable(R.drawable.dbn6);
                 break;
 
             case 5:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn8);
+                p = ctx.getResources().getDrawable(R.drawable.dbn8);
                 break;
             case 6:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn10);
+                p = ctx.getResources().getDrawable(R.drawable.dbn10);
                 break;
             case 7:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn11);
+                p = ctx.getResources().getDrawable(R.drawable.dbn11);
                 break;
             case 8:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn12);
+                p = ctx.getResources().getDrawable(R.drawable.dbn12);
                 break;
             case 9:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn13);
+                p = ctx.getResources().getDrawable(R.drawable.dbn13);
                 break;
 
             case 10:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn14);
+                p = ctx.getResources().getDrawable(R.drawable.dbn14);
                 break;
             case 11:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn15);
+                p = ctx.getResources().getDrawable(R.drawable.dbn15);
                 break;
             case 12:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn16);
+                p = ctx.getResources().getDrawable(R.drawable.dbn16);
                 break;
             case 13:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn17);
+                p = ctx.getResources().getDrawable(R.drawable.dbn17);
                 break;
             case 14:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn18);
+                p = ctx.getResources().getDrawable(R.drawable.dbn18);
                 break;
 
             case 15:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn19);
+                p = ctx.getResources().getDrawable(R.drawable.dbn19);
                 break;
             case 16:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn20);
+                p = ctx.getResources().getDrawable(R.drawable.dbn20);
                 break;
             case 17:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn21);
+                p = ctx.getResources().getDrawable(R.drawable.dbn21);
                 break;
             case 18:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn22);
+                p = ctx.getResources().getDrawable(R.drawable.dbn22);
                 break;
             case 19:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn23);
+                p = ctx.getResources().getDrawable(R.drawable.dbn23);
                 break;
 
             case 20:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn24);
+                p = ctx.getResources().getDrawable(R.drawable.dbn24);
                 break;
             case 21:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn25);
+                p = ctx.getResources().getDrawable(R.drawable.dbn25);
                 break;
             case 22:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn26);
+                p = ctx.getResources().getDrawable(R.drawable.dbn26);
                 break;
             case 23:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn27);
+                p = ctx.getResources().getDrawable(R.drawable.dbn27);
                 break;
             case 24:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn28);
+                p = ctx.getResources().getDrawable(R.drawable.dbn28);
                 break;
 
             case 25:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn29);
+                p = ctx.getResources().getDrawable(R.drawable.dbn29);
                 break;
             case 26:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn30);
+                p = ctx.getResources().getDrawable(R.drawable.dbn30);
                 break;
             case 27:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn31);
+                p = ctx.getResources().getDrawable(R.drawable.dbn31);
                 break;
             case 28:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn32);
+                p = ctx.getResources().getDrawable(R.drawable.dbn32);
                 break;
             case 29:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn33);
+                p = ctx.getResources().getDrawable(R.drawable.dbn33);
                 break;
             case 30:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn34);
+                p = ctx.getResources().getDrawable(R.drawable.dbn34);
                 break;
             case 31:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn35);
+                p = ctx.getResources().getDrawable(R.drawable.dbn35);
                 break;
             case 32:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn37);
+                p = ctx.getResources().getDrawable(R.drawable.dbn37);
                 break;
             default:
-                p =  ctx.getResources().getDrawable(R.drawable.dbn13);
+                p = ctx.getResources().getDrawable(R.drawable.dbn13);
                 break;
 
         }
@@ -160,6 +197,7 @@ public class Util {
         }
         return p;
     }
+
     public static Drawable getRandomBanner(Context ctx) {
         if (banners == null) {
             loadBanners(ctx);
@@ -186,6 +224,7 @@ public class Util {
     }
 
     static Random random = new Random(System.currentTimeMillis());
+
     public static int getWindowWidth(Activity activity) {
         DisplayMetrics displaymetrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -229,7 +268,7 @@ public class Util {
         TextView ind = (TextView) view.findViewById(R.id.MONTOAST_indicator);
         ind.setText("M");
         ind.setBackground(ctx.getResources().getDrawable(R.drawable.xblue_oval_small));
-        txt.setTextColor(ctx.getResources().getColor(R.color.blue));
+        txt.setTextColor(ctx.getResources().getColor(R.color.black));
         txt.setText(caption);
         Toast customtoast = new Toast(ctx);
 
@@ -395,33 +434,39 @@ public class Util {
 
 
     public static void flashOnce(View view, long duration, final UtilAnimationListener listener) {
-        ObjectAnimator an = ObjectAnimator.ofFloat(view, "alpha", 0, 1);
-        an.setRepeatMode(ObjectAnimator.REVERSE);
-        an.setDuration(duration);
-        an.setInterpolator(new AccelerateDecelerateInterpolator());
-        an.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
+        try {
+            ObjectAnimator an = ObjectAnimator.ofFloat(view, "alpha", 0, 1);
+            an.setRepeatMode(ObjectAnimator.REVERSE);
+            an.setDuration(duration);
+            an.setInterpolator(new AccelerateDecelerateInterpolator());
+            an.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
 
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (listener != null)
+                        listener.onAnimationEnded();
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+            an.start();
+        } catch (Exception e) {
+            if (listener != null) {
+                listener.onAnimationEnded();
             }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                if (listener != null)
-                    listener.onAnimationEnded();
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-        an.start();
+        }
 
     }
 
@@ -429,44 +474,56 @@ public class Util {
     public static void flashSeveralTimes(final View view,
                                          final long duration, final int max,
                                          final UtilAnimationListener listener) {
-        final ObjectAnimator an = ObjectAnimator.ofFloat(view, "alpha", 0, 1);
-        an.setRepeatMode(ObjectAnimator.REVERSE);
-        an.setDuration(duration);
-        an.setInterpolator(new AccelerateDecelerateInterpolator());
-        an.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
+        try {
+            final ObjectAnimator an = ObjectAnimator.ofFloat(view, "alpha", 0, 1);
+            an.setRepeatMode(ObjectAnimator.REVERSE);
+            an.setDuration(duration);
+            an.setInterpolator(new AccelerateDecelerateInterpolator());
+            an.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
 
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                count++;
-                if (count > max) {
-                    count = 0;
-                    an.cancel();
-                    if (listener != null)
-                        listener.onAnimationEnded();
-                    return;
                 }
-                flashSeveralTimes(view, duration, max, listener);
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    count++;
+                    if (count > max) {
+                        count = 0;
+                        an.cancel();
+                        if (listener != null)
+                            listener.onAnimationEnded();
+                        return;
+                    }
+                    flashSeveralTimes(view, duration, max, listener);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+            an.start();
+        } catch (Exception e) {
+            if (listener != null) {
+                listener.onAnimationEnded();
             }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-        an.start();
+        }
 
     }
 
     static int count;
+
+    public static double getElapsed(long start, long end) {
+        BigDecimal m = new BigDecimal(end - start).divide(new BigDecimal(1000));
+        return m.doubleValue();
+    }
+
 
     public interface UtilAnimationListener {
         public void onAnimationEnded();

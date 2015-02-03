@@ -12,16 +12,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <RelativeLayout
+            android:id="@+id/ALERT_handle"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"></RelativeLayout>
+
         <ImageView
             android:id="@+id/ALERT_heroImage"
+            android:layout_below="@id/ALERT_handle"
             android:src="@drawable/banner_alert"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/mon_hero_height_small" />
+            android:layout_height="@dimen/mon_widest" />
         <TextView
             android:id="@+id/ALERT_category"
             style="@style/Title2TextStyleBlue"
-            android:text="@string/alert_cat"
+            android:text="Alert Type"
             android:layout_below="@id/ALERT_heroImage"
             android:padding="@dimen/mon_padding"
             android:layout_width="wrap_content"
@@ -31,7 +37,7 @@
     <RelativeLayout
         android:id="@+id/ALERT_topLayout"
         android:layout_below="@id/ALERT_topTop"
-        android:background="@color/white"
+        android:background="@color/beige_pale"
         android:paddingTop="@dimen/mon_padding"
         android:paddingBottom="@dimen/mon_margin"
         android:layout_width="match_parent"
@@ -45,7 +51,7 @@
         android:id="@+id/ALERT_midLayout"
         android:layout_below="@id/ALERT_topLayout"
         android:padding="@dimen/mon_padding"
-        android:background="@color/beige_pale"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -65,50 +71,36 @@
 
             <Button
                 android:id="@+id/ALERT_btnTakePicture"
-                style="@style/ButtonNavyBlue"
                 android:text="@string/take_pics"
                 android:layout_weight="1"
+                android:textColor="@color/blue"
+                android:drawableLeft="@android:drawable/ic_menu_camera"
+                android:background="@android:color/transparent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/ALERT_btnSend"
-                style="@style/ButtonRed"
                 android:text="@string/send_alert"
                 android:layout_weight="1"
+                android:textColor="@color/absa_red"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@android:drawable/ic_menu_send"
                 android:layout_marginLeft="@dimen/mon_margin"
                 android:layout_toRightOf="@id/ALERT_btnTakePicture"
-                android:layout_width="@dimen/mon_hero_height_small"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/ALERT_botLayout"
-        android:layout_below="@id/ALERT_midLayout"
-        android:padding="@dimen/mon_padding"
-        android:background="@color/white"
-        android:layout_marginTop="@dimen/mon_padding"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+   <ProgressBar
+       android:id="@+id/progressBar"
+       android:layout_alignParentRight="true"
+       android:layout_margin="@dimen/mon_padding"
+       android:visibility="gone"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content" />
 
-        <HorizontalScrollView
-            android:id="@+id/ALERT_scroll"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:id="@+id/ALERT_layout"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </LinearLayout>
-
-        </HorizontalScrollView>
-
-    </RelativeLayout>
 
 </RelativeLayout>

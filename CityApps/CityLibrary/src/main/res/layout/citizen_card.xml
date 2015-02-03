@@ -14,7 +14,6 @@
         tools:cardCornerRadius="8dp">
 
 
-
         <RelativeLayout
             android:id="@+id/CITIZEN_topLayout"
             android:background="@color/white"
@@ -23,48 +22,119 @@
 
             <ImageView
                 android:id="@+id/CITIZEN_image"
-                android:src="@drawable/black_woman"
+                android:src="@drawable/banner1"
                 android:scaleType="centerCrop"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/mon_hero_height_large" />
+                android:layout_height="@dimen/mon_hero_height_small" />
 
             <TextView
                 android:id="@+id/CITIZEN_name"
-                style="@style/TextStyleBlue"
+                style="@style/Title2TextStyleBlack"
                 android:text="Citizen Name"
                 android:layout_below="@id/CITIZEN_image"
                 android:padding="@dimen/mon_padding"
-                android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <RelativeLayout
-                android:id="@+id/CITIZEN_mLayout"
+                android:id="@+id/CITIZEN_frame"
                 android:layout_below="@id/CITIZEN_name"
-                android:background="@color/white"
-                android:padding="@dimen/mon_margin"
+                android:background="@color/grey"
+                android:padding="@dimen/mon_padding"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/CITIZEN_balance"
-                    android:text="R5,785.89"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/mon_margin"
-                    style="@style/Title1TextStyleRed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:id="@+id/CITIZEN_label1"
-                    android:text="Balance"
-                    style="@style/Title2TextStyleGrey"
-                    android:layout_toLeftOf="@id/CITIZEN_balance"
-                    android:layout_marginRight="@dimen/mon_margin"
-                    android:layout_centerVertical="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <RelativeLayout
+                    android:id="@+id/CITIZEN_acctsLayout"
+                    android:background="@color/white"
+                    android:padding="@dimen/mon_margin"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/CITIZEN_accts"
+                        android:text="0"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/mon_margin"
+                        style="@style/BlueCircle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/CITIZEN_labela"
+                        android:text="Accounts"
+                        style="@style/Title2TextStyleGrey"
+                        android:layout_toLeftOf="@id/CITIZEN_accts"
+                        android:layout_marginRight="@dimen/mon_wide"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:id="@+id/CITIZEN_balanceLayout"
+                    android:layout_below="@id/CITIZEN_acctsLayout"
+                    android:background="@color/white"
+                    android:padding="@dimen/mon_margin"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/CITIZEN_balance"
+                        android:text="R5,785.89"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/mon_margin"
+                        style="@style/Title1TextStyleGreen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/CITIZEN_label1"
+                        android:text="Current Balance"
+                        style="@style/Title3TextStyleGrey"
+                        android:layout_toLeftOf="@id/CITIZEN_balance"
+                        android:layout_marginRight="@dimen/mon_padding"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/CITIZEN_arrearsLayout"
+                    android:layout_below="@id/CITIZEN_balanceLayout"
+                    android:background="@color/beige_pale"
+                    android:padding="@dimen/mon_margin"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/CITIZEN_arrears"
+                        android:text="R5,785.89"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/mon_margin"
+                        style="@style/Title1TextStyleRed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/CITIZEN_label1x"
+                        android:text="Current Arrears"
+                        style="@style/Title3TextStyleGrey"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/CITIZEN_arrears"
+                        android:layout_marginRight="@dimen/mon_padding"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_below="@id/CITIZEN_arrearsLayout"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></RelativeLayout>
+            </RelativeLayout>
         </RelativeLayout>
 
 

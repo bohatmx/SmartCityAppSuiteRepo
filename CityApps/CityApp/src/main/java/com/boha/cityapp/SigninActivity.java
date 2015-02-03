@@ -16,6 +16,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.boha.library.activities.MainPagerActivity;
+import com.boha.library.dto.transfer.RequestDTO;
+import com.boha.library.dto.transfer.ResponseDTO;
+import com.boha.library.util.CacheUtil;
+import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 
@@ -43,6 +47,7 @@ public class SigninActivity extends ActionBarActivity {
         ctx = getApplicationContext();
         activity = this;
 
+        checkVirginity();
         setFields();
     }
 
@@ -54,16 +59,16 @@ public class SigninActivity extends ActionBarActivity {
     }
 
     private void checkVirginity() {
-        int id = SharedUtil.getID(ctx);
-        if (id > 0) {
+        String id = SharedUtil.getID(ctx);
+        if (id != null) {
             Intent i = new Intent(this, MainPagerActivity.class);
             startActivity(i);
-
+            finish();
         }
     }
 
     private void setFields() {
-        btn = (Button) findViewById(R.id.SIGNIN_btnUser);
+        btn = (Button) findViewById(R.id.SIGNIN_btnSignin);
         btnVisitor = (Button) findViewById(R.id.SIGNIN_btnVisitor);
 
         editID = (EditText) findViewById(R.id.SIGNIN_editUserID);
@@ -131,15 +136,48 @@ public class SigninActivity extends ActionBarActivity {
             Util.showErrorToast(ctx, getString(R.string.enter_pswd));
             return;
         }
-        //TODO - remove after API available
-        //SharedUtil.setID(ctx, 111);
-        //SharedUtil.setName(ctx, "User: " + editID.getText().toString());
 
-        Intent i = new Intent(this, MainPagerActivity.class);
-        startActivity(i);
-        finish();
+
+        RequestDTO w = new RequestDTO(RequestDTO.LOGIN);
+        w.setUserName(editID.getText().toString());
+        w.setPassword(editPassword.getText().toString());
+
+        NetUtil.sendRequest(ctx,w,new NetUtil.NetUtilListener() {
+            @Override
+            public void onResponse(final ResponseDTO resp) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (resp.getStatusCode() > 0) {
+                           Util.showErrorToast(ctx,resp.getMessage());
+                            return;
+                        }
+                        response = resp;
+                        Log.i(LOG,"### response OK from server");
+                        SharedUtil.saveProfile(ctx, response.getProfileInfoDTO());
+                        SharedUtil.setID(ctx,editID.getText().toString());
+                        SharedUtil.savePassword(ctx,editPassword.getText().toString());
+                        CacheUtil.cacheLoginData(ctx,response, null);
+                        Intent i = new Intent(ctx, MainPagerActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String message) {
+
+            }
+
+            @Override
+            public void onWebSocketClose() {
+
+            }
+        });
     }
-
+    static final String LOG = SigninActivity.class.getSimpleName();
+    ResponseDTO response;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_signin, menu);
@@ -154,5 +192,10 @@ public class SigninActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onPause() {
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        super.onPause();
     }
 }

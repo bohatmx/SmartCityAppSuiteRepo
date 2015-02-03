@@ -24,6 +24,7 @@
 
         <TextView
             android:id="@+id/MONTOAST_text"
+            style="@style/TextStyle"
             android:text="General message text happens here and things could be long in the tooth."
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"

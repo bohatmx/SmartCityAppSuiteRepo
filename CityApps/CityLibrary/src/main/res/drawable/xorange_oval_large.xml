@@ -7,7 +7,7 @@
         android:endColor="@color/orange" />
 
     <size
-        android:height="64dp"
-        android:width="64dp" />
+        android:height="72dp"
+        android:width="72dp" />
 
 </shape>
