@@ -313,6 +313,7 @@ public class MainPagerActivity extends ActionBarActivity implements
                 if (pf instanceof AlertListFragment) {
                     if (mCurrentLocation != null)
                         alertListFragment.setLocation(mCurrentLocation);
+                        alertListFragment.getCachedAlerts();
                 }
             }
 
@@ -387,26 +388,7 @@ public class MainPagerActivity extends ActionBarActivity implements
             if (pf instanceof AlertListFragment) {
                 title = "Alerts ";
             }
-//            switch (position) {
-//                case 0:
-//                    title = getString(R.string.city_gallery);
-//                    myDrawable = ctx.getResources().getDrawable(android.R.drawable.ic_menu_camera);
-//                    break;
-//                case 1:
-//                    title = getString(R.string.comms);
-//                    myDrawable = ctx.getResources().getDrawable(android.R.drawable.ic_dialog_alert);
-//                    break;
-//                case 2:
-//                    title = getString(R.string.info);
-//                    myDrawable = ctx.getResources().getDrawable(android.R.drawable.ic_dialog_info);
-//                    break;
-//
-//            }
-//            SpannableStringBuilder sb = new SpannableStringBuilder("    " + title); // space added before text for convenience
-//
-//            myDrawable.setBounds(0, 0, myDrawable.getIntrinsicWidth(), myDrawable.getIntrinsicHeight());
-//            ImageSpan span = new ImageSpan(myDrawable, ImageSpan.ALIGN_BOTTOM);
-//            sb.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
             return title;
         }
     }

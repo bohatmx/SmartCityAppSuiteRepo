@@ -153,7 +153,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
 
     ResponseDTO response;
 
-    private void getCachedAlerts() {
+    public void getCachedAlerts() {
 
         CacheUtil.getCacheAlertData(ctx, new CacheUtil.CacheRetrievalListener() {
             @Override
