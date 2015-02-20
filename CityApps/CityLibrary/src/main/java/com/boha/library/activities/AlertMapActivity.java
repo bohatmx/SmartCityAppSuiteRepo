@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.boha.cityapps.R;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.AlertTypeDTO;
-import com.boha.library.dto.transfer.ResponseDTO;
+import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -143,7 +143,7 @@ public class AlertMapActivity extends ActionBarActivity
                     case AlertTypeDTO.GREEN:
                         desc = BitmapDescriptorFactory.fromResource(R.drawable.caraccident_green);
                         break;
-                    case AlertTypeDTO.YELLOW:
+                    case AlertTypeDTO.AMBER:
                         desc = BitmapDescriptorFactory.fromResource(R.drawable.caraccident_yellow);
                         break;
                 }

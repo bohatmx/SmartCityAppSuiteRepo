@@ -399,6 +399,11 @@
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/xblack_oval</item>
     </style>
+    <style name="BlackCircleLarge" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/xblack_oval_large</item>
+    </style>
     <style name="BlackCircleSmall" parent="@android:style/TextAppearance.Small">
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
@@ -433,6 +438,13 @@
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/xorange_oval_large</item>
     </style>
+
+    <style name="BlueCircleLarge" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/xblue_oval_large</item>
+    </style>
+
     <style name="BlueCircle" parent="@android:style/TextAppearance.Small">
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>

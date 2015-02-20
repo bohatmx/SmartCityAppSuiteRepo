@@ -1,13 +1,5 @@
-package com.boha.library.dto;
 
-/**
- * Created by aubreyM on 15/01/31.
- */
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+package com.boha.library.dto;
 
 import java.io.Serializable;
 
@@ -17,16 +9,33 @@ import java.io.Serializable;
  */
 public class AlertTypeDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Integer alertTypeID;
+    private Integer alertTypeID, municipalityID;
     private String alertTypeName;
     private Integer color;
 
-    public static final int RED = 1, YELLOW = 2, GREEN = 3;
+    public static final int RED = 1, AMBER = 2, GREEN = 3;
+
     public AlertTypeDTO() {
     }
 
 
+    public Integer getMunicipalityID() {
+        return municipalityID;
+    }
 
+    public void setMunicipalityID(Integer municipalityID) {
+        this.municipalityID = municipalityID;
+    }
+
+    public String getAlertTypeName() {
+        return alertTypeName;
+    }
+
+    public void setAlertTypeName(String alertTypeName) {
+        this.alertTypeName = alertTypeName;
+    }
+
+  
     public Integer getAlertTypeID() {
         return alertTypeID;
     }
@@ -51,6 +60,7 @@ public class AlertTypeDTO implements Serializable {
         this.color = color;
     }
 
+  
 
     @Override
     public int hashCode() {
@@ -72,6 +82,9 @@ public class AlertTypeDTO implements Serializable {
         return true;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "com.boha.smartcity.data.AlertType[ alertTypeID=" + alertTypeID + " ]";
+    }
+    
 }

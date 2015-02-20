@@ -32,5 +32,6 @@
     <string name="title_activity_alert_picture_grid">AlertPictureGridActivity</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="sel_type">Select Alert Type</string>
 
 </resources>

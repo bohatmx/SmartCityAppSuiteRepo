@@ -46,8 +46,8 @@ public class CityApplication extends Application {
         sb.append("#######################################\n\n");
 
         Log.d(LOG, sb.toString());
-//        ACRA.init(this);
-//        ACRA.getErrorReporter().putCustomData("companyStaffID", "78");
+        //ACRA.init(this);
+        //ACRA.getErrorReporter().putCustomData("companyStaffID", SharedUtil.getID());
 
         DisplayImageOptions defaultOptions =
                 new DisplayImageOptions.Builder()

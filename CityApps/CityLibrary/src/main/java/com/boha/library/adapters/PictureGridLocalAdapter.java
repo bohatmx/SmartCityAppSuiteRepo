@@ -35,7 +35,7 @@ public class PictureGridLocalAdapter extends RecyclerView.Adapter<PictureGridLoc
 
     @Override
     public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.full_photo_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_item, parent, false);
         return new PhotoViewHolder(v);
     }
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package com.boha.library.dto;
 
@@ -15,15 +10,31 @@ import java.util.List;
  */
 public class ComplaintTypeDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Integer complaintTypeID;
+    private Integer complaintTypeID, municipalityID, color;
     private String complaintTypeName;
     private List<ComplaintDTO> complaintList;
 
     public ComplaintTypeDTO() {
     }
 
-   
 
+    public Integer getMunicipalityID() {
+        return municipalityID;
+    }
+
+    public void setMunicipalityID(Integer municipalityID) {
+        this.municipalityID = municipalityID;
+    }
+
+    public Integer getColor() {
+        return color;
+    }
+
+    public void setColor(Integer color) {
+        this.color = color;
+    }
+
+    
     public Integer getComplaintTypeID() {
         return complaintTypeID;
     }

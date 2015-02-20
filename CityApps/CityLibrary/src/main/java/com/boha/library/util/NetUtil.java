@@ -3,9 +3,9 @@ package com.boha.library.util;
 import android.content.Context;
 
 import com.android.volley.VolleyError;
-import com.boha.library.dto.transfer.RequestDTO;
-import com.boha.library.dto.transfer.ResponseDTO;
 import com.boha.library.toolbox.BaseVolley;
+import com.boha.library.transfer.RequestDTO;
+import com.boha.library.transfer.ResponseDTO;
 import com.google.gson.Gson;
 
 /**
@@ -23,7 +23,7 @@ public class NetUtil {
     public static void sendRequest(Context ctx, RequestDTO request, NetUtilListener utilListener) {
         listener = utilListener;
 
-        if (request.isRideWebSocket()) {
+        if (request.getRideWebSocket()) {
             sendViaWebSocket(ctx,request);
         } else {
             sendViaHttp(ctx,request);

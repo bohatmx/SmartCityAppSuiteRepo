@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package com.boha.library.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -15,40 +11,61 @@ import java.util.Date;
  */
 public class ComplaintDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Integer complaintID;
+    private Integer complaintID, municipalityID;
     private String remarks;
     private Date complaintDate;
     private Double latitude;
     private Double longitude;
     private Boolean activeFlag;
-    private Integer profileInfoID, cityID, complaintTypeID;
+    private ProfileInfoDTO profileInfo;
+    private ComplaintTypeDTO complaintType;
 
+    private List<ComplaintImageDTO> complaintImageList;
+    private List<ComplaintUpdateStatusDTO> complaintUpdateStatusList;
+    
     public ComplaintDTO() {
     }
 
 
-    public Integer getProfileInfoID() {
-        return profileInfoID;
+    public List<ComplaintUpdateStatusDTO> getComplaintUpdateStatusList() {
+        return complaintUpdateStatusList;
     }
 
-    public void setProfileInfoID(Integer profileInfoID) {
-        this.profileInfoID = profileInfoID;
+    public void setComplaintUpdateStatusList(List<ComplaintUpdateStatusDTO> complaintUpdateStatusList) {
+        this.complaintUpdateStatusList = complaintUpdateStatusList;
     }
 
-    public Integer getCityID() {
-        return cityID;
+    public List<ComplaintImageDTO> getComplaintImageList() {
+        return complaintImageList;
     }
 
-    public void setCityID(Integer cityID) {
-        this.cityID = cityID;
+    public void setComplaintImageList(List<ComplaintImageDTO> complaintImageList) {
+        this.complaintImageList = complaintImageList;
     }
 
-    public Integer getComplaintTypeID() {
-        return complaintTypeID;
+    
+    public Integer getMunicipalityID() {
+        return municipalityID;
     }
 
-    public void setComplaintTypeID(Integer complaintTypeID) {
-        this.complaintTypeID = complaintTypeID;
+    public void setMunicipalityID(Integer municipalityID) {
+        this.municipalityID = municipalityID;
+    }
+
+    public ProfileInfoDTO getProfileInfo() {
+        return profileInfo;
+    }
+
+    public void setProfileInfo(ProfileInfoDTO profileInfo) {
+        this.profileInfo = profileInfo;
+    }
+
+    public ComplaintTypeDTO getComplaintType() {
+        return complaintType;
+    }
+
+    public void setComplaintType(ComplaintTypeDTO complaintType) {
+        this.complaintType = complaintType;
     }
 
     public Integer getComplaintID() {

@@ -63,7 +63,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
         }
     }
 
-    View view;
+    View view, topView;
     RecyclerView grid;
     Button btnmap;
     TextView txtCount;
@@ -85,6 +85,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_alert_list, container, false);
+        topView = view.findViewById(R.id.RCV_top);
         txtCount = (TextView) view.findViewById(R.id.ALERT_LIST_count);
         grid = (RecyclerView) view.findViewById(R.id.ALERT_LIST_recyclerView);
 
@@ -100,6 +101,12 @@ public class AlertListFragment extends Fragment implements PageFragment {
         txtKM.setText("" + MIN_KM);
 
         imgSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getRemoteData();
+            }
+        });
+        topView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getRemoteData();

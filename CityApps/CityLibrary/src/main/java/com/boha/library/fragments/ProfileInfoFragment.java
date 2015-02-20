@@ -98,7 +98,7 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.showToast(ctx,ctx.getString(R.string.under_cons));
+               // Util.showToast(ctx,ctx.getString(R.string.under_cons));
             }
         });
 

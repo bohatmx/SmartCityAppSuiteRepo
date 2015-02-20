@@ -6,8 +6,8 @@
 
     <RelativeLayout
         android:id="@+id/RCV_top"
-        android:background="@color/white"
-        android:padding="@dimen/mon_padding"
+        android:background="@color/beige_pale"
+        android:padding="@dimen/mon_margin"
         android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -54,10 +54,13 @@
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/ALERT_LIST_count"
-        style="@style/BlackCircle"
+        style="@style/BlackCircleLarge"
         android:text="0"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/mon_wider"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/mon_wide"
+        android:layout_marginTop="@dimen/mon_widest"
+        android:layout_marginRight="@dimen/mon_margin"
         android:elevation="@dimen/mon_padding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

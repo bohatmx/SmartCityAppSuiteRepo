@@ -27,9 +27,9 @@
         <TextView
             android:id="@+id/ALERT_category"
             style="@style/Title2TextStyleBlue"
-            android:text="Alert Type"
+            android:text="@string/sel_type"
             android:layout_below="@id/ALERT_heroImage"
-            android:padding="@dimen/mon_padding"
+            android:padding="@dimen/mon_wide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -59,10 +59,12 @@
             android:id="@+id/ALERT_message"
             android:hint="@string/enter_message"
             android:layout_marginTop="@dimen/mon_padding"
+            android:textSize="20sp"
+            android:padding="@dimen/mon_padding"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <LinearLayout
+        <RelativeLayout
             android:orientation="horizontal"
             android:layout_below="@id/ALERT_message"
             android:layout_marginTop="@dimen/mon_wide"
@@ -73,6 +75,7 @@
                 android:id="@+id/ALERT_btnTakePicture"
                 android:text="@string/take_pics"
                 android:layout_weight="1"
+                android:visibility="gone"
                 android:textColor="@color/blue"
                 android:drawableLeft="@android:drawable/ic_menu_camera"
                 android:background="@android:color/transparent"
@@ -82,15 +85,15 @@
             <Button
                 android:id="@+id/ALERT_btnSend"
                 android:text="@string/send_alert"
-                android:layout_weight="1"
                 android:textColor="@color/absa_red"
+                android:layout_alignParentRight="true"
                 android:background="@android:color/transparent"
                 android:drawableLeft="@android:drawable/ic_menu_send"
-                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_marginRight="@dimen/mon_margin"
                 android:layout_toRightOf="@id/ALERT_btnTakePicture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-        </LinearLayout>
+        </RelativeLayout>
 
     </RelativeLayout>
 

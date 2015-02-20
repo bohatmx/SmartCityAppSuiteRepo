@@ -11,7 +11,7 @@ import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.boha.library.dto.transfer.RequestDTO;
+import com.boha.library.transfer.RequestDTO;
 import com.boha.library.util.Statics;
 import com.google.gson.Gson;
 

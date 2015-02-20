@@ -36,7 +36,6 @@ public class AccountDTO implements Serializable {
     public AccountDTO() {
     }
 
-
     public Integer getProfileInfoID() {
         return profileInfoID;
     }
@@ -195,6 +194,9 @@ public class AccountDTO implements Serializable {
         return true;
     }
 
-
+    @Override
+    public String toString() {
+        return "com.boha.smartcity.data.Account[ accountID=" + accountID + " ]";
+    }
     
 }

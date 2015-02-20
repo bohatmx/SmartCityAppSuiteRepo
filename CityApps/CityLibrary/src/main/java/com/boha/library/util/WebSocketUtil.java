@@ -3,8 +3,8 @@ package com.boha.library.util;
 import android.content.Context;
 import android.util.Log;
 
-import com.boha.library.dto.transfer.RequestDTO;
-import com.boha.library.dto.transfer.ResponseDTO;
+import com.boha.library.transfer.RequestDTO;
+import com.boha.library.transfer.ResponseDTO;
 import com.google.gson.Gson;
 
 import org.java_websocket.client.WebSocketClient;

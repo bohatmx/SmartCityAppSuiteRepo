@@ -115,26 +115,30 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
                 for (AlertTypeDTO t : response.getAlertTypeList()) {
                     list.add(t.getAlertTypeNmae());
                 }
-                Util.showPopupBasicWithHeroImage(ctx, getActivity(), list, handle, "Alert Types", new Util.UtilPopupListener() {
-                    @Override
-                    public void onItemSelected(int index) {
-                        alertType = response.getAlertTypeList().get(index);
-                        txtType.setText(alertType.getAlertTypeNmae());
-                        btnSend.setEnabled(true);
-                        btnPic.setEnabled(true);
-                        switch (alertType.getColor()) {
-                            case AlertTypeDTO.GREEN:
-                                TrafficLightUtil.setGreen(ctx, trafficLights);
-                                break;
-                            case AlertTypeDTO.YELLOW:
-                                TrafficLightUtil.setYellow(ctx, trafficLights);
-                                break;
-                            case AlertTypeDTO.RED:
-                                TrafficLightUtil.setRed(ctx, trafficLights);
-                                break;
+                try {
+                    Util.showPopupBasicWithHeroImage(ctx, getActivity(), list, handle, "Alert Types", new Util.UtilPopupListener() {
+                        @Override
+                        public void onItemSelected(int index) {
+                            alertType = response.getAlertTypeList().get(index);
+                            txtType.setText(alertType.getAlertTypeNmae());
+                            btnSend.setEnabled(true);
+                            btnPic.setEnabled(true);
+                            switch (alertType.getColor()) {
+                                case AlertTypeDTO.GREEN:
+                                    TrafficLightUtil.setGreen(ctx, trafficLights);
+                                    break;
+                                case AlertTypeDTO.YELLOW:
+                                    TrafficLightUtil.setYellow(ctx, trafficLights);
+                                    break;
+                                case AlertTypeDTO.RED:
+                                    TrafficLightUtil.setRed(ctx, trafficLights);
+                                    break;
+                            }
                         }
-                    }
-                });
+                    });
+                } catch (Exception e) {
+                    Log.e(LOG, "Failed", e);
+                }
             }
         });
 
@@ -175,7 +179,7 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
                             alert = response.getAlertList().get(0);
                             startPictureActivity();
                         }
-                        Log.w(LOG,"++ alert has been sent OK: " + response.getMessage());
+                        Log.w(LOG, "++ alert has been sent OK: " + response.getMessage());
                         //Util.showToast(ctx, "Alert has been sent");
                     }
                 });
@@ -196,11 +200,13 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
     }
 
     AlertDTO alert;
+
     void startPictureActivity() {
         Intent w = new Intent(ctx, PictureActivity.class);
-        w.putExtra("alert",alert);
+        w.putExtra("alert", alert);
         startActivity(w);
     }
+
     public void flash() {
         Util.flashSeveralTimes(txtType, 200, 3, null);
     }
