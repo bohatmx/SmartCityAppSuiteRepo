@@ -10,8 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.boha.cityapps.R;
-import com.boha.library.dto.PhotoUploadDTO;
+import com.boha.library.transfer.PhotoUploadDTO;
 import com.boha.library.util.Util;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;

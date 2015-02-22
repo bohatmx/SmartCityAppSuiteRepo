@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/SmartCitySuite.iml" filepath="$PROJECT_DIR$/SmartCitySuite.iml" />
+      <module fileurl="file://$PROJECT_DIR$/citizenApp/citizenAppThekwini.iml" filepath="$PROJECT_DIR$/citizenApp/citizenAppThekwini.iml" />
+      <module fileurl="file://$PROJECT_DIR$/citylibrary/citylibrary.iml" filepath="$PROJECT_DIR$/citylibrary/citylibrary.iml" />
+    </modules>
+  </component>
+</project>
+

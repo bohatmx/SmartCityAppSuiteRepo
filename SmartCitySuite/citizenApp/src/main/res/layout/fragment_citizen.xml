@@ -1,0 +1,36 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.boha.library.fragments.ProfileInfoFragment">
+
+    <RelativeLayout
+        android:id="@+id/CITIZEN_topLayout"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/citizen_card" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/CITIZEN_midLayout"
+        android:layout_below="@id/CITIZEN_topLayout"
+        android:padding="@dimen/mon_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    </RelativeLayout>
+
+    <!--
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/CITIZEN_recyclerView"
+        android:layout_below="@id/CITIZEN_midLayout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+        -->
+
+</RelativeLayout>

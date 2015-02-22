@@ -4,8 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.boha.library.dto.PhotoUploadDTO;
-import com.boha.library.dto.transfer.ResponseDTO;
+import com.boha.library.transfer.PhotoUploadDTO;
+import com.boha.library.transfer.ResponseDTO;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;

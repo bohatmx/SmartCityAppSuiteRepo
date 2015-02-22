@@ -15,10 +15,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.boha.cityapps.R;
 import com.boha.library.adapters.PictureAdapter;
 import com.boha.library.dto.AlertDTO;
-import com.boha.library.dto.PhotoUploadDTO;
+import com.boha.library.transfer.PhotoUploadDTO;
 import com.boha.library.util.DividerItemDecoration;
 import com.boha.library.util.Util;
 import com.nostra13.universalimageloader.core.ImageLoader;

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.boha.citizenapp" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <permission
+        android:name="com.boha.citizenapp.gcm.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.boha.citizenapp.gcm.permission.C2D_MESSAGE" />
+
+    <application
+        android:name="com.boha.citylibrary.activities.CityApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/dome3"
+        android:theme="@style/OperationsTheme" >
+        <activity android:name=".activities.SplashActivity"
+            android:theme="@style/NoActionBarTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.SigninActivity"
+            android:parentActivityName=".activities.SplashActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name=".activities.MainPagerActivity"
+            android:parentActivityName=".activities.SplashActivity" />
+
+        <activity android:name=".activities.AlertMapActivity" />
+        <activity android:name=".activities.AlertPictureGridActivity"/>
+        <activity android:name=".activities.FullPhotoActivity"/>
+        <activity android:name=".activities.PictureActivity" />
+        <!-- RECEIVERS -->
+        <receiver
+            android:name=".services.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.boha.citizenapp" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".services.GcmIntentService" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <service
+            android:name=".services.GCMDeviceService"
+            android:exported="false" >
+        </service>
+    </application>
+
+</manifest>

@@ -1,0 +1,75 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.com.boha.monitor.library.activities.PictureRecyclerGridActivity">
+
+    <RelativeLayout
+        android:id="@+id/RCV_top"
+        android:background="@color/white"
+        android:padding="@dimen/mon_padding"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/PIC_GRID_alertType"
+            android:layout_marginLeft="@dimen/mon_divider"
+            android:text="Alert Type Title"
+            style="@style/Title2TextStyleBlack"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/PIC_GRID_btnMap"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@android:drawable/ic_media_play"
+            android:layout_alignParentRight="true"
+            android:text="@string/map"
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/RCV_middle"
+        android:layout_below="@id/RCV_top"
+        android:background="@color/beige_pale"
+        android:padding="@dimen/mon_padding"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/PIC_GRID_date"
+            android:layout_marginLeft="@dimen/mon_divider"
+            android:text="Tuesday, December 23, 2098"
+            style="@style/TextStyle"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/PIC_GRID_time"
+            style="@style/Title1TextStyleRed"
+            android:layout_alignParentRight="true"
+            android:text="10:99"
+            android:layout_marginRight="@dimen/mon_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/PIC_GRID_recyclerView"
+        android:background="@color/white"
+        android:layout_below="@id/RCV_middle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <ImageView
+        android:id="@+id/PIC_GRID_image"
+        android:src="@drawable/under_construction"
+        android:scaleType="centerCrop"
+        android:layout_below="@id/RCV_middle"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

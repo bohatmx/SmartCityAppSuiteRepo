@@ -1,0 +1,109 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/grey"
+    android:padding="@dimen/mon_padding"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.boha.library.activities.CreateAlertActivity">
+
+    <RelativeLayout
+        android:id="@+id/ALERT_topTop"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/ALERT_handle"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"></RelativeLayout>
+
+        <ImageView
+            android:id="@+id/ALERT_heroImage"
+            android:layout_below="@id/ALERT_handle"
+            android:src="@drawable/banner_alert"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mon_widest" />
+        <TextView
+            android:id="@+id/ALERT_category"
+            style="@style/Title2TextStyleBlue"
+            android:text="@string/sel_type"
+            android:layout_below="@id/ALERT_heroImage"
+            android:padding="@dimen/mon_wide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/ALERT_topLayout"
+        android:layout_below="@id/ALERT_topTop"
+        android:background="@color/beige_pale"
+        android:paddingTop="@dimen/mon_padding"
+        android:paddingBottom="@dimen/mon_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/traffic_lights" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/ALERT_midLayout"
+        android:layout_below="@id/ALERT_topLayout"
+        android:padding="@dimen/mon_padding"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/ALERT_message"
+            android:hint="@string/enter_message"
+            android:layout_marginTop="@dimen/mon_padding"
+            android:textSize="20sp"
+            android:padding="@dimen/mon_padding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_below="@id/ALERT_message"
+            android:layout_marginTop="@dimen/mon_wide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/ALERT_btnTakePicture"
+                android:text="@string/take_pics"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:textColor="@color/blue"
+                android:drawableLeft="@android:drawable/ic_menu_camera"
+                android:background="@android:color/transparent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/ALERT_btnSend"
+                android:text="@string/send_alert"
+                android:textColor="@color/absa_red"
+                android:layout_alignParentRight="true"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@android:drawable/ic_menu_send"
+                android:layout_marginRight="@dimen/mon_margin"
+                android:layout_toRightOf="@id/ALERT_btnTakePicture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+   <ProgressBar
+       android:id="@+id/progressBar"
+       android:layout_alignParentRight="true"
+       android:layout_margin="@dimen/mon_padding"
+       android:visibility="gone"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content" />
+
+
+</RelativeLayout>
