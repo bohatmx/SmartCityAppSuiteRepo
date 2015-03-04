@@ -13,7 +13,7 @@ import java.util.Date;
  *
  * @author aubreyM
  */
-public class AlertImageDTO implements Serializable {
+public class AlertImageDTO implements Serializable, ImageInterface {
     private static final long serialVersionUID = 1L;
     private Integer alertImageID;
     private String fileName, localFilepath;

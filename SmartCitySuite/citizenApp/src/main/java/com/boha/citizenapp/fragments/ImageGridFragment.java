@@ -5,8 +5,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,9 +60,10 @@ public class ImageGridFragment extends Fragment implements PageFragment {
         grid = (RecyclerView)view.findViewById(R.id.PIC_GRID_recyclerView);
         ctx = getActivity();
 
-        txtTitle.setText("eThekwini");
-
-        grid.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+//        txtTitle.setText("eThekwini");
+        LinearLayoutManager lm = new LinearLayoutManager(ctx);
+        lm.setOrientation(LinearLayoutManager.VERTICAL);
+        grid.setLayoutManager(lm);
         grid.setItemAnimator(new DefaultItemAnimator());
         grid.addItemDecoration(new DividerItemDecoration(ctx, RecyclerView.VERTICAL));
 

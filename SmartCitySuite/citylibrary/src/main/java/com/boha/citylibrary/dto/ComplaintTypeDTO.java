@@ -13,6 +13,15 @@ public class ComplaintTypeDTO implements Serializable {
     private Integer complaintTypeID, municipalityID, color;
     private String complaintTypeName;
     private List<ComplaintDTO> complaintList;
+    private ComplaintCategoryDTO complaintCategory;
+
+    public ComplaintCategoryDTO getComplaintCategory() {
+        return complaintCategory;
+    }
+
+    public void setComplaintCategory(ComplaintCategoryDTO complaintCategory) {
+        this.complaintCategory = complaintCategory;
+    }
 
     public ComplaintTypeDTO() {
     }

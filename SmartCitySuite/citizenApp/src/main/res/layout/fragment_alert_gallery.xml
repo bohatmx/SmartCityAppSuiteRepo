@@ -5,71 +5,122 @@
     tools:context="com.com.boha.monitor.library.activities.PictureRecyclerGridActivity">
 
     <RelativeLayout
-        android:id="@+id/RCV_top"
-        android:background="@color/white"
-        android:padding="@dimen/mon_padding"
-        android:visibility="visible"
         android:layout_width="match_parent"
+        android:id="@+id/TOPG_layout"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/PIC_GRID_alertType"
-            android:layout_marginLeft="@dimen/mon_divider"
-            android:text="Alert Type Title"
-            style="@style/Title2TextStyleBlack"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/PIC_GRID_btnMap"
-            android:background="@android:color/transparent"
-            android:drawableLeft="@android:drawable/ic_media_play"
-            android:layout_alignParentRight="true"
-            android:text="@string/map"
+        <RelativeLayout
+            android:id="@+id/TOPG_titleLayout"
+            android:background="@color/indian_red"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mon_hero_height_medium">
+
+            <TextView
+                android:id="@+id/TOPG_title"
+                android:text="My Alert Type Here"
+                style="@style/Title1TextStyleWhite"
+                android:layout_marginTop="@dimen/mon_margin"
+                android:layout_centerHorizontal="false"
+                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout
+                android:id="@+id/TOPG_subLayout"
+                android:layout_below="@id/TOPG_title"
+                android:layout_marginTop="@dimen/mon_wider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/TOPG_time"
+                    android:text="10:10"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/mon_padding"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/TOPG_date"
+                    android:text="Saturday, 23 December 2078"
+                    style="@style/TextStyleSmall"
+                    android:textColor="@color/white"
+                    android:layout_toLeftOf="@id/TOPG_time"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/mon_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/TOPG_addressLayout"
+            android:layout_below="@id/TOPG_titleLayout"
+            android:padding="@dimen/mon_margin"
+            android:background="@color/black"
             android:visibility="visible"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/RCV_middle"
-        android:layout_below="@id/RCV_top"
-        android:background="@color/beige_pale"
-        android:padding="@dimen/mon_padding"
-        android:visibility="visible"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/TOPG_label"
+                style="@style/TextStyleGreySmall"
+                android:text="Approximate Address Calculated"
+                android:layout_marginRight="@dimen/mon_padding"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/TOPG_address"
+                style="@style/Title3TextStyleBlue"
+                android:layout_below="@id/TOPG_label"
+                android:layout_marginTop="@dimen/mon_padding"
+                android:text="The Dungeon, 30 Kingfisher Drive, Pecanwood Estate, 2016, Hartbeestpoort, North West, South Africa ZA"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-        <TextView
-            android:id="@+id/PIC_GRID_date"
-            android:layout_marginLeft="@dimen/mon_divider"
-            android:text="Tuesday, December 23, 2098"
-            style="@style/TextStyle"
-            android:layout_centerVertical="true"
+        </RelativeLayout>
+
+        <ImageView
+            android:src="@drawable/logo"
+            android:layout_marginLeft="@dimen/mon_margin"
+            android:layout_marginTop="60dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/PIC_GRID_time"
-            style="@style/Title1TextStyleRed"
+
+
+        <ImageView
+            android:id="@+id/TOPG_icon"
+            android:src="@android:drawable/ic_dialog_map"
             android:layout_alignParentRight="true"
-            android:text="10:99"
-            android:layout_marginRight="@dimen/mon_padding"
+            android:layout_margin="@dimen/mon_margin"
+            android:elevation="@dimen/mon_padding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
+
+
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/PIC_GRID_recyclerView"
-        android:background="@color/white"
-        android:layout_below="@id/RCV_middle"
+        android:id="@+id/PG_recyclerView"
+        android:layout_below="@id/TOPG_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <ImageView
-        android:id="@+id/PIC_GRID_image"
-        android:src="@drawable/under_construction"
-        android:scaleType="centerCrop"
-        android:layout_below="@id/RCV_middle"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <TextView
+        android:id="@+id/TOPG_fab"
+        android:text="A"
+        style="@style/BlackCircleLarge"
+        android:layout_marginTop="@dimen/mon_hero_height_medium_less_30"
+        android:textColor="@color/white"
+        android:layout_marginLeft="@dimen/mon_wide"
+        android:elevation="@dimen/mon_padding"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
+
 
 </RelativeLayout>

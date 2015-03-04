@@ -19,6 +19,7 @@ public class AlertDTO implements Serializable {
     private Integer alertID, municipalityID, municipalityStaffID, profileInfoID;
     private Date updated;
     private Integer id;
+    private int index;
     private String description;
     private String title;
     private Double latitude, distance;
@@ -33,6 +34,13 @@ public class AlertDTO implements Serializable {
     public AlertDTO() {
     }
 
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
 
     public Integer getMunicipalityID() {
         return municipalityID;

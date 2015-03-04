@@ -1,9 +1,12 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">sans-serif-thin</item>
+    </style>
     <style name="OperationsTheme" parent="Theme.AppCompat.Light">
         <item name="android:windowTitleStyle">@style/actionBarStyle</item>
         <item name="colorPrimary">@color/blue</item>
-
+        <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
         <item name="colorPrimaryDark">@color/background_floating_material_dark</item>
     </style>
     <style name="NoActionBarTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -52,9 +55,7 @@
     </style>
 
     <style name="Theme_Sphinx_Dialog_Alert" parent="@style/Theme_Holo_Dialog_Alert"></style>
-    <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:fontFamily">sans-serif-light</item>
-    </style>
+
 
     <style name="RobotoSpinnerTextStyle" parent="android:Widget.Holo.Light.TextView.SpinnerItem">
         <item name="android:fontFamily">sans-serif-light</item>
@@ -94,12 +95,23 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">30sp</item>
     </style>
+    <style name="Title0TextStyleBlue" parent="@android:style/TextAppearance.Large">
+        <item name="android:textColor">@color/navy_blue</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">40sp</item>
+    </style>
 
     <style name="Title1TextStyleGreen" parent="@android:style/TextAppearance.Large">
         <item name="android:textColor">@color/green</item>
         <item name="android:textStyle">bold</item>
         <item name="android:padding">5dp</item>
         <item name="android:textSize">30sp</item>
+    </style>
+    <style name="Title0TextStyleGreen" parent="@android:style/TextAppearance.Large">
+        <item name="android:textColor">@color/green</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textSize">40sp</item>
     </style>
 
     <style name="Title1TextStyleGrey" parent="@android:style/TextAppearance.Large">
@@ -119,6 +131,11 @@
         <item name="android:textColor">@color/maroon</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">30sp</item>
+    </style>
+    <style name="Title0TextStyleRed" parent="@android:style/TextAppearance.Large">
+        <item name="android:textColor">@color/maroon</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">40sp</item>
     </style>
 
     <style name="Title2TextStyleGrey" parent="@android:style/TextAppearance.Medium">
@@ -154,6 +171,11 @@
 
     <style name="Title2TextStyleBlack" parent="@android:style/TextAppearance.Medium">
         <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+    <style name="Title2TextStyleRed" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/absa_red</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">24sp</item>
     </style>

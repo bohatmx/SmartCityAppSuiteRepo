@@ -17,14 +17,27 @@
         android:protectionLevel="signature" />
 
     <uses-permission android:name="com.boha.citizenapp.gcm.permission.C2D_MESSAGE" />
+    <!-- Google API Keys
+
+    88:04:DF:2B:68:40:60:A3:31:81:2F:71:1F:2D:71:FB:F7:71:F9:57;com.boha.citizenapp
+     DEV - AIzaSyDuFV16aB-wJQe4256B2Fr_UdrbRpWd6O8
+
+     4F:72:A0:21:0F:AD:8D:6B:EC:B5:83:49:13:CB:64:75:74:62:1A:A7;com.boha.citizenapp
+     PROD - AIzaSyAk0z-ZrAUhlWNFKV-vkpMTTOfm9br-2uI
+
+     -->
 
     <application
         android:name="com.boha.citylibrary.activities.CityApplication"
         android:allowBackup="true"
         android:icon="@drawable/dome3"
         android:theme="@style/OperationsTheme" >
-        <activity android:name=".activities.SplashActivity"
-            android:theme="@style/NoActionBarTheme">
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyDuFV16aB-wJQe4256B2Fr_UdrbRpWd6O8" />
+        <activity
+            android:name=".activities.SplashActivity"
+            android:theme="@style/NoActionBarTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,12 +48,21 @@
             android:name=".activities.SigninActivity"
             android:parentActivityName=".activities.SplashActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".activities.MainPagerActivity"
+        <activity
+            android:name="com.boha.citizenapp.activities.PaymentStartActivity"
+            android:theme="@style/MidnightTheme"
+            android:parentActivityName=".activities.AccountActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:label="@string/title_activity_payment_start" >
+        </activity>
+        <activity
+            android:name=".activities.MainPagerActivity"
+            android:theme="@style/RoyalBlueTheme"
             android:parentActivityName=".activities.SplashActivity" />
-
-        <activity android:name=".activities.AlertMapActivity" />
-        <activity android:name=".activities.AlertPictureGridActivity"/>
-        <activity android:name=".activities.FullPhotoActivity"/>
+        <activity android:name=".activities.AlertMapActivity"
+            android:theme="@style/NoActionBarTheme"/>
+        <activity android:name=".activities.AlertPictureGridActivity" android:theme="@style/NoActionBarTheme"/>
+        <activity android:name=".activities.FullPhotoActivity" />
         <activity android:name=".activities.PictureActivity" />
         <!-- RECEIVERS -->
         <receiver
@@ -63,6 +85,22 @@
             android:name=".services.GCMDeviceService"
             android:exported="false" >
         </service>
+
+        <activity
+            android:name=".activities.RegistrationActivity"
+            android:label="@string/title_activity_registration"
+            android:parentActivityName=".activities.SplashActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+        </activity>
+        <activity
+            android:name=".activities.AccountActivity"
+            android:theme="@style/MidnightTheme"
+            android:label="@string/title_activity_account"
+            android:parentActivityName=".activities.MainPagerActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.boha.citizenapp.activities.MainPagerActivity" />
+        </activity>
     </application>
 
 </manifest>

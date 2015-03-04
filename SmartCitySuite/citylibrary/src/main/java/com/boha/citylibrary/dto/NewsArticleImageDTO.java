@@ -8,7 +8,7 @@ import java.util.Date;
  *
  * @author aubreyM
  */
-public class NewsArticleImageDTO implements Serializable {
+public class NewsArticleImageDTO implements Serializable, ImageInterface {
 
     private static final long serialVersionUID = 1L;
     private Integer newsArticleImageID;

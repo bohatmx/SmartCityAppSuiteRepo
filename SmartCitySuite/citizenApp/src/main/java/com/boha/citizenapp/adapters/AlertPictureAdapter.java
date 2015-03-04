@@ -1,7 +1,9 @@
 package com.boha.citizenapp.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.citizenapp.R;
-import com.boha.citylibrary.transfer.PhotoUploadDTO;
+import com.boha.citylibrary.dto.AlertImageDTO;
+import com.boha.citylibrary.util.Util;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -18,17 +24,18 @@ import java.util.Locale;
 /**
  * Created by aubreyM on 14/12/17.
  */
-public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.PhotoViewHolder> {
+public class AlertPictureAdapter extends RecyclerView.Adapter<AlertPictureAdapter.PhotoViewHolder> {
 
     public interface PictureListener {
         public void onPictureClicked(int position);
     }
+
     private PictureListener listener;
-    private List<PhotoUploadDTO> photoList;
+    private List<AlertImageDTO> photoList;
     private Context ctx;
 
-    public PictureAdapter(List<PhotoUploadDTO> photos,
-                          Context context, PictureListener listener) {
+    public AlertPictureAdapter(List<AlertImageDTO> photos,
+                               Context context, PictureListener listener) {
         this.photoList = photos;
         this.ctx = context;
         this.listener = listener;
@@ -43,11 +50,12 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.PhotoVie
     @Override
     public void onBindViewHolder(final PhotoViewHolder holder, final int position) {
 
-        final PhotoUploadDTO p = photoList.get(position);
+        final AlertImageDTO p = photoList.get(position);
         final int num = photoList.size() - (position);
         holder.number.setText("" + num);
         holder.caption.setVisibility(View.GONE);
-       // holder.date.setText(sdf.format(p.getDateTaken()));
+        holder.number.setVisibility(View.GONE);
+        holder.date.setText(sdf.format(p.getDateTaken()));
         holder.position = position;
 
         holder.image.setOnClickListener(new View.OnClickListener() {
@@ -60,30 +68,29 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.PhotoVie
         });
 
 
+        String url = Util.getAlertImageURL(p);
+        ImageLoader.getInstance().displayImage(url, holder.image, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String s, View view) {
 
-//        String url = Util.getAlertImageURL(p);
-//        Log.w(LOG,"## photo url: " + url);
-//        ImageLoader.getInstance().displayImage(url, holder.image, new ImageLoadingListener() {
-//            @Override
-//            public void onLoadingStarted(String s, View view) {
-//
-//            }
-//
-//            @Override
-//            public void onLoadingFailed(String s, View view, FailReason failReason) {
-//                holder.image.setImageDrawable(ctx.getResources().getDrawable(R.drawable.under_construction));
-//            }
-//
-//            @Override
-//            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-//
-//            }
-//
-//            @Override
-//            public void onLoadingCancelled(String s, View view) {
-//
-//            }
-//        });
+            }
+
+            @Override
+            public void onLoadingFailed(String s, View view, FailReason failReason) {
+                holder.image.setImageDrawable(ctx.getResources().getDrawable(R.drawable.under_construction));
+                Log.e(LOG,"ImageLoader failed, alertID: " + p.getAlertID() + " - " + p.getFileName());
+            }
+
+            @Override
+            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+
+            }
+
+            @Override
+            public void onLoadingCancelled(String s, View view) {
+
+            }
+        });
 
     }
 
@@ -95,7 +102,7 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.PhotoVie
     static final Locale loc = Locale.getDefault();
     static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", loc);
 
-    public class PhotoViewHolder extends RecyclerView.ViewHolder  {
+    public class PhotoViewHolder extends RecyclerView.ViewHolder {
         protected ImageView image;
         protected TextView caption, number, date;
         protected int position;
@@ -111,5 +118,5 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.PhotoVie
 
     }
 
-    static final String LOG = PictureAdapter.class.getSimpleName();
+    static final String LOG = AlertPictureAdapter.class.getSimpleName();
 }

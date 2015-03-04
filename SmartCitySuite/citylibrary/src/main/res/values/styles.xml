@@ -9,6 +9,24 @@
         <item name="colorPrimary">@color/grey</item>
         <item name="colorPrimaryDark">@color/background_material_dark</item>
     </style>
+    <style name="MidnightTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/medium_sea_green</item>
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="colorPrimaryDark">@color/background_material_dark</item>
+    </style>
+
+    <style name="RoyalBlueTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/royal_blue</item>
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="colorPrimaryDark">@color/background_material_dark</item>
+    </style>
+    <!-- ActionBar styles -->
+    <style name="MyActionBar"
+        parent="@android:style/Widget.Holo.ActionBar.Solid">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@color/absa_red</item>
+    </style>
+
     <style name="LanguageTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/grey</item>
         <item name="colorPrimaryDark">@color/background_material_dark</item>
@@ -107,6 +125,11 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">30sp</item>
     </style>
+    <style name="Title1TextStyleWhite" parent="@android:style/TextAppearance.Large">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 
     <style name="Title1TextStyleRed" parent="@android:style/TextAppearance.Large">
         <item name="android:textColor">@color/maroon</item>
@@ -115,19 +138,19 @@
     </style>
 
     <style name="Title2TextStyleGrey" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/grey2</item>
+        <item name="android:textColor">@color/grey</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">24sp</item>
     </style>
 
     <style name="Title3TextStyleGrey" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/grey2</item>
+        <item name="android:textColor">@color/grey</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">18sp</item>
     </style>
 
     <style name="SmallTextGrey" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/grey2</item>
+        <item name="android:textColor">@color/grey</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">14sp</item>
     </style>
@@ -416,13 +439,23 @@
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/xorange_oval_small</item>
     </style>
-    <style name="OrangeCircleLarge" parent="@android:style/TextAppearance.Small">
+    <style name="OrangeCircleLarge" parent="@android:style/TextAppearance.Large">
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/xorange_oval_large</item>
     </style>
+    <style name="TealCircleLarge" parent="@android:style/TextAppearance.Large">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/xteal_oval_large</item>
+    </style>
+    <style name="PurpleCircleLarge" parent="@android:style/TextAppearance.Large">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/xpurple_oval_large</item>
+    </style>
 
-    <style name="BlueCircleLarge" parent="@android:style/TextAppearance.Medium">
+    <style name="BlueCircleLarge" parent="@android:style/TextAppearance.Large">
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/xblue_oval_large</item>

@@ -59,7 +59,8 @@ public class PhotoCacheUtil {
     static final String JSON_PHOTO = "photos.json";
 
 
-    public static void cachePhoto(Context context, final PhotoUploadDTO photo, PhotoCacheListener listener) {
+    public static void cachePhoto(Context context,
+                 final PhotoUploadDTO photo, PhotoCacheListener listener) {
         photoUpload = photo;
         photoCacheListener = listener;
         ctx = context;
@@ -121,10 +122,27 @@ public class PhotoCacheUtil {
                 List<PhotoUploadDTO> pending = new ArrayList<>();
 
                 for (PhotoUploadDTO p: r.getPhotoUploadList()) {
-//                    if (photo.getThumbFilePath().equalsIgnoreCase(p.getThumbFilePath())) {
-//                        continue;
-//                    }
-//                    pending.add(p);
+                    if (p.getAlertImage() != null) {
+                        if (photo.getAlertImage().getLocalFilepath().equalsIgnoreCase(p.getAlertImage().getLocalFilepath())) {
+                            continue;
+                        }
+                    }
+                    if (p.getComplaintImage() != null) {
+                        if (photo.getComplaintImage().getLocalFilepath().equalsIgnoreCase(p.getComplaintImage().getLocalFilepath())) {
+                            continue;
+                        }
+                    }
+                    if (p.getMunicipalityImage() != null) {
+                        if (photo.getMunicipalityImage().getLocalFilepath().equalsIgnoreCase(p.getMunicipalityImage().getLocalFilepath())) {
+                            continue;
+                        }
+                    }
+                    if (p.getNewsArticleImage() != null) {
+                        if (photo.getNewsArticleImage().getLocalFilepath().equalsIgnoreCase(p.getNewsArticleImage().getLocalFilepath())) {
+                            continue;
+                        }
+                    }
+                    pending.add(p);
                 }
                 r.setPhotoUploadList(pending);
                 response = r;
@@ -166,11 +184,13 @@ public class PhotoCacheUtil {
                 if (!response.getPhotoUploadList().isEmpty()) {
                     StringBuilder sb = new StringBuilder();
                     sb.append("\n### Photos in cache ###\n");
-//                    for (PhotoUploadDTO p : response.getPhotoUploadList()) {
-//                        sb.append("+++ ").append(p.getThumbFilePath())
-//                                .append(" alertID: " + p.getAlertID())
-//                                .append("\n");
-//                    }
+                    for (PhotoUploadDTO p : response.getPhotoUploadList()) {
+                        if (p.getAlertImage() != null) {
+                            sb.append("+++ ").append(p.getAlertImage().getLocalFilepath())
+                                    .append(" alertID: " + p.getAlertImage().getAlertID())
+                                    .append("\n");
+                        }
+                    }
                     sb.append("#######################");
                     Log.w(LOG, sb.toString());
                 } else {
@@ -231,11 +251,9 @@ public class PhotoCacheUtil {
 
         @Override
         protected void onPostExecute(ResponseDTO v) {
-            Log.w(LOG, "### onPostExecute ");
             if (photoCacheListener == null)
                 return;
             else {
-                Log.w(LOG, "### onPostExecute listener is not null... firing onFileDataDeserialized");
                 photoCacheListener.onFileDataDeserialized(v);
             }
 
@@ -267,7 +285,7 @@ public class PhotoCacheUtil {
     static final String LOG = PhotoCacheUtil.class.getSimpleName();
     static final Gson gson = new Gson();
 
-    static class CacheRetrieveForUpdateTask extends AsyncTask<Void, Void, ResponseDTO> {
+    private static class CacheRetrieveForUpdateTask extends AsyncTask<Void, Void, ResponseDTO> {
 
         private ResponseDTO getData(FileInputStream stream) throws IOException {
             String json = getStringFromInputStream(stream);

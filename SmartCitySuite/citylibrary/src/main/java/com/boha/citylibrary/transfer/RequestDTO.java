@@ -152,7 +152,12 @@ public class RequestDTO {
             GET_COMPLAINTS_BY_CITIZEN = 306,
             GET_COMPLAINTS_BY_MUNICIPALITY = 307,
             GET_COMPLAINTS_BY_CITY = 308,
-            GET_FREQUENTLY_ASKED_QUESTIONS = 309;
+            GET_FREQUENTLY_ASKED_QUESTIONS = 309,
+            GET_ALERTS_AROUND_ADDRESS = 310,
+            GET_COMPLAINTS_WITHIN_RADIUS = 311,
+            GET_COMPLAINTS_AROUND_ADDRESS = 312,
+            REFRESH_CITIZEN_COMPLAINTS_FROM_SERVICE = 313,
+            REFRESH_CITIZEN_ACCOUNTS = 314;
 
     public Integer getMunicipalityID() {
         return municipalityID;

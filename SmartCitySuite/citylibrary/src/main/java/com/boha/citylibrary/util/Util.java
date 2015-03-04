@@ -5,8 +5,11 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
+import android.support.v7.app.ActionBar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -23,10 +26,11 @@ import android.widget.Toast;
 import com.boha.citylibrary.R;
 import com.boha.citylibrary.adapters.PopupListAdapter;
 import com.boha.citylibrary.dto.AlertImageDTO;
+import com.boha.citylibrary.dto.ComplaintImageDTO;
+import com.boha.citylibrary.dto.NewsArticleImageDTO;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -34,17 +38,63 @@ import java.util.Random;
  * Created by aubreyM on 15/01/13.
  */
 public class Util {
+    public static Bitmap createBitmapFromView(Context context, View view, DisplayMetrics displayMetrics) {
+        view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
+        view.layout(0, 0, displayMetrics.widthPixels,
+                displayMetrics.heightPixels);
+        view.buildDrawingCache();
+        Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(),
+                view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+        return bitmap;
+    }
+    public static void setCustomActionBar(Context ctx,
+                  ActionBar actionBar, String text, Drawable image) {
+        actionBar.setDisplayShowCustomEnabled(true);
 
+        LayoutInflater inflator = (LayoutInflater)
+                ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflator.inflate(R.layout.action_bar_logo, null);
+        TextView txt = (TextView)v.findViewById(R.id.ACTION_BAR_text);
+        ImageView logo = (ImageView)v.findViewById(R.id.ACTION_BAR_logo);
+        txt.setText(text);
+        //
+        logo.setImageDrawable(image);
+        actionBar.setCustomView(v);
+        actionBar.setTitle("");
+    }
+    //087 575 9404 option 1
     public static String getAlertImageURL(AlertImageDTO p) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(Statics.IMAGE_URL).append("smartcity_images/")
-                .append("municipality").append(p.getMunicipalityID());
+        StringBuilder stringBuilder = getStartURL(p.getMunicipalityID());
                 stringBuilder.append("/alert")
                 .append(p.getAlertID()).append("/")
                 .append(p.getFileName());
+        Log.i("Util", "Loading alert image: " + stringBuilder.toString());
         return stringBuilder.toString();
     }
-
+    public static String getNewsImageURL(NewsArticleImageDTO p) {
+        StringBuilder stringBuilder = getStartURL(p.getMunicipalityID());
+        stringBuilder.append("/news")
+                .append(p.getNewsArticleID()).append("/")
+                .append(p.getFileName());
+        Log.i("Util", "Loading news image: " + stringBuilder.toString());
+        return stringBuilder.toString();
+    }
+    public static String getComplaintImageURL(ComplaintImageDTO p) {
+        StringBuilder stringBuilder = getStartURL(p.getMunicipalityID());
+        stringBuilder.append("/complaint")
+                .append(p.getComplaintID()).append("/")
+                .append(p.getFileName());
+        Log.i("Util", "Loading " + stringBuilder.toString());
+        return stringBuilder.toString();
+    }
+    private static StringBuilder getStartURL(Integer municipalityID) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(Statics.IMAGE_URL).append("smartcity_images/")
+                .append("municipality").append(municipalityID);
+        return stringBuilder;
+    }
     static public boolean hasStorage(boolean requireWriteAccess) {
         String state = Environment.getExternalStorageState();
         Log.w("Util", "--------- disk storage state is: " + state);
@@ -200,29 +250,26 @@ public class Util {
     }
 
     public static Drawable getRandomBanner(Context ctx) {
-        if (banners == null) {
-            loadBanners(ctx);
-        }
         int index = random.nextInt(4);
         if (index == lastBannerIndex) {
             getRandomBanner(ctx);
         }
         lastBannerIndex = index;
-        return banners.get(index);
+        switch (index) {
+            case 0:
+                return ctx.getResources().getDrawable(R.drawable.banner1);
+            case 1:
+                return ctx.getResources().getDrawable(R.drawable.banner2);
+            case 2:
+                return ctx.getResources().getDrawable(R.drawable.banner3);
+            case 3:
+                return ctx.getResources().getDrawable(R.drawable.banner4);
+        }
+        return ctx.getResources().getDrawable(R.drawable.banner1);
     }
 
     private static List<Drawable> images, banners;
     private static int lastIndex, lastBannerIndex;
-
-    private static void loadBanners(Context ctx) {
-        banners = new ArrayList<>();
-        banners.add(ctx.getResources().getDrawable(R.drawable.banner1));
-        banners.add(ctx.getResources().getDrawable(R.drawable.banner2));
-        banners.add(ctx.getResources().getDrawable(R.drawable.banner3));
-        banners.add(ctx.getResources().getDrawable(R.drawable.banner4));
-
-
-    }
 
     static Random random = new Random(System.currentTimeMillis());
 
@@ -497,6 +544,42 @@ public class Util {
                         return;
                     }
                     flashSeveralTimes(view, duration, max, listener);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+            an.start();
+        } catch (Exception e) {
+            if (listener != null) {
+                listener.onAnimationEnded();
+            }
+        }
+
+    }
+
+    public static void preen(View view, final long duration,
+                                         final UtilAnimationListener listener) {
+        try {
+            final ObjectAnimator an = ObjectAnimator.ofFloat(view, "alpha", 1, 1);
+            an.setDuration(duration);
+            an.setInterpolator(new AccelerateDecelerateInterpolator());
+            an.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                       listener.onAnimationEnded();
                 }
 
                 @Override

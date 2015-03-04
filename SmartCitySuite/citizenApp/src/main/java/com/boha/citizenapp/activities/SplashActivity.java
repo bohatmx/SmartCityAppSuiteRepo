@@ -3,6 +3,8 @@ package com.boha.citizenapp.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -22,6 +24,9 @@ import com.boha.citylibrary.util.NetUtil;
 import com.boha.citylibrary.util.SharedUtil;
 import com.boha.citylibrary.util.Util;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -34,9 +39,9 @@ public class SplashActivity extends ActionBarActivity {
     Button btnSignIn, btnRegister;
     Context ctx;
     MunicipalityDTO municipality;
-    static final int ONE_SECOND = 1000, QUICK = 200;
+    static final Random RANDOM = new Random(System.currentTimeMillis());
+    static final int ONE_SECOND = 1000, QUICK = 200, FIVE_SECONDS = ONE_SECOND * 5;
     static final String LOG = SplashActivity.class.getSimpleName();
-
     static final String MUNICIPALITY_NAME = "eThekwini";
 
     @Override
@@ -45,10 +50,9 @@ public class SplashActivity extends ActionBarActivity {
         setContentView(R.layout.activity_splash);
         ctx = getApplicationContext();
         setFields();
-
-        //eThekwini logo - will be different for each muni
-        logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.dome5));
-        setTitle("eThekwini SmartCity");
+        //eThekwini logo - will be different for each municipality
+        logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.logo));
+        setTitle(MUNICIPALITY_NAME + " SmartCity");
         startTimer();
         heroImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,10 +64,16 @@ public class SplashActivity extends ActionBarActivity {
                 }
             }
         });
-
+        Geocoder g = new Geocoder(getApplicationContext());
+        try {
+            addressList = g.getFromLocationName("24 Sylvester Ntuli Rd, Durban", 2);
+            int x = addressList.size();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
-
+    List<Address> addressList;
     private void setFields() {
         actionsView = findViewById(R.id.SPLASH_actions);
         actionsView.setVisibility(View.GONE);
@@ -78,8 +88,7 @@ public class SplashActivity extends ActionBarActivity {
                 Util.flashOnce(btnRegister, QUICK, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        Intent intent = new Intent(ctx, SigninActivity.class);
-                        intent.putExtra("action", SigninActivity.REGISTER);
+                        Intent intent = new Intent(ctx, RegistrationActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -93,7 +102,6 @@ public class SplashActivity extends ActionBarActivity {
                     @Override
                     public void onAnimationEnded() {
                         Intent intent = new Intent(ctx, SigninActivity.class);
-                        intent.putExtra("action", SigninActivity.SIGN_IN);
                         startActivity(intent);
                     }
                 });
@@ -155,7 +163,7 @@ public class SplashActivity extends ActionBarActivity {
                 Log.w(LOG,"GCMDeviceService starting .....");
                 startService(intent);
             }
-            Log.w(LOG,"Starting MainPagerActivity ....");
+            Log.w(LOG, "Starting MainPagerActivity ....");
 
             Intent intent = new Intent(ctx, MainPagerActivity.class);
             startActivity(intent);
@@ -171,26 +179,26 @@ public class SplashActivity extends ActionBarActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        index = RANDOM.nextInt(32);
+                        if (index == lastIndex) {
+                            index = RANDOM.nextInt(32);
+                        }
                         heroImage.setImageDrawable(getNextImage(ctx));
                     }
                 });
 
             }
-        }, 1000, 5000);
+        }, ONE_SECOND, FIVE_SECONDS);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_splash, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if (id == R.id.action_afrikaans) {
@@ -217,6 +225,7 @@ public class SplashActivity extends ActionBarActivity {
 
 
     static int index;
+    static int lastIndex;
 
     public static Drawable getNextImage(Context ctx) {
 
@@ -335,6 +344,7 @@ public class SplashActivity extends ActionBarActivity {
         if (index > 32) {
             index = 0;
         }
+        lastIndex = index;
         return p;
     }
 

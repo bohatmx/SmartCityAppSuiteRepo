@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -24,6 +23,7 @@ import com.boha.citylibrary.transfer.RequestDTO;
 import com.boha.citylibrary.transfer.ResponseDTO;
 import com.boha.citylibrary.util.CacheUtil;
 import com.boha.citylibrary.util.NetUtil;
+import com.boha.citylibrary.util.SharedUtil;
 import com.boha.citylibrary.util.TrafficLightUtil;
 import com.boha.citylibrary.util.Util;
 
@@ -58,11 +58,11 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
     }
 
     View view;
-    TextView green, yellow, red, txtType;
-    ImageView hero;
+    TextView green, amber, red, txtType, txtTitle, txtSubTitle, txtFAB;
+    ImageView icon;
+    View hero;
     View trafficLights;
     Context ctx;
-    Button btnPic, btnSend;
     EditText editDesc;
     ProgressBar progressBar;
 
@@ -82,24 +82,52 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
 
     private void setFields() {
         handle = view.findViewById(R.id.ALERT_handle);
-        hero = (ImageView) view.findViewById(R.id.ALERT_heroImage);
+        hero = view.findViewById(R.id.ALERT_heroImage);
+        txtTitle = (TextView)view.findViewById(R.id.TOP_title);
+        txtSubTitle = (TextView)view.findViewById(R.id.TOP_subTitle);
+        txtFAB = (TextView)view.findViewById(R.id.TOP_fab);
+        txtTitle.setText("Alert The City");
+        txtSubTitle.setText("Notify or warn the community about an event");
         editDesc = (EditText) view.findViewById(R.id.ALERT_message);
-        btnPic = (Button) view.findViewById(R.id.ALERT_btnTakePicture);
-        btnSend = (Button) view.findViewById(R.id.ALERT_btnSend);
-        btnSend.setEnabled(false);
-        btnPic.setVisibility(View.GONE);
+
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         green = (TextView) view.findViewById(R.id.TRAFF_green);
         red = (TextView) view.findViewById(R.id.TRAFF_red);
-        yellow = (TextView) view.findViewById(R.id.TRAFF_yellow);
+        amber = (TextView) view.findViewById(R.id.TRAFF_amber);
         trafficLights = view.findViewById(R.id.TRAFF_main);
         txtType = (TextView) view.findViewById(R.id.ALERT_category);
-        Util.flashSeveralTimes(txtType, 300, 3, null);
+        Util.flashSeveralTimes(txtType, 300, 5, null);
 
-        btnSend.setOnClickListener(new View.OnClickListener() {
+        red.setEnabled(false);
+        amber.setEnabled(false);
+        green.setEnabled(false);
+
+        red.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.flashOnce(btnSend, 200, new Util.UtilAnimationListener() {
+                Util.flashOnce(red, 200, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        sendAlert();
+                    }
+                });
+            }
+        });
+        amber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.flashOnce(red, 200, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        sendAlert();
+                    }
+                });
+            }
+        });
+        green.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.flashOnce(red, 200, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
                         sendAlert();
@@ -112,25 +140,45 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
             public void onClick(View v) {
                 list = new ArrayList<String>();
                 for (AlertTypeDTO t : response.getAlertTypeList()) {
-                    list.add(t.getAlertTypeNmae());
+                    list.add(t.getAlertTypeName());
                 }
                 try {
                     Util.showPopupBasicWithHeroImage(ctx, getActivity(), list, handle, "Alert Types", new Util.UtilPopupListener() {
                         @Override
                         public void onItemSelected(int index) {
                             alertType = response.getAlertTypeList().get(index);
-                            txtType.setText(alertType.getAlertTypeNmae());
-                            btnSend.setEnabled(true);
-                            btnPic.setEnabled(true);
+                            txtType.setText(alertType.getAlertTypeName());
+
                             switch (alertType.getColor()) {
                                 case AlertTypeDTO.GREEN:
                                     TrafficLightUtil.setGreen(ctx, trafficLights);
+                                    Util.flashOnce(green, 300, new Util.UtilAnimationListener() {
+                                        @Override
+                                        public void onAnimationEnded() {
+                                            green.setEnabled(true);
+                                            Util.flashSeveralTimes(green,200,3,null);
+                                        }
+                                    });
                                     break;
                                 case AlertTypeDTO.AMBER:
-                                    TrafficLightUtil.setYellow(ctx, trafficLights);
+                                    TrafficLightUtil.setAmber(ctx, trafficLights);
+                                    Util.flashOnce(amber, 300, new Util.UtilAnimationListener() {
+                                        @Override
+                                        public void onAnimationEnded() {
+                                            amber.setEnabled(true);
+                                            Util.flashSeveralTimes(amber,200,3,null);
+                                        }
+                                    });
                                     break;
                                 case AlertTypeDTO.RED:
                                     TrafficLightUtil.setRed(ctx, trafficLights);
+                                    Util.flashOnce(red, 300, new Util.UtilAnimationListener() {
+                                        @Override
+                                        public void onAnimationEnded() {
+                                            red.setEnabled(true);
+                                            Util.flashSeveralTimes(red,200,3,null);
+                                        }
+                                    });
                                     break;
                             }
                         }
@@ -154,16 +202,17 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
         RequestDTO w = new RequestDTO(RequestDTO.ADD_ALERT);
         AlertDTO a = new AlertDTO();
         if (editDesc.getText().toString().isEmpty()) {
-            a.setDescription("No message entered");
+            a.setDescription(alertType.getAlertTypeName());
         } else {
             a.setDescription(editDesc.getText().toString());
         }
 
-//        a.setAlertType(alertType);
-//        a.setCityID(SharedUtil.getProfile(ctx).getCityID());
-//        a.setLatitude(location.getLatitude());
-//        a.setLongitude(location.getLongitude());
-//        a.setCategoryID(2);
+        a.setAlertType(alertType);
+        a.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
+        a.setLatitude(location.getLatitude());
+        a.setLongitude(location.getLongitude());
+        a.setId(0);
+        a.setProfileInfoID(SharedUtil.getProfile(ctx).getProfileInfoID());
         w.setAlert(a);
 
         progressBar.setVisibility(View.VISIBLE);
@@ -203,6 +252,7 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
     void startPictureActivity() {
         Intent w = new Intent(ctx, PictureActivity.class);
         w.putExtra("alert", alert);
+        w.putExtra("imageType", PictureActivity.ALERT_IMAGE);
         startActivity(w);
     }
 

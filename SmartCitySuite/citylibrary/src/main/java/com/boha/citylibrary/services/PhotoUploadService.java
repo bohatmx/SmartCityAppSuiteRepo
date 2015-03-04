@@ -40,13 +40,16 @@ public class PhotoUploadService extends IntentService {
     UploadListener uploadListener;
     int count;
 
+    public int getCount() {
+        return uploadedList.size();
+    }
     public void uploadCachedPhotos(UploadListener listener) {
         uploadListener = listener;
-        Log.d(LOG, "#### uploadCachedPhotos, getting cached photos - will start uploads if wifi is up");
+        Log.d(LOG, "#### uploadCachedPhotos, getting cached photos - will start uploads");
         PhotoCacheUtil.getCachedPhotos(getApplicationContext(), new PhotoCacheUtil.PhotoCacheListener() {
             @Override
             public void onFileDataDeserialized(ResponseDTO response) {
-                Log.e(LOG, "##### cached photo list returned: " + response.getPhotoUploadList().size());
+                Log.d(LOG, "##### cached photo list returned: " + response.getPhotoUploadList().size());
                 list = response.getPhotoUploadList();
                 if (list.isEmpty()) {
                     Log.w(LOG, "--- no cached photos for upload");
@@ -74,16 +77,27 @@ public class PhotoUploadService extends IntentService {
         StringBuilder sb = new StringBuilder();
         sb.append("## Photos currently in the cache: ")
                 .append(cache.getPhotoUploadList().size()).append("\n");
-//        for (PhotoUploadDTO p : cache.getPhotoUploadList()) {
-//            if (p.getDateTaken() == null) p.setDateTaken(new Date());
-//            sb.append("+++ ").append(p.getDateTaken().toString()).append(" lat: ").append(p.getLatitude());
-//            sb.append(" lng: ").append(p.getLatitude()).append(" acc: ").append(p.getAccuracy());
-//            if (p.getDateUploaded() != null)
-//                sb.append(" ").append(sdf.format(p.getDateUploaded())).append("\n");
-//            else
-//                sb.append(" NOT UPLOADED\n");
-//
-//        }
+        for (PhotoUploadDTO p : cache.getPhotoUploadList()) {
+            if (p.getAlertImage() != null) {
+                if (p.getAlertImage().getDateTaken() == null) p.getAlertImage().setDateTaken(new Date());
+                sb.append("+++ Alert: ").append(p.getAlertImage().getDateTaken().toString()).append(" lat: ").append(p.getAlertImage().getLatitude());
+                sb.append(" lng: ").append(p.getAlertImage().getLatitude());
+                if (p.getDateUploaded() != null)
+                    sb.append(" ").append(sdf.format(p.getDateUploaded())).append("\n");
+                else
+                    sb.append(" NOT UPLOADED\n");
+            }
+            if (p.getComplaintImage() != null) {
+                if (p.getComplaintImage().getDateTaken() == null) p.getComplaintImage().setDateTaken(new Date());
+                sb.append("+++ Complaint: ").append(p.getComplaintImage().getDateTaken().toString()).append(" lat: ").append(p.getAlertImage().getLatitude());
+                sb.append(" lng: ").append(p.getComplaintImage().getLatitude());
+                if (p.getDateUploaded() != null)
+                    sb.append(" ").append(sdf.format(p.getDateUploaded())).append("\n");
+                else
+                    sb.append(" NOT UPLOADED\n");
+            }
+
+        }
         Log.w(LOG, sb.toString());
     }
 
@@ -163,6 +177,7 @@ public class PhotoUploadService extends IntentService {
 
     public class LocalBinder extends Binder {
         public PhotoUploadService getService() {
+            Log.e(LOG,"LocalBinder getService");
             return PhotoUploadService.this;
         }
 
@@ -170,6 +185,7 @@ public class PhotoUploadService extends IntentService {
 
     @Override
     public IBinder onBind(Intent intent) {
+        Log.w(LOG,"IBinder onBind - returning binder");
         return mBinder;
     }
 

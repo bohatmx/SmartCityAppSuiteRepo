@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/TOP_layout"
+    android:background="@color/white"
+    android:paddingBottom="@dimen/mon_margin"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/TOP_titleLayout"
+        android:background="@color/midnight_blue"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mon_hero_height_medium">
+
+        <TextView
+            android:id="@+id/TOP_title"
+            android:text="My Title Here"
+            style="@style/Title1TextStyleWhite"
+            android:layout_marginTop="@dimen/mon_wider"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/TOP_subTitle"
+            android:text="My sub title will occupy pride of place here"
+            style="@style/TextStyleSmall"
+            android:layout_marginTop="@dimen/mon_padding"
+            android:textColor="@color/white"
+            android:layout_below="@id/TOP_title"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/TOP_fab"
+        android:text="3"
+        style="@style/PurpleCircleLarge"
+        android:layout_marginTop="@dimen/mon_hero_height_medium_less_30"
+        android:textColor="@color/white"
+        android:layout_marginLeft="@dimen/mon_wide"
+        android:elevation="@dimen/mon_padding"
+        android:layout_width="64dp"
+        android:layout_height="64dp" />
+
+    <ImageView
+        android:id="@+id/TOP_icon"
+        android:src="@drawable/fire"
+        android:layout_alignParentRight="true"
+        android:elevation="@dimen/mon_padding"
+        android:layout_margin="@dimen/mon_wide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

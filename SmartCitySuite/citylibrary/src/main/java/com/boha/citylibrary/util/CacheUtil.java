@@ -134,11 +134,10 @@ public class CacheUtil {
 
         @Override
         protected ResponseDTO doInBackground(Void... voids) {
-            ResponseDTO response = new ResponseDTO();
+            ResponseDTO response = null;
             FileInputStream stream;
             try {
                 switch (dataType) {
-
 
                     case CACHE_LOGIN:
                         stream = ctx.openFileInput(JSON_DATA);
@@ -161,7 +160,6 @@ public class CacheUtil {
 
             } catch (IOException e) {
                 Log.v(LOG, "------------ Failed to retrieve cache", e);
-                response = null;
             }
 
             return response;

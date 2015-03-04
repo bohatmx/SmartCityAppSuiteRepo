@@ -13,11 +13,10 @@ tools:context="com.com.boha.monitor.library.activities.MonitorMapActivity">
 
     <TextView
         android:id="@+id/text"
-        android:text="Title"
+        android:text="Map Title"
         android:padding="@dimen/mon_padding"
-        style="@style/TextStyleRedSmall"
-        android:textStyle="bold"
-        android:layout_marginLeft="100dp"
+        style="@style/Title2TextStyleBlue"
+        android:layout_marginLeft="@dimen/mon_hero_height_medium"
         android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -33,9 +32,9 @@ tools:context="com.com.boha.monitor.library.activities.MonitorMapActivity">
     android:layout_weight="1" />
 
 <TextView
-    style="@style/RedCircle"
+    style="@style/BlackCircle"
     android:id="@+id/count"
-    android:text="999"
+    android:text="0"
     android:layout_marginTop="@dimen/mon_padding"
     android:layout_marginLeft="@dimen/mon_padding"
     android:layout_width="wrap_content"

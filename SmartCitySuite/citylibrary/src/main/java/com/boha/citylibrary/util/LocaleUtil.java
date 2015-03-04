@@ -50,7 +50,11 @@ public class LocaleUtil {
     public static final int ENGLISH = 1, AFRIKAANS = 2, ZULU = 3, SETSWANA = 4,
             XHOSA = 5, XITSONGA = 6;
 
-    public static final String ENGLISH_LOCALE = "en", AFRIKAANS_LOCALE = "af",
-            ZULU_LOCALE = "zu", SETSWANA_LOCALE = "ts", XHOSA_LOCALE = "xh",
+    public static final String
+            ENGLISH_LOCALE = "en",
+            AFRIKAANS_LOCALE = "af",
+            ZULU_LOCALE = "zu",
+            SETSWANA_LOCALE = "ts",
+            XHOSA_LOCALE = "xh",
             XITSONGA_LOCALE = "xi";
 }

@@ -23,18 +23,22 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.boha.citizenapp.R;
 import com.boha.citylibrary.dto.AlertDTO;
+import com.boha.citylibrary.dto.AlertImageDTO;
+import com.boha.citylibrary.dto.ComplaintDTO;
+import com.boha.citylibrary.dto.MunicipalityDTO;
+import com.boha.citylibrary.dto.NewsArticleDTO;
 import com.boha.citylibrary.services.PhotoUploadService;
 import com.boha.citylibrary.transfer.PhotoUploadDTO;
 import com.boha.citylibrary.transfer.ResponseDTO;
 import com.boha.citylibrary.util.ImageUtil;
 import com.boha.citylibrary.util.PhotoCacheUtil;
+import com.boha.citylibrary.util.SharedUtil;
 import com.boha.citylibrary.util.Util;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -46,13 +50,16 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by aubreyM on 2014/04/21.
  */
-public class PictureActivity extends ActionBarActivity implements LocationListener,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class PictureActivity extends ActionBarActivity
+        implements LocationListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
     LocationRequest mLocationRequest;
     GoogleApiClient googleApiClient;
     LinearLayout imageContainerLayout;
@@ -60,6 +67,15 @@ public class PictureActivity extends ActionBarActivity implements LocationListen
     TextView txtAlertType;
     View projectLayout;
     AlertDTO alert;
+    ComplaintDTO complaint;
+    NewsArticleDTO newsArticle;
+    MunicipalityDTO municipality;
+    public static final int
+            ALERT_IMAGE = 1,
+            COMPLAINT_IMAGE = 2,
+            NEWS_ARTICLE_IMAGE = 3,
+            MUNICIPALITY_IMAGE = 4;
+    private int imageType;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +85,24 @@ public class PictureActivity extends ActionBarActivity implements LocationListen
         setContentView(R.layout.camera);
         setFields();
 
+        imageType = getIntent().getIntExtra("imageType", MUNICIPALITY_IMAGE);
+        switch (imageType) {
+            case MUNICIPALITY_IMAGE:
+                municipality = (MunicipalityDTO)getIntent().getSerializableExtra("municipality");
+                break;
+            case ALERT_IMAGE:
+                alert = (AlertDTO) getIntent().getSerializableExtra("alert");
+                txtAlertType.setText(alert.getAlertType().getAlertTypeName());
+                break;
+            case COMPLAINT_IMAGE:
+                complaint = (ComplaintDTO)getIntent().getSerializableExtra("complaint");
+                break;
+            case NEWS_ARTICLE_IMAGE:
+                newsArticle = (NewsArticleDTO)getIntent().getSerializableExtra("newsArticle");
+                break;
+        }
 
-        alert = (AlertDTO) getIntent().getSerializableExtra("alert");
-        txtAlertType.setText(alert.getAlertType().getAlertTypeNmae());
+
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -85,6 +116,8 @@ public class PictureActivity extends ActionBarActivity implements LocationListen
     }
 
     boolean mRequestingLocationUpdates;
+    ImageView imgCamera;
+
 
     @Override
     public void onResume() {
@@ -116,12 +149,10 @@ public class PictureActivity extends ActionBarActivity implements LocationListen
         super.onRestoreInstanceState(savedInstanceState);
     }
 
-    ImageView imgCamera;
-    Button btnStart;
-
 
     private void setFields() {
         activity = this;
+        municipality = SharedUtil.getMunicipality(ctx);
         txtAlertType = (TextView) findViewById(R.id.CAM_alertTypeName);
         projectLayout = findViewById(R.id.CAM_typeLayout);
         imageContainerLayout = (LinearLayout) findViewById(R.id.CAM_imageContainer);
@@ -190,25 +221,31 @@ public class PictureActivity extends ActionBarActivity implements LocationListen
 
     private void uploadPhotos() {
         Log.e(LOG, "### uploadPhotos, the accuracy: " + location.getAccuracy());
-        mService.uploadCachedPhotos(new PhotoUploadService.UploadListener() {
-            @Override
-            public void onUploadsComplete(int count) {
-                Log.e(LOG, "### onUploadsComplete: " + count);
-            }
-        });
+        if (mBound) {
+            mService.uploadCachedPhotos(new PhotoUploadService.UploadListener() {
+                @Override
+                public void onUploadsComplete(int count) {
+                    Log.e(LOG, "### onUploadsComplete: " + count);
+                }
+            });
+        } else {
+            Log.w(LOG, "### starting PhotoUploadService manually");
+            Intent x = new Intent(ctx, PhotoUploadService.class);
+            startService(x);
+        }
 
     }
 
     @Override
     public void onStart() {
-        Log.i(LOG,
-                "## onStart - locationClient connecting ... ");
+        Log.w(LOG,
+                "## onStart - googleApiClient connecting ... ");
         if (googleApiClient != null) {
             if (location == null) {
                 googleApiClient.connect();
             }
         }
-        Log.i(LOG, "## onStart Bind to PhotoUploadService");
+        Log.w(LOG, "## onStart Bind to PhotoUploadService");
         Intent intent = new Intent(this, PhotoUploadService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
         super.onStart();
@@ -220,7 +257,7 @@ public class PictureActivity extends ActionBarActivity implements LocationListen
 
         if (googleApiClient != null) {
             googleApiClient.disconnect();
-            Log.e(LOG, "### onStop - locationClient disconnecting ");
+            Log.e(LOG, "### onStop - googleApiClient disconnecting ");
         }
         Log.e(LOG, "## onStop unBind from PhotoUploadService");
         if (mBound) {
@@ -240,16 +277,12 @@ public class PictureActivity extends ActionBarActivity implements LocationListen
                 "+++  onConnected() -  requestLocationUpdates ...");
         location = LocationServices.FusedLocationApi.getLastLocation(
                 googleApiClient);
-        if (location != null) {
-        }
-
         Log.w(LOG, "## requesting location updates ....");
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setFastestInterval(2000);
         startLocationUpdates();
-//
 
     }
 
@@ -438,13 +471,13 @@ public class PictureActivity extends ActionBarActivity implements LocationListen
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inSampleSize = 2;
                         Bitmap bm = BitmapFactory.decodeFile(photoFile.getAbsolutePath(), options);
-                        getLog(bm, "Raw Camera- sample size = 2");
+                        //getLog(bm, "Raw Camera- sample size = 2");
                         Matrix matrixThumbnail = new Matrix();
                         matrixThumbnail.postScale(0.4f, 0.4f);
                         Bitmap thumb = Bitmap.createBitmap
                                 (bm, 0, 0, bm.getWidth(),
                                         bm.getHeight(), matrixThumbnail, true);
-                        getLog(thumb, "Thumb");
+                        //getLog(thumb, "Thumb");
 
                         //append date and gps coords to bitmap
                         //fullBm = ImageUtil.drawTextToBitmap(ctx,fullBm,location);
@@ -485,34 +518,40 @@ public class PictureActivity extends ActionBarActivity implements LocationListen
                     isUploaded = true;
                     currentSessionPhotos.add(Uri.fromFile(currentThumbFile).toString());
                     addImageToScroller();
-                    final PhotoUploadDTO p = new PhotoUploadDTO();
-//                    p.setAlertID(alert.getAlertID());
-//                    p.setAlertTypeName(alert.getAlertType().getAlertTypeNmae());
-//                    p.setCityID(alert.getCityID());
-//                    p.setImageFilePath(currentThumbFile.getAbsolutePath());
-//                    p.setThumbFilePath(currentThumbFile.getAbsolutePath());
-//                    p.setLatitude(location.getLatitude());
-//                    p.setLongitude(location.getLongitude());
-//                    p.setTime(new Date().getTime());
-//                    p.setDateTaken(new Date());
+                    PhotoUploadDTO photo = new PhotoUploadDTO();
+                    switch (imageType) {
+                        case ALERT_IMAGE:
+                            final AlertImageDTO p = new AlertImageDTO();
+                            p.setAlertID(alert.getAlertID());
+                            p.setMunicipalityID(municipality.getMunicipalityID());
+                            p.setLocalFilepath(currentThumbFile.getAbsolutePath());
+                            p.setLatitude(location.getLatitude());
+                            p.setLongitude(location.getLongitude());
+                            p.setDateTaken(new Date());
+                            photo.setAlertImage(p);
 
-                    PhotoCacheUtil.cachePhoto(ctx, p, new PhotoCacheUtil.PhotoCacheListener() {
-                        @Override
-                        public void onFileDataDeserialized(ResponseDTO response) {
+                            PhotoCacheUtil.cachePhoto(ctx, photo, new PhotoCacheUtil.PhotoCacheListener() {
+                                @Override
+                                public void onFileDataDeserialized(ResponseDTO response) {
 
-                        }
+                                }
 
-                        @Override
-                        public void onDataCached() {
+                                @Override
+                                public void onDataCached() {
 //                            Log.i(LOG, "### photo cached OK for alertID: " + p.getAlertID()
 //                                    + " type: " + alert.getAlertType().getAlertTypeNmae());
-                        }
+                                }
 
-                        @Override
-                        public void onError() {
+                                @Override
+                                public void onError() {
 
-                        }
-                    });
+                                }
+                            });
+                            uploadPhotos();
+                            break;
+                    }
+
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -560,7 +599,7 @@ public class PictureActivity extends ActionBarActivity implements LocationListen
         @Override
         public void onServiceConnected(ComponentName className,
                                        IBinder service) {
-            Log.w(LOG, "## PhotoUploadService ServiceConnection onServiceConnected");
+            Log.e(LOG, "## PhotoUploadService ServiceConnection onServiceConnected");
             PhotoUploadService.LocalBinder binder = (PhotoUploadService.LocalBinder) service;
             mService = binder.getService();
             mBound = true;

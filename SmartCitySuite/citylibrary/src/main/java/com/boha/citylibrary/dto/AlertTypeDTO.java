@@ -44,13 +44,6 @@ public class AlertTypeDTO implements Serializable {
         this.alertTypeID = alertTypeID;
     }
 
-    public String getAlertTypeNmae() {
-        return alertTypeName;
-    }
-
-    public void setAlertTypeNmae(String alertTypeNmae) {
-        this.alertTypeName = alertTypeNmae;
-    }
 
     public Integer getColor() {
         return color;

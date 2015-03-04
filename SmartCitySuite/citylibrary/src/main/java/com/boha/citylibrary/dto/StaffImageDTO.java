@@ -8,7 +8,7 @@ import java.util.Date;
  *
  * @author aubreyM
  */
-public class StaffImageDTO implements Serializable {
+public class StaffImageDTO implements Serializable,ImageInterface {
     private static final long serialVersionUID = 1L;
     private Integer staffImageID;
     private String fileName, localFilepath;

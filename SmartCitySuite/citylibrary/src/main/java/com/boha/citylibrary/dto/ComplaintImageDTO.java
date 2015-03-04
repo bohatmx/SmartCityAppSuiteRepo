@@ -9,7 +9,7 @@ import java.util.Date;
  *
  * @author aubreyM
  */
-public class ComplaintImageDTO implements Serializable {
+public class ComplaintImageDTO implements Serializable, ImageInterface {
     private static final long serialVersionUID = 1L;
     private Integer complaintImageID, complaintID, municipalityID;
     private String fileName, localFilepath;

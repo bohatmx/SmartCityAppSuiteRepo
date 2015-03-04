@@ -71,7 +71,7 @@ public class PictureActivity extends ActionBarActivity implements LocationListen
 
 
         alert = (AlertDTO) getIntent().getSerializableExtra("alert");
-        txtAlertType.setText(alert.getAlertType().getAlertTypeNmae());
+        txtAlertType.setText(alert.getAlertType().getAlertTypeName());
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)

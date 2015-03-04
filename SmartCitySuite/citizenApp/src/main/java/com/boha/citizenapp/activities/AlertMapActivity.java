@@ -2,11 +2,16 @@ package com.boha.citizenapp.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,20 +37,21 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class AlertMapActivity extends ActionBarActivity
-         {
+public class AlertMapActivity extends ActionBarActivity {
 
     GoogleMap googleMap;
     GoogleApiClient mGoogleApiClient;
     LocationRequest locationRequest;
     Location location;
     Context ctx;
+    DisplayMetrics displayMetrics;
     List<Marker> markers = new ArrayList<Marker>();
     static final String LOG = AlertMapActivity.class.getSimpleName();
     boolean mResolvingError;
@@ -59,30 +65,30 @@ public class AlertMapActivity extends ActionBarActivity
     TextView text, txtCount;
     View topLayout;
     ProgressBar progressBar;
+    LayoutInflater inflater;
     static final Locale loc = Locale.getDefault();
     static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
     List<AlertDTO> alertList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.w(LOG, "#### onCreate");
         super.onCreate(savedInstanceState);
         ctx = getApplicationContext();
-        try {
-            setContentView(R.layout.activity_maps);
-        } catch (Exception e) {
-            Log.e(LOG, "######## cannot setContentView", e);
-        }
+        setContentView(R.layout.activity_maps);
+        inflater = getLayoutInflater();
+
         ResponseDTO r = (ResponseDTO) getIntent().getSerializableExtra("alertList");
-        alertList = r.getAlertList();
-
-        alert = (AlertDTO)getIntent().getSerializableExtra("alert");
-
+        if (r != null)
+            alertList = r.getAlertList();
+        alert = (AlertDTO) getIntent().getSerializableExtra("alert");
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         text = (TextView) findViewById(R.id.text);
         txtCount = (TextView) findViewById(R.id.count);
         txtCount.setText("0");
+        text.setText(getString(R.string.active_alerts));
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
         Statics.setRobotoFontBold(ctx, text);
@@ -95,7 +101,18 @@ public class AlertMapActivity extends ActionBarActivity
             finish();
             return;
         }
+        displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay()
+                .getMetrics(displayMetrics);
+
         setGoogleMap();
+//        MunicipalityDTO municipality = SharedUtil.getMunicipality(ctx);
+//        ActionBar actionBar = getSupportActionBar();
+//        Util.setCustomActionBar(ctx,
+//                actionBar,
+//                municipality.getMunicipalityName(),
+//                ctx.getResources().getDrawable(com.boha.citizenapp.R.drawable.logo));
+
     }
 
     private void setGoogleMap() {
@@ -106,8 +123,8 @@ public class AlertMapActivity extends ActionBarActivity
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-               LatLng latLng = marker.getPosition();
-               showPopup(latLng.latitude, latLng.longitude, marker.getTitle());
+                LatLng latLng = marker.getPosition();
+                showPopup(latLng.latitude, latLng.longitude, marker.getTitle());
 
                 return true;
             }
@@ -128,30 +145,40 @@ public class AlertMapActivity extends ActionBarActivity
         LatLng point = null;
         int index = 0, count = 0, randomIndex = 0;
 
-
         for (AlertDTO alert : alertList) {
             if (alert.getLatitude() == null) continue;
             LatLng pnt = new LatLng(alert.getLatitude(), alert.getLongitude());
             point = pnt;
             BitmapDescriptor desc = BitmapDescriptorFactory.fromResource(R.drawable.dot_black);
             Short color = null;
+            View dot = null;
+            TextView txtNumber;
             if (alert.getAlertType().getColor() != null) {
                 switch (alert.getAlertType().getColor()) {
                     case AlertTypeDTO.RED:
-                        desc = BitmapDescriptorFactory.fromResource(R.drawable.caraccident);
+                        dot = inflater.inflate(com.boha.citylibrary.R.layout.dot_red, null);
+                        txtNumber = (TextView) dot.findViewById(com.boha.citylibrary.R.id.DOT_text);
+                        txtNumber.setText("" + (index + 1));
+                        desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
                         break;
                     case AlertTypeDTO.GREEN:
-                        desc = BitmapDescriptorFactory.fromResource(R.drawable.caraccident_green);
+                        dot = inflater.inflate(com.boha.citylibrary.R.layout.dot_green, null);
+                        txtNumber = (TextView) dot.findViewById(com.boha.citylibrary.R.id.DOT_text);
+                        txtNumber.setText("" + (index + 1));
+                        desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
                         break;
                     case AlertTypeDTO.AMBER:
-                        desc = BitmapDescriptorFactory.fromResource(R.drawable.caraccident_yellow);
+                        dot = inflater.inflate(com.boha.citylibrary.R.layout.dot_amber, null);
+                        txtNumber = (TextView) dot.findViewById(com.boha.citylibrary.R.id.DOT_text);
+                        txtNumber.setText("" + (index + 1));
+                        desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
                         break;
                 }
 
             }
             Marker m =
                     googleMap.addMarker(new MarkerOptions()
-                            .title(""+ alert.getAlertID().intValue())
+                            .title("" + alert.getAlertID().intValue())
                             .icon(desc)
                             .snippet(alert.getDescription())
                             .position(pnt));
@@ -176,29 +203,56 @@ public class AlertMapActivity extends ActionBarActivity
                 txtCount.setText("" + markers.size());
                 //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 1.0f));
                 googleMap.animateCamera(cu);
-                //setTitle(project.getProjectName());
             }
         });
 
     }
 
     AlertDTO alert;
+
     private void setOneMarker() {
         if (alert.getLatitude() == null) {
             return;
         }
         LatLng pnt = new LatLng(alert.getLatitude(), alert.getLongitude());
-        BitmapDescriptor desc = BitmapDescriptorFactory.fromResource(R.drawable.dome5);
+        BitmapDescriptor desc = null;
+        View dot;
+        TextView txtNumber;
+        switch (alert.getAlertType().getColor()) {
+            case AlertTypeDTO.RED:
+                dot = inflater.inflate(com.boha.citylibrary.R.layout.dot_red, null);
+                txtNumber = (TextView) dot.findViewById(com.boha.citylibrary.R.id.DOT_text);
+                txtNumber.setText("" + (alert.getIndex() + 1));
+                desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
+                break;
+            case AlertTypeDTO.GREEN:
+                dot = inflater.inflate(com.boha.citylibrary.R.layout.dot_green, null);
+                txtNumber = (TextView) dot.findViewById(com.boha.citylibrary.R.id.DOT_text);
+                txtNumber.setText("" + (alert.getIndex() + 1));
+                desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
+                break;
+            case AlertTypeDTO.AMBER:
+                dot = inflater.inflate(com.boha.citylibrary.R.layout.dot_amber, null);
+                txtNumber = (TextView) dot.findViewById(com.boha.citylibrary.R.id.DOT_text);
+                txtNumber.setText("" + (alert.getIndex() + 1));
+                desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
+                break;
+            default:
+                dot = inflater.inflate(com.boha.citylibrary.R.layout.dot_amber, null);
+                txtNumber = (TextView) dot.findViewById(com.boha.citylibrary.R.id.DOT_text);
+                txtNumber.setText("" + (alert.getIndex() + 1));
+                desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
+                break;
+        }
         Marker m =
                 googleMap.addMarker(new MarkerOptions()
-                        .title(alert.getAlertType().getAlertTypeNmae())
+                        .title(alert.getAlertType().getAlertTypeName())
                         .icon(desc)
                         .snippet(alert.getDescription())
                         .position(pnt));
         markers.add(m);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pnt, 1.0f));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(12.0f));
-        setTitle("Alerts");
     }
 
     List<String> list;
@@ -211,31 +265,33 @@ public class AlertMapActivity extends ActionBarActivity
         Util.showPopupBasicWithHeroImage(ctx, this, list, topLayout,
                 "Actions",
                 new Util.UtilPopupListener() {
-            @Override
-            public void onItemSelected(int index) {
-                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {
-                    startDirectionsMap(lat, lng);
-                }
-
-                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.pictures))) {
-                    isGallery = true;
-                    Integer id = Integer.parseInt(title);
-                    int j = 0;
-                    for (AlertDTO a: alertList) {
-                        if (a.getAlertID().intValue() == id.intValue()) {
-                            break;
+                    @Override
+                    public void onItemSelected(int index) {
+                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {
+                            startDirectionsMap(lat, lng);
                         }
-                        j++;
-                    }
 
-                    startGallery(alertList.get(j));
-                }
-            }
-        });
+                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.pictures))) {
+                            isGallery = true;
+                            Integer id = Integer.parseInt(title);
+                            int j = 0;
+                            for (AlertDTO a : alertList) {
+                                if (a.getAlertID().intValue() == id.intValue()) {
+                                    break;
+                                }
+                                j++;
+                            }
+
+                            startGallery(alertList.get(j));
+                        }
+                    }
+                });
 
 
     }
+
     boolean isStatusReport, isGallery;
+
     private void startGallery(AlertDTO alert) {
 
 
@@ -243,12 +299,13 @@ public class AlertMapActivity extends ActionBarActivity
         i.putExtra("alert", alert);
         startActivity(i);
     }
-        private void startDirectionsMap(double lat, double lng) {
+
+    private void startDirectionsMap(double lat, double lng) {
         location = googleMap.getMyLocation();
-            if (location == null) {
-                Util.showErrorToast(ctx, "My location is not available");
-                return;
-            }
+        if (location == null) {
+            Util.showErrorToast(ctx, "My location is not available");
+            return;
+        }
         Log.i(LOG, "startDirectionsMap ..........");
         String url = "http://maps.google.com/maps?saddr="
                 + location.getLatitude() + "," + location.getLongitude()
@@ -257,6 +314,7 @@ public class AlertMapActivity extends ActionBarActivity
         intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
         startActivity(intent);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -291,8 +349,6 @@ public class AlertMapActivity extends ActionBarActivity
         super.onStop();
     }
 
-    List<BitmapDescriptor> bmdList = new ArrayList<BitmapDescriptor>();
-    boolean coordsConfirmed;
 
     @Override
     public void onBackPressed() {
@@ -307,5 +363,35 @@ public class AlertMapActivity extends ActionBarActivity
         super.onPause();
     }
 
-    double latitude, longitude;
+    Address address;
+    TextView txtAddress;
+
+    class GeoTask extends AsyncTask<Void, Void, Integer> {
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+            Geocoder geocoder = new Geocoder(ctx);
+            try {
+                List<Address> list = geocoder.getFromLocation(
+                        location.getLatitude(), location.getLongitude(), 1);
+                if (list != null && list.size() > 0) {
+                    address = list.get(0);
+                }
+            } catch (IOException e) {
+                Log.e(LOG, "Impossible to connect to Geocoder", e);
+                return 9;
+            }
+            return 0;
+        }
+
+        @Override
+        public void onPostExecute(Integer result) {
+            if (result == 0) {
+                txtAddress.setText(address.toString());
+            } else {
+                txtAddress.setText(getString(R.string.address_not_found));
+            }
+        }
+
+    }
 }

@@ -41,7 +41,7 @@ public class CityApplication extends Application {
     public void onCreate() {
         super.onCreate();
         StringBuilder sb = new StringBuilder();
-        sb.append("\n\n\n#######################################\n");
+        sb.append("\n\n#######################################\n");
         sb.append("#######################################\n");
         sb.append("###\n");
         sb.append("###  SmartCity App has started\n");

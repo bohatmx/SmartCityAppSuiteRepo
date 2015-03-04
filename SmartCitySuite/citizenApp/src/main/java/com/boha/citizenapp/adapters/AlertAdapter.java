@@ -46,20 +46,20 @@ public class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.AlertHolder>
 
         final AlertDTO p = alertList.get(position);
         holder.txtColor.setText("" + (position + 1));
-        holder.txtType.setText(p.getAlertType().getAlertTypeNmae());
+        holder.txtType.setText(p.getAlertType().getAlertTypeName());
         holder.txtDate.setText(sdfDate.format(p.getUpdated()));
         holder.txtTime.setText(sdfTime.format(p.getUpdated()));
         holder.txtDesc.setText(p.getDescription());
         holder.position = position;
         switch (p.getAlertType().getColor()) {
             case AlertTypeDTO.GREEN:
-                holder.txtColor.setBackground(ctx.getResources().getDrawable(R.drawable.xgreen_oval));
+                holder.txtColor.setBackground(ctx.getResources().getDrawable(R.drawable.xgreen_oval_small));
                 break;
             case AlertTypeDTO.AMBER:
-                holder.txtColor.setBackground(ctx.getResources().getDrawable(R.drawable.xorange_oval));
+                holder.txtColor.setBackground(ctx.getResources().getDrawable(R.drawable.xamber_oval_small));
                 break;
             case AlertTypeDTO.RED:
-                holder.txtColor.setBackground(ctx.getResources().getDrawable(R.drawable.xred_oval_large));
+                holder.txtColor.setBackground(ctx.getResources().getDrawable(R.drawable.xred_oval));
                 break;
         }
 

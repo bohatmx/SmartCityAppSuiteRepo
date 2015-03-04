@@ -66,7 +66,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
     View view, topView;
     RecyclerView grid;
     Button btnmap;
-    TextView txtCount;
+    TextView txtCount, txtTitle, txtSubTitle, txtFAB;
     Context ctx;
     List<AlertDTO> alertList;
     Location location;
@@ -74,7 +74,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
     TextView txtKM;
     SeekBar seekBar;
     ImageView imgSearch;
-    static final int MIN_KM = 30;
+    static final int MIN_KM = 100;
     int radius = MIN_KM;
 
     public void setLocation(Location location) {
@@ -85,9 +85,11 @@ public class AlertListFragment extends Fragment implements PageFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_alert_list, container, false);
+        ctx = getActivity();
         topView = view.findViewById(R.id.RCV_top);
         txtCount = (TextView) view.findViewById(R.id.ALERT_LIST_count);
         grid = (RecyclerView) view.findViewById(R.id.ALERT_LIST_recyclerView);
+
 
         LinearLayoutManager lm = new LinearLayoutManager(ctx);
         lm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -95,21 +97,39 @@ public class AlertListFragment extends Fragment implements PageFragment {
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
         txtKM = (TextView) view.findViewById(R.id.ALERT_LIST_km);
+        txtTitle = (TextView) view.findViewById(R.id.TOP_title);
+        txtSubTitle = (TextView) view.findViewById(R.id.TOP_subTitle);
+        txtFAB = (TextView) view.findViewById(R.id.TOP_fab);
         imgSearch = (ImageView) view.findViewById(R.id.ALERT_LIST_refresh);
         seekBar = (SeekBar) view.findViewById(R.id.ALERT_LIST_seek);
         seekBar.setProgress(MIN_KM);
         txtKM.setText("" + MIN_KM);
+        txtTitle.setText(ctx.getResources().getText(R.string.active_alerts));
+        txtSubTitle.setVisibility(View.INVISIBLE);
 
+        txtFAB.setText("+");
+        txtFAB.setTextSize(40f);
+        txtFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.flashOnce(txtFAB, 300, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        mListener.onCreateAlertRequested();
+                    }
+                });
+            }
+        });
         imgSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getRemoteData();
+                refreshAlerts();
             }
         });
         topView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getRemoteData();
+                refreshAlerts();
             }
         });
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -162,23 +182,21 @@ public class AlertListFragment extends Fragment implements PageFragment {
 
     public void getCachedAlerts() {
 
-        CacheUtil.getCacheAlertData(ctx, new CacheUtil.CacheRetrievalListener() {
+        CacheUtil.getCacheLoginData(ctx, new CacheUtil.CacheRetrievalListener() {
             @Override
             public void onCacheRetrieved(ResponseDTO response) {
                 alertList = response.getAlertList();
                 setList();
-                getRemoteData();
-
             }
 
             @Override
             public void onError() {
-                getRemoteData();
+                refreshAlerts();
             }
         });
     }
 
-    private void getRemoteData() {
+    public void refreshAlerts() {
         if (location == null) return;
         if (WebCheck.checkNetworkAvailability(ctx, true).isWifiAvailable() ||
                 WebCheck.checkNetworkAvailability(ctx, true).isMobileAvailable()) {
@@ -193,7 +211,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
                 @Override
                 public void onResponse(final ResponseDTO response) {
                     if (response.getStatusCode() == 0) {
-                        Log.e(LOG, "### OK response drom server ...");
+                        Log.e(LOG, "### OK response from server ...");
                         if (alertList == null) alertList = new ArrayList<AlertDTO>();
                         if (response.getMessage() == null) {
                             alertList = response.getAlertList();
@@ -247,14 +265,15 @@ public class AlertListFragment extends Fragment implements PageFragment {
             @Override
             public void onAlertClicked(int position) {
                 mListener.onAlertClicked(alertList.get(position));
+                if (!alertList.get(position).getAlertImageList().isEmpty()) {
+                    Intent intent = new Intent(ctx, AlertPictureGridActivity.class);
+                    intent.putExtra("alert", alertList.get(position));
+                    startActivity(intent);
+                } else {
+                    Util.showToast(ctx, "No photos were recorded for this alert");
+                    return;
+                }
 
-//                if (alertList.get(position).getPhotoUploadList().isEmpty()) {
-//                    Util.showToast(ctx, "No photos were recoreded for this alert");
-//                    return;
-//                }
-                Intent intent = new Intent(ctx, AlertPictureGridActivity.class);
-                intent.putExtra("alert",alertList.get(position));
-                startActivity(intent);
             }
         });
 
@@ -280,6 +299,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
 
     public interface AlertListener {
         public void onAlertClicked(AlertDTO alert);
+        public void onCreateAlertRequested();
     }
 
     static final String LOG = AlertListFragment.class.getSimpleName();

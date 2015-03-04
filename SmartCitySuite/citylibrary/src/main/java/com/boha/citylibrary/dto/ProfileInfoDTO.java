@@ -2,6 +2,7 @@
 package com.boha.citylibrary.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,16 +18,14 @@ public class ProfileInfoDTO implements Serializable {
     private String firstName;
     private String lastName;
     private String cellNumber;
-    private String homeNumber;
-    private String workNumber;
+    private String email;
 
-    private List<String> emailList;
     private List<GcmDeviceDTO> gcmDeviceList;
 
     private String password;
-    private List<ComplaintDTO> complaintList;
+    private List<ComplaintDTO> complaintList = new ArrayList<>();
     private Integer municipalityID;
-    private List<AccountDTO> accountList;
+    private List<AccountDTO> accountList = new ArrayList<>();
 
     public List<GcmDeviceDTO> getGcmDeviceList() {
         return gcmDeviceList;
@@ -100,28 +99,12 @@ public class ProfileInfoDTO implements Serializable {
         this.cellNumber = cellNumber;
     }
 
-    public String getHomeNumber() {
-        return homeNumber;
+    public String getEmail() {
+        return email;
     }
 
-    public void setHomeNumber(String homeNumber) {
-        this.homeNumber = homeNumber;
-    }
-
-    public String getWorkNumber() {
-        return workNumber;
-    }
-
-    public void setWorkNumber(String workNumber) {
-        this.workNumber = workNumber;
-    }
-
-    public List<String> getEmailList() {
-        return emailList;
-    }
-
-    public void setEmailList(List<String> emailList) {
-        this.emailList = emailList;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

@@ -53,10 +53,8 @@ public class SigninActivity extends ActionBarActivity {
     ResponseDTO response;
     ProfileInfoDTO profileInfo;
     Spinner spinner;
-    int action;
     GcmDeviceDTO gcmDevice;
     MunicipalityDTO municipality;
-    public static final int REGISTER = 1, SIGN_IN = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +64,6 @@ public class SigninActivity extends ActionBarActivity {
         ctx = getApplicationContext();
         activity = this;
 
-        action = getIntent().getIntExtra("action", REGISTER);
         municipality = SharedUtil.getMunicipality(ctx);
         registerGCMDevice();
 
@@ -92,7 +89,7 @@ public class SigninActivity extends ActionBarActivity {
         txtWelcome = (TextView) findViewById(R.id.SIGNIN_welcome);
         logo = (ImageView) findViewById(R.id.SIGNIN_dome);
 
-        logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.dome5));
+        logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.logo));
         handle = findViewById(R.id.SIGNIN_handle);
         progressBar.setVisibility(View.GONE);
 
@@ -151,12 +148,14 @@ public class SigninActivity extends ActionBarActivity {
         w.setGcmDevice(gcmDevice);
         w.setMunicipalityID(municipality.getMunicipalityID());
 
+        progressBar.setVisibility(View.VISIBLE);
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO resp) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        progressBar.setVisibility(View.GONE);
                         if (resp.getStatusCode() > 0) {
                             Util.showErrorToast(ctx, resp.getMessage());
                             return;
@@ -169,6 +168,8 @@ public class SigninActivity extends ActionBarActivity {
                         sp.setProfileInfoID(profileInfo.getProfileInfoID());
                         sp.setFirstName(profileInfo.getFirstName());
                         sp.setLastName(profileInfo.getLastName());
+                        sp.setiDNumber(profileInfo.getiDNumber());
+                        sp.setPassword(profileInfo.getPassword());
 
                         SharedUtil.saveProfile(ctx, sp);
                         CacheUtil.cacheLoginData(ctx, response, null);

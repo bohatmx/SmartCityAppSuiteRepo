@@ -2,8 +2,10 @@ package com.boha.citizenapp.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +13,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.citizenapp.R;
+import com.boha.citizenapp.activities.AccountActivity;
 import com.boha.citylibrary.dto.AccountDTO;
 import com.boha.citylibrary.dto.ProfileInfoDTO;
+import com.boha.citylibrary.transfer.ResponseDTO;
+import com.boha.citylibrary.util.CacheUtil;
 import com.boha.citylibrary.util.SharedUtil;
 import com.boha.citylibrary.util.Util;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -25,7 +31,6 @@ import java.util.TimerTask;
  */
 public class ProfileInfoFragment extends Fragment implements PageFragment {
 
-    private ProfileInfoFragmentListener mListener;
 
     public static ProfileInfoFragment newInstance() {
         ProfileInfoFragment fragment = new ProfileInfoFragment();
@@ -55,23 +60,51 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
     double totBalance, totArrears;
     Context ctx;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.w(LOG,"onCreateView");
         view = inflater.inflate(R.layout.fragment_citizen, container, false);
         ctx = getActivity();
         setFields();
 
         profileInfo = SharedUtil.getProfile(getActivity());
         txtName.setText(profileInfo.getFirstName() + " " + profileInfo.getLastName());
-//        getTotals();
+        getCachedInfo();
 
         return view;
     }
 
+    private void getCachedInfo() {
+        Log.e(LOG,"getCachedInfo");
+        CacheUtil.getCacheLoginData(ctx, new CacheUtil.CacheRetrievalListener() {
+            @Override
+            public void onCacheRetrieved(ResponseDTO response) {
+                Log.w(LOG, "Cache has returned, checking for data");
+                if (response != null) {
+                    profileInfo = response.getProfileInfoList().get(0);
+                    getTotals();
+                }
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+    }
+    public void setProfileInfo(ProfileInfoDTO profileInfo) {
+        this.profileInfo = profileInfo;
+        getTotals();
+    }
     private void getTotals() {
+        Log.w(LOG, "getTotals - setting field values");
         totArrears = 0;
         totBalance = 0;
+        if (profileInfo.getAccountList() == null) {
+            profileInfo.setAccountList(new ArrayList<AccountDTO>());
+        }
         for (AccountDTO acc: profileInfo.getAccountList()) {
             if (acc.getCurrentBalance() != null) {
                 totBalance += acc.getCurrentBalance();
@@ -80,13 +113,11 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
                 totArrears += acc.getCurrentArrears();
             }
         }
-        txtArrears.setText(df.format(totArrears));
-        txtBalance.setText(df.format(totBalance));
-        if (profileInfo.getAccountList() != null) {
-            txtAccts.setText(""+profileInfo.getAccountList().size());
-        } else {
-            txtAccts.setText("0");
-        }
+        String currency = "R";
+        txtArrears.setText(currency + df.format(totArrears));
+        txtBalance.setText(currency + df.format(totBalance));
+        txtAccts.setText(""+profileInfo.getAccountList().size());
+
     }
     private void setFields() {
         txtName = (TextView) view.findViewById(R.id.CITIZEN_name);
@@ -95,10 +126,43 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
         txtArrears = (TextView) view.findViewById(R.id.CITIZEN_arrears);
         heroImage = (ImageView) view.findViewById(R.id.CITIZEN_image);
 
-        view.setOnClickListener(new View.OnClickListener() {
+        txtAccts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Util.showToast(ctx,ctx.getString(R.string.under_cons));
+                Util.flashOnce(txtAccts, 300, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        Intent intent = new Intent(ctx, AccountActivity.class);
+                        intent.putExtra("profileInfo",profileInfo);
+                        startActivity(intent);
+                    }
+                });
+            }
+        });
+        txtBalance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.flashOnce(txtBalance, 300, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        Intent intent = new Intent(ctx, AccountActivity.class);
+                        intent.putExtra("profileInfo",profileInfo);
+                        startActivity(intent);
+                    }
+                });
+            }
+        });
+        txtArrears.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.flashOnce(txtArrears, 300, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        Intent intent = new Intent(ctx, AccountActivity.class);
+                        intent.putExtra("profileInfo",profileInfo);
+                        startActivity(intent);
+                    }
+                });
             }
         });
 
@@ -125,23 +189,15 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (ProfileInfoFragmentListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement CitizenFragmentListener");
-        }
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-    public interface ProfileInfoFragmentListener {
-        public void onAccountDetailRequired();
-    }
+
 
     static final String LOG = ProfileInfoFragment.class.getSimpleName();
 }

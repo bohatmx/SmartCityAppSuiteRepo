@@ -23,7 +23,7 @@
                 android:src="@drawable/black_woman"
                 android:scaleType="centerCrop"
                 android:layout_width="match_parent"
-                android:layout_height="160dp" />
+                android:layout_height="260dp" />
 
 
             <ImageView
@@ -36,7 +36,6 @@
 
         <RelativeLayout
             android:layout_below="@id/SIGNIN_heroLayout"
-            android:padding="@dimen/mon_padding"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -44,15 +43,6 @@
                 android:id="@+id/SIGNIN_welcomeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/SIGNIN_welcome"
-                    android:text="@string/welcome"
-                    style="@style/Title3TextStyleBlack"
-                    android:layout_marginLeft="@dimen/mon_padding"
-                    android:layout_centerVertical="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
 
             </RelativeLayout>
 
@@ -62,7 +52,7 @@
                 android:layout_marginTop="@dimen/mon_wide"
                 android:inputType="number"
                 style="@style/Title2TextStyleBlue"
-                android:text="123456789"
+                android:text="3301045068086"
                 android:hint="@string/enter_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -72,7 +62,7 @@
                 android:layout_below="@id/SIGNIN_editUserID"
                 android:hint="@string/enter_pswd"
                 android:inputType="textPassword"
-                android:text="aubs001"
+                android:text="mavis1"
                 style="@style/Title3TextStyleRed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -116,6 +106,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+        <TextView
+            android:id="@+id/SIGNIN_welcome"
+            android:text="@string/welcome"
+            style="@style/Title3TextStyleBlack"
+            android:textColor="@color/white"
+            android:layout_margin="@dimen/mon_padding"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </RelativeLayout>
 </ScrollView>
