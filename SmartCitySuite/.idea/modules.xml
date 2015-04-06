@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SmartCitySuite.iml" filepath="$PROJECT_DIR$/SmartCitySuite.iml" />
-      <module fileurl="file://$PROJECT_DIR$/citizenApp/citizenAppThekwini.iml" filepath="$PROJECT_DIR$/citizenApp/citizenAppThekwini.iml" />
+      <module fileurl="file://$PROJECT_DIR$/citizenApp/citizenApp.iml" filepath="$PROJECT_DIR$/citizenApp/citizenApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/citylibrary/citylibrary.iml" filepath="$PROJECT_DIR$/citylibrary/citylibrary.iml" />
     </modules>
   </component>

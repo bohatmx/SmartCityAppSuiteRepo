@@ -12,7 +12,7 @@ import android.util.Log;
 
 import com.boha.citizenapp.R;
 import com.boha.citizenapp.activities.MainPagerActivity;
-import com.boha.citylibrary.util.GCMUtil;
+import com.boha.library.util.GCMUtil;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;

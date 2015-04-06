@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.citizenapp.R;
-import com.boha.citylibrary.dto.MunicipalityDTO;
-import com.boha.citylibrary.util.SharedUtil;
+import com.boha.library.dto.MunicipalityDTO;
+import com.boha.library.util.SharedUtil;
 
 /**
  * Fragment to house local pictures
@@ -42,6 +42,7 @@ public class SplashFragment extends Fragment implements PageFragment {
     TextView txtTitle;
     Context ctx;
     MunicipalityDTO municipality;
+    String title;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,4 +75,14 @@ public class SplashFragment extends Fragment implements PageFragment {
     }
 
     static final String LOG = SplashFragment.class.getSimpleName();
+
+    @Override
+    public String getPageTitle() {
+        return title;
+    }
+
+    @Override
+    public void setPageTitle(String title) {
+        this.title = title;
+    }
 }

@@ -37,7 +37,7 @@
     <TextView
         android:id="@+id/TOP_fab"
         android:text="3"
-        style="@style/BlueCircleLarge"
+        style="@style/SteelBlueCircleLarge"
         android:layout_marginTop="@dimen/mon_hero_height_medium_less_30"
         android:textColor="@color/white"
         android:layout_marginLeft="@dimen/mon_wide"

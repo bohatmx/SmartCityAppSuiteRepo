@@ -15,11 +15,14 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.boha.citizenapp.R;
-import com.boha.citizenapp.adapters.AccountAdapter;
 import com.boha.citizenapp.activities.PaymentStartActivity;
-import com.boha.citylibrary.dto.AccountDTO;
-import com.boha.citylibrary.dto.ProfileInfoDTO;
-import com.boha.citylibrary.util.Util;
+import com.boha.citizenapp.adapters.AccountAdapter;
+import com.boha.library.activities.CityApplication;
+import com.boha.library.dto.AccountDTO;
+import com.boha.library.dto.ProfileInfoDTO;
+import com.boha.library.util.Util;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -45,6 +48,8 @@ public class AccountFragment extends Fragment {
             txtCurrBal, txtArrears, txtFAB,
             txtLastUpdate, txtNextBill,
             txtAddress, txtLastBillAmount;
+    View fab;
+    ImageView fabIcon;
     ScrollView scrollView;
     RecyclerView recyclerView;
     AccountAdapter adapter;
@@ -96,6 +101,13 @@ public class AccountFragment extends Fragment {
             }
 
         }
+        //Track AccountFragment
+        CityApplication ca = (CityApplication) getActivity().getApplication();
+        Tracker t = ca.getTracker(
+                CityApplication.TrackerName.APP_TRACKER);
+        t.setScreenName(AccountFragment.class.getSimpleName());
+        t.send(new HitBuilders.ScreenViewBuilder().build());
+        //
         //LocaleUtil.setLocale(ctx, LocaleUtil.ENGLISH);
         return view;
     }
@@ -118,6 +130,7 @@ public class AccountFragment extends Fragment {
 
     private void setFields() {
         topView = view.findViewById(R.id.template);
+        fab = view.findViewById(R.id.FAB);
         handle = view.findViewById(R.id.ACCT_handle);
         scrollView = (ScrollView) view.findViewById(R.id.ACCT_scroll);
         detailView = view.findViewById(R.id.ACCT_detailLayout);
@@ -125,7 +138,8 @@ public class AccountFragment extends Fragment {
         txtSubtitle = (TextView) topView.findViewById(R.id.TOP_subTitle);
         icon = (ImageView) topView.findViewById(R.id.TOP_icon);
 //        icon.setImageDrawable(ctx.getResources().getDrawable(R.drawable.document_48));
-        txtFAB = (TextView) topView.findViewById(R.id.TOP_fab);
+        txtFAB = (TextView) topView.findViewById(R.id.FAB_text);
+        fabIcon = (ImageView) topView.findViewById(R.id.FAB_icon);
 
         txtAcctNumber = (TextView) view.findViewById(R.id.ACCT_number);
         txtAddress = (TextView) view.findViewById(R.id.ACCT_address);
@@ -134,6 +148,9 @@ public class AccountFragment extends Fragment {
         txtCurrBal = (TextView) view.findViewById(R.id.ACCT_currBal);
         txtNextBill = (TextView) view.findViewById(R.id.ACCT_nextBillDate);
         txtLastBillAmount = (TextView) view.findViewById(R.id.ACCT_lastBillAmount);
+
+        fabIcon.setVisibility(View.GONE);
+        txtFAB.setVisibility(View.VISIBLE);
 
         txtCurrBal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,17 +180,17 @@ public class AccountFragment extends Fragment {
                 Util.flashOnce(icon, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        Util.showToast(ctx, ctx.getString(com.boha.citylibrary.R.string.under_cons));
+                        Util.showToast(ctx, ctx.getString(com.boha.library.R.string.under_cons));
 
                     }
                 });
 
             }
         });
-        txtFAB.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.flashOnce(txtFAB, 300, new Util.UtilAnimationListener() {
+                Util.flashOnce(fab, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
                         if (profileInfo.getAccountList().size() > 1) {

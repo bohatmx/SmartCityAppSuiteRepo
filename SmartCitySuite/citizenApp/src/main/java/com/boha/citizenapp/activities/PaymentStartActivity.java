@@ -12,10 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.citizenapp.R;
-import com.boha.citylibrary.dto.AccountDTO;
-import com.boha.citylibrary.dto.MunicipalityDTO;
-import com.boha.citylibrary.fragments.PaymentStartFragment;
-import com.boha.citylibrary.util.SharedUtil;
+import com.boha.library.activities.CityApplication;
+import com.boha.library.dto.AccountDTO;
+import com.boha.library.dto.MunicipalityDTO;
+import com.boha.library.fragments.PaymentStartFragment;
+import com.boha.library.util.SharedUtil;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 public class PaymentStartActivity extends ActionBarActivity implements PaymentStartFragment.PaymentStartListener{
 
@@ -40,15 +43,22 @@ public class PaymentStartActivity extends ActionBarActivity implements PaymentSt
 
         LayoutInflater inflator = (LayoutInflater)
                 this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflator.inflate(com.boha.citylibrary.R.layout.action_bar_logo, null);
-        TextView txt = (TextView)v.findViewById(com.boha.citylibrary.R.id.ACTION_BAR_text);
-        ImageView logo = (ImageView)v.findViewById(com.boha.citylibrary.R.id.ACTION_BAR_logo);
+        View v = inflator.inflate(com.boha.library.R.layout.action_bar_logo, null);
+        TextView txt = (TextView)v.findViewById(com.boha.library.R.id.ACTION_BAR_text);
+        ImageView logo = (ImageView)v.findViewById(com.boha.library.R.id.ACTION_BAR_logo);
         txt.setText(municipality.getMunicipalityName());
         //
         logo.setImageDrawable(getApplicationContext().getResources()
                 .getDrawable(com.boha.citizenapp.R.drawable.logo));
         getSupportActionBar().setTitle("");
         actionBar.setCustomView(v);
+        //Track PaymentStartActivity
+        CityApplication ca = (CityApplication) getApplication();
+        Tracker t = ca.getTracker(
+                CityApplication.TrackerName.APP_TRACKER);
+        t.setScreenName(PaymentStartActivity.class.getSimpleName());
+        t.send(new HitBuilders.ScreenViewBuilder().build());
+        //
     }
 
 

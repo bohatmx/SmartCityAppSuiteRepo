@@ -17,15 +17,18 @@ import android.widget.TextView;
 
 import com.boha.citizenapp.R;
 import com.boha.citizenapp.activities.PictureActivity;
-import com.boha.citylibrary.dto.AlertDTO;
-import com.boha.citylibrary.dto.AlertTypeDTO;
-import com.boha.citylibrary.transfer.RequestDTO;
-import com.boha.citylibrary.transfer.ResponseDTO;
-import com.boha.citylibrary.util.CacheUtil;
-import com.boha.citylibrary.util.NetUtil;
-import com.boha.citylibrary.util.SharedUtil;
-import com.boha.citylibrary.util.TrafficLightUtil;
-import com.boha.citylibrary.util.Util;
+import com.boha.library.activities.CityApplication;
+import com.boha.library.dto.AlertDTO;
+import com.boha.library.dto.AlertTypeDTO;
+import com.boha.library.transfer.RequestDTO;
+import com.boha.library.transfer.ResponseDTO;
+import com.boha.library.util.CacheUtil;
+import com.boha.library.util.NetUtil;
+import com.boha.library.util.SharedUtil;
+import com.boha.library.util.TrafficLightUtil;
+import com.boha.library.util.Util;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,9 +86,11 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
     private void setFields() {
         handle = view.findViewById(R.id.ALERT_handle);
         hero = view.findViewById(R.id.ALERT_heroImage);
-        txtTitle = (TextView)view.findViewById(R.id.TOP_title);
-        txtSubTitle = (TextView)view.findViewById(R.id.TOP_subTitle);
-        txtFAB = (TextView)view.findViewById(R.id.TOP_fab);
+        txtTitle = (TextView) view.findViewById(R.id.TOP_title);
+        txtSubTitle = (TextView) view.findViewById(R.id.TOP_subTitle);
+        txtFAB = (TextView) view.findViewById(R.id.TOP_fab);
+        icon = (ImageView) view.findViewById(R.id.TOP_icon);
+        icon.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_dialog_alert));
         txtTitle.setText("Alert The City");
         txtSubTitle.setText("Notify or warn the community about an event");
         editDesc = (EditText) view.findViewById(R.id.ALERT_message);
@@ -138,6 +143,7 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
         txtType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mListener.onLocationRequested();
                 list = new ArrayList<String>();
                 for (AlertTypeDTO t : response.getAlertTypeList()) {
                     list.add(t.getAlertTypeName());
@@ -152,31 +158,34 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
                             switch (alertType.getColor()) {
                                 case AlertTypeDTO.GREEN:
                                     TrafficLightUtil.setGreen(ctx, trafficLights);
+                                    green.setText("Send");
                                     Util.flashOnce(green, 300, new Util.UtilAnimationListener() {
                                         @Override
                                         public void onAnimationEnded() {
                                             green.setEnabled(true);
-                                            Util.flashSeveralTimes(green,200,3,null);
+                                            Util.flashOnce(green, 200, null);
                                         }
                                     });
                                     break;
                                 case AlertTypeDTO.AMBER:
                                     TrafficLightUtil.setAmber(ctx, trafficLights);
+                                    amber.setText("Send");
                                     Util.flashOnce(amber, 300, new Util.UtilAnimationListener() {
                                         @Override
                                         public void onAnimationEnded() {
                                             amber.setEnabled(true);
-                                            Util.flashSeveralTimes(amber,200,3,null);
+                                            Util.flashOnce(amber, 200, null);
                                         }
                                     });
                                     break;
                                 case AlertTypeDTO.RED:
                                     TrafficLightUtil.setRed(ctx, trafficLights);
+                                    red.setText("Send");
                                     Util.flashOnce(red, 300, new Util.UtilAnimationListener() {
                                         @Override
                                         public void onAnimationEnded() {
                                             red.setEnabled(true);
-                                            Util.flashSeveralTimes(red,200,3,null);
+                                            Util.flashOnce(red, 200, null);
                                         }
                                     });
                                     break;
@@ -195,6 +204,7 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
     Location location;
 
     public void setLocation(Location location) {
+        Log.d(LOG, "### setLocation");
         this.location = location;
     }
 
@@ -214,7 +224,7 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
         a.setId(0);
         a.setProfileInfoID(SharedUtil.getProfile(ctx).getProfileInfoID());
         w.setAlert(a);
-
+        Log.d(LOG, "### sendAlert");
         progressBar.setVisibility(View.VISIBLE);
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
@@ -223,12 +233,20 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
                     @Override
                     public void run() {
                         progressBar.setVisibility(View.GONE);
-                        if (response.getStatusCode() == 0) {
-                            alert = response.getAlertList().get(0);
-                            startPictureActivity();
-                        }
-                        Log.w(LOG, "++ alert has been sent OK: " + response.getMessage());
-                        //Util.showToast(ctx, "Alert has been sent");
+                        txtType.setText(ctx.getString(com.boha.library.R.string.sel_type));
+                        TrafficLightUtil.disable(ctx, trafficLights);
+                        Util.preen(trafficLights, 500, new Util.UtilAnimationListener() {
+                            @Override
+                            public void onAnimationEnded() {
+                                //Util.showToast(ctx, "Alert has been sent");
+                                if (response.getStatusCode() == 0) {
+                                    alert = response.getAlertList().get(0);
+                                    startPictureActivity();
+                                }
+                                Log.w(LOG, "++ alert has been sent OK: " + response.getMessage());
+                            }
+                        });
+
                     }
                 });
             }
@@ -244,6 +262,12 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
             }
         });
 
+        //Track CreateAlertFragment
+        CityApplication ca = (CityApplication) getActivity().getApplication();
+        Tracker t = ca.getTracker(
+                CityApplication.TrackerName.APP_TRACKER);
+        t.setScreenName(CreateAlertFragment.class.getSimpleName());
+        t.send(new HitBuilders.ScreenViewBuilder().build());
 
     }
 
@@ -277,8 +301,22 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
         mListener = null;
     }
 
+    String title;
+
+    @Override
+    public String getPageTitle() {
+        return title;
+    }
+
+    @Override
+    public void setPageTitle(String title) {
+        this.title = title;
+    }
+
     public interface CreateAlertFragmentListener {
         public void onAlertSent(AlertDTO alert);
+
+        public void onLocationRequested();
     }
 
     static final String LOG = CreateAlertFragment.class.getSimpleName();

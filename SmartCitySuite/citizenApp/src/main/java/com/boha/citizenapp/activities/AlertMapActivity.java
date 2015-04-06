@@ -1,7 +1,9 @@
 package com.boha.citizenapp.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -15,15 +17,20 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.boha.citizenapp.R;
-import com.boha.citylibrary.dto.AlertDTO;
-import com.boha.citylibrary.dto.AlertTypeDTO;
-import com.boha.citylibrary.transfer.ResponseDTO;
-import com.boha.citylibrary.util.Statics;
-import com.boha.citylibrary.util.Util;
+import com.boha.library.activities.CityApplication;
+import com.boha.library.dto.AlertDTO;
+import com.boha.library.dto.AlertTypeDTO;
+import com.boha.library.transfer.ResponseDTO;
+import com.boha.library.util.DistanceUtil;
+import com.boha.library.util.Statics;
+import com.boha.library.util.Util;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdate;
@@ -36,6 +43,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -63,18 +73,22 @@ public class AlertMapActivity extends ActionBarActivity {
 
     int index;
     TextView text, txtCount;
-    View topLayout;
+    ImageView iconCollapse;
+    View topLayout, mapInfo;
+    TextView addr1, addr2, dist, dur;
     ProgressBar progressBar;
     LayoutInflater inflater;
     static final Locale loc = Locale.getDefault();
     static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
     List<AlertDTO> alertList;
+    Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.w(LOG, "#### onCreate");
         super.onCreate(savedInstanceState);
         ctx = getApplicationContext();
+        activity = this;
         setContentView(R.layout.activity_maps);
         inflater = getLayoutInflater();
 
@@ -84,16 +98,34 @@ public class AlertMapActivity extends ActionBarActivity {
         alert = (AlertDTO) getIntent().getSerializableExtra("alert");
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        text = (TextView) findViewById(R.id.text);
-        txtCount = (TextView) findViewById(R.id.count);
+                .findFragmentById(R.id.MAP_map);
+        text = (TextView) findViewById(R.id.MAP_text);
+        iconCollapse = (ImageView) findViewById(R.id.MAP_iconCollapse);
+        txtCount = (TextView) findViewById(R.id.MAP_count);
         txtCount.setText("0");
         text.setText(getString(R.string.active_alerts));
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mapInfo = findViewById(R.id.MAP_info);
+        mapInfo.setVisibility(View.GONE);
+        addr1 = (TextView) mapInfo.findViewById(R.id.MAP_addressFrom);
+        addr2 = (TextView) mapInfo.findViewById(R.id.MAP_addressTo);
+        dist = (TextView) mapInfo.findViewById(R.id.MAP_distance);
+        dur = (TextView) mapInfo.findViewById(R.id.MAP_duration);
+        progressBar = (ProgressBar) findViewById(R.id.MAP_progressBar);
         progressBar.setVisibility(View.GONE);
         Statics.setRobotoFontBold(ctx, text);
+        iconCollapse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.flashOnce(iconCollapse, 200, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        Util.collapse(mapInfo, 500, null);
+                    }
+                });
+            }
+        });
 
-        topLayout = findViewById(R.id.top);
+        topLayout = findViewById(R.id.MAP_top);
 
         googleMap = mapFragment.getMap();
         if (googleMap == null) {
@@ -113,7 +145,16 @@ public class AlertMapActivity extends ActionBarActivity {
 //                municipality.getMunicipalityName(),
 //                ctx.getResources().getDrawable(com.boha.citizenapp.R.drawable.logo));
 
+        //Track AlertMapActivity
+        CityApplication ca = (CityApplication) getApplication();
+        Tracker t = ca.getTracker(
+                CityApplication.TrackerName.APP_TRACKER);
+        t.setScreenName(AlertMapActivity.class.getSimpleName());
+        t.send(new HitBuilders.ScreenViewBuilder().build());
+        //
     }
+
+    Marker marker;
 
     private void setGoogleMap() {
         googleMap.setMyLocationEnabled(true);
@@ -122,8 +163,18 @@ public class AlertMapActivity extends ActionBarActivity {
 
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
-            public boolean onMarkerClick(Marker marker) {
+            public boolean onMarkerClick(Marker m) {
+                marker = m;
                 LatLng latLng = marker.getPosition();
+                Integer id = Integer.parseInt(marker.getTitle());
+                if (alertList != null) {
+                    for (AlertDTO x : alertList) {
+                        if (x.getAlertID().intValue() == id.intValue()) {
+                            alert = x;
+                            break;
+                        }
+                    }
+                }
                 showPopup(latLng.latitude, latLng.longitude, marker.getTitle());
 
                 return true;
@@ -138,7 +189,6 @@ public class AlertMapActivity extends ActionBarActivity {
 
     }
 
-    static final DecimalFormat df = new DecimalFormat("###,##0.00");
 
     private void setAlertMarkers() {
         googleMap.clear();
@@ -156,20 +206,20 @@ public class AlertMapActivity extends ActionBarActivity {
             if (alert.getAlertType().getColor() != null) {
                 switch (alert.getAlertType().getColor()) {
                     case AlertTypeDTO.RED:
-                        dot = inflater.inflate(com.boha.citylibrary.R.layout.dot_red, null);
-                        txtNumber = (TextView) dot.findViewById(com.boha.citylibrary.R.id.DOT_text);
+                        dot = inflater.inflate(com.boha.library.R.layout.dot_red, null);
+                        txtNumber = (TextView) dot.findViewById(com.boha.library.R.id.DOT_text);
                         txtNumber.setText("" + (index + 1));
                         desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
                         break;
                     case AlertTypeDTO.GREEN:
-                        dot = inflater.inflate(com.boha.citylibrary.R.layout.dot_green, null);
-                        txtNumber = (TextView) dot.findViewById(com.boha.citylibrary.R.id.DOT_text);
+                        dot = inflater.inflate(com.boha.library.R.layout.dot_green, null);
+                        txtNumber = (TextView) dot.findViewById(com.boha.library.R.id.DOT_text);
                         txtNumber.setText("" + (index + 1));
                         desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
                         break;
                     case AlertTypeDTO.AMBER:
-                        dot = inflater.inflate(com.boha.citylibrary.R.layout.dot_amber, null);
-                        txtNumber = (TextView) dot.findViewById(com.boha.citylibrary.R.id.DOT_text);
+                        dot = inflater.inflate(com.boha.library.R.layout.dot_amber, null);
+                        txtNumber = (TextView) dot.findViewById(com.boha.library.R.id.DOT_text);
                         txtNumber.setText("" + (index + 1));
                         desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
                         break;
@@ -220,35 +270,35 @@ public class AlertMapActivity extends ActionBarActivity {
         TextView txtNumber;
         switch (alert.getAlertType().getColor()) {
             case AlertTypeDTO.RED:
-                dot = inflater.inflate(com.boha.citylibrary.R.layout.dot_red, null);
-                txtNumber = (TextView) dot.findViewById(com.boha.citylibrary.R.id.DOT_text);
+                dot = inflater.inflate(com.boha.library.R.layout.dot_red, null);
+                txtNumber = (TextView) dot.findViewById(com.boha.library.R.id.DOT_text);
                 txtNumber.setText("" + (alert.getIndex() + 1));
                 desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
                 break;
             case AlertTypeDTO.GREEN:
-                dot = inflater.inflate(com.boha.citylibrary.R.layout.dot_green, null);
-                txtNumber = (TextView) dot.findViewById(com.boha.citylibrary.R.id.DOT_text);
+                dot = inflater.inflate(com.boha.library.R.layout.dot_green, null);
+                txtNumber = (TextView) dot.findViewById(com.boha.library.R.id.DOT_text);
                 txtNumber.setText("" + (alert.getIndex() + 1));
                 desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
                 break;
             case AlertTypeDTO.AMBER:
-                dot = inflater.inflate(com.boha.citylibrary.R.layout.dot_amber, null);
-                txtNumber = (TextView) dot.findViewById(com.boha.citylibrary.R.id.DOT_text);
+                dot = inflater.inflate(com.boha.library.R.layout.dot_amber, null);
+                txtNumber = (TextView) dot.findViewById(com.boha.library.R.id.DOT_text);
                 txtNumber.setText("" + (alert.getIndex() + 1));
                 desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
                 break;
             default:
-                dot = inflater.inflate(com.boha.citylibrary.R.layout.dot_amber, null);
-                txtNumber = (TextView) dot.findViewById(com.boha.citylibrary.R.id.DOT_text);
+                dot = inflater.inflate(com.boha.library.R.layout.dot_amber, null);
+                txtNumber = (TextView) dot.findViewById(com.boha.library.R.id.DOT_text);
                 txtNumber.setText("" + (alert.getIndex() + 1));
                 desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
                 break;
         }
         Marker m =
                 googleMap.addMarker(new MarkerOptions()
-                        .title(alert.getAlertType().getAlertTypeName())
+                        .title("" + alert.getAlertID().intValue())
                         .icon(desc)
-                        .snippet(alert.getDescription())
+                        .snippet(alert.getAlertType().getAlertTypeName())
                         .position(pnt));
         markers.add(m);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pnt, 1.0f));
@@ -261,31 +311,63 @@ public class AlertMapActivity extends ActionBarActivity {
         list = new ArrayList<>();
         list.add(getString(R.string.directions));
         list.add(getString(R.string.pictures));
-
-        Util.showPopupBasicWithHeroImage(ctx, this, list, topLayout,
-                "Actions",
-                new Util.UtilPopupListener() {
+        list.add(getString(R.string.get_distance));
+        ImageView dummy = new ImageView(ctx);
+        if (alert != null) {
+            if (!alert.getAlertImageList().isEmpty()) {
+                String url = Util.getAlertImageURL(alert.getAlertImageList().get(0));
+                ImageLoader.getInstance().displayImage(url, dummy, new ImageLoadingListener() {
                     @Override
-                    public void onItemSelected(int index) {
-                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {
-                            startDirectionsMap(lat, lng);
-                        }
+                    public void onLoadingStarted(String s, View view) {
 
-                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.pictures))) {
-                            isGallery = true;
-                            Integer id = Integer.parseInt(title);
-                            int j = 0;
-                            for (AlertDTO a : alertList) {
-                                if (a.getAlertID().intValue() == id.intValue()) {
-                                    break;
-                                }
-                                j++;
-                            }
-
-                            startGallery(alertList.get(j));
-                        }
                     }
+
+                    @Override
+                    public void onLoadingFailed(String s, View view, FailReason failReason) {
+                        Util.showPopupBasicWithHeroImage(ctx, activity, list, topLayout, "Actions", new Util.UtilPopupListener() {
+                            @Override
+                            public void onItemSelected(int index) {
+                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {
+                                    startDirectionsMap(lat, lng);
+                                }
+                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.pictures))) {
+                                    isGallery = true;
+                                    startGallery(alert);
+                                }
+                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.get_distance))) {
+                                    getDistance(lat, lng);
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String s, View view, Bitmap bm) {
+                        Util.showPopupBasicWithHeroImage(ctx, activity, list, topLayout, "Actions", bm, new Util.UtilPopupListener() {
+                            @Override
+                            public void onItemSelected(int index) {
+                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {
+                                    startDirectionsMap(lat, lng);
+                                }
+                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.pictures))) {
+                                    isGallery = true;
+                                    startGallery(alert);
+                                }
+                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.get_distance))) {
+                                    getDistance(lat, lng);
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onLoadingCancelled(String s, View view) {
+
+                    }
+
                 });
+            }
+        }
 
 
     }
@@ -298,6 +380,35 @@ public class AlertMapActivity extends ActionBarActivity {
         Intent i = new Intent(ctx, AlertPictureGridActivity.class);
         i.putExtra("alert", alert);
         startActivity(i);
+    }
+
+    static final DecimalFormat df = new DecimalFormat("###,###,###,##0.00");
+
+    private void getDistance(double lat, double lng) {
+        location = googleMap.getMyLocation();
+        if (location == null) {
+            Util.showErrorToast(ctx, getString(R.string.loc_unavailable));
+            return;
+        }
+        DistanceUtil.getDistance(location.getLatitude(), location.getLongitude(), lat, lng, new DistanceUtil.DistanceListener() {
+            @Override
+            public void onDistanceAcquired(String fromAddress,
+                                           String toAddress,
+                                           double distance,
+                                           int duration) {
+                addr1.setText(fromAddress);
+                addr2.setText(toAddress);
+                dist.setText(df.format(distance));
+                dur.setText("" + duration);
+                Util.expand(mapInfo, 1000, null);
+
+            }
+
+            @Override
+            public void onError(String message) {
+                Util.showErrorToast(ctx, message);
+            }
+        });
     }
 
     private void startDirectionsMap(double lat, double lng) {

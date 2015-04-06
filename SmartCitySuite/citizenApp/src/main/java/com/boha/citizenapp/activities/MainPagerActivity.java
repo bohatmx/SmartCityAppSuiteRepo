@@ -21,17 +21,17 @@ import com.boha.citizenapp.fragments.ImageGridFragment;
 import com.boha.citizenapp.fragments.PageFragment;
 import com.boha.citizenapp.fragments.ProfileInfoFragment;
 import com.boha.citizenapp.fragments.SplashFragment;
-import com.boha.citylibrary.R;
-import com.boha.citylibrary.dto.AlertDTO;
-import com.boha.citylibrary.dto.MunicipalityDTO;
-import com.boha.citylibrary.dto.ProfileInfoDTO;
-import com.boha.citylibrary.services.PhotoUploadService;
-import com.boha.citylibrary.transfer.RequestDTO;
-import com.boha.citylibrary.transfer.ResponseDTO;
-import com.boha.citylibrary.util.CacheUtil;
-import com.boha.citylibrary.util.NetUtil;
-import com.boha.citylibrary.util.SharedUtil;
-import com.boha.citylibrary.util.Util;
+import com.boha.library.R;
+import com.boha.library.dto.AlertDTO;
+import com.boha.library.dto.MunicipalityDTO;
+import com.boha.library.dto.ProfileInfoDTO;
+import com.boha.library.services.PhotoUploadService;
+import com.boha.library.transfer.RequestDTO;
+import com.boha.library.transfer.ResponseDTO;
+import com.boha.library.util.CacheUtil;
+import com.boha.library.util.NetUtil;
+import com.boha.library.util.SharedUtil;
+import com.boha.library.util.Util;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -320,6 +320,11 @@ public class MainPagerActivity extends ActionBarActivity
 
     @Override
     public void onAlertSent(AlertDTO alert) {
+
+    }
+
+    @Override
+    public void onLocationRequested() {
 
     }
 

@@ -6,7 +6,7 @@
         android:allowBackup="true"
         android:label="@string/app_name" >
 
-        <service android:name=".services.PhotoUploadService" />
+        <service android:name="com.boha.library.services.PhotoUploadService" />
     </application>
 
 </manifest>

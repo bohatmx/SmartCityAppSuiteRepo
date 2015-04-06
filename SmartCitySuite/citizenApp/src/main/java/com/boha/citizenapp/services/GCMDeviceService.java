@@ -5,13 +5,13 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
-import com.boha.citylibrary.dto.GcmDeviceDTO;
-import com.boha.citylibrary.dto.ProfileInfoDTO;
-import com.boha.citylibrary.transfer.RequestDTO;
-import com.boha.citylibrary.transfer.ResponseDTO;
-import com.boha.citylibrary.util.GCMUtil;
-import com.boha.citylibrary.util.NetUtil;
-import com.boha.citylibrary.util.SharedUtil;
+import com.boha.library.dto.GcmDeviceDTO;
+import com.boha.library.dto.ProfileInfoDTO;
+import com.boha.library.transfer.RequestDTO;
+import com.boha.library.transfer.ResponseDTO;
+import com.boha.library.util.GCMUtil;
+import com.boha.library.util.NetUtil;
+import com.boha.library.util.SharedUtil;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in

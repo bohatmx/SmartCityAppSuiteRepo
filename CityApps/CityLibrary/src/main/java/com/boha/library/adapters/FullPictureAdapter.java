@@ -54,7 +54,7 @@ public class FullPictureAdapter extends RecyclerView.Adapter<FullPictureAdapter.
 
         holder.number.setText("" + (position + 1));
         holder.caption.setVisibility(View.GONE);
-        holder.date.setText(sdf.format(p.getDateTaken()));
+//        holder.date.setText(sdf.format(p.getDateTaken()));
         holder.position = position;
 
         holder.image.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +65,7 @@ public class FullPictureAdapter extends RecyclerView.Adapter<FullPictureAdapter.
         });
 
 
-        String url = Util.getAlertImageURL(p);
+        String url = Util.getAlertImageURL(p.getAlertImage());
         ImageLoader.getInstance().displayImage(url, holder.image, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String s, View view) {

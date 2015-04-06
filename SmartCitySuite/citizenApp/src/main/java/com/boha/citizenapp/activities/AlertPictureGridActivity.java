@@ -19,11 +19,14 @@ import android.widget.TextView;
 
 import com.boha.citizenapp.R;
 import com.boha.citizenapp.adapters.AlertPictureAdapter;
-import com.boha.citylibrary.dto.AlertDTO;
-import com.boha.citylibrary.dto.AlertImageDTO;
-import com.boha.citylibrary.dto.AlertTypeDTO;
-import com.boha.citylibrary.util.DividerItemDecoration;
-import com.boha.citylibrary.util.Util;
+import com.boha.library.activities.CityApplication;
+import com.boha.library.dto.AlertDTO;
+import com.boha.library.dto.AlertImageDTO;
+import com.boha.library.dto.AlertTypeDTO;
+import com.boha.library.util.DividerItemDecoration;
+import com.boha.library.util.Util;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -38,13 +41,15 @@ public class AlertPictureGridActivity extends ActionBarActivity {
     int lastIndex;
     AlertDTO alert;
     ImageView icon;
-    TextView txtAlertType, txtDate, txtTime, txtAddress, txtFab;
+    TextView txtAlertType, txtDate, txtTime, txtAddress, txtFab, txtCount;
     View addressLayout, topLayout;
     boolean isOpen;
+    int imageType;
+    public static int ALERT = 1, COMPLAINT = 2, MUNICIPALITY = 3;
     static final String LOG = AlertPictureGridActivity.class.getSimpleName();
     static final Locale LOCALE = Locale.getDefault();
-    static final SimpleDateFormat sdfDate = new SimpleDateFormat("EEE dd MMMM yyyy");
-    static final SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm");
+    static final SimpleDateFormat sdfDate = new SimpleDateFormat("EEEE dd MMMM yyyy", LOCALE);
+    static final SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm", LOCALE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,14 +66,21 @@ public class AlertPictureGridActivity extends ActionBarActivity {
 
         switch (alert.getAlertType().getColor()) {
             case AlertTypeDTO.RED:
-                topLayout.setBackgroundColor(ctx.getResources().getColor(R.color.indian_red));
+                topLayout.setBackgroundColor(ctx.getResources().getColor(R.color.absa_red));
+                txtCount.setBackgroundColor(ctx.getResources().getColor(R.color.absa_red));
                 break;
             case AlertTypeDTO.AMBER:
-                topLayout.setBackgroundColor(ctx.getResources().getColor(R.color.rebecca_purple));
+                topLayout.setBackgroundColor(ctx.getResources().getColor(R.color.amber));
+                txtCount.setBackgroundColor(ctx.getResources().getColor(R.color.amber));
+                txtCount.setTextColor(ctx.getResources().getColor(R.color.absa_red));
+                txtAlertType.setTextColor(ctx.getResources().getColor(R.color.absa_red));
                 break;
+
             case AlertTypeDTO.GREEN:
                 topLayout.setBackgroundColor(ctx.getResources().getColor(R.color.green));
+                txtCount.setBackgroundColor(ctx.getResources().getColor(R.color.green));
                 break;
+
         }
 
         Util.flashSeveralTimes(txtFab,300,3, null) ;
@@ -81,6 +93,13 @@ public class AlertPictureGridActivity extends ActionBarActivity {
 
 
         setGrid();
+        //Track AlertPictureGridActivity
+        CityApplication ca = (CityApplication) getApplication();
+        Tracker t = ca.getTracker(
+                CityApplication.TrackerName.APP_TRACKER);
+        t.setScreenName(AlertPictureGridActivity.class.getSimpleName());
+        t.send(new HitBuilders.ScreenViewBuilder().build());
+        //
 
     }
 
@@ -89,6 +108,7 @@ public class AlertPictureGridActivity extends ActionBarActivity {
         addressLayout = findViewById(R.id.TOPG_addressLayout);
         addressLayout.setVisibility(View.GONE);
         txtAddress = (TextView) findViewById(R.id.TOPG_address);
+        txtCount = (TextView) findViewById(R.id.TOPG_count);
         txtFab = (TextView) findViewById(R.id.TOPG_fab);
         txtAlertType = (TextView) findViewById(R.id.TOPG_title);
         txtDate = (TextView) findViewById(R.id.TOPG_date);
@@ -135,7 +155,7 @@ public class AlertPictureGridActivity extends ActionBarActivity {
                     @Override
                     public void onAnimationEnded() {
                         Intent intent = new Intent(ctx, AlertMapActivity.class);
-                        intent.putExtra("alert", alert);
+                        intent.putExtra("complaint", alert);
                         startActivity(intent);
                     }
                 });
@@ -147,6 +167,7 @@ public class AlertPictureGridActivity extends ActionBarActivity {
     RecyclerView list;
 
     private void setGrid() {
+        txtCount.setText("" + photoList.size());
         LinearLayoutManager lm = new LinearLayoutManager(ctx, LinearLayoutManager.HORIZONTAL, false);
 
         lm.setSmoothScrollbarEnabled(true);

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.boha.smartcity.thekwini">
+
+    <!-- API key: DEV: AIzaSyDJbQTz-AC8AF6K72M6DL2hzn9bV107UD4
+    88:04:DF:2B:68:40:60:A3:31:81:2F:71:1F:2D:71:FB:F7:71:F9:57;com.boha.smartcity.thekwini-->
+    <!-- API key: PROD: AIzaSyDVxkpM5dLzbnZAz_PT39cb9mC6d0HlULQ
+    4F:72:A0:21:0F:AD:8D:6B:EC:B5:83:49:13:CB:64:75:74:62:1A:A7;com.boha.smartcity.thekwini-->
+    <permission
+        android:name="com.boha.smartcity.thekwini.gcm.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.boha.smartcity.thekwini.gcm.permission.C2D_MESSAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:name="com.boha.library.activities.CityApplication"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/StaffThemeIBG">
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyDJbQTz-AC8AF6K72M6DL2hzn9bV107UD4" />
+
+        <activity
+            android:name=".activities.SplashActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.MainDrawerActivity"
+            />
+        <activity android:name="com.boha.library.activities.AccountActivity"
+            android:parentActivityName=".activities.MainDrawerActivity"/>
+        <activity android:name="com.boha.library.activities.PaymentStartActivity"
+            android:parentActivityName="com.boha.library.activities.AccountActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity android:name=".activities.RegistrationActivity"
+            android:parentActivityName=".activities.SplashActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity android:name="com.boha.library.activities.AlertMapActivity"
+            android:parentActivityName=".activities.MainDrawerActivity"/>
+
+        <activity android:name=".activities.SigninActivity"
+            android:parentActivityName=".activities.SplashActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+
+        <!-- RECEIVERS and SERVICES -->
+        <receiver
+            android:name=".services.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.boha.smartcity.thekwini" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".services.GcmIntentService" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <service
+            android:name="com.boha.library.services.GCMDeviceService"
+            android:exported="false" >
+        </service>
+    </application>
+
+</manifest>

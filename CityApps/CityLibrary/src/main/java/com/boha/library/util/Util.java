@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.boha.cityapps.R;
 import com.boha.library.adapters.PopupListAdapter;
+import com.boha.library.dto.AlertImageDTO;
 import com.boha.library.dto.PhotoUploadDTO;
 
 import java.io.File;
@@ -35,7 +36,7 @@ import java.util.Random;
  */
 public class Util {
 
-    public static String getAlertImageURL(PhotoUploadDTO p) {
+    public static String getAlertImageURL(AlertImageDTO p) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(Statics.IMAGE_URL).append("smartcity_images/")
                 .append("city").append(p.getCityID()).append("/alert")

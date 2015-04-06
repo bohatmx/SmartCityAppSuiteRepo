@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.citizenapp.R;
-import com.boha.citylibrary.transfer.PhotoUploadDTO;
+import com.boha.library.transfer.PhotoUploadDTO;
 
 import java.text.SimpleDateFormat;
 import java.util.List;

@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.citizenapp.R;
-import com.boha.citylibrary.dto.AlertDTO;
-import com.boha.citylibrary.dto.AlertTypeDTO;
+import com.boha.library.dto.AlertDTO;
+import com.boha.library.dto.AlertTypeDTO;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -59,7 +59,7 @@ public class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.AlertHolder>
                 holder.txtColor.setBackground(ctx.getResources().getDrawable(R.drawable.xamber_oval_small));
                 break;
             case AlertTypeDTO.RED:
-                holder.txtColor.setBackground(ctx.getResources().getDrawable(R.drawable.xred_oval));
+                holder.txtColor.setBackground(ctx.getResources().getDrawable(R.drawable.xred_oval_small));
                 break;
         }
 

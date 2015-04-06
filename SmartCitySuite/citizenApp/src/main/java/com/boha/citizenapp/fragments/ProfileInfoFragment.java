@@ -14,12 +14,12 @@ import android.widget.TextView;
 
 import com.boha.citizenapp.R;
 import com.boha.citizenapp.activities.AccountActivity;
-import com.boha.citylibrary.dto.AccountDTO;
-import com.boha.citylibrary.dto.ProfileInfoDTO;
-import com.boha.citylibrary.transfer.ResponseDTO;
-import com.boha.citylibrary.util.CacheUtil;
-import com.boha.citylibrary.util.SharedUtil;
-import com.boha.citylibrary.util.Util;
+import com.boha.library.dto.AccountDTO;
+import com.boha.library.dto.ProfileInfoDTO;
+import com.boha.library.transfer.ResponseDTO;
+import com.boha.library.util.CacheUtil;
+import com.boha.library.util.SharedUtil;
+import com.boha.library.util.Util;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -59,6 +59,7 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
     ProfileInfoDTO profileInfo;
     double totBalance, totArrears;
     Context ctx;
+    String title;
 
 
     @Override
@@ -200,4 +201,14 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
 
 
     static final String LOG = ProfileInfoFragment.class.getSimpleName();
+
+    @Override
+    public String getPageTitle() {
+        return title;
+    }
+
+    @Override
+    public void setPageTitle(String title) {
+        this.title = title;
+    }
 }

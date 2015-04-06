@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.boha.citizenapp.R;
 import com.boha.citizenapp.adapters.PictureGridLocalAdapter;
-import com.boha.citylibrary.util.DividerItemDecoration;
+import com.boha.library.util.DividerItemDecoration;
 
 /**
  * Fragment to house local pictures
@@ -50,6 +50,7 @@ public class ImageGridFragment extends Fragment implements PageFragment {
     Button btnmap;
     TextView txtTitle;
     Context ctx;
+    String title;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,6 +96,16 @@ public class ImageGridFragment extends Fragment implements PageFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public String getPageTitle() {
+        return title;
+    }
+
+    @Override
+    public void setPageTitle(String title) {
+        this.title = title;
     }
 
     public interface ImageGridFragmentListener {

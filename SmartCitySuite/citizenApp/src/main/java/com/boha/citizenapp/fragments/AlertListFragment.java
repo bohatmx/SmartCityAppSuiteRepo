@@ -22,13 +22,14 @@ import com.boha.citizenapp.R;
 import com.boha.citizenapp.activities.AlertMapActivity;
 import com.boha.citizenapp.activities.AlertPictureGridActivity;
 import com.boha.citizenapp.adapters.AlertAdapter;
-import com.boha.citylibrary.dto.AlertDTO;
-import com.boha.citylibrary.transfer.RequestDTO;
-import com.boha.citylibrary.transfer.ResponseDTO;
-import com.boha.citylibrary.util.CacheUtil;
-import com.boha.citylibrary.util.NetUtil;
-import com.boha.citylibrary.util.Util;
-import com.boha.citylibrary.util.WebCheck;
+import com.boha.library.dto.AlertDTO;
+import com.boha.library.transfer.RequestDTO;
+import com.boha.library.transfer.ResponseDTO;
+import com.boha.library.util.CacheUtil;
+import com.boha.library.util.NetUtil;
+import com.boha.library.util.Util;
+import com.boha.library.util.WebCheck;
+import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +67,8 @@ public class AlertListFragment extends Fragment implements PageFragment {
     View view, topView;
     RecyclerView grid;
     Button btnmap;
-    TextView txtCount, txtTitle, txtSubTitle, txtFAB;
+    TextView txtCount, txtTitle, txtSubTitle;
+    FloatingActionButton fab;
     Context ctx;
     List<AlertDTO> alertList;
     Location location;
@@ -99,7 +101,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
         txtKM = (TextView) view.findViewById(R.id.ALERT_LIST_km);
         txtTitle = (TextView) view.findViewById(R.id.TOP_title);
         txtSubTitle = (TextView) view.findViewById(R.id.TOP_subTitle);
-        txtFAB = (TextView) view.findViewById(R.id.TOP_fab);
+        fab = (FloatingActionButton) view.findViewById(R.id.TOP_fab);
         imgSearch = (ImageView) view.findViewById(R.id.ALERT_LIST_refresh);
         seekBar = (SeekBar) view.findViewById(R.id.ALERT_LIST_seek);
         seekBar.setProgress(MIN_KM);
@@ -107,17 +109,16 @@ public class AlertListFragment extends Fragment implements PageFragment {
         txtTitle.setText(ctx.getResources().getText(R.string.active_alerts));
         txtSubTitle.setVisibility(View.INVISIBLE);
 
-        txtFAB.setText("+");
-        txtFAB.setTextSize(40f);
-        txtFAB.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.flashOnce(txtFAB, 300, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        mListener.onCreateAlertRequested();
-                    }
-                });
+                mListener.onCreateAlertRequested();
+//                Util.flashOnce(fab_teal, 300, new Util.UtilAnimationListener() {
+//                    @Override
+//                    public void onAnimationEnded() {
+//                        mListener.onCreateAlertRequested();
+//                    }
+//                });
             }
         });
         imgSearch.setOnClickListener(new View.OnClickListener() {
@@ -179,6 +180,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
     }
 
     ResponseDTO response;
+    String title;
 
     public void getCachedAlerts() {
 
@@ -295,6 +297,16 @@ public class AlertListFragment extends Fragment implements PageFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public String getPageTitle() {
+        return title;
+    }
+
+    @Override
+    public void setPageTitle(String title) {
+        this.title = title;
     }
 
     public interface AlertListener {

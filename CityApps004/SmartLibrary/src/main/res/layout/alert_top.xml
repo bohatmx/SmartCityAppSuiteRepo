@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/ALERT_LIST_newTop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ALERT_LIST_heroImage"
+                    android:src="@drawable/city2"
+                    android:scaleType="centerCrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/mon_hero_height_medium" />
+
+                <RelativeLayout
+                    android:id="@+id/ALERT_LIST_titleLayout"
+                    android:layout_margin="@dimen/mon_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/ALERT_LIST_title"
+                        style="@style/Title1TextStyleWhite"
+                        android:text="@string/active_alerts"
+                        android:padding="@dimen/mon_padding"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/ALERT_LIST_subTitle"
+                        android:layout_below="@id/ALERT_LIST_title"
+                        style="@style/TextStyle"
+                        android:textColor="@color/white"
+                        android:text="Some Sub Title when required"
+                        android:layout_marginLeft="@dimen/mon_padding"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:id="@+id/ALERT_LIST_icon"
+                        android:src="@drawable/ic_action_new"
+                        android:tint="@color/white"
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="@dimen/mon_margin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/ALERT_LIST_top"
+                android:layout_below="@id/ALERT_LIST_newTop"
+                android:background="@color/red_500"
+                android:padding="@dimen/mon_divider_tiny"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.dd.ShadowLayout
+                    app:sl_shadowRadius="4dp"
+                    app:sl_shadowColor="#AA000000"
+                    app:sl_dx="2dp"
+                    app:sl_dy="2dp"
+                    app:sl_cornerRadius="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:background="@color/white"
+                        android:padding="@dimen/mon_padding"
+                        android:layout_alignParentBottom="true"
+                        android:elevation="@dimen/mon_padding"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/ALERT_LIST_km"
+                            android:layout_marginLeft="@dimen/mon_divider"
+                            android:text="100"
+                            style="@style/Title2TextStyleGreen"
+                            android:layout_centerVertical="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <SeekBar
+                            android:id="@+id/ALERT_LIST_seek"
+                            android:max="300"
+                            android:progress="100"
+                            android:layout_toRightOf="@id/ALERT_LIST_km"
+                            android:layout_marginLeft="@dimen/mon_padding"
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content" />
+
+                        <ImageView
+                            android:id="@+id/ALERT_LIST_refresh"
+                            android:src="@android:drawable/ic_menu_search"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginLeft="@dimen/mon_margin"
+                            android:tint="@color/blue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </RelativeLayout>
+                </com.dd.ShadowLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+</ScrollView>

@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.citizenapp.R;
-import com.boha.citylibrary.util.Statics;
+import com.boha.library.util.Statics;
 
 import java.util.List;
 

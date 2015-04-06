@@ -13,12 +13,12 @@ import android.widget.TextView;
 
 import com.boha.citizenapp.R;
 import com.boha.citizenapp.fragments.AccountFragment;
-import com.boha.citylibrary.dto.AccountDTO;
-import com.boha.citylibrary.dto.MunicipalityDTO;
-import com.boha.citylibrary.dto.ProfileInfoDTO;
-import com.boha.citylibrary.transfer.ResponseDTO;
-import com.boha.citylibrary.util.CacheUtil;
-import com.boha.citylibrary.util.SharedUtil;
+import com.boha.library.dto.AccountDTO;
+import com.boha.library.dto.MunicipalityDTO;
+import com.boha.library.dto.ProfileInfoDTO;
+import com.boha.library.transfer.ResponseDTO;
+import com.boha.library.util.CacheUtil;
+import com.boha.library.util.SharedUtil;
 
 public class AccountActivity extends ActionBarActivity implements AccountFragment.AccountFragmentListener{
 
@@ -42,9 +42,9 @@ public class AccountActivity extends ActionBarActivity implements AccountFragmen
 
         LayoutInflater inflator = (LayoutInflater)
                 this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflator.inflate(com.boha.citylibrary.R.layout.action_bar_logo, null);
-        TextView txt = (TextView)v.findViewById(com.boha.citylibrary.R.id.ACTION_BAR_text);
-        ImageView logo = (ImageView)v.findViewById(com.boha.citylibrary.R.id.ACTION_BAR_logo);
+        View v = inflator.inflate(com.boha.library.R.layout.action_bar_logo, null);
+        TextView txt = (TextView)v.findViewById(com.boha.library.R.id.ACTION_BAR_text);
+        ImageView logo = (ImageView)v.findViewById(com.boha.library.R.id.ACTION_BAR_logo);
         txt.setText(municipality.getMunicipalityName());
         //
         logo.setImageDrawable(getApplicationContext().getResources()

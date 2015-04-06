@@ -127,7 +127,7 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
                                 case AlertTypeDTO.GREEN:
                                     TrafficLightUtil.setGreen(ctx, trafficLights);
                                     break;
-                                case AlertTypeDTO.YELLOW:
+                                case AlertTypeDTO.AMBER:
                                     TrafficLightUtil.setYellow(ctx, trafficLights);
                                     break;
                                 case AlertTypeDTO.RED:
@@ -161,10 +161,10 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
         }
 
         a.setAlertType(alertType);
-        a.setCityID(SharedUtil.getProfile(ctx).getCityID());
+        //a.setCityID(SharedUtil.getProfile(ctx).getCityID());
         a.setLatitude(location.getLatitude());
         a.setLongitude(location.getLongitude());
-        a.setCategoryID(2);
+        //a.setCategoryID(2);
         w.setAlert(a);
 
         progressBar.setVisibility(View.VISIBLE);

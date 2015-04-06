@@ -28,18 +28,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.boha.citizenapp.R;
-import com.boha.citylibrary.dto.AlertDTO;
-import com.boha.citylibrary.dto.AlertImageDTO;
-import com.boha.citylibrary.dto.ComplaintDTO;
-import com.boha.citylibrary.dto.MunicipalityDTO;
-import com.boha.citylibrary.dto.NewsArticleDTO;
-import com.boha.citylibrary.services.PhotoUploadService;
-import com.boha.citylibrary.transfer.PhotoUploadDTO;
-import com.boha.citylibrary.transfer.ResponseDTO;
-import com.boha.citylibrary.util.ImageUtil;
-import com.boha.citylibrary.util.PhotoCacheUtil;
-import com.boha.citylibrary.util.SharedUtil;
-import com.boha.citylibrary.util.Util;
+import com.boha.library.activities.CityApplication;
+import com.boha.library.dto.AlertDTO;
+import com.boha.library.dto.AlertImageDTO;
+import com.boha.library.dto.ComplaintDTO;
+import com.boha.library.dto.MunicipalityDTO;
+import com.boha.library.dto.NewsArticleDTO;
+import com.boha.library.services.PhotoUploadService;
+import com.boha.library.transfer.PhotoUploadDTO;
+import com.boha.library.transfer.ResponseDTO;
+import com.boha.library.util.ImageUtil;
+import com.boha.library.util.PhotoCacheUtil;
+import com.boha.library.util.SharedUtil;
+import com.boha.library.util.Util;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -64,7 +67,7 @@ public class PictureActivity extends ActionBarActivity
     GoogleApiClient googleApiClient;
     LinearLayout imageContainerLayout;
     LayoutInflater inflater;
-    TextView txtAlertType;
+    TextView txtType;
     View projectLayout;
     AlertDTO alert;
     ComplaintDTO complaint;
@@ -92,10 +95,11 @@ public class PictureActivity extends ActionBarActivity
                 break;
             case ALERT_IMAGE:
                 alert = (AlertDTO) getIntent().getSerializableExtra("alert");
-                txtAlertType.setText(alert.getAlertType().getAlertTypeName());
+                txtType.setText(alert.getAlertType().getAlertTypeName());
                 break;
             case COMPLAINT_IMAGE:
                 complaint = (ComplaintDTO)getIntent().getSerializableExtra("complaint");
+                txtType.setText(complaint.getComplaintType().getComplaintTypeName());
                 break;
             case NEWS_ARTICLE_IMAGE:
                 newsArticle = (NewsArticleDTO)getIntent().getSerializableExtra("newsArticle");
@@ -109,14 +113,13 @@ public class PictureActivity extends ActionBarActivity
                 .addApi(LocationServices.API)
                 .build();
 
-        setTitle(getString(R.string.alert_pics));
-        Util.showToast(ctx, "Please take pictures for the alert");
+
         dispatchTakePictureIntent();
 
     }
 
     boolean mRequestingLocationUpdates;
-    ImageView imgCamera;
+    TextView txtMessage;
 
 
     @Override
@@ -133,7 +136,7 @@ public class PictureActivity extends ActionBarActivity
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         Log.e(LOG, "%%%%%%%%%%%% onRestoreInstanceState" + savedInstanceState);
         type = savedInstanceState.getInt("type", 0);
-        alert = (AlertDTO) savedInstanceState.getSerializable("alert");
+        alert = (AlertDTO) savedInstanceState.getSerializable("complaint");
         String path = savedInstanceState.getString("photoFile");
         if (path != null) {
             photoFile = new File(path);
@@ -153,18 +156,16 @@ public class PictureActivity extends ActionBarActivity
     private void setFields() {
         activity = this;
         municipality = SharedUtil.getMunicipality(ctx);
-        txtAlertType = (TextView) findViewById(R.id.CAM_alertTypeName);
+        txtType = (TextView) findViewById(R.id.CAM_alertTypeName);
         projectLayout = findViewById(R.id.CAM_typeLayout);
         imageContainerLayout = (LinearLayout) findViewById(R.id.CAM_imageContainer);
 
-        imgCamera = (ImageView) findViewById(R.id.CAM_imgCamera);
-        imgCamera.setVisibility(View.GONE);
+        txtMessage = (TextView) findViewById(R.id.CAM_message);
 
-
-        imgCamera.setOnClickListener(new View.OnClickListener() {
+        txtMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.flashOnce(imgCamera, 200, new Util.UtilAnimationListener() {
+                Util.flashOnce(txtMessage, 200, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
 
@@ -233,6 +234,13 @@ public class PictureActivity extends ActionBarActivity
             Intent x = new Intent(ctx, PhotoUploadService.class);
             startService(x);
         }
+        //Track PictureActivity
+        CityApplication ca = (CityApplication) getApplication();
+        Tracker t = ca.getTracker(
+                CityApplication.TrackerName.APP_TRACKER);
+        t.setScreenName(PictureActivity.class.getSimpleName());
+        t.send(new HitBuilders.ScreenViewBuilder().build());
+
 
     }
 
@@ -539,7 +547,7 @@ public class PictureActivity extends ActionBarActivity
                                 @Override
                                 public void onDataCached() {
 //                            Log.i(LOG, "### photo cached OK for alertID: " + p.getAlertID()
-//                                    + " type: " + alert.getAlertType().getAlertTypeNmae());
+//                                    + " type: " + complaint.getAlertType().getAlertTypeNmae());
                                 }
 
                                 @Override
@@ -574,7 +582,7 @@ public class PictureActivity extends ActionBarActivity
         ImageLoader.getInstance().displayImage(uri.toString(), img);
         imageContainerLayout.addView(v, 0);
 
-        imgCamera.setVisibility(View.VISIBLE);
+        txtMessage.setVisibility(View.VISIBLE);
         uploadPhotos();
 
 
@@ -647,7 +655,7 @@ public class PictureActivity extends ActionBarActivity
     public void addAlertPicture(final CacheListener listener) {
         Log.w(LOG, "**** addProjectPicture");
         final PhotoUploadDTO dto = getObject();
-//        dto.setAlertID(alert.getAlertID());
+//        dto.setAlertID(complaint.getAlertID());
 //        dto.setThumbFilePath(currentThumbFile.getAbsolutePath());
 
         PhotoCacheUtil.cachePhoto(ctx, dto, new PhotoCacheUtil.PhotoCacheListener() {
@@ -671,7 +679,7 @@ public class PictureActivity extends ActionBarActivity
 
     private PhotoUploadDTO getObject() {
         PhotoUploadDTO dto = new PhotoUploadDTO();
-//        dto.setAlertID(alert.getAlertID());
+//        dto.setAlertID(complaint.getAlertID());
 //        dto.setThumbFilePath(currentThumbFile.getAbsolutePath());
 //        dto.setDateTaken(new Date());
 //        dto.setLatitude(location.getLatitude());

@@ -16,13 +16,16 @@ import android.widget.ImageView;
 
 import com.boha.citizenapp.R;
 import com.boha.citizenapp.services.GCMDeviceService;
-import com.boha.citylibrary.dto.MunicipalityDTO;
-import com.boha.citylibrary.dto.ProfileInfoDTO;
-import com.boha.citylibrary.transfer.RequestDTO;
-import com.boha.citylibrary.transfer.ResponseDTO;
-import com.boha.citylibrary.util.NetUtil;
-import com.boha.citylibrary.util.SharedUtil;
-import com.boha.citylibrary.util.Util;
+import com.boha.library.activities.CityApplication;
+import com.boha.library.dto.MunicipalityDTO;
+import com.boha.library.dto.ProfileInfoDTO;
+import com.boha.library.transfer.RequestDTO;
+import com.boha.library.transfer.ResponseDTO;
+import com.boha.library.util.NetUtil;
+import com.boha.library.util.SharedUtil;
+import com.boha.library.util.Util;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,7 +40,7 @@ public class SplashActivity extends ActionBarActivity {
     ImageView heroImage, logo;
     View actionsView;
     Button btnSignIn, btnRegister;
-    Context ctx;
+    static Context ctx;
     MunicipalityDTO municipality;
     static final Random RANDOM = new Random(System.currentTimeMillis());
     static final int ONE_SECOND = 1000, QUICK = 200, FIVE_SECONDS = ONE_SECOND * 5;
@@ -165,7 +168,7 @@ public class SplashActivity extends ActionBarActivity {
             }
             Log.w(LOG, "Starting MainPagerActivity ....");
 
-            Intent intent = new Intent(ctx, MainPagerActivity.class);
+            Intent intent = new Intent(ctx, MainDrawerActivity.class);
             startActivity(intent);
         }
     }
@@ -183,7 +186,19 @@ public class SplashActivity extends ActionBarActivity {
                         if (index == lastIndex) {
                             index = RANDOM.nextInt(32);
                         }
-                        heroImage.setImageDrawable(getNextImage(ctx));
+                        heroImage.setImageDrawable(getImage(ctx));
+                        imageCount++;
+                        if (imageCount > IMAGE_COUNT_MAX) {
+                            timer.cancel();
+                            timer = null;
+                            //Track SplashActivity
+                            CityApplication ca = (CityApplication) getApplication();
+                            Tracker t = ca.getTracker(
+                                    CityApplication.TrackerName.APP_TRACKER);
+                            t.setScreenName(SplashActivity.class.getSimpleName());
+                            t.send(new HitBuilders.ScreenViewBuilder().build());
+                            //
+                        }
                     }
                 });
 
@@ -224,11 +239,14 @@ public class SplashActivity extends ActionBarActivity {
     }
 
 
-    static int index;
+    static int index, imageCount;
     static int lastIndex;
+    static final int IMAGE_COUNT_MAX = 10;
 
-    public static Drawable getNextImage(Context ctx) {
-
+    public static Drawable getImage(Context ctx) {
+        if (ctx == null) {
+            return null;
+        }
         Drawable p = null;
         switch (index) {
             case 0:

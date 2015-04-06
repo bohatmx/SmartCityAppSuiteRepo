@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.boha.citizenapp.R;
-import com.boha.citylibrary.dto.AccountDTO;
+import com.boha.library.dto.AccountDTO;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;

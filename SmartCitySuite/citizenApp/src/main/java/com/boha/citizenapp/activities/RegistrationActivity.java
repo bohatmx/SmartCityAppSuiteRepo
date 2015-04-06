@@ -22,16 +22,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.boha.citizenapp.R;
-import com.boha.citylibrary.dto.GcmDeviceDTO;
-import com.boha.citylibrary.dto.MunicipalityDTO;
-import com.boha.citylibrary.dto.ProfileInfoDTO;
-import com.boha.citylibrary.transfer.RequestDTO;
-import com.boha.citylibrary.transfer.ResponseDTO;
-import com.boha.citylibrary.util.CacheUtil;
-import com.boha.citylibrary.util.GCMUtil;
-import com.boha.citylibrary.util.NetUtil;
-import com.boha.citylibrary.util.SharedUtil;
-import com.boha.citylibrary.util.Util;
+import com.boha.library.activities.CityApplication;
+import com.boha.library.dto.GcmDeviceDTO;
+import com.boha.library.dto.MunicipalityDTO;
+import com.boha.library.dto.ProfileInfoDTO;
+import com.boha.library.transfer.RequestDTO;
+import com.boha.library.transfer.ResponseDTO;
+import com.boha.library.util.CacheUtil;
+import com.boha.library.util.GCMUtil;
+import com.boha.library.util.NetUtil;
+import com.boha.library.util.SharedUtil;
+import com.boha.library.util.Util;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -73,6 +76,13 @@ public class RegistrationActivity extends ActionBarActivity {
 
         setFields();
         getEmail();
+        //Track RegistrationActivity
+        CityApplication ca = (CityApplication) getApplication();
+        Tracker t = ca.getTracker(
+                CityApplication.TrackerName.APP_TRACKER);
+        t.setScreenName(RegistrationActivity.class.getSimpleName());
+        t.send(new HitBuilders.ScreenViewBuilder().build());
+        //
     }
 
     @Override
@@ -122,7 +132,7 @@ public class RegistrationActivity extends ActionBarActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        heroImage.setImageDrawable(SplashActivity.getNextImage(ctx));
+                        heroImage.setImageDrawable(SplashActivity.getImage(ctx));
                     }
                 });
 

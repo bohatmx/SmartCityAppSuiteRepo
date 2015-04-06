@@ -9,7 +9,7 @@ import android.view.MenuItem;
 
 import com.boha.citizenapp.R;
 import com.boha.citizenapp.adapters.FullPictureAdapter;
-import com.boha.citylibrary.dto.AlertDTO;
+import com.boha.library.dto.AlertDTO;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -27,7 +27,7 @@ public class FullPhotoActivity extends ActionBarActivity {
         setContentView(R.layout.activity_full_photo);
         recyclerView = (RecyclerView)findViewById(R.id.FI_recyclerView);
 
-        alert = (AlertDTO)getIntent().getSerializableExtra("alert");
+        alert = (AlertDTO)getIntent().getSerializableExtra("complaint");
         setTitle("Alert Pictures");
 
 //        int index = 0;
@@ -38,7 +38,7 @@ public class FullPhotoActivity extends ActionBarActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         //recyclerView.setItemAnimator(new DefaultItemAnimator());
         //recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), RecyclerView.HORIZONTAL));
-//        adapter = new FullPictureAdapter(alert.getPhotoUploadList(), 1, getApplicationContext(), new FullPictureAdapter.PictureListener() {
+//        adapter = new FullPictureAdapter(complaint.getPhotoUploadList(), 1, getApplicationContext(), new FullPictureAdapter.PictureListener() {
 //            @Override
 //            public void onPictureClicked(int position) {
 //

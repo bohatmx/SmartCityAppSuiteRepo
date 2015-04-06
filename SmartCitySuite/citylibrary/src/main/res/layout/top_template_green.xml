@@ -34,24 +34,24 @@
 
         <ImageView
             android:id="@+id/TOP_icon"
-            android:src="@drawable/fire"
+            android:src="@drawable/ic_action_secure"
             android:layout_alignParentRight="true"
-            android:elevation="@dimen/mon_padding"
             android:layout_margin="@dimen/mon_wide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
     </RelativeLayout>
-    <TextView
-        android:id="@+id/TOP_fab"
-        android:text="3"
-        style="@style/TealCircleLarge"
+
+    <RelativeLayout
         android:layout_marginTop="@dimen/mon_hero_height_medium_less_30"
-        android:textColor="@color/white"
-        android:elevation="@dimen/mon_padding"
         android:layout_marginLeft="@dimen/mon_wide"
-        android:layout_width="64dp"
-        android:layout_height="64dp" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/fab_teal" />
+    </RelativeLayout>
+
+
 
 
 </RelativeLayout>

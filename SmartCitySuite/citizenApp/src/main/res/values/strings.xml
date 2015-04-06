@@ -47,5 +47,25 @@
     <string name="optional">Optional</string>
     <string name="active_alerts">Active City Alerts</string>
     <string name="address_not_found">Address could not be calculated from the Alert coordinates</string>
+    <string name="title_activity_main_drawer">MainDrawerActivity</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+    <string name="payments">Payments</string>
+    <string name="city_alerts">City Alerts</string>
+    <string name="my_complaints">My Complaints</string>
+    <string name="my_accounts">My Accounts</string>
+    <string name="comps_around_me">Complaints Around Me</string>
+    <string name="faq">Frequently Asked Questions</string>
+    <string name="comp_types">Complaint Types</string>
+    <string name="get_distance">Get Distance from where you are</string>
+    <string name="dist_calc">"Distance calculated is: "</string>
+    <string name="loc_unavailable">My location is not available</string>
 
 </resources>

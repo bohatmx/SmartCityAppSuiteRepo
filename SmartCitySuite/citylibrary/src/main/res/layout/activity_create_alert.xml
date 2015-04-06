@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context="com.boha.citylibrary.activities.CreateAlertActivity">
+    tools:context="com.boha.library.activities.CreateAlertActivity">
 
     <fragment
         android:id="@+id/fragment"
-        android:name="com.boha.citylibrary.fragments.CreateAlertFragment"
+        android:name="com.boha.library.fragments.CreateAlertFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </RelativeLayout>

@@ -38,6 +38,9 @@ import java.util.List;
  * @author aubreyM
  */
 public class RequestDTO {
+    public RequestDTO(Integer requestType) {
+        this.requestType = requestType;
+    }
 
     private Integer requestType, radius;
     private String userName, password;

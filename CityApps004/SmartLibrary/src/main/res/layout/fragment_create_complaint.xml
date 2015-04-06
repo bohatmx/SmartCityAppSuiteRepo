@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/grey"
+    android:padding="@dimen/mon_divider_tiny"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/CC_handle"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <RelativeLayout
+        android:id="@+id/CC_titleLayout"
+        android:layout_below="@id/CC_handle"
+        android:background="@color/midnight_blue"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mon_hero_height_medium">
+
+        <TextView
+            android:id="@+id/CC_title"
+            android:text="My Title Here"
+            style="@style/Title1TextStyleWhite"
+            android:layout_margin="@dimen/mon_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/CC_subTitle"
+            android:text="My sub title will occupy pride of place here"
+            style="@style/TextStyleSmall"
+            android:textColor="@color/white"
+            android:layout_below="@id/CC_title"
+            android:layout_alignLeft="@id/CC_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/CC_middle"
+        android:layout_below="@id/CC_titleLayout"
+        android:background="@color/white"
+        android:padding="@dimen/mon_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/CC_complaintType"
+            style="@style/Title2TextStyleBlue"
+            android:text="Select Complaint Type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/CC_comment"
+            android:layout_below="@id/CC_complaintType"
+            android:layout_marginTop="@dimen/mon_margin"
+            android:hint="Enter Details or Comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/CC_address"
+            android:layout_below="@id/CC_comment"
+            android:layout_marginTop="@dimen/mon_padding"
+            android:hint="Enter Complaint Address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/CC_btnSend"
+            android:layout_below="@id/CC_address"
+            android:layout_marginTop="@dimen/mon_divider"
+            android:background="@color/absa_red"
+            android:text="Send Complaint"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/CC_recyclerView"
+        android:background="@color/white"
+        android:layout_below="@id/CC_middle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:id="@+id/CC_noComplaintsLayout"
+        android:layout_below="@id/CC_middle"
+        android:gravity="center"
+        android:background="@color/beige_pale"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/CC_noComplaints"
+            style="@style/Title1TextStyleBlack"
+            android:text="No Complaints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        </RelativeLayout>
+
+    <TextView
+        android:id="@+id/CC_count"
+        style="@style/BlackCountBox"
+        android:text="0"
+        android:textSize="20sp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/mon_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/mon_hero_height_medium_lite"
+        android:layout_marginRight="@dimen/mon_wide"
+        android:layout_height="wrap_content">
+        <include layout="@layout/fab_teal"/>
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
