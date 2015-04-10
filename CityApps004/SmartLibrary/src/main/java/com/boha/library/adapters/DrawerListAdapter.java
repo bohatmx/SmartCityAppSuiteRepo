@@ -74,29 +74,34 @@ public class DrawerListAdapter extends ArrayAdapter<String> {
         item.txtCount.setVisibility(View.GONE);
         final String p = mList.get(position);
         item.txtString.setText(p);
-        if (p.equalsIgnoreCase("Payments")) {
+        if (p.equalsIgnoreCase(ctx.getString(R.string.payments))) {
             item.image.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_popup_reminder));
         }
-        if (p.equalsIgnoreCase("City Alerts")) {
+        if (p.equalsIgnoreCase(ctx.getString(R.string.city_alerts))) {
             item.image.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_dialog_alert));
         }
-        if (p.equalsIgnoreCase("My Complaints")) {
+        if (p.equalsIgnoreCase(ctx.getString(R.string.my_complaints))) {
             item.image.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_btn_speak_now));
         }
-        if (p.equalsIgnoreCase("My Accounts")) {
+        if (p.equalsIgnoreCase(ctx.getString(R.string.my_accounts))) {
             item.image.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_dialog_info));
         }
-        if (p.equalsIgnoreCase("City Gallery")) {
+        if (p.equalsIgnoreCase(ctx.getString(R.string.city_gallery))) {
             item.image.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_menu_gallery));
         }
-        if (p.equalsIgnoreCase("Complaints Around Me")) {
+        if (p.equalsIgnoreCase(ctx.getString(R.string.complaints_around_me))) {
             item.image.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_dialog_map));
         }
-        if (p.equalsIgnoreCase("Frequently Asked Questions")) {
+        if (p.equalsIgnoreCase(ctx.getString(R.string.faq))) {
             item.image.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_menu_help));
         }
+        if (p.equalsIgnoreCase(ctx.getString(R.string.city_news))) {
+            item.image.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_menu_info_details));
+        }
+        if (p.equalsIgnoreCase(ctx.getString(R.string.make_complaint))) {
+            item.image.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_menu_edit));
+        }
 
-        System.out.println("primaryColorDark: " + primaryColorDark);
         if (primaryColorDark != 0) {
             item.image.setColorFilter(primaryColorDark, PorterDuff.Mode.SRC_IN);
         }

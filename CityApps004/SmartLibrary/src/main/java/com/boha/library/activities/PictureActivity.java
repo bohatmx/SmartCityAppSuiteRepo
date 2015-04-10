@@ -31,6 +31,7 @@ import com.boha.library.R;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.AlertImageDTO;
 import com.boha.library.dto.ComplaintDTO;
+import com.boha.library.dto.ComplaintImageDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.services.PhotoUploadService;
@@ -72,6 +73,8 @@ public class PictureActivity extends ActionBarActivity
     ComplaintDTO complaint;
     NewsArticleDTO newsArticle;
     MunicipalityDTO municipality;
+    boolean mRequestingLocationUpdates;
+    TextView txtMessage;
     public static final int
             ALERT_IMAGE = 1,
             COMPLAINT_IMAGE = 2,
@@ -116,10 +119,6 @@ public class PictureActivity extends ActionBarActivity
         dispatchTakePictureIntent();
 
     }
-
-    boolean mRequestingLocationUpdates;
-    TextView txtMessage;
-
 
     @Override
     public void onResume() {
@@ -527,36 +526,45 @@ public class PictureActivity extends ActionBarActivity
                     PhotoUploadDTO photo = new PhotoUploadDTO();
                     switch (imageType) {
                         case ALERT_IMAGE:
-                            final AlertImageDTO p = new AlertImageDTO();
-                            p.setAlertID(alert.getAlertID());
-                            p.setMunicipalityID(municipality.getMunicipalityID());
-                            p.setLocalFilepath(currentThumbFile.getAbsolutePath());
-                            p.setLatitude(location.getLatitude());
-                            p.setLongitude(location.getLongitude());
-                            p.setDateTaken(new Date().getTime());
-                            photo.setAlertImage(p);
-
-                            PhotoCacheUtil.cachePhoto(ctx, photo, new PhotoCacheUtil.PhotoCacheListener() {
-                                @Override
-                                public void onFileDataDeserialized(ResponseDTO response) {
-
-                                }
-
-                                @Override
-                                public void onDataCached() {
-//                            Log.i(LOG, "### photo cached OK for alertID: " + p.getAlertID()
-//                                    + " type: " + complaint.getAlertType().getAlertTypeNmae());
-                                }
-
-                                @Override
-                                public void onError() {
-
-                                }
-                            });
-                            uploadPhotos();
+                            final AlertImageDTO ai = new AlertImageDTO();
+                            ai.setAlertID(alert.getAlertID());
+                            ai.setMunicipalityID(municipality.getMunicipalityID());
+                            ai.setLocalFilepath(currentThumbFile.getAbsolutePath());
+                            ai.setLatitude(location.getLatitude());
+                            ai.setLongitude(location.getLongitude());
+                            ai.setDateTaken(new Date().getTime());
+                            photo.setAlertImage(ai);
+                            break;
+                        case COMPLAINT_IMAGE:
+                            final ComplaintImageDTO ci = new ComplaintImageDTO();
+                            ci.setComplaintID(complaint.getComplaintID());
+                            ci.setMunicipalityID(municipality.getMunicipalityID());
+                            ci.setLocalFilepath(currentThumbFile.getAbsolutePath());
+                            ci.setLatitude(location.getLatitude());
+                            ci.setLongitude(location.getLongitude());
+                            ci.setDateTaken(new Date().getTime());
+                            photo.setComplaintImage(ci);
                             break;
                     }
 
+                    PhotoCacheUtil.cachePhoto(ctx, photo, new PhotoCacheUtil.PhotoCacheListener() {
+                        @Override
+                        public void onFileDataDeserialized(ResponseDTO response) {
+
+                        }
+
+                        @Override
+                        public void onDataCached() {
+//                            Log.i(LOG, "### photo cached OK for alertID: " + p.getAlertID()
+//                                    + " type: " + complaint.getAlertType().getAlertTypeNmae());
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
+                    uploadPhotos();
 
 
                 } catch (Exception e) {

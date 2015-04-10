@@ -80,8 +80,9 @@ public class PhotoUploadService extends IntentService {
         for (PhotoUploadDTO p : cache.getPhotoUploadList()) {
             if (p.getAlertImage() != null) {
                 if (p.getAlertImage().getDateTaken() == null) p.getAlertImage().setDateTaken(new Date().getTime());
-                sb.append("+++ Alert: ").append(p.getAlertImage().getDateTaken().toString()).append(" lat: ").append(p.getAlertImage().getLatitude());
-                sb.append(" lng: ").append(p.getAlertImage().getLatitude());
+                sb.append("+++ Alert: ").append(p.getAlertImage().getDateTaken().toString());
+//                        .append(" lat: ").append(p.getAlertImage().getLatitude());
+//                sb.append(" lng: ").append(p.getAlertImage().getLatitude());
                 if (p.getDateUploaded() != null)
                     sb.append(" ").append(sdf.format(p.getDateUploaded())).append("\n");
                 else
@@ -89,8 +90,9 @@ public class PhotoUploadService extends IntentService {
             }
             if (p.getComplaintImage() != null) {
                 if (p.getComplaintImage().getDateTaken() == null) p.getComplaintImage().setDateTaken(new Date().getTime());
-                sb.append("+++ Complaint: ").append(p.getComplaintImage().getDateTaken().toString()).append(" lat: ").append(p.getAlertImage().getLatitude());
-                sb.append(" lng: ").append(p.getComplaintImage().getLatitude());
+                sb.append("+++ Complaint: ").append(p.getComplaintImage().getDateTaken().toString());
+//                        .append(" lat: ").append(p.getAlertImage().getLatitude());
+//                sb.append(" lng: ").append(p.getComplaintImage().getLatitude());
                 if (p.getDateUploaded() != null)
                     sb.append(" ").append(sdf.format(p.getDateUploaded())).append("\n");
                 else

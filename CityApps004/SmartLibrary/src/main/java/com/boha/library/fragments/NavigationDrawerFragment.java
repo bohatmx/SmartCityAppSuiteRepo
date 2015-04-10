@@ -129,15 +129,13 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.e(LOG, "## onCreateView");
         ctx = getActivity();
         view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         setFields();
 
-        drawerListAdapter = new DrawerListAdapter(ctx, R.layout.drawer_item, destinationList, primaryDarkColor);
+        drawerListAdapter = new DrawerListAdapter(ctx,
+                R.layout.drawer_item, destinationList, primaryDarkColor);
         mDrawerListView.setAdapter(drawerListAdapter);
-
-
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return view;
     }
@@ -339,19 +337,19 @@ public class NavigationDrawerFragment extends Fragment {
             destinationList.add(ctx.getString(R.string.city_alerts));
             destinationList.add(ctx.getString(R.string.create_alert));
             destinationList.add(ctx.getString(R.string.comps_around_me));
+            destinationList.add(ctx.getString(R.string.city_news));
             destinationList.add(ctx.getString(R.string.city_gallery));
             destinationList.add(ctx.getString(R.string.faq));
         }
         if (profileInfo != null) {
             destinationList.add(ctx.getString(R.string.my_accounts));
             destinationList.add(ctx.getString(R.string.city_alerts));
-            destinationList.add(ctx.getString(R.string.my_complaints));
-            destinationList.add(ctx.getString(R.string.create_alert));
+            destinationList.add(ctx.getString(R.string.make_complaint));
+            destinationList.add(ctx.getString(R.string.city_news));
             destinationList.add(ctx.getString(R.string.comps_around_me));
             destinationList.add(ctx.getString(R.string.city_gallery));
             destinationList.add(ctx.getString(R.string.faq));
         }
-        Log.e("NavigationDrawer", "## destinationList: " + destinationList.size());
     }
 
 

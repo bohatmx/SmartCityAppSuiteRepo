@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/grey"
+    android:padding="@dimen/mon_divider_tiny"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/FLC_handle"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <RelativeLayout
+        android:id="@+id/FLC_titleLayout"
+        android:background="@color/midnight_blue"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mon_hero_height_medium">
+
+        <ImageView
+            android:id="@+id/FLC_hero"
+            android:src="@drawable/back6"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mon_hero_height_medium" />
+
+        <TextView
+            android:id="@+id/FLC_title"
+            android:text="My Title Here"
+            style="@style/Title1TextStyleWhite"
+            android:layout_margin="@dimen/mon_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/FLC_subTitle"
+            android:text="My sub title will occupy pride of place here"
+            style="@style/TextStyleSmall"
+            android:textColor="@color/white"
+            android:layout_below="@id/FLC_title"
+            android:layout_alignLeft="@id/FLC_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/FLC_listView"
+        android:padding="@dimen/mon_padding"
+        android:layout_below="@id/FLC_titleLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/FLC_count"
+        style="@style/BlackCountBoxSmall"
+        android:text="0"
+        android:visibility="gone"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/mon_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="130dp"
+        android:layout_marginRight="@dimen/mon_wide"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/fab_teal" />
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/mon_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

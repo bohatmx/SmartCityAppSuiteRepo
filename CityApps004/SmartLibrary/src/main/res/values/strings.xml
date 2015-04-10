@@ -69,5 +69,16 @@
     <string name="loc_unavailable">My location is not available</string>
     <string name="pay">Pay</string>
     <string name="acct_paymnts">"Account Payments: "</string>
+    <string name="no_complaints">No Complaints</string>
+    <string name="loc_services_not">Location Services Not Active</string>
+    <string name="enable_gps">Please enable Location Services and GPS</string>
+    <string name="complaints_around_me">Complaints Around Me</string>
+    <string name="enter_detail">Enter Details or Comment</string>
+    <string name="enter_complaint_address">Enter Complaint Address</string>
+    <string name="sel_complaint_type">Select Complaint Type</string>
+    <string name="make_complaint">Make a Complaint</string>
+    <string name="unable_connect_muni">Unable to reach your Municipality. Data may be out of date. Try again later</string>
+    <string name="complaints_history">Complaints History</string>
+    <string name="city_news">City News</string>
 
 </resources>

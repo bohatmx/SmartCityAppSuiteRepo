@@ -212,8 +212,9 @@ public class SplashActivity extends ActionBarActivity {
                         heroImage.setImageDrawable(getImage(ctx));
                         imageCount++;
                         if (imageCount > IMAGE_COUNT_MAX) {
-                            timer.cancel();
-                            timer = null;
+                            if (timer != null) {
+                                timer.cancel();
+                            }
                             //Track SplashActivity
                             CityApplication ca = (CityApplication) getApplication();
                             Tracker t = ca.getTracker(

@@ -48,7 +48,7 @@ public class RequestDTO {
             gcmRegistrationID, email,municipalityName;
     private Double latitude = 0.0, longitude = 0.0;
     private Boolean rideWebSocket = Boolean.TRUE;
-    private Boolean zipResponse = Boolean.FALSE;
+    private Boolean zipResponse = Boolean.TRUE;
     private AlertDTO alert;
     private ComplaintDTO complaint;
     private CountryDTO country;

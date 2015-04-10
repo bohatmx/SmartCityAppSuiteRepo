@@ -1,6 +1,9 @@
 package com.boha.smartcity.thekwini.activities;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Location;
@@ -21,12 +24,14 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.boha.library.activities.AlertMapActivity;
+import com.boha.library.activities.PictureActivity;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.fragments.AlertListFragment;
-import com.boha.library.fragments.ComplaintFragment;
+import com.boha.library.fragments.ComplaintCreateFragment;
+import com.boha.library.fragments.ComplaintListFragment;
 import com.boha.library.fragments.CreateAlertFragment;
 import com.boha.library.fragments.NavigationDrawerFragment;
 import com.boha.library.fragments.PageFragment;
@@ -48,7 +53,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class MainDrawerActivity extends ActionBarActivity
@@ -56,7 +60,8 @@ public class MainDrawerActivity extends ActionBarActivity
         CreateAlertFragment.CreateAlertFragmentListener,
         ImageGridFragment.ImageGridFragmentListener,
         AlertListFragment.AlertListener,
-        ComplaintFragment.ComplaintFragmentListener,
+        ComplaintCreateFragment.ComplaintFragmentListener,
+        ComplaintListFragment.ComplaintListFragmentListener,
         LocationListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
@@ -64,7 +69,8 @@ public class MainDrawerActivity extends ActionBarActivity
     CreateAlertFragment createAlertFragment;
     ImageGridFragment imageGridFragment;
     AlertListFragment alertListFragment;
-    ComplaintFragment complaintFragment;
+    ComplaintCreateFragment complaintCreateFragment;
+    ComplaintListFragment complaintListFragment;
     PagerAdapter adapter;
     Context ctx;
     int currentPageIndex;
@@ -80,13 +86,15 @@ public class MainDrawerActivity extends ActionBarActivity
     GoogleApiClient googleApiClient;
     ProgressBar progressBar;
     int themeDarkColor, themePrimaryColor, logo;
+    Activity activity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.w(LOG, "#### onCreate");
         setContentView(R.layout.activity_main_drawer);
         ctx = getApplicationContext();
-        progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        activity = this;
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
         //change topVIEW TO MATCH APP THEME
         Resources.Theme theme = getTheme();
@@ -298,27 +306,32 @@ public class MainDrawerActivity extends ActionBarActivity
         profileInfoFragment = ProfileInfoFragment.newInstance();
         createAlertFragment = CreateAlertFragment.newInstance(SharedUtil.getProfile(ctx));
         imageGridFragment = ImageGridFragment.newInstance();
-        complaintFragment = ComplaintFragment.newInstance();
+        complaintCreateFragment = ComplaintCreateFragment.newInstance();
         alertListFragment = AlertListFragment.newInstance(response);
+        complaintListFragment = ComplaintListFragment.newInstance();
 
-        alertListFragment.setThemeColors(themePrimaryColor,themeDarkColor);
-        complaintFragment.setThemeColors(themePrimaryColor,themeDarkColor);
-        profileInfoFragment.setThemeColors(themePrimaryColor,themeDarkColor);
+
+        alertListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
+        complaintCreateFragment.setThemeColors(themePrimaryColor, themeDarkColor);
+        profileInfoFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         createAlertFragment.setThemeColors(themePrimaryColor, themeDarkColor);
+        complaintListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 
         profileInfoFragment.setLogo(logo);
 
 
         profileInfoFragment.setPageTitle(ctx.getString(R.string.my_accounts));
         alertListFragment.setPageTitle(ctx.getString(R.string.active_alerts));
-        complaintFragment.setPageTitle(ctx.getString(R.string.my_complaints));
+        complaintCreateFragment.setPageTitle(ctx.getString(R.string.make_complaint));
         createAlertFragment.setPageTitle(ctx.getString(R.string.create_alert));
         imageGridFragment.setPageTitle(ctx.getString(R.string.city_gallery));
+        complaintListFragment.setPageTitle(ctx.getString(R.string.complaints_history));
 
         pageFragmentList.add(profileInfoFragment);
         pageFragmentList.add(alertListFragment);
-        pageFragmentList.add(createAlertFragment);
-        pageFragmentList.add(complaintFragment);
+//        pageFragmentList.add(createAlertFragment);
+        pageFragmentList.add(complaintCreateFragment);
+        pageFragmentList.add(complaintListFragment);
         pageFragmentList.add(imageGridFragment);
 
 
@@ -353,6 +366,36 @@ public class MainDrawerActivity extends ActionBarActivity
 
     @Override
     public void onFindComplaintsAroundMe() {
+
+    }
+
+    @Override
+    public void onComplaintAdded(final ComplaintDTO complaint) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String ref = "Reference Number: " + complaint.getReferenceNumber();
+                AlertDialog.Builder d = new AlertDialog.Builder(activity);
+                d.setTitle("Complaint Pictures")
+                        .setMessage(ref + "\n\nDo you want to take pictures for the complaint?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent x = new Intent(getApplicationContext(), PictureActivity.class);
+                                x.putExtra("complaint", complaint);
+                                x.putExtra("imageType", PictureActivity.COMPLAINT_IMAGE);
+                                startActivityForResult(x, REQUEST_COMPLAINT_PICTURES);
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .show();
+            }
+        });
 
     }
 
@@ -402,7 +445,7 @@ public class MainDrawerActivity extends ActionBarActivity
 
         Intent u = new Intent(this, AlertMapActivity.class);
         u.putExtra("alert", alert);
-        u.putExtra("logo",logo);
+        u.putExtra("logo", logo);
         startActivity(u);
     }
 
@@ -426,6 +469,7 @@ public class MainDrawerActivity extends ActionBarActivity
 
     @Override
     public void onLocationRequested() {
+        Log.d(LOG, "##### onLocationChanged ...");
         startLocationUpdates();
     }
 
@@ -437,22 +481,22 @@ public class MainDrawerActivity extends ActionBarActivity
     @Override
     public void onConnected(Bundle bundle) {
         Log.i(LOG,
-                "+++  onConnected() -  requestLocationUpdates ...");
+                "+++  GoogleApiClient onConnected() ...");
         mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(
                 googleApiClient);
 
-        Log.w(LOG, "## requesting location updates ....");
+        Log.w(LOG, "## setup location request, mCurrentLocation acc: " + mCurrentLocation.getAccuracy());
         mLocationRequest = LocationRequest.create();
-        mLocationRequest.setInterval(3000);
+        mLocationRequest.setInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setFastestInterval(1000);
-        startLocationUpdates();
+        mLocationRequest.setFastestInterval(500);
+//        startLocationUpdates();
     }
 
     @Override
     public void onStart() {
-        Log.i(LOG,
-                "## onStart - locationClient connecting ... ");
+        Log.d(LOG,
+                "## onStart - GoogleApiClient connecting ... ");
         if (googleApiClient != null) {
             if (mCurrentLocation == null) {
                 googleApiClient.connect();
@@ -478,16 +522,15 @@ public class MainDrawerActivity extends ActionBarActivity
 
     }
 
-    static final float ACCURACY_THRESHOLD = 30f;
+    static final float ACCURACY_THRESHOLD = 15f;
 
     @Override
     public void onLocationChanged(Location location) {
         Log.e(LOG, "### onLocationChanged accuracy: " + location.getAccuracy());
         if (location.getAccuracy() <= ACCURACY_THRESHOLD) {
             stopLocationUpdates();
-            lastAccurateGPStime = new Date().getTime();
-            if (complaintFragment != null)
-                complaintFragment.setLocation(location);
+            if (complaintCreateFragment != null)
+                complaintCreateFragment.setLocation(location);
             if (createAlertFragment != null)
                 createAlertFragment.setLocation(location);
         }
@@ -509,23 +552,18 @@ public class MainDrawerActivity extends ActionBarActivity
     }
 
     static final int ONE_MINUTE = 1000 * 60 * 60,
-            TWO_MINUTES = ONE_MINUTE * 2;
+            TWO_MINUTES = ONE_MINUTE * 2, REQUEST_COMPLAINT_PICTURES = 1123;
     long lastAccurateGPStime;
 
     protected void startLocationUpdates() {
-        Log.e(LOG, "### startLocationUpdates ....");
-        Date now = new Date();
-
-        if (now.getTime() - lastAccurateGPStime < ONE_MINUTE) {
-            Log.w(LOG, "-- location update still fresh, using stored coordinates");
-            onLocationChanged(mCurrentLocation);
-            return;
-        }
+        Log.d(LOG, "### startLocationUpdates ....");
         if (googleApiClient.isConnected()) {
             mRequestingLocationUpdates = true;
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     googleApiClient, mLocationRequest, this);
-            Log.e(LOG, "## requesting location updates ...");
+            Log.d(LOG, "## GoogleApiClient connected, requesting location updates ...");
+        } else {
+            Log.e(LOG, "------- GoogleApiClient is NOT connected");
         }
     }
 
@@ -537,6 +575,16 @@ public class MainDrawerActivity extends ActionBarActivity
         }
     }
 
+    @Override
+    public void onActivityResult(int reqCode, int result, Intent data) {
+        switch (reqCode) {
+            case REQUEST_COMPLAINT_PICTURES:
+                if (result == RESULT_OK) {
+
+                }
+                break;
+        }
+    }
 
     static final String LOG = MainDrawerActivity.class.getSimpleName();
 }

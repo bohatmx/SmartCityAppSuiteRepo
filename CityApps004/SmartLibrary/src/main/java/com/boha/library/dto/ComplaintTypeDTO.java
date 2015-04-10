@@ -12,6 +12,8 @@ public class ComplaintTypeDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     private Integer complaintTypeID, municipalityID, color;
     private String complaintTypeName;
+    private Boolean locationIsRequired = Boolean.TRUE;
+    private Boolean pictureRequired = Boolean.TRUE;
     private List<ComplaintDTO> complaintList;
     private ComplaintCategoryDTO complaintCategory;
 
@@ -23,6 +25,22 @@ public class ComplaintTypeDTO implements Serializable {
 
     public void setComplaintCategory(ComplaintCategoryDTO complaintCategory) {
         this.complaintCategory = complaintCategory;
+    }
+
+    public Boolean isLocationIsRequired() {
+        return locationIsRequired;
+    }
+
+    public Boolean isPictureRequired() {
+        return pictureRequired;
+    }
+
+    public void setPictureRequired(Boolean pictureRequired) {
+        this.pictureRequired = pictureRequired;
+    }
+
+    public void setLocationIsRequired(Boolean locationIsRequired) {
+        this.locationIsRequired = locationIsRequired;
     }
 
     public ComplaintTypeDTO() {

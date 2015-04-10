@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,8 +16,11 @@ import android.widget.TextView;
 import com.boha.library.R;
 import com.boha.library.dto.AccountDTO;
 import com.boha.library.util.Statics;
+import com.boha.library.util.Util;
 
 import java.text.DecimalFormat;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,7 +38,8 @@ public class PaymentStartFragment extends Fragment implements PageFragment{
     private int index, logo;
     private TextView txtTitle, txtSubTitle, txtFAB;
     private EditText editAmount;
-    private ImageView fabIcon;
+    private ImageView fabIcon, hero;
+    private Button btnPay;
     Context ctx;
 
     static final String LOG = PaymentStartFragment.class.getSimpleName();
@@ -88,10 +93,11 @@ public class PaymentStartFragment extends Fragment implements PageFragment{
         Log.w(LOG, "### setFields");
         txtTitle = (TextView)view.findViewById(R.id.TOP_title);
         topView = view.findViewById(R.id.TOP_titleLayout);
-
+        btnPay = (Button)view.findViewById(R.id.button);
         txtSubTitle = (TextView)view.findViewById(R.id.TOP_subTitle);
         txtFAB = (TextView)view.findViewById(R.id.FAB_text);
         fabIcon = (ImageView)view.findViewById(R.id.FAB_icon);
+        hero = (ImageView)view.findViewById(R.id.TOP_heroImage);
         editAmount = (EditText)view.findViewById(R.id.PAY_amount);
         txtFAB.setVisibility(View.GONE);
         txtFAB.setText(getActivity().getString(R.string.pay));
@@ -99,6 +105,7 @@ public class PaymentStartFragment extends Fragment implements PageFragment{
         fabIcon.setVisibility(View.VISIBLE);
 
         Statics.setRobotoFontLight(getActivity(),editAmount);
+        animateSomething();
         
     }
     @Override
@@ -140,7 +147,25 @@ public class PaymentStartFragment extends Fragment implements PageFragment{
 
     @Override
     public void animateSomething() {
-
+        final Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        timer.cancel();
+                        hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+                        Util.expand(hero, 1000, new Util.UtilAnimationListener() {
+                            @Override
+                            public void onAnimationEnded() {
+                                Util.flashSeveralTimes(btnPay, 30, 3, null);
+                            }
+                        });
+                    }
+                });
+            }
+        }, 500);
     }
 
     int primaryColor,  primaryDarkColor;

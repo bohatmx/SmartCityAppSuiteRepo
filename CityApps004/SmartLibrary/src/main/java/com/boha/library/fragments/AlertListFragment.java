@@ -58,7 +58,6 @@ public class AlertListFragment extends Fragment implements PageFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e(LOG,"%% onCreate ");
         if (getArguments() != null) {
             ResponseDTO r = (ResponseDTO)getArguments().getSerializable("response");
             alertList = r.getAlertList();
@@ -83,7 +82,6 @@ public class AlertListFragment extends Fragment implements PageFragment {
     int logo;
 
     public void setLocation(Location location) {
-        Log.w(LOG, "##### setLocation ");
         this.location = location;
         refreshAlerts();
 
@@ -92,7 +90,6 @@ public class AlertListFragment extends Fragment implements PageFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.e(LOG, "## onCreateView");
         view = inflater.inflate(R.layout.fragment_alert_list, container, false);
         topView = inflater.inflate(R.layout.alert_top, null);
         ctx = getActivity();
@@ -222,9 +219,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
         CacheUtil.cacheAlertData(ctx,r,null);
     }
     public void refreshAlerts() {
-        Log.d(LOG, "## refreshAlerts");
         if (location == null) {
-            Log.e(LOG, "## location is null");
             return;
         }
 
@@ -233,13 +228,11 @@ public class AlertListFragment extends Fragment implements PageFragment {
         w.setLongitude(location.getLongitude());
         w.setRadius(radius);
 
-        Log.w(LOG, "getting remote alerts, radius: " + radius);
         progressBar.setVisibility(View.VISIBLE);
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO response) {
                 if (response.getStatusCode() == 0) {
-                    Log.e(LOG, "### OK response from server ...");
                     if (alertList == null) alertList = new ArrayList<AlertDTO>();
                     if (response.getMessage() == null) {
                         alertList = response.getAlertList();
@@ -264,7 +257,6 @@ public class AlertListFragment extends Fragment implements PageFragment {
                         @Override
                         public void run() {
                             progressBar.setVisibility(View.GONE);
-                            Log.w(LOG, ".... about to set list");
                             setList();
 
                         }
@@ -294,7 +286,6 @@ public class AlertListFragment extends Fragment implements PageFragment {
                 alertList, new AlertListAdapter.AlertListListener() {
             @Override
             public void onAlertClicked(int position) {
-                Log.e(LOG,"### onAlertClicked, position: " + position);
 //                if (position == 0) return;
                 mListener.onAlertClicked(alertList.get(position));
             }

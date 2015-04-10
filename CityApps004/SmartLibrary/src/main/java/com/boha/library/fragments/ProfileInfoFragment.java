@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,7 +68,6 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.w(LOG, "onCreateView");
         view = inflater.inflate(R.layout.fragment_citizen, container, false);
         ctx = getActivity();
         setFields();
@@ -84,16 +82,13 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(LOG, "## onResume");
         btnAccountDetails = (Button) view.findViewById(R.id.button);
     }
 
     private void getCachedInfo() {
-        Log.e(LOG, "getCachedInfo");
         CacheUtil.getCacheLoginData(ctx, new CacheUtil.CacheRetrievalListener() {
             @Override
             public void onCacheRetrieved(ResponseDTO response) {
-                Log.w(LOG, "Cache has returned, checking for data");
                 if (response != null) {
                     profileInfo = response.getProfileInfoList().get(0);
                     getTotals();
@@ -113,7 +108,6 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
     }
 
     private void getTotals() {
-        Log.w(LOG, "getTotals - setting field values");
         totArrears = 0;
         totBalance = 0;
         if (profileInfo.getAccountList() == null) {
