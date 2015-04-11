@@ -95,6 +95,5 @@
     <orderEntry type="library" exported="" name="joda-time-2.3" level="project" />
     <orderEntry type="library" exported="" name="acra-4.5.0" level="project" />
     <orderEntry type="library" exported="" name="SmartLibrary-unspecified" level="project" />
-    <orderEntry type="module" module-name="SmartLibrary" />
   </component>
 </module>
