@@ -1,0 +1,42 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.boha.citizenapp.activities.SplashActivity">
+
+    <item
+        android:id="@+id/action_help"
+        android:title="@string/hello_world"
+        android:icon="@drawable/ic_action_help"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_zulu"
+        android:title="isiZulu"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_afrikaans"
+        android:title="Afrikaans"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_french"
+        android:title="French"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_german"
+        android:title="German"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_portuguese"
+        android:title="Portuguese"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_english"
+        android:title="English"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+</menu>

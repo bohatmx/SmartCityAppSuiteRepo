@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/grey"
+    android:padding="@dimen/mon_divider"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/FRAG_SPLASH_heroImage"
+        android:src="@drawable/banner2"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <TextView
+        android:id="@+id/FRAG_SPLASH_caption"
+        android:layout_alignParentBottom="true"
+        android:text="Marketing Opportunity in this space"
+        android:textColor="@color/white"
+        style="@style/Title3TextStyleBlack"
+        android:padding="@dimen/mon_padding"
+        android:layout_marginBottom="@dimen/mon_margin"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

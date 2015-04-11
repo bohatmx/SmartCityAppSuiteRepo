@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="@dimen/mon_padding"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/ITEM_ACCT_topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/ITEM_ACCT_number"
+            style="@style/GreenCircleSmall"
+            android:text="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/ITEM_ACCT_accountNumber"
+            style="@style/Title2TextStyleBlack"
+            android:text="988-7373673"
+            android:layout_toRightOf="@id/ITEM_ACCT_number"
+            android:layout_marginLeft="@dimen/mon_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/ITEM_ACCT_currBal"
+            style="@style/TextStyleBoldBlueSmall"
+            android:text="5456.67"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/mon_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/ITEM_ACCT_accountName"
+        style="@style/TextStyleGreySmall"
+        android:text="Account Name Here"
+        android:layout_below="@id/ITEM_ACCT_topLayout"
+        android:layout_marginLeft="44dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

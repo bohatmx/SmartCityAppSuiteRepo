@@ -1,0 +1,112 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.com.boha.monitor.library.activities.PictureRecyclerGridActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/CCX_layout"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/CCX_titleLayout"
+            android:background="@color/material_deep_teal_500"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mon_hero_height_medium">
+
+            <TextView
+                android:id="@+id/CCX_title"
+                android:text="My Complaint Type Here"
+                style="@style/Title1TextStyleWhite"
+                android:layout_marginTop="@dimen/mon_margin"
+                android:layout_centerHorizontal="false"
+                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout
+                android:id="@+id/CCX_subLayout"
+                android:layout_below="@id/CCX_title"
+                android:layout_marginTop="@dimen/mon_wider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/CCX_time"
+                    android:text="10:10"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/mon_padding"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/CCX_date"
+                    android:text="Saturday, 23 December 2078"
+                    style="@style/TextStyleSmall"
+                    android:textColor="@color/white"
+                    android:layout_toLeftOf="@id/CCX_time"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/mon_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/CCX_addressLayout"
+            android:layout_below="@id/CCX_titleLayout"
+            android:padding="@dimen/mon_margin"
+            android:background="@color/black"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/CCX_label"
+                style="@style/TextStyleGreySmall"
+                android:text="Complaint Address"
+                android:layout_marginRight="@dimen/mon_padding"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/CCX_address"
+                style="@style/Title3TextStyleBlue"
+                android:layout_below="@id/CCX_label"
+                android:layout_marginTop="@dimen/mon_padding"
+                android:text="The Dungeon, 30 Kingfisher Drive, Pecanwood Estate, 2016, Hartbeestpoort, North West, South Africa ZA"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+
+        
+    </RelativeLayout>
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/PG_recyclerView"
+        android:layout_below="@id/CCX_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <TextView
+        android:id="@+id/CCX_fab"
+        android:text="A"
+        style="@style/BlackCircleLarge"
+        android:layout_marginTop="@dimen/mon_hero_height_medium_lite"
+        android:textColor="@color/white"
+        android:layout_marginLeft="@dimen/mon_wide"
+        android:elevation="@dimen/mon_padding"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
+
+
+</RelativeLayout>
