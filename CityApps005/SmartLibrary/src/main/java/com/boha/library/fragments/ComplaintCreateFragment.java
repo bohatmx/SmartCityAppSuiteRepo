@@ -148,10 +148,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
     private void sendComplaint() {
 
-        if (editAddress.getText().toString().isEmpty()) {
-            Util.showToast(ctx, "Please enter address");
-            return;
-        }
+
         if (editComment.getText().toString().isEmpty()) {
             Util.showToast(ctx, "Please enter complaint");
             return;
@@ -160,7 +157,12 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             Util.showToast(ctx, "Please select complaint type");
             return;
         }
-
+        if (complaintType.isLocationIsRequired()) {
+            if (editAddress.getText().toString().isEmpty()) {
+                Util.showToast(ctx, "Please enter address");
+                return;
+            }
+        }
         if (complaintType.isLocationIsRequired() && location == null) {
             mListener.onLocationRequested();
             return;
@@ -179,6 +181,8 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         complaint.getProfileInfo().setComplaintList(null);
         complaint.getProfileInfo().setFirstName(null);
         complaint.getProfileInfo().setLastName(null);
+        complaint.getProfileInfo().setEmail(null);
+        complaint.getProfileInfo().setCellNumber(null);
         complaintType.setComplaintCategory(null);
         complaint.setComplaintType(complaintType);
         complaint.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
@@ -303,6 +307,8 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
                                         } else {
                                             Util.collapse(addressLayout,500,null);
+                                            btnSend.setEnabled(true);
+                                            btnSend.setAlpha(1.0f);
                                         }
 
                                     }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -61,6 +62,12 @@ public class SplashActivity extends ActionBarActivity {
         logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.logo));
         setTitle(MUNICIPALITY_NAME + " SmartCity");
         startTimer();
+        ActionBar actionBar = getSupportActionBar();
+        Util.setCustomActionBar(ctx,
+                actionBar,
+                MUNICIPALITY_NAME,
+                ctx.getResources().getDrawable(R.drawable.logo));
+        getSupportActionBar().setTitle("");
         getMunicipality();
 
 
@@ -84,7 +91,7 @@ public class SplashActivity extends ActionBarActivity {
                     @Override
                     public void onAnimationEnded() {
                         Intent intent = new Intent(ctx, RegistrationActivity.class);
-                        startActivity(intent);
+                        startActivityForResult(intent, REQUEST_SIGN_IN);
                     }
                 });
 
@@ -97,7 +104,7 @@ public class SplashActivity extends ActionBarActivity {
                     @Override
                     public void onAnimationEnded() {
                         Intent intent = new Intent(ctx, SigninActivity.class);
-                        startActivity(intent);
+                        startActivityForResult(intent, REQUEST_SIGN_IN);
                     }
                 });
             }
@@ -111,6 +118,19 @@ public class SplashActivity extends ActionBarActivity {
 
     }
 
+    @Override
+    public void onActivityResult(int reqCode, int resCode, Intent data) {
+        Log.w(LOG, "## onActivityResult resCode: " + resCode);
+        switch (reqCode) {
+            case REQUEST_SIGN_IN:
+                if (resCode == RESULT_OK) {
+                    Log.w(LOG, "## Collapsing sign in layout");
+                    Util.collapse(actionsView, 100, null);
+                    finish();
+                }
+                break;
+        }
+    }
     private void getMunicipality() {
         municipality = SharedUtil.getMunicipality(ctx);
         if (municipality == null) {
@@ -269,6 +289,7 @@ public class SplashActivity extends ActionBarActivity {
 
     static int index, imageCount;
     static int lastIndex;
+    static final int REQUEST_SIGN_IN = 9033;
     static final int IMAGE_COUNT_MAX = 20;
 
     public static Drawable getImage(Context ctx) {

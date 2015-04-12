@@ -211,12 +211,15 @@ public class AlertListFragment extends Fragment implements PageFragment {
             alertList = new ArrayList<>();
         }
         alertList.add(0, alert);
-        adapter.notifyDataSetChanged();
-        btnCount.setText("" + alertList.size());
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+            btnCount.setText("" + alertList.size());
+        }
 
         ResponseDTO r = new ResponseDTO();
         r.setAlertList(alertList);
         CacheUtil.cacheAlertData(ctx,r,null);
+
     }
     public void refreshAlerts() {
         if (location == null) {

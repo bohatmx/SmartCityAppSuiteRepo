@@ -77,21 +77,23 @@ public class Util {
     }
 
     public static String getAlertImageURL(AlertImageDTO p) {
-        StringBuilder stringBuilder = getStartURL(p.getMunicipalityID());
-        stringBuilder.append("/alert")
+        StringBuilder sb = getStartURL(p.getMunicipalityID());
+        sb.append("/alerts/");
+        sb.append("/alert")
                 .append(p.getAlertID()).append("/")
                 .append(p.getFileName());
-        Log.i("Util", "Loading alert image: " + stringBuilder.toString());
-        return stringBuilder.toString();
+        Log.i("Util", "Loading alert image: " + sb.toString());
+        return sb.toString();
     }
 
     public static String getComplaintImageURL(ComplaintImageDTO p) {
-        StringBuilder stringBuilder = getStartURL(p.getMunicipalityID());
-        stringBuilder.append("/complaint")
+        StringBuilder sb = getStartURL(p.getMunicipalityID());
+        sb.append("/complaints/");
+        sb.append("complaint")
                 .append(p.getComplaintID()).append("/")
                 .append(p.getFileName());
-        Log.i("Util", "Loading complaint image: " + stringBuilder.toString());
-        return stringBuilder.toString();
+        Log.i("Util", "Loading complaint image: " + sb.toString());
+        return sb.toString();
     }
 
     private static StringBuilder getStartURL(Integer municipalityID) {

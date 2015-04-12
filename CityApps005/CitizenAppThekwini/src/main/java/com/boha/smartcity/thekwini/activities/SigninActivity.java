@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -43,7 +44,7 @@ import java.util.TimerTask;
 
 public class SigninActivity extends ActionBarActivity {
 
-    ImageView heroImage, logo;
+    ImageView heroImage;
     Timer timer;
     TextView txtWelcome;
     View handle;
@@ -72,6 +73,13 @@ public class SigninActivity extends ActionBarActivity {
 
         setFields();
         getEmail();
+
+        ActionBar actionBar = getSupportActionBar();
+        Util.setCustomActionBar(ctx,
+                actionBar,
+                municipality.getMunicipalityName(),
+                ctx.getResources().getDrawable(R.drawable.logo));
+        getSupportActionBar().setTitle("");
     }
 
     @Override
@@ -90,9 +98,9 @@ public class SigninActivity extends ActionBarActivity {
         progressBar = (ProgressBar) findViewById(R.id.SIGNIN_progress);
         heroImage = (ImageView) findViewById(R.id.SIGNIN_heroImage);
         txtWelcome = (TextView) findViewById(R.id.SIGNIN_welcome);
-        logo = (ImageView) findViewById(R.id.SIGNIN_dome);
+        //logo = (ImageView) findViewById(R.id.SIGNIN_dome);
 
-        logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.logo));
+        //logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.logo));
         handle = findViewById(R.id.SIGNIN_handle);
         progressBar.setVisibility(View.GONE);
 
@@ -182,10 +190,21 @@ public class SigninActivity extends ActionBarActivity {
                         sp.setPassword(profileInfo.getPassword());
 
                         SharedUtil.saveProfile(ctx, sp);
-                        CacheUtil.cacheLoginData(ctx, response, null);
-                        Intent i = new Intent(ctx, MainDrawerActivity.class);
-                        startActivity(i);
-                        finish();
+                        CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
+                            @Override
+                            public void onDataCached() {
+                                Intent i = new Intent(ctx, MainDrawerActivity.class);
+                                startActivity(i);
+                                finish();
+                                onBackPressed();
+                            }
+
+                            @Override
+                            public void onError() {
+                                Util.showErrorToast(ctx,"Problem saving data");
+                            }
+                        });
+
                     }
                 });
             }
@@ -207,6 +226,17 @@ public class SigninActivity extends ActionBarActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        Log.w(LOG, "## onBackPressed");
+        profileInfo = SharedUtil.getProfile(ctx);
+        if (profileInfo != null) {
+            setResult(RESULT_OK);
+        } else {
+            setResult(RESULT_CANCELED);
+        }
+        finish();
+    }
     public void getEmail() {
         AccountManager am = AccountManager.get(getApplicationContext());
         Account[] accts = am.getAccounts();

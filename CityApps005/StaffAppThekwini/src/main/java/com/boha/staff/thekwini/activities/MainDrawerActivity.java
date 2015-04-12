@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -27,6 +26,7 @@ import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.MunicipalityStaffDTO;
 import com.boha.library.fragments.AlertListFragment;
+import com.boha.library.fragments.ComplaintsAroundMeFragment;
 import com.boha.library.fragments.CreateAlertFragment;
 import com.boha.library.fragments.NavigationDrawerFragment;
 import com.boha.library.fragments.PageFragment;
@@ -52,11 +52,13 @@ public class MainDrawerActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerListener,
         CreateAlertFragment.CreateAlertFragmentListener,
         AlertListFragment.AlertListener,
+        ComplaintsAroundMeFragment.ComplaintAroundMeListener,
         LocationListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     CreateAlertFragment createAlertFragment;
     AlertListFragment alertListFragment;
+    ComplaintsAroundMeFragment complaintsAroundMeFragment;
     PagerAdapter adapter;
     Context ctx;
     int currentPageIndex;
@@ -71,7 +73,7 @@ public class MainDrawerActivity extends ActionBarActivity
     LocationRequest mLocationRequest;
     GoogleApiClient googleApiClient;
     ProgressBar progressBar;
-    int themeDarkColor, themePrimaryColor;
+    int themeDarkColor, themePrimaryColor, logo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +89,7 @@ public class MainDrawerActivity extends ActionBarActivity
         themeDarkColor = typedValue.data;
         theme.resolveAttribute(com.boha.library.R.attr.colorPrimary, typedValue, true);
         themePrimaryColor = typedValue.data;
+        logo = R.drawable.logo;
 
         Log.w(LOG, "##Theme themeDarkColor: " + themeDarkColor + " themePrimaryColor: " + themePrimaryColor);
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -160,11 +163,15 @@ public class MainDrawerActivity extends ActionBarActivity
             Log.e(LOG, "### onDestinationSelected pageFragmentList is null");
             return;
         }
+
         int index = 0;
         for (PageFragment pf : pageFragmentList) {
             if (pf.getPageTitle() != null) {
                 if (pf.getPageTitle().equalsIgnoreCase(text)) {
                     mPager.setCurrentItem(index, true);
+                    if (pf instanceof ComplaintsAroundMeFragment) {
+                        complaintsAroundMeFragment.getComplaintsAroundMe();
+                    }
                     return;
                 }
             }
@@ -256,22 +263,28 @@ public class MainDrawerActivity extends ActionBarActivity
     }
 
 
-    private void buildPages() {
-        Log.e("MainPager", "starting PhotoUploadService");
+    private void buildPages(){
+        Log.e(LOG,"starting PhotoUploadService");
         Intent x = new Intent(ctx, PhotoUploadService.class);
         startService(x);
         pageFragmentList = new ArrayList<>();
         createAlertFragment = CreateAlertFragment.newInstance(SharedUtil.getMunicipalityStaff(ctx));
         alertListFragment = AlertListFragment.newInstance(response);
+        complaintsAroundMeFragment = ComplaintsAroundMeFragment.newInstance();
 
         createAlertFragment.setPageTitle(ctx.getString(R.string.create_alert));
         alertListFragment.setPageTitle(ctx.getString(R.string.city_alerts));
         alertListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         createAlertFragment.setThemeColors(themePrimaryColor, themeDarkColor);
+        complaintsAroundMeFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 
+        alertListFragment.setPageTitle(ctx.getString(R.string.city_alerts));
+        createAlertFragment.setPageTitle(ctx.getString(R.string.create_alert));
+        complaintsAroundMeFragment.setPageTitle(ctx.getString(R.string.complaints_around_me));
 
         pageFragmentList.add(alertListFragment);
         pageFragmentList.add(createAlertFragment);
+        pageFragmentList.add(complaintsAroundMeFragment);
 
         adapter = new PagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(adapter);
@@ -295,6 +308,13 @@ public class MainDrawerActivity extends ActionBarActivity
 
             }
         });
+    }
+
+    boolean isLocationForComplaints;
+    @Override
+    public void onLocationForComplaintsAroundMe() {
+        isLocationForComplaints = true;
+        startLocationUpdates();
     }
 
 
@@ -356,7 +376,7 @@ public class MainDrawerActivity extends ActionBarActivity
 
     @Override
     public void onAlertSent(AlertDTO alert) {
-        //TODO add this alert on top of list
+
         alertListFragment.onNewAlertSent(alert);
         Intent w = new Intent(ctx, PictureActivity.class);
         w.putExtra("alert", alert);
@@ -426,15 +446,17 @@ public class MainDrawerActivity extends ActionBarActivity
 
     }
 
-    static final float ACCURACY_THRESHOLD = 30f;
+    static final float ACCURACY_THRESHOLD = 20f;
 
     @Override
     public void onLocationChanged(Location location) {
         Log.e(LOG, "### onLocationChanged accuracy: " + location.getAccuracy());
         if (location.getAccuracy() <= ACCURACY_THRESHOLD) {
             stopLocationUpdates();
-            lastAccurateGPStime = new Date().getTime();
-
+            if (isLocationForComplaints) {
+                isLocationForComplaints = false;
+                complaintsAroundMeFragment.setLocation(location);
+            }
             if (createAlertFragment != null)
                 createAlertFragment.setLocation(location);
         }
@@ -449,8 +471,13 @@ public class MainDrawerActivity extends ActionBarActivity
     public void onResume() {
         Log.d(LOG, "@@@ onResume...........");
         super.onResume();
-        if (googleApiClient.isConnected() && !mRequestingLocationUpdates) {
-            startLocationUpdates();
+        if (googleApiClient.isConnected()) {
+            if (!mRequestingLocationUpdates) {
+                startLocationUpdates();
+            }
+        }else {
+            Log.d(LOG,"## re-connecting GoogleApiClient ...");
+            googleApiClient.connect();
         }
 
     }
@@ -481,6 +508,7 @@ public class MainDrawerActivity extends ActionBarActivity
         if (googleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(
                     googleApiClient, this);
+            mRequestingLocationUpdates = false;
         }
     }
 

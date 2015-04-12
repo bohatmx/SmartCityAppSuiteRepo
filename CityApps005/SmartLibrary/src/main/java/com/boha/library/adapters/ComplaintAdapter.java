@@ -27,6 +27,8 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.Comp
     public interface ComplaintListener {
         public void onFollowRequested(ComplaintDTO complaint);
         public void onDetailsRequested(ComplaintDTO complaint);
+        public void onCameraRequested(ComplaintDTO complaint);
+        public void onImagesRequested(ComplaintDTO complaint);
     }
 
     private ComplaintListener listener;
@@ -100,6 +102,29 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.Comp
                 });
             }
         });
+        holder.iconCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.flashOnce(holder.iconCamera, 300, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        listener.onCameraRequested(p);
+                    }
+                });
+            }
+        });
+        holder.iconRoll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.flashOnce(holder.iconRoll, 300, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        listener.onImagesRequested(p);
+                    }
+                });
+            }
+        });
+
 
 
     }
@@ -114,7 +139,7 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.Comp
     static final SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm", loc);
 
     public class ComplaintHolder extends RecyclerView.ViewHolder {
-        protected ImageView image, iconDetails, iconFollow;
+        protected ImageView image, iconDetails, iconFollow, iconCamera, iconRoll;
         protected TextView txtComplaintType, txtColor, txtDate, txtComment, txtAddress, txtRef;
         protected View detailsView;
         protected int position;
@@ -132,14 +157,18 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.Comp
             detailsView = itemView.findViewById(R.id.CI_detailsView);
             iconDetails = (ImageView)itemView.findViewById(R.id.CI_iconDetail);
             iconFollow = (ImageView)itemView.findViewById(R.id.CI_iconFollow);
-
+            iconCamera = (ImageView)itemView.findViewById(R.id.CI_iconCamera);
+            iconRoll = (ImageView)itemView.findViewById(R.id.CI_iconRoll);
 
             if (themeDarkColor != 0) {
                 iconDetails.setColorFilter(themeDarkColor, PorterDuff.Mode.SRC_IN);
+                iconFollow.setColorFilter(themeDarkColor, PorterDuff.Mode.SRC_IN);
+                iconCamera.setColorFilter(themeDarkColor, PorterDuff.Mode.SRC_IN);
+                iconRoll.setColorFilter(themeDarkColor, PorterDuff.Mode.SRC_IN);
             }
 
             if (themeDarkColor != 0) {
-                iconFollow.setColorFilter(themeDarkColor, PorterDuff.Mode.SRC_IN);
+
             }
         }
 

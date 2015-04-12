@@ -9,7 +9,7 @@
 
     <RelativeLayout
         android:id="@+id/CAM_typeLayout"
-        android:background="@color/beige_pale"
+        android:background="@color/white"
         android:padding="@dimen/mon_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -17,7 +17,7 @@
         <TextView
             android:id="@+id/CAM_label1"
             style="@style/TextStyleGreySmall"
-            android:text="Alert Type "
+            android:text="Pictures For: "
             android:layout_marginLeft="@dimen/mon_divider"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
@@ -26,29 +26,22 @@
         <TextView
             android:id="@+id/CAM_alertTypeName"
             android:layout_toRightOf="@id/CAM_label1"
-            style="@style/Title2TextStyleBlack"
+            style="@style/Title3TextStyleBlack"
             android:text="AlertType Name Here"
             android:layout_marginLeft="@dimen/mon_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/CAM_msgLayout"
-        android:layout_below="@+id/CAM_typeLayout"
-        android:padding="@dimen/mon_padding"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
         <TextView
             android:id="@+id/CAM_message"
-            android:text="Tap picture to get Camera"
-            style="@style/Title2TextStyleBlue"
+            android:text="Tap picture to open Camera"
+            style="@style/TextStyleGreySmall"
+            android:layout_below="@id/CAM_alertTypeName"
+            android:layout_alignLeft="@id/CAM_alertTypeName"
+            android:layout_marginTop="@dimen/mon_padding"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
 
     </RelativeLayout>
 
@@ -56,7 +49,7 @@
         android:id="@+id/CAM_imageLayout"
         android:layout_width="match_parent"
         android:background="@color/black"
-        android:layout_below="@+id/CAM_msgLayout"
+        android:layout_below="@+id/CAM_typeLayout"
         android:layout_height="match_parent">
 
         <HorizontalScrollView

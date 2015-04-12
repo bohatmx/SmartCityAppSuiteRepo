@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -53,7 +53,6 @@ public class SigninActivity extends ActionBarActivity {
     Activity activity;
     Button btnSend;
     EditText editPassword;
-    static final String LOG = SigninActivity.class.getSimpleName();
     ResponseDTO response;
     Spinner spinner;
     MunicipalityStaffDTO staff;
@@ -73,6 +72,13 @@ public class SigninActivity extends ActionBarActivity {
 
         setFields();
         getEmail();
+        municipality = SharedUtil.getMunicipality(ctx);
+        ActionBar actionBar = getSupportActionBar();
+        Util.setCustomActionBar(ctx,
+                actionBar,
+                municipality.getMunicipalityName(),
+                ctx.getResources().getDrawable(R.drawable.logo));
+        getSupportActionBar().setTitle("");
     }
 
     @Override
@@ -177,10 +183,26 @@ public class SigninActivity extends ActionBarActivity {
                         sp.setPassword(staff.getPassword());
 
                         SharedUtil.saveMunicipalityStaff(ctx, sp);
-                        CacheUtil.cacheLoginData(ctx, response, null);
-                        Intent i = new Intent(ctx, MainDrawerActivity.class);
-                        startActivity(i);
-                        finish();
+                        CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
+                            @Override
+                            public void onDataCached() {
+                                Intent i = new Intent(ctx, MainDrawerActivity.class);
+                                startActivity(i);
+                                onBackPressed();
+                            }
+
+                            @Override
+                            public void onError() {
+
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Util.showErrorToast(ctx,"Problem saving data");
+                                    }
+                                });
+                            }
+                        });
+
                     }
                 });
             }
@@ -203,6 +225,18 @@ public class SigninActivity extends ActionBarActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        Log.w(LOG, "## onBackPressed");
+        staff = SharedUtil.getMunicipalityStaff(ctx);
+        if (staff != null) {
+            setResult(RESULT_OK);
+        } else {
+            setResult(RESULT_CANCELED);
+        }
+        finish();
+    }
+    static final String LOG = SplashActivity.class.getSimpleName();
     public void getEmail() {
         AccountManager am = AccountManager.get(getApplicationContext());
         Account[] accts = am.getAccounts();

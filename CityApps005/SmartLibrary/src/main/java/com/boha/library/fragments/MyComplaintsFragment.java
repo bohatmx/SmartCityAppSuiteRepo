@@ -115,6 +115,16 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
 
             }
 
+            @Override
+            public void onCameraRequested(ComplaintDTO complaint) {
+
+            }
+
+            @Override
+            public void onImagesRequested(ComplaintDTO complaint) {
+
+            }
+
         });
         recyclerView.setAdapter(complaintAdapter);
 

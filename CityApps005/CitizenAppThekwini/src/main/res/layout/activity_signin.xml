@@ -3,7 +3,8 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-
+        android:background="@color/grey"
+        android:padding="@dimen/mon_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -26,29 +27,19 @@
                 android:layout_height="260dp" />
 
 
-            <ImageView
-                android:id="@+id/SIGNIN_dome"
-                android:src="@drawable/abc_btn_check_material"
-                android:layout_margin="@dimen/mon_margin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_below="@id/SIGNIN_heroLayout"
+            android:padding="@dimen/mon_wide"
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:id="@+id/SIGNIN_welcomeLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </RelativeLayout>
 
             <EditText
                 android:id="@+id/SIGNIN_editUserID"
-                android:layout_below="@id/SIGNIN_welcomeLayout"
                 android:layout_marginTop="@dimen/mon_wide"
                 android:inputType="number"
                 style="@style/Title2TextStyleBlue"
@@ -109,9 +100,9 @@
         <TextView
             android:id="@+id/SIGNIN_welcome"
             android:text="@string/welcome"
-            style="@style/Title3TextStyleBlack"
+            style="@style/Title1TextStyleWhite"
             android:textColor="@color/white"
-            android:layout_margin="@dimen/mon_padding"
+            android:layout_marginTop="@dimen/mon_hero_height_medium_lite"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

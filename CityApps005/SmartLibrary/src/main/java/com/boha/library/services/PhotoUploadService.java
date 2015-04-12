@@ -157,7 +157,7 @@ public class PhotoUploadService extends IntentService {
             public void onPhotoUploaded() {
                 long end = System.currentTimeMillis();
                 Log.i(LOG, "---- photo uploaded, elapsed: " + Util.getElapsed(start, end) + " seconds");
-                dto.setDateUploaded(new Date());
+                dto.setDateUploaded(new Date().getTime());
                 uploadedList.add(dto);
                 PhotoCacheUtil.removeUploadedPhoto(getApplicationContext(), dto);
                 index++;

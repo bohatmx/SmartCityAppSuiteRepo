@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/AI_toptop"
         android:background="@color/white"
-        android:padding="@dimen/mon_padding"
+        android:padding="@dimen/mon_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

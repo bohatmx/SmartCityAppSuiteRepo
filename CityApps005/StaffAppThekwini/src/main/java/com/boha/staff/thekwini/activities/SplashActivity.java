@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -54,6 +55,7 @@ public class SplashActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.w("Splash", "## onCreate");
         setContentView(R.layout.activity_splash);
         ctx = getApplicationContext();
         setFields();
@@ -63,9 +65,18 @@ public class SplashActivity extends ActionBarActivity {
         startTimer();
         getMunicipality();
 
-        //TODO - custom action bar here
+        municipality = SharedUtil.getMunicipality(ctx);
+        staff = SharedUtil.getMunicipalityStaff(ctx);
+
+        ActionBar actionBar = getSupportActionBar();
+        Util.setCustomActionBar(ctx,
+                actionBar,
+                MUNICIPALITY_NAME,
+                ctx.getResources().getDrawable(R.drawable.logo));
+        getSupportActionBar().setTitle("");
 
     }
+
     private void setFields() {
         actionsView = findViewById(R.id.SPLASH_actions);
         actionsView.setVisibility(View.GONE);
@@ -81,7 +92,8 @@ public class SplashActivity extends ActionBarActivity {
                     @Override
                     public void onAnimationEnded() {
                         Intent intent = new Intent(ctx, SigninActivity.class);
-                        startActivity(intent);
+                        startActivityForResult(intent, REQUEST_SIGN_IN);
+
                     }
                 });
             }
@@ -95,13 +107,29 @@ public class SplashActivity extends ActionBarActivity {
 
     }
 
+    static final int REQUEST_SIGN_IN = 9033;
+
+    @Override
+    public void onActivityResult(int reqCode, int resCode, Intent data) {
+        Log.w(LOG, "## onActivityResult resCode: " + resCode);
+        switch (reqCode) {
+            case REQUEST_SIGN_IN:
+                if (resCode == RESULT_OK) {
+                    Log.w(LOG, "## Collapsing sign in layout");
+                    Util.collapse(actionsView, 100, null);
+                    finish();
+                }
+                break;
+        }
+    }
+
     private void getMunicipality() {
         municipality = SharedUtil.getMunicipality(ctx);
         if (municipality == null) {
             RequestDTO w = new RequestDTO(RequestDTO.GET_MUNICIPALITY_BY_NAME);
             w.setMunicipalityName(MUNICIPALITY_NAME);
             progressBar.setVisibility(View.VISIBLE);
-            NetUtil.sendRequest(ctx,w,new NetUtil.NetUtilListener() {
+            NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
                 @Override
                 public void onResponse(final ResponseDTO response) {
                     runOnUiThread(new Runnable() {
@@ -123,7 +151,7 @@ public class SplashActivity extends ActionBarActivity {
                                                     if (staff == null) {
                                                         Util.expand(actionsView, ONE_SECOND, null);
                                                     } else {
-                                                        Intent intent = new Intent(getApplicationContext(),MainDrawerActivity.class);
+                                                        Intent intent = new Intent(getApplicationContext(), MainDrawerActivity.class);
                                                         startActivity(intent);
                                                     }
                                                 }
@@ -142,7 +170,7 @@ public class SplashActivity extends ActionBarActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Util.showErrorToast(ctx,message);
+                            Util.showErrorToast(ctx, message);
                         }
                     });
                 }
@@ -158,11 +186,13 @@ public class SplashActivity extends ActionBarActivity {
             checkVirginity(false);
         }
     }
+
     private void checkVirginity(boolean goToMain) {
+        Log.w("Splash", "## checkVirginity");
         staff = SharedUtil.getMunicipalityStaff(ctx);
         if (staff == null) {
             if (actionsView.getVisibility() == View.GONE) {
-                Util.expand(actionsView,ONE_SECOND,null);
+                Util.expand(actionsView, ONE_SECOND, null);
             }
 
         } else {
@@ -178,6 +208,11 @@ public class SplashActivity extends ActionBarActivity {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.w("Splash", "## onResume");
+    }
 
     private void startTimer() {
         timer = new Timer();
@@ -224,7 +259,7 @@ public class SplashActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_help) {
-            Util.showToast(ctx,ctx.getString(R.string.under_cons));
+            Util.showToast(ctx, ctx.getString(R.string.under_cons));
             return true;
         }
         if (id == R.id.action_afrikaans) {
@@ -261,7 +296,7 @@ public class SplashActivity extends ActionBarActivity {
         Drawable p = null;
         switch (index) {
             case 0:
-                
+
                 p = ctx.getResources().getDrawable(R.drawable.dbn10);
                 break;
             case 1:

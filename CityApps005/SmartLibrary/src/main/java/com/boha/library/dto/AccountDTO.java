@@ -7,7 +7,6 @@
 package com.boha.library.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  *
@@ -17,17 +16,17 @@ public class AccountDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     private Integer accountID;
     private String accountNumber;
-    private Date dateLastUpdated;
+    private Long dateLastUpdated;
     private Double currentBalance;
     private Double totalAccountAmount;
     private Double cashAfterAccount;
     private String customerAccountName;
     private String propertyAddress;
     private Double lastBillAmount;
-    private Date nextBillDate;
+    private Long nextBillDate;
     private Double currentArrears;
     private Integer billDay;
-    private Date previousBillDate;
+    private Long previousBillDate;
     private Integer profileInfoID;
 
     public AccountDTO() {
@@ -57,13 +56,6 @@ public class AccountDTO implements Serializable {
         this.accountNumber = accountNumber;
     }
 
-    public Date getDateLastUpdated() {
-        return dateLastUpdated;
-    }
-
-    public void setDateLastUpdated(Date dateLastUpdated) {
-        this.dateLastUpdated = dateLastUpdated;
-    }
 
     public Double getCurrentBalance() {
         return currentBalance;
@@ -113,13 +105,6 @@ public class AccountDTO implements Serializable {
         this.lastBillAmount = lastBillAmount;
     }
 
-    public Date getNextBillDate() {
-        return nextBillDate;
-    }
-
-    public void setNextBillDate(Date nextBillDate) {
-        this.nextBillDate = nextBillDate;
-    }
 
     public Double getCurrentArrears() {
         return currentArrears;
@@ -137,11 +122,27 @@ public class AccountDTO implements Serializable {
         this.billDay = billDay;
     }
 
-    public Date getPreviousBillDate() {
+    public Long getDateLastUpdated() {
+        return dateLastUpdated;
+    }
+
+    public void setDateLastUpdated(Long dateLastUpdated) {
+        this.dateLastUpdated = dateLastUpdated;
+    }
+
+    public Long getNextBillDate() {
+        return nextBillDate;
+    }
+
+    public void setNextBillDate(Long nextBillDate) {
+        this.nextBillDate = nextBillDate;
+    }
+
+    public Long getPreviousBillDate() {
         return previousBillDate;
     }
 
-    public void setPreviousBillDate(Date previousBillDate) {
+    public void setPreviousBillDate(Long previousBillDate) {
         this.previousBillDate = previousBillDate;
     }
 

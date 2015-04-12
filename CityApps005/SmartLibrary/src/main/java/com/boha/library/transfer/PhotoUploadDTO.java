@@ -12,8 +12,6 @@ import com.boha.library.dto.MunicipalityImageDTO;
 import com.boha.library.dto.NewsArticleImageDTO;
 import com.boha.library.dto.StaffImageDTO;
 
-import java.util.Date;
-
 /**
  *
  * @author aubreyM
@@ -28,14 +26,23 @@ public class PhotoUploadDTO {
     private ComplaintImageDTO complaintImage;
     private StaffImageDTO staffImage;
     private NewsArticleImageDTO newsArticleImage;
-    private Date dateUploaded;
+    private Long dateUploaded;
+    private Integer municipalityID;
 
-    public Date getDateUploaded() {
+    public Long getDateUploaded() {
         return dateUploaded;
     }
 
-    public void setDateUploaded(Date dateUploaded) {
+    public void setDateUploaded(Long dateUploaded) {
         this.dateUploaded = dateUploaded;
+    }
+
+    public Integer getMunicipalityID() {
+        return municipalityID;
+    }
+
+    public void setMunicipalityID(Integer municipalityID) {
+        this.municipalityID = municipalityID;
     }
 
     public NewsArticleImageDTO getNewsArticleImage() {

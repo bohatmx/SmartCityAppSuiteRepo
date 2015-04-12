@@ -153,6 +153,16 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
             public void onDetailsRequested(ComplaintDTO complaint) {
 
             }
+
+            @Override
+            public void onCameraRequested(ComplaintDTO complaint) {
+
+            }
+
+            @Override
+            public void onImagesRequested(ComplaintDTO complaint) {
+
+            }
         });
         recyclerView.setAdapter(complaintAdapter);
 

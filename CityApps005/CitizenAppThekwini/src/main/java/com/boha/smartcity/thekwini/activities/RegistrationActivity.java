@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -83,6 +84,13 @@ public class RegistrationActivity extends ActionBarActivity {
         t.setScreenName(RegistrationActivity.class.getSimpleName());
         t.send(new HitBuilders.ScreenViewBuilder().build());
         //
+
+        ActionBar actionBar = getSupportActionBar();
+        Util.setCustomActionBar(ctx,
+                actionBar,
+                municipality.getMunicipalityName(),
+                ctx.getResources().getDrawable(R.drawable.logo));
+        getSupportActionBar().setTitle("");
     }
 
     @Override

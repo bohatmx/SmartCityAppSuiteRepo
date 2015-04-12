@@ -221,6 +221,7 @@ public class PictureActivity extends ActionBarActivity
     private void uploadPhotos() {
         Log.e(LOG, "### uploadPhotos, the accuracy: " + location.getAccuracy());
         if (mBound) {
+            Log.e(LOG, "### starting bound PhotoUploadService ");
             mService.uploadCachedPhotos(new PhotoUploadService.UploadListener() {
                 @Override
                 public void onUploadsComplete(int count) {
@@ -478,7 +479,7 @@ public class PictureActivity extends ActionBarActivity
                         Bitmap bm = BitmapFactory.decodeFile(photoFile.getAbsolutePath(), options);
                         //getLog(bm, "Raw Camera- sample size = 2");
                         Matrix matrixThumbnail = new Matrix();
-                        matrixThumbnail.postScale(0.4f, 0.4f);
+                        matrixThumbnail.postScale(0.5f, 0.5f);
                         Bitmap thumb = Bitmap.createBitmap
                                 (bm, 0, 0, bm.getWidth(),
                                         bm.getHeight(), matrixThumbnail, true);
@@ -524,6 +525,7 @@ public class PictureActivity extends ActionBarActivity
                     currentSessionPhotos.add(Uri.fromFile(currentThumbFile).toString());
                     addImageToScroller();
                     PhotoUploadDTO photo = new PhotoUploadDTO();
+                    photo.setMunicipalityID(municipality.getMunicipalityID());
                     switch (imageType) {
                         case ALERT_IMAGE:
                             final AlertImageDTO ai = new AlertImageDTO();
@@ -555,16 +557,15 @@ public class PictureActivity extends ActionBarActivity
 
                         @Override
                         public void onDataCached() {
-//                            Log.i(LOG, "### photo cached OK for alertID: " + p.getAlertID()
-//                                    + " type: " + complaint.getAlertType().getAlertTypeNmae());
+                            uploadPhotos();
                         }
 
                         @Override
                         public void onError() {
-
+                            Util.showErrorToast(ctx,getString(R.string.unable_save_photo));
                         }
                     });
-                    uploadPhotos();
+
 
 
                 } catch (Exception e) {
