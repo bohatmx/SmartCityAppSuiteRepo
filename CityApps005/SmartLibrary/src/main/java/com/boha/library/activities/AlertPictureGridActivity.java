@@ -2,10 +2,12 @@ package com.boha.library.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,8 +23,9 @@ import com.boha.library.R;
 import com.boha.library.adapters.AlertPictureAdapter;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.AlertImageDTO;
-import com.boha.library.dto.AlertTypeDTO;
+import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.util.DividerItemDecoration;
+import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -43,7 +46,7 @@ public class AlertPictureGridActivity extends ActionBarActivity {
     TextView txtAlertType, txtDate, txtTime, txtAddress, txtFab, txtCount;
     View addressLayout, topLayout;
     boolean isOpen;
-    int imageType;
+    int logo;
     public static int ALERT = 1, COMPLAINT = 2, MUNICIPALITY = 3;
     static final String LOG = AlertPictureGridActivity.class.getSimpleName();
     static final Locale LOCALE = Locale.getDefault();
@@ -58,37 +61,25 @@ public class AlertPictureGridActivity extends ActionBarActivity {
         setFields();
 
         alert = (AlertDTO) getIntent().getSerializableExtra("alert");
+        logo = getIntent().getIntExtra("logo", R.drawable.ic_action_globe);
         photoList = alert.getAlertImageList();
         txtAlertType.setText(alert.getAlertType().getAlertTypeName());
         txtDate.setText(sdfDate.format(alert.getUpdated()));
         txtTime.setText(sdfTime.format(alert.getUpdated()));
 
-        switch (alert.getAlertType().getColor()) {
-            case AlertTypeDTO.RED:
-                topLayout.setBackgroundColor(ctx.getResources().getColor(R.color.absa_red));
-                txtCount.setBackgroundColor(ctx.getResources().getColor(R.color.absa_red));
-                break;
-            case AlertTypeDTO.AMBER:
-                topLayout.setBackgroundColor(ctx.getResources().getColor(R.color.amber));
-                txtCount.setBackgroundColor(ctx.getResources().getColor(R.color.amber));
-                txtCount.setTextColor(ctx.getResources().getColor(R.color.absa_red));
-                txtAlertType.setTextColor(ctx.getResources().getColor(R.color.absa_red));
-                break;
-
-            case AlertTypeDTO.GREEN:
-                topLayout.setBackgroundColor(ctx.getResources().getColor(R.color.green));
-                txtCount.setBackgroundColor(ctx.getResources().getColor(R.color.green));
-                break;
-
-        }
 
         Util.flashSeveralTimes(txtFab, 300, 3, null) ;
-//        MunicipalityDTO municipality = SharedUtil.getMunicipality(ctx);
-//        ActionBar actionBar = getSupportActionBar();
-//        Util.setCustomActionBar(ctx,
-//                actionBar,
-//                municipality.getMunicipalityName(),
-//                ctx.getResources().getDrawable(com.boha.citizenapp.R.drawable.logo));
+        MunicipalityDTO municipality = SharedUtil.getMunicipality(getApplicationContext());
+        ActionBar actionBar = getSupportActionBar();
+        if (logo != 0) {
+            Drawable d = ctx.getResources().getDrawable(logo);
+            Util.setCustomActionBar(ctx,
+                    actionBar,
+                    municipality.getMunicipalityName(), d);
+            getSupportActionBar().setTitle("");
+        } else {
+            getSupportActionBar().setTitle(municipality.getMunicipalityName());
+        }
 
 
         setGrid();
@@ -147,19 +138,19 @@ public class AlertPictureGridActivity extends ActionBarActivity {
                 });
             }
         });
-        icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Util.flashOnce(icon, 300, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        Intent intent = new Intent(ctx, AlertMapActivity.class);
-                        intent.putExtra("complaint", alert);
-                        startActivity(intent);
-                    }
-                });
-            }
-        });
+//        icon.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Util.flashOnce(icon, 300, new Util.UtilAnimationListener() {
+//                    @Override
+//                    public void onAnimationEnded() {
+//                        Intent intent = new Intent(ctx, AlertMapActivity.class);
+//                        intent.putExtra("complaint", alert);
+//                        startActivity(intent);
+//                    }
+//                });
+//            }
+//        });
     }
 
 
@@ -214,6 +205,11 @@ public class AlertPictureGridActivity extends ActionBarActivity {
 //        }
 
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onPause() {
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        super.onPause();
     }
 
     Address address;

@@ -23,6 +23,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.boha.library.R;
+import com.boha.library.activities.ComplaintMapActivity;
 import com.boha.library.adapters.ComplaintAdapter;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintFollowerDTO;
@@ -70,7 +71,11 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
     View topView;
     ImageView hero;
     ProgressBar progressBar;
+    int logo = R.drawable.ic_action_globe;
 
+    public void setLogo(int logo) {
+        this.logo = logo;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -238,6 +243,24 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
                     public void onAnimationEnded() {
                         progressBar.setVisibility(View.VISIBLE);
                         mListener.onLocationForComplaintsAroundMe();
+                    }
+                });
+            }
+        });
+        txtCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.flashOnce(txtCount, 300, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        if (complaintList != null && !complaintList.isEmpty()) {
+                            Intent w = new Intent(ctx, ComplaintMapActivity.class);
+                            ResponseDTO x = new ResponseDTO();
+                            x.setComplaintList(complaintList);
+                            w.putExtra("complaintList", x);
+                            w.putExtra("logo",logo);
+                            startActivity(w);
+                        }
                     }
                 });
             }

@@ -20,7 +20,7 @@ public class PaymentStartActivity extends ActionBarActivity implements PaymentSt
 
     AccountDTO account;
     PaymentStartFragment paymentStartFragment;
-    int themeDarkColor, themePrimaryColor, logo;
+    int themeDarkColor, themePrimaryColor, logo = R.drawable.ic_action_globe;
     Context ctx;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,6 @@ public class PaymentStartActivity extends ActionBarActivity implements PaymentSt
         paymentStartFragment.setAccount(account, index);
         paymentStartFragment.setLogo(logo);
 
-        //
 
         MunicipalityDTO municipality = SharedUtil.getMunicipality(getApplicationContext());
         if (logo != 0) {

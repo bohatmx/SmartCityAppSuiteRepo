@@ -82,5 +82,6 @@
     <string name="city_news">City News</string>
     <string name="title_activity_my_complaints">MyComplaintsActivity</string>
     <string name="unable_save_photo">Unable to save photo. Please try again</string>
+    <string name="compl_pics">Complaint Pictures</string>
 
 </resources>

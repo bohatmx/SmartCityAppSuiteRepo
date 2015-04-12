@@ -42,7 +42,9 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.Comp
         this.complaintList = list;
         this.ctx = context;
         this.listener = listener;
-        this.themeDarkColor = themeDarkColor;
+        if (themeDarkColor != 0) {
+            this.themeDarkColor = themeDarkColor;
+        }
     }
 
     @Override

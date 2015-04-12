@@ -186,7 +186,9 @@ public class MainDrawerActivity extends ActionBarActivity
         if (text.equalsIgnoreCase(ctx.getString(R.string.my_complaints))) {
             Intent x = new Intent(this, MyComplaintsActivity.class);
             x.putExtra("logo",logo);
-            startActivity(x);
+            x.putExtra("darkColor",themeDarkColor);
+            x.putExtra("primaryColor",themePrimaryColor);
+            startActivityForResult(x, CREATE_COMPLAINT_REQUESTED);
             return;
         }
         int index = 0;
@@ -203,6 +205,8 @@ public class MainDrawerActivity extends ActionBarActivity
             index++;
         }
     }
+
+    static final int CREATE_COMPLAINT_REQUESTED = 5413;
 
     private void getCachedLoginData() {
         CacheUtil.getCacheLoginData(ctx, new CacheUtil.CacheRetrievalListener() {
@@ -328,6 +332,8 @@ public class MainDrawerActivity extends ActionBarActivity
 
         profileInfoFragment.setLogo(logo);
         complaintCreateFragment.setLogo(logo);
+        complaintsAroundMeFragment.setLogo(logo);
+        alertListFragment.setLogo(logo);
 
         profileInfoFragment.setPageTitle(ctx.getString(R.string.my_accounts));
         alertListFragment.setPageTitle(ctx.getString(R.string.city_alerts));
@@ -629,6 +635,19 @@ public class MainDrawerActivity extends ActionBarActivity
                 if (result == RESULT_OK) {
 
                 }
+                break;
+            case CREATE_COMPLAINT_REQUESTED:
+                if (result == RESULT_OK) {
+                    int index = 0;
+                    for (PageFragment pf: pageFragmentList) {
+                        if (pf instanceof ComplaintCreateFragment) {
+                            mPager.setCurrentItem(index,true);
+                            break;
+                        }
+                        index++;
+                    }
+                }
+
                 break;
         }
     }

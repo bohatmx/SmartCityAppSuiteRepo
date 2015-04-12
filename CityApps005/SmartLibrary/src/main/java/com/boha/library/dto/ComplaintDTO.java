@@ -20,6 +20,7 @@ public class ComplaintDTO implements Serializable {
     private Boolean activeFlag;
     private ProfileInfoDTO profileInfo;
     private ComplaintTypeDTO complaintType;
+    private int index;
 
     private List<ComplaintImageDTO> complaintImageList;
     private List<ComplaintUpdateStatusDTO> complaintUpdateStatusList;
@@ -30,6 +31,14 @@ public class ComplaintDTO implements Serializable {
 
     public void setNumberOfFollowers(Integer numberOfFollowers) {
         this.numberOfFollowers = numberOfFollowers;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public Double getDistance() {

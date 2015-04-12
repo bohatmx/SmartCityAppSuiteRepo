@@ -1,9 +1,35 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.com.boha.monitor.library.activities.PictureRecyclerGridActivity">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/PG_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/TOPG_fab"
+        android:text="A"
+        style="@style/BlackCircleLarge"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/mon_margin"
+        android:textColor="@color/white"
+        android:elevation="@dimen/mon_padding"
+        android:layout_width="48dp"
+        android:layout_height="48dp" />
+
+    <TextView
+        android:id="@+id/TOPG_count"
+        style="@style/RedCircleSmall"
+        android:text="99"
+        android:padding="@dimen/mon_padding"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/mon_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:id="@+id/TOPG_layout"
@@ -11,16 +37,14 @@
 
         <RelativeLayout
             android:id="@+id/TOPG_titleLayout"
-            android:background="@color/indian_red"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/mon_hero_height_medium">
+            android:layout_height="@dimen/mon_hero_height_small">
 
             <TextView
                 android:id="@+id/TOPG_title"
                 android:text="My Alert Type Here"
                 style="@style/Title2TextStyleWhite"
-                android:layout_marginTop="@dimen/mon_margin"
-                android:layout_centerHorizontal="false"
+                android:layout_marginTop="@dimen/mon_padding"
                 android:layout_marginLeft="@dimen/mon_margin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -28,7 +52,6 @@
             <RelativeLayout
                 android:id="@+id/TOPG_subLayout"
                 android:layout_below="@id/TOPG_title"
-                android:layout_marginTop="@dimen/mon_wider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -39,14 +62,15 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/mon_padding"
                     android:textColor="@color/white"
-                    android:textSize="24sp"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/TOPG_date"
                     android:text="Saturday, 23 December 2078"
-                    style="@style/TextStyleSmall"
+                    style="@style/Title3TextStyleGrey"
                     android:textColor="@color/white"
                     android:layout_toLeftOf="@id/TOPG_time"
                     android:layout_centerVertical="true"
@@ -58,14 +82,16 @@
             </RelativeLayout>
 
         </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/TOPG_addressLayout"
             android:layout_below="@id/TOPG_titleLayout"
-            android:padding="@dimen/mon_margin"
-            android:background="@color/black"
+            android:padding="@dimen/mon_wide"
+            android:background="@color/transparent_black"
             android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
                 android:id="@+id/TOPG_label"
                 style="@style/TextStyleGreySmall"
@@ -73,59 +99,22 @@
                 android:layout_marginRight="@dimen/mon_padding"
                 android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
+
             <TextView
                 android:id="@+id/TOPG_address"
-                style="@style/Title3TextStyleBlue"
+                style="@style/Title3TextStyleWhite"
                 android:layout_below="@id/TOPG_label"
-                android:layout_marginTop="@dimen/mon_padding"
+                android:layout_marginTop="@dimen/mon_margin"
                 android:text="The Dungeon, 30 Kingfisher Drive, Pecanwood Estate, 2016, Hartbeestpoort, North West, South Africa ZA"
                 android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
         </RelativeLayout>
 
 
-
-
-        <ImageView
-            android:id="@+id/TOPG_icon"
-            android:src="@android:drawable/ic_dialog_map"
-            android:layout_alignParentRight="true"
-            android:layout_margin="@dimen/mon_margin"
-            android:elevation="@dimen/mon_padding"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
     </RelativeLayout>
-
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/PG_recyclerView"
-        android:layout_below="@id/TOPG_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    <TextView
-        android:id="@+id/TOPG_fab"
-        android:text="A"
-        style="@style/BlackCircleLarge"
-        android:layout_marginTop="@dimen/mon_hero_height_medium_lite"
-        android:textColor="@color/white"
-        android:layout_marginLeft="@dimen/mon_wide"
-        android:elevation="@dimen/mon_padding"
-        android:layout_width="60dp"
-        android:layout_height="60dp" />
-    <TextView
-        android:id="@+id/TOPG_count"
-        style="@style/GreenCountBox"
-        android:text="99"
-        android:background="@color/indian_red"
-        android:padding="@dimen/mon_padding"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/mon_hero_height_medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 
 </RelativeLayout>

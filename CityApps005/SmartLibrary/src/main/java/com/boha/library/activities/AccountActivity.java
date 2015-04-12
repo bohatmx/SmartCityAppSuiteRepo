@@ -32,7 +32,7 @@ public class AccountActivity extends ActionBarActivity implements AccountFragmen
         ctx = getApplicationContext();
         accountFragment = (AccountFragment)getSupportFragmentManager().findFragmentById(R.id.fragment);
         ProfileInfoDTO profileInfoDTO = (ProfileInfoDTO)getIntent().getSerializableExtra("profileInfo");
-        logo = getIntent().getIntExtra("logo",0);
+
         accountFragment.setLogo(logo);
         if (profileInfoDTO != null) {
             accountFragment.setProfileInfo(profileInfoDTO);
@@ -40,7 +40,8 @@ public class AccountActivity extends ActionBarActivity implements AccountFragmen
             getCachedData();
         }
         //
-
+        logo = getIntent().getIntExtra("logo",R.drawable.ic_action_globe);
+        accountFragment.setLogo(logo);
         municipality = SharedUtil.getMunicipality(getApplicationContext());
         ActionBar actionBar = getSupportActionBar();
         if (logo != 0) {

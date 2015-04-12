@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/grey"
-    android:padding="@dimen/mon_divider_tiny"
+    android:padding="@dimen/mon_divider"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -57,6 +57,7 @@
     </RelativeLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/FLC_listView"
+        android:layout_marginTop="@dimen/mon_divider"
         android:layout_below="@id/FLC_titleLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
@@ -66,7 +67,7 @@
         style="@style/BlackCircleSmall"
         android:text="0"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_margin="@dimen/mon_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

@@ -23,8 +23,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.dto.AlertDTO;
+import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.AlertTypeDTO;
+import com.boha.library.dto.ComplaintTypeDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.DistanceUtil;
@@ -56,7 +57,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class AlertMapActivity extends ActionBarActivity {
+public class ComplaintMapActivity extends ActionBarActivity {
 
     GoogleMap googleMap;
     GoogleApiClient mGoogleApiClient;
@@ -65,7 +66,7 @@ public class AlertMapActivity extends ActionBarActivity {
     Context ctx;
     DisplayMetrics displayMetrics;
     List<Marker> markers = new ArrayList<Marker>();
-    static final String LOG = AlertMapActivity.class.getSimpleName();
+    static final String LOG = ComplaintMapActivity.class.getSimpleName();
     boolean mResolvingError;
     static final long ONE_MINUTE = 1000 * 60;
     static final long FIVE_MINUTES = 1000 * 60 * 5;
@@ -82,7 +83,8 @@ public class AlertMapActivity extends ActionBarActivity {
     LayoutInflater inflater;
     static final Locale loc = Locale.getDefault();
     static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-    List<AlertDTO> alertList;
+    List<ComplaintDTO> complaintList;
+    ComplaintDTO complaint;
     Activity activity;
     int logo;
 
@@ -97,13 +99,13 @@ public class AlertMapActivity extends ActionBarActivity {
         setFields();
         ResponseDTO r = (ResponseDTO) getIntent().getSerializableExtra("complaintList");
         if (r != null) {
-            alertList = r.getAlertList();
-            txtCount.setText("" + alertList.size());
+            complaintList = r.getComplaintList();
+            txtCount.setText("" + complaintList.size());
         }
-        alert = (AlertDTO) getIntent().getSerializableExtra("alert");
-        if (alert != null) {
+        complaint = (ComplaintDTO) getIntent().getSerializableExtra("complaint");
+        if (complaint != null) {
             txtCount.setText("1");
-            text.setText(alert.getDescription());
+            text.setText(complaint.getReferenceNumber());
         }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -131,11 +133,11 @@ public class AlertMapActivity extends ActionBarActivity {
         } else {
             getSupportActionBar().setTitle(municipality.getMunicipalityName());
         }
-        //Track AlertMapActivity
+        //Track ComplaintMapActivity
         CityApplication ca = (CityApplication) getApplication();
         Tracker t = ca.getTracker(
                 CityApplication.TrackerName.APP_TRACKER);
-        t.setScreenName(AlertMapActivity.class.getSimpleName());
+        t.setScreenName(ComplaintMapActivity.class.getSimpleName());
         t.send(new HitBuilders.ScreenViewBuilder().build());
         //
     }
@@ -153,10 +155,10 @@ public class AlertMapActivity extends ActionBarActivity {
                 marker = m;
                 LatLng latLng = marker.getPosition();
                 Integer id = Integer.parseInt(marker.getTitle());
-                if (alertList != null) {
-                    for (AlertDTO x : alertList) {
-                        if (x.getAlertID().intValue() == id.intValue()) {
-                            alert = x;
+                if (complaintList != null) {
+                    for (ComplaintDTO x : complaintList) {
+                        if (x.getComplaintID().intValue() == id.intValue()) {
+                            complaint = x;
                             break;
                         }
                     }
@@ -166,61 +168,62 @@ public class AlertMapActivity extends ActionBarActivity {
                 return true;
             }
         });
-        if (alertList != null) {
-            setAlertMarkers();
+        if (complaintList != null) {
+            setComplaintMarkers();
         }
-        if (alert != null) {
+        if (complaint != null) {
             setOneMarker();
         }
 
     }
 
 
-    private void setAlertMarkers() {
+    private void setComplaintMarkers() {
         googleMap.clear();
         LatLng point = null;
-        int index = 0, count = 0, randomIndex = 0;
+        int index = 0;
 
-        for (AlertDTO alert : alertList) {
-            if (alert.getLatitude() == null) continue;
-            LatLng pnt = new LatLng(alert.getLatitude(), alert.getLongitude());
+        for (ComplaintDTO comp : complaintList) {
+            if (comp.getLatitude() == null) continue;
+            LatLng pnt = new LatLng(comp.getLatitude(), comp.getLongitude());
             point = pnt;
             BitmapDescriptor desc = null;
             Short color = null;
             View dot = null;
             TextView txtNumber;
-            if (alert.getAlertType().getColor() != null) {
-                switch (alert.getAlertType().getColor()) {
-                    case AlertTypeDTO.RED:
-                        dot = inflater.inflate(com.boha.library.R.layout.dot_red, null);
-                        txtNumber = (TextView) dot.findViewById(com.boha.library.R.id.DOT_text);
-                        txtNumber.setText("" + (index + 1));
-                        desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
-                        break;
-                    case AlertTypeDTO.GREEN:
-                        dot = inflater.inflate(com.boha.library.R.layout.dot_green, null);
-                        txtNumber = (TextView) dot.findViewById(com.boha.library.R.id.DOT_text);
-                        txtNumber.setText("" + (index + 1));
-                        desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
-                        break;
-                    case AlertTypeDTO.AMBER:
-                        dot = inflater.inflate(com.boha.library.R.layout.dot_amber, null);
-                        txtNumber = (TextView) dot.findViewById(com.boha.library.R.id.DOT_text);
-                        txtNumber.setText("" + (index + 1));
-                        desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
-                        break;
-                }
+            if (comp.getComplaintType() != null) {
+                if (comp.getComplaintType().getColor() != null) {
+                    switch (comp.getComplaintType().getColor()) {
+                        case AlertTypeDTO.RED:
+                            dot = inflater.inflate(R.layout.dot_red, null);
+                            txtNumber = (TextView) dot.findViewById(R.id.DOT_text);
+                            txtNumber.setText("" + (index + 1));
+                            desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
+                            break;
+                        case AlertTypeDTO.GREEN:
+                            dot = inflater.inflate(R.layout.dot_green, null);
+                            txtNumber = (TextView) dot.findViewById(R.id.DOT_text);
+                            txtNumber.setText("" + (index + 1));
+                            desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
+                            break;
+                        case AlertTypeDTO.AMBER:
+                            dot = inflater.inflate(R.layout.dot_amber, null);
+                            txtNumber = (TextView) dot.findViewById(R.id.DOT_text);
+                            txtNumber.setText("" + (index + 1));
+                            desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
+                            break;
+                    }
 
+                }
+                Marker m =
+                        googleMap.addMarker(new MarkerOptions()
+                                .title("" + comp.getComplaintID().intValue())
+                                .icon(desc)
+                                .snippet(comp.getRemarks())
+                                .position(pnt));
+                markers.add(m);
+                index++;
             }
-            Marker m =
-                    googleMap.addMarker(new MarkerOptions()
-                            .title("" + alert.getAlertID().intValue())
-                            .icon(desc)
-                            .snippet(alert.getDescription())
-                            .position(pnt));
-            markers.add(m);
-            index++;
-            count++;
         }
         googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
@@ -244,47 +247,46 @@ public class AlertMapActivity extends ActionBarActivity {
 
     }
 
-    AlertDTO alert;
 
     private void setOneMarker() {
-        if (alert.getLatitude() == null) {
+        if (complaint.getLatitude() == null) {
             return;
         }
-        LatLng pnt = new LatLng(alert.getLatitude(), alert.getLongitude());
+        LatLng pnt = new LatLng(complaint.getLatitude(), complaint.getLongitude());
         BitmapDescriptor desc = null;
         View dot;
         TextView txtNumber;
-        switch (alert.getAlertType().getColor()) {
-            case AlertTypeDTO.RED:
-                dot = inflater.inflate(com.boha.library.R.layout.dot_red, null);
-                txtNumber = (TextView) dot.findViewById(com.boha.library.R.id.DOT_text);
-                txtNumber.setText("" + (alert.getIndex() + 1));
+        switch (complaint.getComplaintType().getColor()) {
+            case ComplaintTypeDTO.RED:
+                dot = inflater.inflate(R.layout.dot_red, null);
+                txtNumber = (TextView) dot.findViewById(R.id.DOT_text);
+                txtNumber.setText("" + (complaint.getIndex() + 1));
                 desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
                 break;
-            case AlertTypeDTO.GREEN:
-                dot = inflater.inflate(com.boha.library.R.layout.dot_green, null);
-                txtNumber = (TextView) dot.findViewById(com.boha.library.R.id.DOT_text);
-                txtNumber.setText("" + (alert.getIndex() + 1));
+            case ComplaintTypeDTO.GREEN:
+                dot = inflater.inflate(R.layout.dot_green, null);
+                txtNumber = (TextView) dot.findViewById(R.id.DOT_text);
+                txtNumber.setText("" + (complaint.getIndex() + 1));
                 desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
                 break;
-            case AlertTypeDTO.AMBER:
-                dot = inflater.inflate(com.boha.library.R.layout.dot_amber, null);
-                txtNumber = (TextView) dot.findViewById(com.boha.library.R.id.DOT_text);
-                txtNumber.setText("" + (alert.getIndex() + 1));
+            case ComplaintTypeDTO.AMBER:
+                dot = inflater.inflate(R.layout.dot_amber, null);
+                txtNumber = (TextView) dot.findViewById(R.id.DOT_text);
+                txtNumber.setText("" + (complaint.getIndex() + 1));
                 desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
                 break;
             default:
-                dot = inflater.inflate(com.boha.library.R.layout.dot_amber, null);
-                txtNumber = (TextView) dot.findViewById(com.boha.library.R.id.DOT_text);
-                txtNumber.setText("" + (alert.getIndex() + 1));
+                dot = inflater.inflate(R.layout.dot_amber, null);
+                txtNumber = (TextView) dot.findViewById(R.id.DOT_text);
+                txtNumber.setText("" + (complaint.getIndex() + 1));
                 desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
                 break;
         }
         Marker m =
                 googleMap.addMarker(new MarkerOptions()
-                        .title("" + alert.getAlertID().intValue())
+                        .title("" + complaint.getComplaintID().intValue())
                         .icon(desc)
-                        .snippet(alert.getDescription())
+                        .snippet(complaint.getRemarks())
                         .position(pnt));
         markers.add(m);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pnt, 1.0f));
@@ -296,7 +298,7 @@ public class AlertMapActivity extends ActionBarActivity {
         iconCollapse = (ImageView) findViewById(R.id.MAP_iconCollapse);
         txtCount = (TextView) findViewById(R.id.MAP_count);
         txtCount.setText("0");
-        text.setText(getString(R.string.active_alerts));
+        text.setText(getString(R.string.complaints_around_me));
         Statics.setRobotoFontLight(ctx,text);
         mapInfo = findViewById(R.id.MAP_info);
         mapInfo.setVisibility(View.GONE);
@@ -327,12 +329,12 @@ public class AlertMapActivity extends ActionBarActivity {
     private void showPopup(final double lat, final double lng, final String title) {
         list = new ArrayList<>();
         list.add(getString(R.string.directions));
-        list.add(getString(R.string.pictures));
+        list.add(getString(R.string.compl_pics));
         list.add(getString(R.string.get_distance));
         ImageView dummy = new ImageView(ctx);
-        if (alert != null) {
-            if (alert.getAlertImageList() != null && !alert.getAlertImageList().isEmpty()) {
-                String url = Util.getAlertImageURL(alert.getAlertImageList().get(0));
+        if (complaint != null) {
+            if (complaint.getComplaintImageList() != null && !complaint.getComplaintImageList().isEmpty()) {
+                String url = Util.getComplaintImageURL(complaint.getComplaintImageList().get(0));
                 ImageLoader.getInstance().displayImage(url, dummy, new ImageLoadingListener() {
                     @Override
                     public void onLoadingStarted(String s, View view) {
@@ -349,7 +351,7 @@ public class AlertMapActivity extends ActionBarActivity {
                                 }
                                 if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.pictures))) {
                                     isGallery = true;
-                                    startGallery(alert);
+                                    startGallery(complaint);
                                 }
                                 if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.get_distance))) {
                                     getDistance(lat, lng);
@@ -368,7 +370,7 @@ public class AlertMapActivity extends ActionBarActivity {
                                 }
                                 if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.pictures))) {
                                     isGallery = true;
-                                    startGallery(alert);
+                                    startGallery(complaint);
                                 }
                                 if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.get_distance))) {
                                     getDistance(lat, lng);
@@ -404,12 +406,11 @@ public class AlertMapActivity extends ActionBarActivity {
 
     boolean isStatusReport, isGallery;
 
-    private void startGallery(AlertDTO alert) {
+    private void startGallery(ComplaintDTO complaint) {
 
 
         Intent i = new Intent(ctx, AlertPictureGridActivity.class);
-        i.putExtra("alert", alert);
-        i.putExtra("logo",logo);
+        i.putExtra("complaint", complaint);
         startActivity(i);
     }
 

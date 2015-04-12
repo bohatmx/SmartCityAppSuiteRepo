@@ -264,7 +264,7 @@ public class MainDrawerActivity extends ActionBarActivity
 
 
     private void buildPages(){
-        Log.e(LOG,"starting PhotoUploadService");
+        Log.e(LOG, "starting PhotoUploadService");
         Intent x = new Intent(ctx, PhotoUploadService.class);
         startService(x);
         pageFragmentList = new ArrayList<>();
@@ -281,6 +281,9 @@ public class MainDrawerActivity extends ActionBarActivity
         alertListFragment.setPageTitle(ctx.getString(R.string.city_alerts));
         createAlertFragment.setPageTitle(ctx.getString(R.string.create_alert));
         complaintsAroundMeFragment.setPageTitle(ctx.getString(R.string.complaints_around_me));
+
+        alertListFragment.setLogo(logo);
+        complaintsAroundMeFragment.setLogo(logo);
 
         pageFragmentList.add(alertListFragment);
         pageFragmentList.add(createAlertFragment);

@@ -43,6 +43,10 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     public MyComplaintsFragment() {
     }
 
+    public interface MyComplaintsListener {
+        public void onNewComplaintRequested();
+    }
+    MyComplaintsListener mListener;
     ResponseDTO response;
     View view, fab;
     Context ctx;
@@ -97,6 +101,7 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     }
 
     private void setList() {
+        txtCount.setText("" + complaintList.size());
         LinearLayoutManager lm = new LinearLayoutManager(ctx);
         lm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(lm);
@@ -154,7 +159,7 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
                 Util.flashOnce(fab, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-
+                        mListener.onNewComplaintRequested();
                     }
                 });
             }
@@ -167,12 +172,12 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-//        try {
-//            mListener = (ComplaintListFragmentListener) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.getLocalClassName()
-//                    + " must implement ComplaintListFragmentListener");
-//        }
+        try {
+            mListener = (MyComplaintsListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.getLocalClassName()
+                    + " must implement MyComplaintsListener");
+        }
     }
 
     @Override

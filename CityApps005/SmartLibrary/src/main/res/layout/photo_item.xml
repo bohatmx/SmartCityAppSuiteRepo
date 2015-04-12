@@ -8,8 +8,8 @@
 
     <android.support.v7.widget.CardView
         tools:cardCornerRadius="0dp"
-        android:layout_width="600dp"
-        android:layout_height="800dp">
+        android:layout_width="400dp"
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:id="@+id/PHOTO_top"

@@ -279,6 +279,8 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                     @Override
                     public void onAnimationEnded() {
                         Intent s = new Intent(getActivity(), MyComplaintsActivity.class);
+                        s.putExtra("darkColor",primaryDarkColor);
+                        s.putExtra("primaryColor",primaryColor);
                         s.putExtra("logo",logo);
                         startActivity(s);
                     }
