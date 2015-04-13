@@ -25,10 +25,10 @@ import java.util.Locale;
 public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.ComplaintHolder> {
 
     public interface ComplaintListener {
-        public void onFollowRequested(ComplaintDTO complaint);
-        public void onDetailsRequested(ComplaintDTO complaint);
-        public void onCameraRequested(ComplaintDTO complaint);
-        public void onImagesRequested(ComplaintDTO complaint);
+         void onFollowRequested(ComplaintDTO complaint);
+         void onStatusRequested(ComplaintDTO complaint);
+         void onCameraRequested(ComplaintDTO complaint);
+         void onImagesRequested(ComplaintDTO complaint);
     }
 
     private ComplaintListener listener;
@@ -45,6 +45,15 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.Comp
         if (themeDarkColor != 0) {
             this.themeDarkColor = themeDarkColor;
         }
+    }
+    public void remove(int position) {
+        complaintList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void add(ComplaintDTO complaint, int position) {
+        complaintList.add(position, complaint);
+        notifyItemInserted(position);
     }
 
     @Override
@@ -99,7 +108,7 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.Comp
                 Util.flashOnce(holder.iconDetails, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        listener.onDetailsRequested(p);
+                        listener.onStatusRequested(p);
                     }
                 });
             }

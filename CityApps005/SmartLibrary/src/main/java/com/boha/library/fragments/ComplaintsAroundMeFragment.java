@@ -155,7 +155,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
             }
 
             @Override
-            public void onDetailsRequested(ComplaintDTO complaint) {
+            public void onStatusRequested(ComplaintDTO complaint) {
 
             }
 
@@ -338,7 +338,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
     }
 
     public interface ComplaintAroundMeListener {
-        public void onLocationForComplaintsAroundMe();
+         void onLocationForComplaintsAroundMe();
     }
 
     Location location;

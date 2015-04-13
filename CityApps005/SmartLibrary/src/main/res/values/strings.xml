@@ -64,7 +64,7 @@
     <string name="comps_around_me">Complaints Around Me</string>
     <string name="faq">Frequently Asked Questions</string>
     <string name="comp_types">Complaint Types</string>
-    <string name="get_distance">Get Distance from where you are</string>
+    <string name="get_distance">Distance from You</string>
     <string name="dist_calc">"Distance calculated is: "</string>
     <string name="loc_unavailable">My location is not available</string>
     <string name="pay">Pay</string>

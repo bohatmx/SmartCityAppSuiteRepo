@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,7 +23,6 @@ import com.boha.library.adapters.AlertPictureAdapter;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.AlertImageDTO;
 import com.boha.library.dto.MunicipalityDTO;
-import com.boha.library.util.DividerItemDecoration;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 import com.google.android.gms.analytics.HitBuilders;
@@ -34,6 +32,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+
+import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 
 public class AlertPictureGridActivity extends ActionBarActivity {
 
@@ -163,8 +163,9 @@ public class AlertPictureGridActivity extends ActionBarActivity {
         lm.setSmoothScrollbarEnabled(true);
         list.setLayoutManager(lm);
 
-        list.setItemAnimator(new DefaultItemAnimator());
-        list.addItemDecoration(new DividerItemDecoration(ctx, RecyclerView.HORIZONTAL));
+        list.setItemAnimator(new FadeInAnimator());
+        list.getItemAnimator().setSupportsChangeAnimations(true);
+//        list.addItemDecoration(new DividerItemDecoration(ctx, RecyclerView.HORIZONTAL));
 
         adapter = new AlertPictureAdapter(photoList,
                 ctx, new AlertPictureAdapter.PictureListener() {

@@ -57,7 +57,6 @@
         <activity android:name="com.boha.library.activities.AlertPictureGridActivity" />
         <activity android:name="com.boha.library.activities.FullPhotoActivity" />
         <activity android:name="com.boha.library.activities.PictureActivity"
-            android:theme="@style/NoActionBarTheme"
             android:parentActivityName=".activities.MainDrawerActivity"/>/>
 
         <!-- RECEIVERS and SERVICES -->

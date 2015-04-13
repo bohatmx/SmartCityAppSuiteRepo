@@ -64,7 +64,7 @@ public class AlertMapActivity extends ActionBarActivity {
     Location location;
     Context ctx;
     DisplayMetrics displayMetrics;
-    List<Marker> markers = new ArrayList<Marker>();
+    List<Marker> markers = new ArrayList<>();
     static final String LOG = AlertMapActivity.class.getSimpleName();
     boolean mResolvingError;
     static final long ONE_MINUTE = 1000 * 60;
@@ -95,7 +95,7 @@ public class AlertMapActivity extends ActionBarActivity {
         setContentView(R.layout.activity_maps);
         inflater = getLayoutInflater();
         setFields();
-        ResponseDTO r = (ResponseDTO) getIntent().getSerializableExtra("complaintList");
+        ResponseDTO r = (ResponseDTO) getIntent().getSerializableExtra("alertList");
         if (r != null) {
             alertList = r.getAlertList();
             txtCount.setText("" + alertList.size());
@@ -178,16 +178,14 @@ public class AlertMapActivity extends ActionBarActivity {
 
     private void setAlertMarkers() {
         googleMap.clear();
-        LatLng point = null;
         int index = 0, count = 0, randomIndex = 0;
 
         for (AlertDTO alert : alertList) {
             if (alert.getLatitude() == null) continue;
             LatLng pnt = new LatLng(alert.getLatitude(), alert.getLongitude());
-            point = pnt;
             BitmapDescriptor desc = null;
             Short color = null;
-            View dot = null;
+            View dot;
             TextView txtNumber;
             if (alert.getAlertType().getColor() != null) {
                 switch (alert.getAlertType().getColor()) {
@@ -214,7 +212,7 @@ public class AlertMapActivity extends ActionBarActivity {
             }
             Marker m =
                     googleMap.addMarker(new MarkerOptions()
-                            .title("" + alert.getAlertID().intValue())
+                            .title("" + alert.getAlertID())
                             .icon(desc)
                             .snippet(alert.getDescription())
                             .position(pnt));
@@ -251,7 +249,7 @@ public class AlertMapActivity extends ActionBarActivity {
             return;
         }
         LatLng pnt = new LatLng(alert.getLatitude(), alert.getLongitude());
-        BitmapDescriptor desc = null;
+        BitmapDescriptor desc;
         View dot;
         TextView txtNumber;
         switch (alert.getAlertType().getColor()) {
@@ -282,7 +280,7 @@ public class AlertMapActivity extends ActionBarActivity {
         }
         Marker m =
                 googleMap.addMarker(new MarkerOptions()
-                        .title("" + alert.getAlertID().intValue())
+                        .title("" + alert.getAlertID())
                         .icon(desc)
                         .snippet(alert.getDescription())
                         .position(pnt));

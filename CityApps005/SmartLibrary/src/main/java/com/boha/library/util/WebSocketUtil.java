@@ -22,11 +22,11 @@ import java.nio.ByteBuffer;
  */
 public class WebSocketUtil {
     public interface WebSocketListener {
-        public void onMessage(ResponseDTO response);
+         void onMessage(ResponseDTO response);
 
-        public void onClose();
+         void onClose();
 
-        public void onError(String message);
+         void onError(String message);
 
     }
 
@@ -72,8 +72,8 @@ public class WebSocketUtil {
 
 
         } catch (WebsocketNotConnectedException e) {
-                Log.e(LOG, "Problems with web socket", e);
-                //webSocketListener.onError("Problem starting server socket communications\n");
+            Log.e(LOG, "Problems with web socket", e);
+            webSocketListener.onError("Problem starting server socket communications\n");
 
         } catch (URISyntaxException e) {
             Log.e(LOG, "Problems with web socket", e);
@@ -95,7 +95,7 @@ public class WebSocketUtil {
             public void onMessage(String response) {
                 TimerUtil.killTimer();
                 end = System.currentTimeMillis();
-                Log.i(LOG, "### onMessage returning websocket sessionID, length: " + response.length() + " elapsed: " + Util.getElapsed(start, end) + " seconds"
+                Log.i(LOG, "### onMessage(String) returning, length: " + response.length() + " elapsed: " + Util.getElapsed(start, end) + " seconds"
                         + "\n" + response);
                 try {
                     ResponseDTO r = gson.fromJson(response, ResponseDTO.class);
@@ -108,6 +108,7 @@ public class WebSocketUtil {
 
                         }
                     } else {
+                        Log.i(LOG, "### onMessage(String) ERROR, status code: " + r.getStatusCode());
                         webSocketListener.onError(r.getMessage());
                     }
                 } catch (Exception e) {
@@ -121,7 +122,7 @@ public class WebSocketUtil {
             public void onMessage(ByteBuffer bb) {
                 TimerUtil.killTimer();
                 end = System.currentTimeMillis();
-                Log.i(LOG, "### onMessage returning data, roundtrip elapsed: " + Util.getElapsed(start, end) + " seconds");
+                Log.i(LOG, "### onMessage(ByteBuffer) returning data, roundtrip elapsed: " + Util.getElapsed(start, end) + " seconds");
                 parseData(bb);
             }
 

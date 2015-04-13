@@ -17,9 +17,12 @@ import android.widget.TextView;
 import com.boha.library.R;
 import com.boha.library.adapters.ComplaintAdapter;
 import com.boha.library.dto.ComplaintDTO;
+import com.boha.library.dto.ComplaintUpdateStatusDTO;
+import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.DividerItemDecoration;
+import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 
@@ -116,8 +119,8 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
             }
 
             @Override
-            public void onDetailsRequested(ComplaintDTO complaint) {
-
+            public void onStatusRequested(ComplaintDTO complaint) {
+                getCaseDetails(complaint.getReferenceNumber());
             }
 
             @Override
@@ -135,6 +138,50 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
 
     }
 
+    List<ComplaintUpdateStatusDTO> complaintUpdateStatusList;
+    private void getCaseDetails(final String refe) {
+        RequestDTO w = new RequestDTO(RequestDTO.GET_COMPLAINT_STATUS);
+        w.setReferenceNumber(refe);
+        w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
+
+        progressBar.setVisibility(View.VISIBLE);
+        NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
+            @Override
+            public void onResponse(final ResponseDTO response) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+                        if (response.getStatusCode() == 0) {
+                            complaintUpdateStatusList = response.getComplaintUpdateStatusList();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onError(final String message) {
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+                        Util.showErrorToast(ctx,message);
+                    }
+                });
+            }
+
+            @Override
+            public void onWebSocketClose() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getCaseDetails(refe);
+                    }
+                });
+            }
+        });
+    }
     private void setFields() {
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);

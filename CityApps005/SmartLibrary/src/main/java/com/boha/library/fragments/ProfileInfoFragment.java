@@ -14,7 +14,9 @@ import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.AccountActivity;
+import com.boha.library.activities.MyComplaintsActivity;
 import com.boha.library.dto.AccountDTO;
+import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
@@ -24,6 +26,7 @@ import com.boha.library.util.Util;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -48,13 +51,11 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
 
-        }
     }
 
     View view;
-    TextView txtName, txtBalance, txtArrears;
+    TextView txtName, txtBalance, txtArrears, txtComplaints, txtResolved;
     Button btnAccountDetails;
     ImageView heroImage;
     static final DecimalFormat df = new DecimalFormat("###,###,###,###,###,###,###,##0.00");
@@ -63,6 +64,7 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
     Context ctx;
     String title;
     int logo;
+    List<ComplaintDTO> complaintList;
 
 
     @Override
@@ -91,6 +93,7 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
             public void onCacheRetrieved(ResponseDTO response) {
                 if (response != null) {
                     profileInfo = response.getProfileInfoList().get(0);
+                    complaintList = response.getComplaintList();
                     getTotals();
                 }
             }
@@ -125,14 +128,28 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
         txtArrears.setText(currency + df.format(totArrears));
         txtBalance.setText(currency + df.format(totBalance));
         btnAccountDetails.setText("" + profileInfo.getAccountList().size());
+        txtComplaints.setText("0");
+        txtResolved.setText("");
+        if (complaintList != null) {
+            txtComplaints.setText("" + complaintList.size());
+            int resolved = 0;
+            for (ComplaintDTO x : complaintList) {
+                if (x.getActiveFlag() == Boolean.FALSE) {
+                    resolved++;
+                }
+            }
+            txtResolved.setText("" + resolved);
+        }
 
     }
 
     private void setFields() {
         txtName = (TextView) view.findViewById(R.id.CITIZEN_name);
-        txtBalance = (TextView) view.findViewById(R.id.CITIZEN_balance);
+        txtBalance = (TextView) view.findViewById(R.id.DASH_currBal);
         btnAccountDetails = (Button) view.findViewById(R.id.button);
-        txtArrears = (TextView) view.findViewById(R.id.CITIZEN_arrears);
+        txtArrears = (TextView) view.findViewById(R.id.DASH_arrears);
+        txtComplaints = (TextView) view.findViewById(R.id.DASH_complaintCount);
+        txtResolved = (TextView) view.findViewById(R.id.DASH_resolvedCount);
         heroImage = (ImageView) view.findViewById(R.id.CITIZEN_image);
 
         Statics.setRobotoFontLight(ctx, txtBalance);
@@ -144,10 +161,7 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
                 Util.flashOnce(btnAccountDetails, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        Intent intent = new Intent(ctx, AccountActivity.class);
-                        intent.putExtra("profileInfo", profileInfo);
-                        intent.putExtra("logo", logo);
-                        startActivity(intent);
+                        startAccountActivity();
                     }
                 });
             }
@@ -158,10 +172,7 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
                 Util.flashOnce(txtBalance, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        Intent intent = new Intent(ctx, AccountActivity.class);
-                        intent.putExtra("profileInfo", profileInfo);
-                        intent.putExtra("logo",logo);
-                        startActivity(intent);
+                        startAccountActivity();
                     }
                 });
             }
@@ -172,10 +183,18 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
                 Util.flashOnce(txtArrears, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        Intent intent = new Intent(ctx, AccountActivity.class);
-                        intent.putExtra("profileInfo", profileInfo);
-                        intent.putExtra("logo",logo);
-                        startActivity(intent);
+                        startAccountActivity();
+                    }
+                });
+            }
+        });
+        txtComplaints.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.flashOnce(txtComplaints, 300, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        startMyComplaintsActivity();
                     }
                 });
             }
@@ -207,6 +226,19 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
 
     }
 
+    private void startAccountActivity() {
+        Intent intent = new Intent(ctx, AccountActivity.class);
+        intent.putExtra("profileInfo", profileInfo);
+        intent.putExtra("logo", logo);
+        startActivity(intent);
+    }
+    private void startMyComplaintsActivity() {
+        Intent intent = new Intent(ctx, MyComplaintsActivity.class);
+        intent.putExtra("darkColor", primaryDarkColor);
+        intent.putExtra("primaryColor", primaryColor);
+        intent.putExtra("logo",logo);
+        startActivity(intent);
+    }
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

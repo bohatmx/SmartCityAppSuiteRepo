@@ -45,7 +45,7 @@ public class RequestDTO {
 
     private Integer requestType, radius = 20,
             municipalityID;
-    private String userName, password,
+    private String userName, password, referenceNumber,
             gcmRegistrationID, email,municipalityName;
     private Double latitude = 0.0, longitude = 0.0;
     private Boolean rideWebSocket = Boolean.TRUE;
@@ -109,7 +109,7 @@ public class RequestDTO {
             ADD_COMPLAINT_STATUS_UPDATE = 114,
             ADD_FREQUENTLY_ASKED_QUESTION = 115,
             ADD_GCM_DEVICE = 116,
-            ADD_COMPLAINT_FOLLOWER = 117;;
+            ADD_COMPLAINT_FOLLOWER = 117;
 
     //Update data
     public static final int 
@@ -143,7 +143,8 @@ public class RequestDTO {
             GET_CITIES_BY_MUNICIPALITY = 209,
             GET_MUNICIPALITY_STAFF_LIST = 210,
             GET_MUNICIPALITY_BY_NAME = 211,
-            GET_COMPLAINT_FOLLOWERS = 212;
+            GET_COMPLAINT_FOLLOWERS = 212,
+            GET_COMPLAINT_STATUS = 213;
 
     //get data
     public static final int 
@@ -169,6 +170,18 @@ public class RequestDTO {
 
     public void setComplaintFollower(ComplaintFollowerDTO complaintFollower) {
         this.complaintFollower = complaintFollower;
+    }
+
+    public String getReferenceNumber() {
+        return referenceNumber;
+    }
+
+    public void setReferenceNumber(String referenceNumber) {
+        this.referenceNumber = referenceNumber;
+    }
+
+    public Boolean isRideWebSocket() {
+        return rideWebSocket;
     }
 
     public Integer getMunicipalityID() {
