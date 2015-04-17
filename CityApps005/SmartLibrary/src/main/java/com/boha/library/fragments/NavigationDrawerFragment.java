@@ -338,7 +338,6 @@ public class NavigationDrawerFragment extends Fragment {
             destinationList.add(ctx.getString(R.string.create_alert));
             destinationList.add(ctx.getString(R.string.comps_around_me));
             destinationList.add(ctx.getString(R.string.city_news));
-            destinationList.add(ctx.getString(R.string.city_gallery));
             destinationList.add(ctx.getString(R.string.faq));
         }
         if (profileInfo != null) {
@@ -350,7 +349,6 @@ public class NavigationDrawerFragment extends Fragment {
 
             destinationList.add(ctx.getString(R.string.city_alerts));
             destinationList.add(ctx.getString(R.string.city_news));
-            destinationList.add(ctx.getString(R.string.city_gallery));
 
             destinationList.add(ctx.getString(R.string.faq));
         }

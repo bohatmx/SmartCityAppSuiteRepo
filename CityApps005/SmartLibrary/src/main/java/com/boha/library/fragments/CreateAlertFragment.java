@@ -376,7 +376,6 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
 
     public interface CreateAlertFragmentListener {
         public void onAlertSent(AlertDTO alert);
-
         public void onLocationRequested();
     }
 

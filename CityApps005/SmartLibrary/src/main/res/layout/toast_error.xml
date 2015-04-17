@@ -6,9 +6,17 @@
 
     <RelativeLayout
         android:id="@+id/MONTOAST_top"
-        android:background="@color/absa_red"
+        android:background="@color/red_600"
         android:layout_width="match_parent"
         android:layout_height="@dimen/mon_wider">
+
+        <TextView
+            style="@style/Title3TextStyleWhite"
+            android:text="Error Information"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </RelativeLayout>
 
@@ -17,7 +25,7 @@
         android:padding="16dp"
         android:background="@color/translucent_red"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mon_hero_height_medium_lite" />
+        android:layout_height="@dimen/mon_widest" />
 
     <TextView
         android:id="@+id/MONTOAST_text"

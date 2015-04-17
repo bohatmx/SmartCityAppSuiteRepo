@@ -13,6 +13,7 @@ import com.boha.library.dto.CustomerTypeDTO;
 import com.boha.library.dto.ErrorStoreAndroidDTO;
 import com.boha.library.dto.ErrorStoreDTO;
 import com.boha.library.dto.FaqDTO;
+import com.boha.library.dto.FaqTypeDTO;
 import com.boha.library.dto.GcmDeviceDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.MunicipalityStaffDTO;
@@ -44,6 +45,7 @@ public class ResponseDTO implements Serializable {
     private String message, sessionID, gcmRegistrationID;
     private Double requestResponseTimeSeconds;
     private Boolean municipalityAccessFailed = Boolean.FALSE;
+    private List<String> pdfFileNameList;
 
     //response lists
     private List<PhotoUploadDTO> photoUploadList;
@@ -68,6 +70,7 @@ public class ResponseDTO implements Serializable {
     private List<NewsArticleDTO> newsArticleList;
     private List<StaffTypeDTO> staffTypeList;
     private List<FaqDTO> faqList;
+    private List<FaqTypeDTO> faqTypeList;
 
     public Boolean isMunicipalityAccessFailed() {
         return municipalityAccessFailed;
@@ -75,6 +78,22 @@ public class ResponseDTO implements Serializable {
 
     public void setMunicipalityAccessFailed(Boolean municipalityAccessFailed) {
         this.municipalityAccessFailed = municipalityAccessFailed;
+    }
+
+    public List<String> getPdfFileNameList() {
+        return pdfFileNameList;
+    }
+
+    public void setPdfFileNameList(List<String> pdfFileNameList) {
+        this.pdfFileNameList = pdfFileNameList;
+    }
+
+    public List<FaqTypeDTO> getFaqTypeList() {
+        return faqTypeList;
+    }
+
+    public void setFaqTypeList(List<FaqTypeDTO> faqTypeList) {
+        this.faqTypeList = faqTypeList;
     }
 
     public List<PhotoUploadDTO> getPhotoUploadList() {

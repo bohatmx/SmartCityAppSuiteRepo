@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="@dimen/mon_divider_small"
+    android:id="@+id/NEWS_main"
+    android:background="@color/grey"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/NEWS_toptop"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/NEWS_top"
+            android:padding="@dimen/mon_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/NEWS_color"
+                style="@style/RedCircleSmall"
+                android:text="0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/NEWS_desc"
+                style="@style/Title3TextStyleBlack"
+                android:text="News Text here"
+                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_toRightOf="@id/NEWS_color"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/NEWS_type"
+            style="@style/TextStyleSmall"
+            android:text="News Type"
+            android:layout_below="@id/NEWS_top"
+            android:layout_marginLeft="64dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:id="@+id/NEWS_dateLayout"
+            android:layout_below="@id/NEWS_type"
+            android:paddingBottom="@dimen/mon_padding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/NEWS_time"
+                style="@style/Title2TextStyleBlue"
+                android:text="10:26"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/mon_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/NEWS_date"
+                android:layout_toLeftOf="@id/NEWS_time"
+                android:layout_centerVertical="true"
+                style="@style/Title3TextStyleGrey"
+                android:text="23 December 2091"
+                android:layout_marginRight="@dimen/mon_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <ImageView
+            android:id="@+id/NEWS_image"
+            android:src="@drawable/under_construction"
+            android:scaleType="centerCrop"
+            android:layout_below="@id/NEWS_dateLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>

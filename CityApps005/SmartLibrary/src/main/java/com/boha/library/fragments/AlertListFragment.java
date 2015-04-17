@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.AlertMapActivity;
-import com.boha.library.adapters.AlertAdapter;
 import com.boha.library.adapters.AlertListAdapter;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.transfer.RequestDTO;
@@ -52,7 +51,6 @@ public class AlertListFragment extends Fragment implements PageFragment {
         // Required empty public constructor
     }
 
-    AlertAdapter adapter;
     ProgressBar progressBar;
 
     @Override
@@ -180,7 +178,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
                         Intent i = new Intent(ctx, AlertMapActivity.class);
                         ResponseDTO r = new ResponseDTO();
                         r.setAlertList(alertList);
-                        i.putExtra("alertList", r);
+                        i.putExtra("newsList", r);
                         startActivity(i);
                     }
                 });
@@ -211,8 +209,8 @@ public class AlertListFragment extends Fragment implements PageFragment {
             alertList = new ArrayList<>();
         }
         alertList.add(0, alert);
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
+        if (alertListAdapter != null) {
+            alertListAdapter.notifyDataSetChanged();
             btnCount.setText("" + alertList.size());
         }
 

@@ -21,14 +21,17 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.boha.library.activities.AlertMapActivity;
+import com.boha.library.activities.FaqActivity;
 import com.boha.library.activities.PictureActivity;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.MunicipalityStaffDTO;
+import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.fragments.AlertListFragment;
 import com.boha.library.fragments.ComplaintsAroundMeFragment;
 import com.boha.library.fragments.CreateAlertFragment;
 import com.boha.library.fragments.NavigationDrawerFragment;
+import com.boha.library.fragments.NewsListFragment;
 import com.boha.library.fragments.PageFragment;
 import com.boha.library.services.PhotoUploadService;
 import com.boha.library.transfer.RequestDTO;
@@ -54,11 +57,13 @@ public class MainDrawerActivity extends ActionBarActivity
         AlertListFragment.AlertListener,
         ComplaintsAroundMeFragment.ComplaintAroundMeListener,
         LocationListener,
+        NewsListFragment.NewsListFragmentListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     CreateAlertFragment createAlertFragment;
     AlertListFragment alertListFragment;
     ComplaintsAroundMeFragment complaintsAroundMeFragment;
+    NewsListFragment newsListFragment;
     PagerAdapter adapter;
     Context ctx;
     int currentPageIndex;
@@ -163,7 +168,14 @@ public class MainDrawerActivity extends ActionBarActivity
             Log.e(LOG, "### onDestinationSelected pageFragmentList is null");
             return;
         }
-
+        if (text.equalsIgnoreCase(ctx.getString(R.string.faq))) {
+            Intent x = new Intent(this, FaqActivity.class);
+            x.putExtra("logo", logo);
+            x.putExtra("darkColor", themeDarkColor);
+            x.putExtra("primaryColor", themePrimaryColor);
+            startActivity(x);
+            return;
+        }
         int index = 0;
         for (PageFragment pf : pageFragmentList) {
             if (pf.getPageTitle() != null) {
@@ -200,7 +212,7 @@ public class MainDrawerActivity extends ActionBarActivity
     MunicipalityStaffDTO staff;
 
     private void getLoginData() {
-        Log.d(LOG, "getLoginData ");
+        Log.w(LOG, "getLoginData ......");
         RequestDTO w = new RequestDTO(RequestDTO.SIGN_IN_MUNICIPALITY_STAFF);
         w.setEmail(staff.getEmail());
         w.setPassword(staff.getPassword());
@@ -222,10 +234,9 @@ public class MainDrawerActivity extends ActionBarActivity
                         response = resp;
                         Log.i("Splash", "### response OK from server");
                         staff = response.getMunicipalityStaffList().get(0);
-                        if (isRefresh) {
-                            isRefresh = false;
-                            if (alertListFragment != null)
-                                alertListFragment.refreshAlerts();
+
+                        if (alertListFragment != null) {
+                            alertListFragment.refreshAlerts();
                         }
 
                         MunicipalityStaffDTO sp = new MunicipalityStaffDTO();
@@ -238,6 +249,10 @@ public class MainDrawerActivity extends ActionBarActivity
 
                         SharedUtil.saveMunicipalityStaff(ctx, sp);
                         CacheUtil.cacheLoginData(ctx, response, null);
+                        if (response.isMunicipalityAccessFailed()) {
+                            Util.showErrorToast(ctx, getString(R.string.unable_connect_muni));
+                            return;
+                        }
 
                     }
                 });
@@ -263,7 +278,7 @@ public class MainDrawerActivity extends ActionBarActivity
     }
 
 
-    private void buildPages(){
+    private void buildPages() {
         Log.e(LOG, "starting PhotoUploadService");
         Intent x = new Intent(ctx, PhotoUploadService.class);
         startService(x);
@@ -271,16 +286,19 @@ public class MainDrawerActivity extends ActionBarActivity
         createAlertFragment = CreateAlertFragment.newInstance(SharedUtil.getMunicipalityStaff(ctx));
         alertListFragment = AlertListFragment.newInstance(response);
         complaintsAroundMeFragment = ComplaintsAroundMeFragment.newInstance();
+        newsListFragment = NewsListFragment.newInstance(response);
 
         createAlertFragment.setPageTitle(ctx.getString(R.string.create_alert));
         alertListFragment.setPageTitle(ctx.getString(R.string.city_alerts));
         alertListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         createAlertFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         complaintsAroundMeFragment.setThemeColors(themePrimaryColor, themeDarkColor);
+        newsListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 
         alertListFragment.setPageTitle(ctx.getString(R.string.city_alerts));
         createAlertFragment.setPageTitle(ctx.getString(R.string.create_alert));
         complaintsAroundMeFragment.setPageTitle(ctx.getString(R.string.complaints_around_me));
+        newsListFragment.setPageTitle(ctx.getString(R.string.city_news));
 
         alertListFragment.setLogo(logo);
         complaintsAroundMeFragment.setLogo(logo);
@@ -288,6 +306,7 @@ public class MainDrawerActivity extends ActionBarActivity
         pageFragmentList.add(alertListFragment);
         pageFragmentList.add(createAlertFragment);
         pageFragmentList.add(complaintsAroundMeFragment);
+        pageFragmentList.add(newsListFragment);
 
         adapter = new PagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(adapter);
@@ -314,10 +333,21 @@ public class MainDrawerActivity extends ActionBarActivity
     }
 
     boolean isLocationForComplaints;
+
     @Override
     public void onLocationForComplaintsAroundMe() {
         isLocationForComplaints = true;
         startLocationUpdates();
+    }
+
+    @Override
+    public void onNewsClicked(NewsArticleDTO news) {
+
+    }
+
+    @Override
+    public void onCreateNewsArticleRequested() {
+
     }
 
 
@@ -379,7 +409,7 @@ public class MainDrawerActivity extends ActionBarActivity
 
     @Override
     public void onAlertSent(AlertDTO alert) {
-
+        getLoginData();
         alertListFragment.onNewAlertSent(alert);
         Intent w = new Intent(ctx, PictureActivity.class);
         w.putExtra("alert", alert);
@@ -478,8 +508,8 @@ public class MainDrawerActivity extends ActionBarActivity
             if (!mRequestingLocationUpdates) {
                 startLocationUpdates();
             }
-        }else {
-            Log.d(LOG,"## re-connecting GoogleApiClient ...");
+        } else {
+            Log.d(LOG, "## re-connecting GoogleApiClient ...");
             googleApiClient.connect();
         }
 

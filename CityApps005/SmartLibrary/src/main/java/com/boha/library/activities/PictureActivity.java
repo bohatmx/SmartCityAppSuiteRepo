@@ -52,6 +52,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -453,15 +454,106 @@ public class PictureActivity extends ActionBarActivity
 
     class PhotoTask extends AsyncTask<Void, Void, Integer> {
 
+        private  int calculateInSampleSize(
+                BitmapFactory.Options options, int reqWidth, int reqHeight) {
+            // Raw height and width of image
+            final int height = options.outHeight;
+            final int width = options.outWidth;
+            int inSampleSize = 1;
+
+            if (height > reqHeight || width > reqWidth) {
+
+                final int halfHeight = height / 2;
+                final int halfWidth = width / 2;
+
+                // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+                // height and width larger than the requested height and width.
+                while ((halfHeight / inSampleSize) > reqHeight
+                        && (halfWidth / inSampleSize) > reqWidth) {
+                    inSampleSize *= 2;
+                }
+            }
+            Log.w(LOG, "## calculateInSampleSize: " + inSampleSize);
+            return inSampleSize;
+        }
+        public  void writeLocationToExif(String filePath, Location loc) {
+            try {
+                ExifInterface ef = new ExifInterface(filePath);
+                ef.setAttribute(ExifInterface.TAG_GPS_LATITUDE, decimalToDMS(loc.getLatitude()));
+                ef.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, decimalToDMS(loc.getLongitude()));
+                if (loc.getLatitude() > 0)
+                    ef.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "N");
+                else
+                    ef.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "S");
+                if (loc.getLongitude() > 0)
+                    ef.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "E");
+                else
+                    ef.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "W");
+                ef.saveAttributes();
+                Log.e(LOG, "### Location lat:" + loc.getLatitude() + " lng: " + loc.getLongitude());
+                Location locx = getLocationFromExif(filePath);
+                Log.e(LOG, "### Exif attributes back to Location, lat:" + locx.getLatitude() + " lng: " + locx.getLongitude());
+            } catch (IOException e) {
+            }
+        }
+        private  String decimalToDMS(double coord) {
+            coord = coord > 0 ? coord : -coord;  // -105.9876543 -> 105.9876543
+            String sOut = Integer.toString((int) coord) + "/1,";   // 105/1,
+            coord = (coord % 1) * 60;         // .987654321 * 60 = 59.259258
+            sOut = sOut + Integer.toString((int) coord) + "/1,";   // 105/1,59/1,
+            coord = (coord % 1) * 60000;             // .259258 * 60000 = 15555
+            sOut = sOut + Integer.toString((int) coord) + "/1000";   // 105/1,59/1,15555/1000
+            Log.i(LOG, "decimalToDMS coord: " + coord + " converted to: " + sOut);
+            return sOut;
+        }
+
+        public  Location getLocationFromExif(String filePath) {
+            String sLat = "", sLatR = "", sLon = "", sLonR = "";
+            try {
+                ExifInterface ef = new ExifInterface(filePath);
+                sLat = ef.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
+                sLon = ef.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
+                sLatR = ef.getAttribute(ExifInterface.TAG_GPS_LATITUDE_REF);
+                sLonR = ef.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF);
+            } catch (IOException e) {
+                return null;
+            }
+
+            double lat = DMSToDouble(sLat);
+            if (lat > 180.0) return null;
+            double lon = DMSToDouble(sLon);
+            if (lon > 180.0) return null;
+
+            lat = sLatR.contains("S") ? -lat : lat;
+            lon = sLonR.contains("W") ? -lon : lon;
+
+            Location loc = new Location("exif");
+            loc.setLatitude(lat);
+            loc.setLongitude(lon);
+            Log.i(LOG, "----> File Exif lat: " + loc.getLatitude() + " lng: " + loc.getLongitude());
+            return loc;
+        }
+
+        //-------------------------------------------------------------------------
+        private  double DMSToDouble(String sDMS) {
+            double dRV = 999.0;
+            try {
+                String[] DMSs = sDMS.split(",", 3);
+                String s[] = DMSs[0].split("/", 2);
+                dRV = (new Double(s[0]) / new Double(s[1]));
+                s = DMSs[1].split("/", 2);
+                dRV += ((new Double(s[0]) / new Double(s[1])) / 60);
+                s = DMSs[2].split("/", 2);
+                dRV += ((new Double(s[0]) / new Double(s[1])) / 3600);
+            } catch (Exception e) {
+            }
+            return dRV;
+        }
         @Override
         protected Integer doInBackground(Void... voids) {
-            Log.w(LOG, "## PhotoTask starting doInBackground, file length: " + photoFile.length());
-            pictureChanged = false;
+            Log.w(LOG, "## PhotoTask doInBackground, file length: " + photoFile.length());
             ExifInterface exif = null;
-            if (photoFile == null || photoFile.length() == 0) {
-                Log.e(LOG, "----- photoFile is null or length 0, exiting");
-                return 99;
-            }
+
             fileUri = Uri.fromFile(photoFile);
             if (fileUri != null) {
                 try {
@@ -475,15 +567,20 @@ public class PictureActivity extends ActionBarActivity
                     }
                     try {
                         BitmapFactory.Options options = new BitmapFactory.Options();
-                        options.inSampleSize = 2;
+                        options.inJustDecodeBounds = true;
+                        BitmapFactory.decodeFile(photoFile.getAbsolutePath(), options);
+
+                        options.inSampleSize = calculateInSampleSize(options, 400, 600);
+                        options.inJustDecodeBounds = false;
                         Bitmap bm = BitmapFactory.decodeFile(photoFile.getAbsolutePath(), options);
-                        //getLog(bm, "Raw Camera- sample size = 2");
+
+                        getLog(bm, "Bitmap after decode - sample size = " + options.inSampleSize);
                         Matrix matrixThumbnail = new Matrix();
-                        matrixThumbnail.postScale(0.5f, 0.5f);
+                        matrixThumbnail.postScale(0.6f, 0.6f);
                         Bitmap thumb = Bitmap.createBitmap
                                 (bm, 0, 0, bm.getWidth(),
                                         bm.getHeight(), matrixThumbnail, true);
-                        //getLog(thumb, "Thumb");
+                        getLog(thumb, "Smaller version created");
 
                         //append date and gps coords to bitmap
                         //fullBm = ImageUtil.drawTextToBitmap(ctx,fullBm,location);
@@ -494,10 +591,10 @@ public class PictureActivity extends ActionBarActivity
 
                         thumbUri = Uri.fromFile(currentThumbFile);
                         //write exif data
-//                        Util.writeLocationToExif(currentThumbFile.getAbsolutePath(), location);
+                        writeLocationToExif(currentThumbFile.getAbsolutePath(), location);
                         boolean del = photoFile.delete();
-                        Log.i(LOG, "## Thumbnail file length: " + currentThumbFile.length()
-                                + " main image file deleted: " + del);
+                        Log.i(LOG, "## Resulting file length after processing: " + df.format(currentThumbFile.length())
+                                + " - large image file deleted: " + del);
                     } catch (Exception e) {
                         Log.e(LOG, "$&*%$! Fuck it! unable to process bitmap", e);
                         return 9;
@@ -511,6 +608,7 @@ public class PictureActivity extends ActionBarActivity
             }
             return 0;
         }
+
 
         @Override
         protected void onPostExecute(Integer result) {
@@ -576,6 +674,7 @@ public class PictureActivity extends ActionBarActivity
         }
     }
 
+    static final DecimalFormat df = new DecimalFormat("###,###,###,###,###,###,###,###.0");
     private void addImageToScroller() {
         Log.i(LOG, "## addImageToScroller");
         if (currentSessionPhotos.size() == 1) {
@@ -599,10 +698,11 @@ public class PictureActivity extends ActionBarActivity
 
     private void getLog(Bitmap bm, String which) {
         if (bm == null) return;
-        Log.e(LOG, which + " - bitmap: width: "
+
+        Log.d(LOG, which + " - bitmap: width: "
                 + bm.getWidth() + " height: "
                 + bm.getHeight() + " rowBytes: "
-                + bm.getRowBytes());
+                + bm.getRowBytes() + " byteCount: " + bm.getByteCount());
     }
 
 

@@ -25,14 +25,19 @@ public class CacheUtil {
         public void onCacheRetrieved(ResponseDTO response);
         public void onError();
     }
+    public interface FAQCacheRetrievalListener {
+        public void onCacheRetrieved(FaqStrings faqStrings);
+        public void onError();
+    }
     public interface CacheListener {
-        public void onDataCached();
+        public void onDataCached() throws CommsException;
         public void onError();
     }
     static Context ctx;
     static int dataType;
-    public static final int CACHE_LOGIN = 1, CACHE_ALERTS = 2;
-    public static final String JSON_DATA = "file.json", JSON_ALERTS = "alerts.json";
+    public static final int CACHE_LOGIN = 1, CACHE_ALERTS = 2, CACHE_NEWS = 3, CACHE_FAQ = 4;
+    public static final String JSON_DATA = "file.json", JSON_ALERTS = "alerts.json",
+            JSON_NEWS = "news.json", JSON_FAQ = "faq.json";
     static ResponseDTO response;
     static CacheListener cacheListener;
     static CacheRetrievalListener cacheRetrievalListener;
@@ -50,11 +55,33 @@ public class CacheUtil {
         dataType = CACHE_LOGIN;
         new CacheRetrieveTask().execute();
     }
+    static FAQCacheRetrievalListener faqCacheRetrievalListener;
+    public static void getCachedFAQ(Context context, FAQCacheRetrievalListener listener) {
+        faqCacheRetrievalListener = listener;
+        ctx = context;
+        dataType = CACHE_FAQ;
+        new FAQCacheRetrieveTask().execute();
+    }
+    static FaqStrings faqStrings;
     public static void cacheAlertData(Context context, ResponseDTO w, CacheListener listener) {
         cacheListener = listener;
         response = w;
         ctx = context;
         dataType = CACHE_ALERTS;
+        new CacheTask().execute();
+    }
+    public static void cacheNewsData(Context context, ResponseDTO w, CacheListener listener) {
+        cacheListener = listener;
+        response = w;
+        ctx = context;
+        dataType = CACHE_NEWS;
+        new CacheTask().execute();
+    }
+    public static void cacheFAQ(Context context, FaqStrings w, CacheListener listener) {
+        cacheListener = listener;
+        faqStrings = w;
+        ctx = context;
+        dataType = CACHE_FAQ;
         new CacheTask().execute();
     }
     public static void getCacheAlertData(Context context, CacheRetrievalListener listener) {
@@ -93,6 +120,26 @@ public class CacheUtil {
                                     " - length: " + file.length());
                         }
                         break;
+                    case CACHE_NEWS:
+                        json = gson.toJson(response);
+                        outputStream = ctx.openFileOutput(JSON_NEWS, Context.MODE_PRIVATE);
+                        write(outputStream, json);
+                        file = ctx.getFileStreamPath(JSON_NEWS);
+                        if (file != null) {
+                            Log.e(LOG, "News cache written, path: " + file.getAbsolutePath() +
+                                    " - length: " + file.length());
+                        }
+                        break;
+                    case CACHE_FAQ:
+                        json = gson.toJson(faqStrings);
+                        outputStream = ctx.openFileOutput(JSON_FAQ, Context.MODE_PRIVATE);
+                        write(outputStream, json);
+                        file = ctx.getFileStreamPath(JSON_FAQ);
+                        if (file != null) {
+                            Log.e(LOG, "FAQ cache written, path: " + file.getAbsolutePath() +
+                                    " - length: " + file.length());
+                        }
+                        break;
 
                     default:
                         Log.e(LOG, "######### NOTHING done ...");
@@ -118,7 +165,11 @@ public class CacheUtil {
                 if (v > 0) {
                     cacheListener.onError();
                 } else
-                    cacheListener.onDataCached();
+                    try {
+                        cacheListener.onDataCached();
+                    } catch (CommsException e) {
+                        e.printStackTrace();
+                    }
             }
 
 
@@ -186,7 +237,58 @@ public class CacheUtil {
 
         }
     }
+    static class FAQCacheRetrieveTask extends AsyncTask<Void, Void, FaqStrings> {
 
+        private FaqStrings getData(FileInputStream stream) throws IOException {
+            String json = getStringFromInputStream(stream);
+            Log.e(LOG,"++ faq json: " + json);
+            FaqStrings faqStrings = null;
+            try {
+                faqStrings = gson.fromJson(json, FaqStrings.class);
+            } catch (JsonSyntaxException e) {
+                Log.e(LOG,"-- JSON Error: " + e.getMessage());
+                throw new IOException(e.getMessage());
+            }
+            return faqStrings;
+        }
+
+        @Override
+        protected FaqStrings doInBackground(Void... voids) {
+            Log.w(LOG,"### doInBackground FAQCacheRetrieveTask");
+            FaqStrings faqStrings = new FaqStrings();
+            FileInputStream stream;
+            try {
+                switch (dataType) {
+                    case CACHE_FAQ:
+                        stream = ctx.openFileInput(JSON_FAQ);
+                        faqStrings = getData(stream);
+                        Log.i(LOG, "++ faq cache retrieved:");
+                        break;
+                }
+
+            } catch (FileNotFoundException e) {
+                Log.e(LOG, "#### faq cache file not found - returning a new response object, type = " + dataType);
+
+            } catch (IOException e) {
+                Log.e(LOG, "------------ Failed to retrieve cache", e);
+                faqStrings = null;
+            }
+            return faqStrings;
+        }
+
+        @Override
+        public void onPostExecute(FaqStrings result) {
+            Log.i(LOG,"+++ onPostExecute result: " + result);
+            if (faqCacheRetrievalListener != null) {
+                if (result == null) {
+                    faqCacheRetrievalListener.onError();
+                } else {
+                    faqCacheRetrievalListener.onCacheRetrieved(result);
+                }
+            }
+
+        }
+    }
 
     private static String getStringFromInputStream(InputStream is) throws IOException {
 

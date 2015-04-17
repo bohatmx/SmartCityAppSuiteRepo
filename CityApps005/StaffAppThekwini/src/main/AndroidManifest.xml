@@ -46,7 +46,11 @@
 
         <activity android:name="com.boha.library.activities.PictureActivity"
             android:theme="@style/NoActionBarTheme"
-            android:parentActivityName=".activities.MainDrawerActivity"/>/>
+            android:parentActivityName=".activities.MainDrawerActivity"/>
+        <activity
+            android:name="com.boha.library.activities.FaqActivity"
+            android:parentActivityName=".activities.MainDrawerActivity" >
+        </activity>
 
 
         <!-- RECEIVERS and SERVICES -->

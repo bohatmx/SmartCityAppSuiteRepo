@@ -114,6 +114,6 @@
     <orderEntry type="library" exported="" name="play-services-analytics-7.0.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-games-7.0.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-nearby-7.0.0" level="project" />
-    <orderEntry type="library" exported="" name="SmartLibrary-unspecified" level="project" />
+    <orderEntry type="module" module-name="SmartLibrary" exported="" />
   </component>
 </module>

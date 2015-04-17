@@ -309,6 +309,9 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
 
     @Override
     public void animateSomething() {
+        if (complaintList == null) {
+            getComplaintsAroundMe();
+        }
         final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override

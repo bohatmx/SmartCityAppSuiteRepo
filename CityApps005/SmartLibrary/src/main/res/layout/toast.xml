@@ -9,20 +9,27 @@
         android:background="@color/medium_sea_green"
         android:layout_width="match_parent"
         android:layout_height="@dimen/mon_wider">
+        <TextView
+            style="@style/Title3TextStyleWhite"
+            android:text="Information"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_below="@id/MONTOAST_top"
-        android:padding="16dp"
+        android:padding="@dimen/mon_divider"
         android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mon_hero_height_medium_lite"/>
+        android:layout_height="@dimen/mon_widest"/>
     <TextView
         android:id="@+id/MONTOAST_text"
         style="@style/TextStyle"
         android:text="General message text happens here and things could be long in the tooth."
-        android:layout_marginTop="@dimen/mon_widest"
+        android:layout_marginTop="@dimen/mon_wider"
         android:padding="@dimen/mon_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

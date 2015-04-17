@@ -24,17 +24,20 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.boha.library.activities.AlertMapActivity;
+import com.boha.library.activities.FaqActivity;
 import com.boha.library.activities.MyComplaintsActivity;
 import com.boha.library.activities.PictureActivity;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.MunicipalityDTO;
+import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.fragments.AlertListFragment;
 import com.boha.library.fragments.ComplaintCreateFragment;
 import com.boha.library.fragments.ComplaintsAroundMeFragment;
 import com.boha.library.fragments.CreateAlertFragment;
 import com.boha.library.fragments.NavigationDrawerFragment;
+import com.boha.library.fragments.NewsListFragment;
 import com.boha.library.fragments.PageFragment;
 import com.boha.library.fragments.ProfileInfoFragment;
 import com.boha.library.services.PhotoUploadService;
@@ -60,18 +63,17 @@ public class MainDrawerActivity extends ActionBarActivity
         CreateAlertFragment.CreateAlertFragmentListener,
         ImageGridFragment.ImageGridFragmentListener,
         AlertListFragment.AlertListener,
+        NewsListFragment.NewsListFragmentListener,
         ComplaintCreateFragment.ComplaintFragmentListener,
         ComplaintsAroundMeFragment.ComplaintAroundMeListener,
         LocationListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     ProfileInfoFragment profileInfoFragment;
-//    CreateAlertFragment createAlertFragment;
-    ImageGridFragment imageGridFragment;
     AlertListFragment alertListFragment;
     ComplaintCreateFragment complaintCreateFragment;
-//    ComplaintListFragment complaintListFragment;
     ComplaintsAroundMeFragment complaintsAroundMeFragment;
+    NewsListFragment newsListFragment;
     PagerAdapter adapter;
     Context ctx;
     int currentPageIndex;
@@ -104,18 +106,14 @@ public class MainDrawerActivity extends ActionBarActivity
         theme.resolveAttribute(com.boha.library.R.attr.colorPrimary, typedValue, true);
         themePrimaryColor = typedValue.data;
 
-        Log.w(LOG, "##Theme themeDarkColor: " + themeDarkColor + " themePrimaryColor: " + themePrimaryColor);
-
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mNavigationDrawerFragment.setPrimaryDarkColor(themeDarkColor);
         mNavigationDrawerFragment.setPrimaryColor(themePrimaryColor);
         logo = R.drawable.logo;
-        // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
+        //
+        mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-        Log.e(LOG, "## mNavigationDrawerFragment has been set up");
         mPager = (ViewPager) findViewById(com.boha.library.R.id.pager);
         municipality = SharedUtil.getMunicipality(ctx);
         profileInfo = SharedUtil.getProfile(ctx);
@@ -126,6 +124,7 @@ public class MainDrawerActivity extends ActionBarActivity
                 municipality.getMunicipalityName(),
                 ctx.getResources().getDrawable(R.drawable.logo));
         getSupportActionBar().setTitle("");
+
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -189,6 +188,14 @@ public class MainDrawerActivity extends ActionBarActivity
             x.putExtra("darkColor",themeDarkColor);
             x.putExtra("primaryColor",themePrimaryColor);
             startActivityForResult(x, CREATE_COMPLAINT_REQUESTED);
+            return;
+        }
+        if (text.equalsIgnoreCase(ctx.getString(R.string.faq))) {
+            Intent x = new Intent(this, FaqActivity.class);
+            x.putExtra("logo",logo);
+            x.putExtra("darkColor",themeDarkColor);
+            x.putExtra("primaryColor",themePrimaryColor);
+            startActivity(x);
             return;
         }
         int index = 0;
@@ -317,43 +324,42 @@ public class MainDrawerActivity extends ActionBarActivity
 
         pageFragmentList = new ArrayList<>();
         profileInfoFragment = ProfileInfoFragment.newInstance();
-//        createAlertFragment = CreateAlertFragment.newInstance(SharedUtil.getProfile(ctx));
-        imageGridFragment = ImageGridFragment.newInstance();
         complaintCreateFragment = ComplaintCreateFragment.newInstance();
         alertListFragment = AlertListFragment.newInstance(response);
         complaintsAroundMeFragment = ComplaintsAroundMeFragment.newInstance();
+        newsListFragment = NewsListFragment.newInstance(response);
 
 
         alertListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         complaintCreateFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         profileInfoFragment.setThemeColors(themePrimaryColor, themeDarkColor);
-//        createAlertFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         complaintsAroundMeFragment.setThemeColors(themePrimaryColor, themeDarkColor);
+        newsListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 
         profileInfoFragment.setLogo(logo);
         complaintCreateFragment.setLogo(logo);
         complaintsAroundMeFragment.setLogo(logo);
         alertListFragment.setLogo(logo);
+        newsListFragment.setLogo(logo);
 
         profileInfoFragment.setPageTitle(ctx.getString(R.string.my_accounts));
         alertListFragment.setPageTitle(ctx.getString(R.string.city_alerts));
         complaintCreateFragment.setPageTitle(ctx.getString(R.string.make_complaint));
-//        createAlertFragment.setPageTitle(ctx.getString(R.string.create_alert));
-        imageGridFragment.setPageTitle(ctx.getString(R.string.city_gallery));
         complaintsAroundMeFragment.setPageTitle(ctx.getString(R.string.complaints_around_me));
+        newsListFragment.setPageTitle(ctx.getString(R.string.city_news));
 
         pageFragmentList.add(profileInfoFragment);
         pageFragmentList.add(alertListFragment);
-//        pageFragmentList.add(createAlertFragment);
         pageFragmentList.add(complaintCreateFragment);
         pageFragmentList.add(complaintsAroundMeFragment);
-        pageFragmentList.add(imageGridFragment);
+        pageFragmentList.add(newsListFragment);
 
 
         adapter = new PagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(adapter);
         strip = (PagerTitleStrip) findViewById(com.boha.library.R.id.pager_title_strip);
-        strip.setVisibility(View.GONE);
+        strip.setBackgroundColor(themeDarkColor);
+        //strip.setVisibility(View.GONE);
         mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -421,6 +427,16 @@ public class MainDrawerActivity extends ActionBarActivity
         startLocationUpdates();
     }
 
+    @Override
+    public void onNewsClicked(NewsArticleDTO newsArticleDTO) {
+
+    }
+
+    @Override
+    public void onCreateNewsArticleRequested() {
+
+    }
+
     /**
      * Adapter to manage fragments in view pager
      */
@@ -443,10 +459,8 @@ public class MainDrawerActivity extends ActionBarActivity
 
         @Override
         public CharSequence getPageTitle(int position) {
-            String title = "Title";
             PageFragment pf = pageFragmentList.get(position);
-
-            return title;
+            return pf.getPageTitle();
         }
     }
 

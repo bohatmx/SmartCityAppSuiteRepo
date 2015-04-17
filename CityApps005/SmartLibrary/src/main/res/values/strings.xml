@@ -77,11 +77,14 @@
     <string name="enter_complaint_address">Enter Complaint Address</string>
     <string name="sel_complaint_type">Select Complaint Type</string>
     <string name="make_complaint">Make a Complaint</string>
-    <string name="unable_connect_muni">Unable to reach your Municipality. Data may be out of date. Try again later</string>
+    <string name="unable_connect_muni">Unable to reach your Municipality. Data may be out of date.</string>
     <string name="complaints_history">Complaints History</string>
     <string name="city_news">City News</string>
     <string name="title_activity_my_complaints">MyComplaintsActivity</string>
     <string name="unable_save_photo">Unable to save photo. Please try again</string>
     <string name="compl_pics">Complaint Pictures</string>
+    <string name="title_activity_faq">FaqActivity</string>
+    <string name="title_activity_muni_contacts">MuniContactsActivity</string>
+    <string name="title_activity_statement">StatementActivity</string>
 
 </resources>

@@ -45,8 +45,9 @@ public class RequestDTO {
 
     private Integer requestType, radius = 20,
             municipalityID;
+    private Integer year, month;
     private String userName, password, referenceNumber,
-            gcmRegistrationID, email,municipalityName;
+            gcmRegistrationID, email,municipalityName, accountNumber;
     private Double latitude = 0.0, longitude = 0.0;
     private Boolean rideWebSocket = Boolean.TRUE;
     private Boolean zipResponse = Boolean.TRUE;
@@ -144,7 +145,8 @@ public class RequestDTO {
             GET_MUNICIPALITY_STAFF_LIST = 210,
             GET_MUNICIPALITY_BY_NAME = 211,
             GET_COMPLAINT_FOLLOWERS = 212,
-            GET_COMPLAINT_STATUS = 213;
+            GET_COMPLAINT_STATUS = 213,
+            GET_PDF_STATEMENT = 214;
 
     //get data
     public static final int 
@@ -236,6 +238,14 @@ public class RequestDTO {
         this.radius = radius;
     }
 
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
     public List<FaqDTO> getFaqList() {
         return faqList;
     }
@@ -322,6 +332,22 @@ public class RequestDTO {
 
     public void setGcmRegistrationID(String gcmRegistrationID) {
         this.gcmRegistrationID = gcmRegistrationID;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public Integer getMonth() {
+        return month;
+    }
+
+    public void setMonth(Integer month) {
+        this.month = month;
     }
 
     public MunicipalityDTO getMunicipality() {

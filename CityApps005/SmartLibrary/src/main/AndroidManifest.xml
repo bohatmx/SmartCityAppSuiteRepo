@@ -15,10 +15,18 @@
     <application
         android:allowBackup="true"
         android:label="@string/app_name" >
-
-
         <service android:name=".services.GCMDeviceService" />
         <service android:name=".services.PhotoUploadService" />
+
+        <activity
+            android:name=".activities.MuniContactsActivity"
+            android:label="@string/title_activity_muni_contacts" >
+        </activity>
+
+        <service
+            android:name=".services.StatementService"
+            android:exported="false" >
+        </service>
 
 
     </application>

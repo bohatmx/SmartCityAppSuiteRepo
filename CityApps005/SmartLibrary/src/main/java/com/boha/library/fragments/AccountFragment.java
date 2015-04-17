@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import com.boha.library.R;
 import com.boha.library.activities.CityApplication;
 import com.boha.library.activities.PaymentStartActivity;
+import com.boha.library.activities.StatementActivity;
 import com.boha.library.adapters.AccountAdapter;
 import com.boha.library.dto.AccountDTO;
 import com.boha.library.dto.ProfileInfoDTO;
@@ -58,11 +60,14 @@ public class AccountFragment extends Fragment implements PageFragment{
     Activity activity;
     AccountDTO account;
     int selectedIndex;
+    FragmentManager fragmentManager;
     static final DecimalFormat df = new DecimalFormat("###,###,###,###,###,###,##0.00");
     static final String LOG = AccountFragment.class.getSimpleName();
     static final Locale loc = Locale.getDefault();
     static final SimpleDateFormat sdfDate = new SimpleDateFormat("EEE dd MMM yyyy", loc);
     static final SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm", loc);
+    private static final String PDF_MIME_TYPE = "application/pdf";
+    private static final String HTML_MIME_TYPE = "text/html";
 
     public static AccountFragment newInstance(ProfileInfoDTO profileInfo) {
         AccountFragment fragment = new AccountFragment();
@@ -98,6 +103,7 @@ public class AccountFragment extends Fragment implements PageFragment{
                              Bundle savedInstanceState) {
         Log.e(LOG, "### onCreateView");
         view = inflater.inflate(R.layout.fragment_account, container, false);
+        fragmentManager = getFragmentManager();
         activity = getActivity();
         ctx = getActivity();
         setFields();
@@ -132,7 +138,7 @@ public class AccountFragment extends Fragment implements PageFragment{
         Intent intent = new Intent(ctx, PaymentStartActivity.class);
         intent.putExtra("account", account);
         intent.putExtra("index", selectedIndex);
-        intent.putExtra("logo",logo);
+        intent.putExtra("logo", logo);
         startActivity(intent);
 
     }
@@ -150,7 +156,6 @@ public class AccountFragment extends Fragment implements PageFragment{
         Statics.setRobotoFontLight(ctx,txtName);
         txtSubtitle = (TextView) topView.findViewById(R.id.TOP_subTitle);
         icon = (ImageView) topView.findViewById(R.id.TOP_icon);
-//        icon.setImageDrawable(ctx.getResources().getDrawable(R.drawable.document_48));
         txtFAB = (TextView) topView.findViewById(R.id.FAB_text);
         fabIcon = (ImageView) topView.findViewById(R.id.FAB_icon);
 
@@ -194,7 +199,11 @@ public class AccountFragment extends Fragment implements PageFragment{
                 Util.flashOnce(icon, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        Util.showToast(ctx, ctx.getString(com.boha.library.R.string.under_cons));
+                        Intent w = new Intent(ctx, StatementActivity.class);
+                        w.putExtra("primaryColor",primaryColor);
+                        w.putExtra("darkColor",primaryDarkColor);
+                        w.putExtra("logo",logo);
+                        startActivity(w);
 
                     }
                 });
@@ -241,6 +250,8 @@ public class AccountFragment extends Fragment implements PageFragment{
 
 
     }
+
+    int year, month;
     static final Locale LOCALE = Locale.getDefault();
     static final SimpleDateFormat sd = new SimpleDateFormat("EEEE dd MMMM yyyy", LOCALE);
 

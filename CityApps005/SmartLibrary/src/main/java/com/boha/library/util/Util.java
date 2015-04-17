@@ -30,11 +30,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.boha.library.R;
+import com.boha.library.activities.MuniContactsActivity;
 import com.boha.library.adapters.PopupListAdapter;
 import com.boha.library.dto.AlertImageDTO;
 import com.boha.library.dto.ComplaintImageDTO;
+import com.boha.library.dto.NewsArticleImageDTO;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +63,7 @@ public class Util {
         return bitmap;
     }
 
-    public static void setCustomActionBar(Context ctx,
+    public static void setCustomActionBar(final Context ctx,
                                           ActionBar actionBar, String text, Drawable image) {
         actionBar.setDisplayShowCustomEnabled(true);
 
@@ -68,12 +71,38 @@ public class Util {
                 ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflator.inflate(R.layout.action_bar_logo, null);
         TextView txt = (TextView) v.findViewById(R.id.ACTION_BAR_text);
-        ImageView logo = (ImageView) v.findViewById(R.id.ACTION_BAR_logo);
+        final ImageView logo = (ImageView) v.findViewById(R.id.ACTION_BAR_logo);
         txt.setText(text);
         //
         logo.setImageDrawable(image);
         actionBar.setCustomView(v);
         actionBar.setTitle("");
+        logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.flashOnce(logo, 300, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        Intent w = new Intent(ctx, MuniContactsActivity.class);
+                        w.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        ctx.startActivity(w);
+                    }
+                });
+            }
+        });
+
+    }
+
+
+    public static String getStatementURL(Context ctx, String accountNumber, int year, int month) {
+        StringBuilder sb = getStartURL(SharedUtil.getMunicipality(ctx).getMunicipalityID());
+        sb.append("/documents/");
+        sb.append("account_")
+                .append(accountNumber).append("/")
+                .append(accountNumber).append("_")
+                .append(year).append("_").append(month).append(".pdf");
+        Log.d("Util","Statement URL: " + sb.toString());
+        return sb.toString();
     }
 
     public static String getAlertImageURL(AlertImageDTO p) {
@@ -83,6 +112,15 @@ public class Util {
                 .append(p.getAlertID()).append("/")
                 .append(p.getFileName());
         Log.i("Util", "Loading alert image: " + sb.toString());
+        return sb.toString();
+    }
+    public static String getNewsImageURL(NewsArticleImageDTO p) {
+        StringBuilder sb = getStartURL(p.getMunicipalityID());
+        sb.append("/news/");
+        sb.append("/news")
+                .append(p.getNewsArticleID()).append("/")
+                .append(p.getFileName());
+        Log.i("Util", "Loading news image: " + sb.toString());
         return sb.toString();
     }
 
@@ -96,7 +134,7 @@ public class Util {
         return sb.toString();
     }
 
-    private static StringBuilder getStartURL(Integer municipalityID) {
+    public static StringBuilder getStartURL(Integer municipalityID) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(Statics.IMAGE_URL).append("smartcity_images/")
                 .append("municipality").append(municipalityID);
@@ -616,5 +654,20 @@ public class Util {
     }
     public static interface GPSCheckListener {
         public void onGPSon();
+    }
+
+    public static File writeToFile(Context ctx, String data, String fileName)  throws Exception{
+
+        File dir  = new File(ctx.getExternalFilesDir(null), fileName);
+        File file = new File(dir, fileName);
+        FileOutputStream stream = null;
+        try {
+            stream = new FileOutputStream(file);
+            stream.write(data.getBytes());
+        } finally {
+            stream.close();
+        }
+        Log.e("Util","## pdf file: " + file.getAbsolutePath() + " length: " + file.length());
+        return file;
     }
 }

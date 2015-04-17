@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/grey"
+    android:padding="@dimen/mon_divider"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/ST_top"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mon_hero_height_medium">
+
+            <RelativeLayout
+                android:id="@+id/ST_handle"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp" />
+
+            <ImageView
+                android:id="@+id/ST_hero"
+                android:src="@drawable/back3"
+                android:layout_below="@id/ST_handle"
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/ST_title"
+                android:text="Statements"
+                style="@style/Title1TextStyleWhite"
+                android:layout_margin="@dimen/mon_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/ST_label"
+                android:layout_below="@id/ST_title"
+                android:text="Latest Statement Available"
+                android:layout_marginTop="@dimen/mon_margin"
+                android:layout_marginLeft="@dimen/mon_margin"
+                style="@style/TextStyleSmall"
+                android:textColor="@color/grey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/ST_subtitle"
+                android:layout_below="@id/ST_label"
+                android:text="February 2015"
+                android:layout_marginLeft="@dimen/mon_margin"
+                style="@style/Title3TextStyleWhite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/ST_list"
+            android:layout_below="@id/ST_top"
+            android:padding="@dimen/mon_divider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        </ListView>
+
+        <include
+            layout="@layout/fab_search"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/mon_hero_height_medium_lite"
+            android:layout_marginRight="@dimen/mon_wide" />
+
+        <TextView
+            android:id="@+id/ST_count"
+            style="@style/BlackCircleSmall"
+            android:text="99"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/mon_margin"
+            android:layout_marginRight="@dimen/mon_wide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+</RelativeLayout>
