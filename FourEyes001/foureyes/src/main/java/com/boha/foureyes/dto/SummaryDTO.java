@@ -3,6 +3,7 @@ package com.boha.foureyes.dto;
 import java.io.Serializable;
 
 /**
+ * Summar for each muni
  * Created by aubreyM on 15/04/18.
  */
 public class SummaryDTO implements Serializable{
