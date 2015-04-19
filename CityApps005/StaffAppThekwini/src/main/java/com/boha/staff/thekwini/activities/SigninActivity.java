@@ -172,7 +172,6 @@ public class SigninActivity extends ActionBarActivity {
                             return;
                         }
                         response = resp;
-                        Log.i(LOG, "### response OK from server");
                         staff = response.getMunicipalityStaffList().get(0);
 
                         MunicipalityStaffDTO sp = new MunicipalityStaffDTO();
@@ -182,6 +181,7 @@ public class SigninActivity extends ActionBarActivity {
                         sp.setLastName(staff.getLastName());
                         sp.setEmail(staff.getEmail());
                         sp.setPassword(staff.getPassword());
+                        btnSend.setVisibility(View.GONE);
 
                         SharedUtil.saveMunicipalityStaff(ctx, sp);
                         CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {

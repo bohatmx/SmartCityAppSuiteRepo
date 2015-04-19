@@ -56,8 +56,7 @@
                 android:layout_marginTop="@dimen/mon_margin"
                 android:hint="@string/enter_pswd"
                 android:inputType="textPassword"
-                android:text="tigerm"
-                style="@style/Title3TextStyleRed"
+                style="@style/Title1TextStyleRed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

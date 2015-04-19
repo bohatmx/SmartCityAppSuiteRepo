@@ -38,6 +38,11 @@ import java.util.HashMap;
                 ReportField.LOGCAT},
         socketTimeout = 10000
 )
+/**
+ * The main Application for the SmartCity suite of apps. Initializes several
+ * needed services, such as image loading and cache configuration, analytics
+ * setup and ACRA to trap exceptions.
+ */
 public class CityApplication extends Application {
     public enum TrackerName {
         APP_TRACKER, // Tracker used only in this app.

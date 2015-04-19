@@ -42,7 +42,7 @@
                 android:id="@+id/SIGNIN_editUserID"
                 android:layout_marginTop="@dimen/mon_wide"
                 android:inputType="number"
-                style="@style/Title2TextStyleBlue"
+                style="@style/Title1TextStyleBlue"
                 android:text="3301045068086"
                 android:hint="@string/enter_id"
                 android:layout_width="match_parent"
@@ -54,6 +54,7 @@
                 android:hint="@string/enter_pswd"
                 android:inputType="textPassword"
                 android:text="mavis1"
+                android:layout_marginTop="@dimen/mon_margin"
                 style="@style/Title3TextStyleRed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -63,6 +64,7 @@
                 android:id="@+id/SIGNIN_emailSpinner"
                 android:layout_below="@id/SIGNIN_editPIN"
                 android:layout_marginTop="@dimen/mon_padding"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -80,8 +82,8 @@
                     android:textColor="@color/white"
                     android:drawableLeft="@android:drawable/ic_menu_send"
                     android:backgroundTint="@color/absa_red"
-                    android:layout_marginLeft="@dimen/mon_margin"
-                    android:layout_marginRight="@dimen/mon_margin"
+                    android:layout_marginLeft="@dimen/mon_padding"
+                    android:layout_marginRight="@dimen/mon_padding"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

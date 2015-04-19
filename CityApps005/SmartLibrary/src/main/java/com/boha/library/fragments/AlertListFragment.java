@@ -384,7 +384,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
     public interface AlertListener {
          void onAlertClicked(AlertDTO alert);
          void onCreateAlertRequested();
-        void  onFreshLocationRequested();
+         void  onFreshLocationRequested();
 
     }
 

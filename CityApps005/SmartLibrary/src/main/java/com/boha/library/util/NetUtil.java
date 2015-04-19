@@ -1,7 +1,6 @@
 package com.boha.library.util;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.boha.library.R;
@@ -10,9 +9,9 @@ import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.volley.BaseVolley;
 import com.google.gson.Gson;
 
-import java.util.Timer;
-
 /**
+ * Utility class to manage server communications via HTTP or WebSocket protocols
+ *
  * Created by aubreyM on 15/01/31.
  */
 public class NetUtil {
@@ -23,7 +22,7 @@ public class NetUtil {
     }
 
     static NetUtilListener listener;
-    static Timer timer;
+
     public static void sendRequest(Context ctx, RequestDTO request, NetUtilListener utilListener) {
         listener = utilListener;
 
@@ -39,20 +38,17 @@ public class NetUtil {
         }
 
     }
-    private static boolean hasResponded;
 
     private static void sendViaHttp(Context ctx, RequestDTO request) {
         BaseVolley.getRemoteData(Statics.GATEWAY_SERVLET, request, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(String response) {
                 ResponseDTO resp = gson.fromJson(response, ResponseDTO.class);
-                hasResponded = true;
                 listener.onResponse(resp);
             }
 
             @Override
             public void onVolleyError(VolleyError error) {
-                hasResponded = true;
                 listener.onError("Error communicating with server");
             }
         });
@@ -60,10 +56,6 @@ public class NetUtil {
 
     private static void sendViaAutobahn(Context ctx, RequestDTO request) {
         WebSocketUtil.sendRequest(ctx, Statics.GATEWAY_SOCKET, request, new WebSocketUtil.SocketListener() {
-            @Override
-            public void onOpen() {
-                Log.i("NetUtil", "Hooray! websocket opened!!");
-            }
 
             @Override
             public void onMessage(ResponseDTO response) {

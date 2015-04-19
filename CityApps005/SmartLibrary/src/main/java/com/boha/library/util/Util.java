@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
+ * Toolbox class - all sorts of useful static methods to be found here
  * Created by aubreyM on 15/04/03.
  */
 public class Util {

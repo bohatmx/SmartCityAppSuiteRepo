@@ -16,6 +16,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
+ * Get distance between two points using call to Google service.
+ * Returns answer via a listener
  * Created by aubreyM on 15/03/07.
  */
 public class DistanceUtil {
@@ -58,6 +60,10 @@ public class DistanceUtil {
     static String request, response, fromAddress, toAddress;
     static double distance;
     static int duration;
+
+    /**
+     * Async task to make the call to Google
+     */
     static class Comms extends AsyncTask<Void, Void, Integer> {
 
         @Override

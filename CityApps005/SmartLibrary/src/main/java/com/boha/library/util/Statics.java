@@ -5,6 +5,9 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.widget.TextView;
 
+/**
+ * Container class to hold server URL, fonts etc
+ */
 
 public class Statics {
 
@@ -12,16 +15,16 @@ public class Statics {
      * REMOTE APP_URL - bohamaker back end - production
      */
 
-//    public static final String WEBSOCKET_URL = "ws://bohamaker.com:3030/sc/";
-//    public static final String URL = "http://bohamaker.com:3030/sc/";
-//    public static final String IMAGE_URL = "http://bohamaker.com:3030/";
+    public static final String WEBSOCKET_URL = "ws://bohamaker.com:3030/sc/";
+    public static final String URL = "http://bohamaker.com:3030/sc/";
+    public static final String IMAGE_URL = "http://bohamaker.com:3030/";
 
     /*
         LOCAL DEV - PECANWOOD
      */
-    public static final String WEBSOCKET_URL = "ws://192.168.1.33:8080/sc/";
-    public static final String URL = "http://192.168.1.33:8080/sc/";
-    public static final String IMAGE_URL = "http://192.168.1.33:8080/";
+//    public static final String WEBSOCKET_URL = "ws://192.168.1.33:8080/sc/";
+//    public static final String URL = "http://192.168.1.33:8080/sc/";
+//    public static final String IMAGE_URL = "http://192.168.1.33:8080/";
 
     public static final String GATEWAY_SERVLET = "smart?";
     public static final String GATEWAY_SOCKET = "wssmart";

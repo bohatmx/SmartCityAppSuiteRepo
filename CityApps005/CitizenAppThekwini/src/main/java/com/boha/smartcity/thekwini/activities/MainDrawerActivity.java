@@ -57,6 +57,10 @@ import com.google.android.gms.location.LocationServices;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Main control point for the app. Manages the sliding drawer and a Viewpager
+ * that contains the app's main fragments. Started by the SplashActivity.
+ */
 public class MainDrawerActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerListener,
         CreateAlertFragment.CreateAlertFragmentListener,

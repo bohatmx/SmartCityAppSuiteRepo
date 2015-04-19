@@ -404,9 +404,8 @@ public class AlertMapActivity extends ActionBarActivity {
 
     private void startGallery(AlertDTO alert) {
 
-
         Intent i = new Intent(ctx, AlertPictureGridActivity.class);
-        i.putExtra("newsArticle", alert);
+        i.putExtra("alert", alert);
         i.putExtra("logo",logo);
         startActivity(i);
     }

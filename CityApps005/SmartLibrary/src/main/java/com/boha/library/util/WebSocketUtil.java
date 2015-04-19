@@ -3,6 +3,7 @@ package com.boha.library.util;
 import android.content.Context;
 import android.util.Log;
 
+import com.boha.library.R;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.google.gson.Gson;
@@ -15,6 +16,9 @@ import de.tavendo.autobahn.WebSocketHandler;
 import de.tavendo.autobahn.WebSocketOptions;
 
 /**
+ * Convenience class to wrap Autobahn WebSocket library. Sends RequestDTO as JSON
+ * string to web application.
+ *
  * Created by aubreyM on 15/04/19.
  */
 public class WebSocketUtil {
@@ -23,15 +27,16 @@ public class WebSocketUtil {
     static SocketListener socketListener;
     static final WebSocketConnection mConnection = new WebSocketConnection();
     static final Gson GSON = new Gson();
-    static boolean shouldReconnect;
+    static Context context;
+
     public interface SocketListener {
-        void onOpen();
         void onMessage(ResponseDTO response);
         void onError(String message);
     }
 
     public static void sendRequest(Context ctx, final String suffix,RequestDTO w, SocketListener listener) {
         socketListener = listener;
+        context = ctx;
         final String url = Statics.WEBSOCKET_URL + suffix;
         final String json = GSON.toJson(w);
         try {
@@ -83,7 +88,7 @@ public class WebSocketUtil {
                     public void onClose(int code, String reason) {
                         Log.e(LOG, "Connection lost. " + reason + ". will issue disconnect");
                         mConnection.disconnect();
-                        socketListener.onError("Connection to server lost. Please try again.");
+                        socketListener.onError(context.getString(R.string.conn_interrupted));
                     }
                 },options);
             }

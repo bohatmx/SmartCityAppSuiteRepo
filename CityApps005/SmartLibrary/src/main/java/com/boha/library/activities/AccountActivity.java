@@ -18,6 +18,10 @@ import com.boha.library.util.CacheUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 
+/**
+ * Hosts the Fragment that manages the user's accounts.
+ * Allows for payment process to be kicked off.
+ */
 public class AccountActivity extends ActionBarActivity implements AccountFragment.AccountFragmentListener{
 
     AccountFragment accountFragment;

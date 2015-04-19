@@ -12,7 +12,7 @@
     <string name="create_alert">Create Alert</string>
 
     <string name="enter_id">Enter your ID number</string>
-    <string name="enter_pswd">Enter your password</string>
+    <string name="enter_pswd">Password</string>
     <string name="under_cons">Under Construction. Watch this space!</string>
     <string name="visiting">Just Visiting</string>
     <string name="alert_cat">Alert Category</string>
@@ -89,5 +89,6 @@
     <string name="news_map">News on the Map</string>
     <string name="map_complaints">Complaints on the Map</string>
     <string name="no_network">No network connected. Please connect and try again</string>
+    <string name="conn_interrupted">Connections to server interrupted. Please try again.</string>
 
 </resources>

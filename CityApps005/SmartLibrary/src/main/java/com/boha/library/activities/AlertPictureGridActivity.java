@@ -35,6 +35,9 @@ import java.util.Locale;
 
 import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 
+/**
+ * Displays horizontal grid of alert images
+ */
 public class AlertPictureGridActivity extends ActionBarActivity {
 
     Context ctx;
@@ -60,8 +63,13 @@ public class AlertPictureGridActivity extends ActionBarActivity {
         ctx = getApplicationContext();
         setFields();
 
-        alert = (AlertDTO) getIntent().getSerializableExtra("newsArticle");
+        alert = (AlertDTO) getIntent().getSerializableExtra("alert");
         logo = getIntent().getIntExtra("logo", R.drawable.ic_action_globe);
+        if (alert.getAlertImageList() == null || alert.getAlertImageList().isEmpty()) {
+            Util.showToast(ctx,"This alert has no picture");
+            finish();
+            return;
+        }
         photoList = alert.getAlertImageList();
         txtAlertType.setText(alert.getAlertType().getAlertTypeName());
         txtDate.setText(sdfDate.format(alert.getUpdated()));
