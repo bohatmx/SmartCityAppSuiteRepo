@@ -51,7 +51,7 @@
                         android:text="33"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="@dimen/mon_wide"
-                        style="@style/Title1TextStyleWhite"
+                        style="@style/TransparentBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
@@ -75,7 +75,7 @@
                         android:text="1,999,833"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="@dimen/mon_wide"
-                        style="@style/Title2TextStyleWhite"
+                        style="@style/TransparentBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView

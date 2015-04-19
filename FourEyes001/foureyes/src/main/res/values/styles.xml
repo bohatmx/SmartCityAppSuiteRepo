@@ -454,6 +454,12 @@
         <item name="android:textSize">20sp</item>
         <item name="android:background">@drawable/xred_box</item>
     </style>
+    <style name="TransparentBox" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:background">@drawable/xtransparent_box</item>
+    </style>
 
     <style name="RedCountBoxSmall" parent="@android:style/TextAppearance.Small">
         <item name="android:textColor">@color/white</item>
