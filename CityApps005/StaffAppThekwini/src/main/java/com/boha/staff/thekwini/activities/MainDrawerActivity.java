@@ -113,7 +113,7 @@ public class MainDrawerActivity extends ActionBarActivity
         Util.setCustomActionBar(ctx,
                 actionBar,
                 municipality.getMunicipalityName(),
-                ctx.getResources().getDrawable(R.drawable.logo));
+                ctx.getResources().getDrawable(R.drawable.logo), logo);
         getSupportActionBar().setTitle("");
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -170,7 +170,7 @@ public class MainDrawerActivity extends ActionBarActivity
         }
         if (text.equalsIgnoreCase(ctx.getString(R.string.faq))) {
             Intent x = new Intent(this, FaqActivity.class);
-            x.putExtra("logo", logo);
+            x.putExtra("logoImage", logo);
             x.putExtra("darkColor", themeDarkColor);
             x.putExtra("primaryColor", themePrimaryColor);
             startActivity(x);
@@ -323,6 +323,13 @@ public class MainDrawerActivity extends ActionBarActivity
                 currentPageIndex = position;
                 PageFragment pf = pageFragmentList.get(position);
                 pf.animateSomething();
+                if (pf.getPageTitle().equalsIgnoreCase(ctx.getString(R.string.complaints_around_me))) {
+                    if (complaintsAroundMeFragment.getComplaintList() == null || complaintsAroundMeFragment.getComplaintList().isEmpty()) {
+                        complaintsAroundMeFragment.getComplaintsAroundMe();
+                    } else {
+                        complaintsAroundMeFragment.setList();
+                    }
+                }
             }
 
             @Override
@@ -408,12 +415,18 @@ public class MainDrawerActivity extends ActionBarActivity
     }
 
     @Override
+    public void onFreshLocationRequested() {
+        startLocationUpdates();
+    }
+
+    @Override
     public void onAlertSent(AlertDTO alert) {
         getLoginData();
         alertListFragment.onNewAlertSent(alert);
         Intent w = new Intent(ctx, PictureActivity.class);
         w.putExtra("alert", alert);
         w.putExtra("imageType", PictureActivity.ALERT_IMAGE);
+        w.putExtra("logoImage", logo);
         startActivityForResult(w, ALERT_PICTURES_REQUESTED);
     }
 
@@ -424,7 +437,10 @@ public class MainDrawerActivity extends ActionBarActivity
         switch (reqCode) {
             case ALERT_PICTURES_REQUESTED:
                 if (result == RESULT_OK) {
-                    mPager.setCurrentItem(0, true);
+                    Log.e(LOG, "### pics taken, pausing 5 seconds and refreshing alertlistFragment");
+                    Log.w(LOG, "### onActivityResult: will refresh alerts, after photos taken");
+//                    alertListFragment.refreshAlerts();
+                    Util.showToast(ctx, getString(R.string.photo_uploading));
                 }
                 break;
         }
@@ -490,8 +506,12 @@ public class MainDrawerActivity extends ActionBarActivity
                 isLocationForComplaints = false;
                 complaintsAroundMeFragment.setLocation(location);
             }
-            if (createAlertFragment != null)
+            if (createAlertFragment != null) {
                 createAlertFragment.setLocation(location);
+            }
+            if (alertListFragment != null) {
+                alertListFragment.setLocation(location);
+            }
         }
     }
 

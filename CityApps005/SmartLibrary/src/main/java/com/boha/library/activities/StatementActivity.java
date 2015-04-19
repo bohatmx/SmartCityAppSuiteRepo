@@ -40,7 +40,7 @@ public class StatementActivity extends ActionBarActivity {
         Drawable d = ctx.getResources().getDrawable(logo);
         Util.setCustomActionBar(ctx,
                 actionBar,
-                municipality.getMunicipalityName(), d);
+                municipality.getMunicipalityName(), d,logo);
         getSupportActionBar().setTitle("");
 
     }

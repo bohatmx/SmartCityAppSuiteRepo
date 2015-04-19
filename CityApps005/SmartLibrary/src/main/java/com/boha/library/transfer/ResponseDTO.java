@@ -42,7 +42,7 @@ public class ResponseDTO implements Serializable {
 
     //response status
     private int statusCode = 0;
-    private String message, sessionID, gcmRegistrationID;
+    private String message, sessionID, gcmRegistrationID, log;
     private Double requestResponseTimeSeconds;
     private Boolean municipalityAccessFailed = Boolean.FALSE;
     private List<String> pdfFileNameList;
@@ -102,6 +102,14 @@ public class ResponseDTO implements Serializable {
 
     public void setPhotoUploadList(List<PhotoUploadDTO> photoUploadList) {
         this.photoUploadList = photoUploadList;
+    }
+
+    public String getLog() {
+        return log;
+    }
+
+    public void setLog(String log) {
+        this.log = log;
     }
 
     public String getGcmRegistrationID() {

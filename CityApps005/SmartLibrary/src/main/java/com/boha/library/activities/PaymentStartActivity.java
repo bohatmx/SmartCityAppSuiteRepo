@@ -29,7 +29,7 @@ public class PaymentStartActivity extends ActionBarActivity implements PaymentSt
         ctx = getApplicationContext();
 
         account = (AccountDTO)getIntent().getSerializableExtra("account");
-        logo = getIntent().getIntExtra("logo",0);
+        logo = getIntent().getIntExtra("logo",R.drawable.ic_action_globe);
         int index = getIntent().getIntExtra("index",0);
         paymentStartFragment = (PaymentStartFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragment);
@@ -38,15 +38,12 @@ public class PaymentStartActivity extends ActionBarActivity implements PaymentSt
 
 
         MunicipalityDTO municipality = SharedUtil.getMunicipality(getApplicationContext());
-        if (logo != 0) {
             Drawable d = ctx.getResources().getDrawable(logo);
             Util.setCustomActionBar(ctx,
                     getSupportActionBar(),
-                    municipality.getMunicipalityName(), d);
+                    municipality.getMunicipalityName(), d,logo);
             getSupportActionBar().setTitle("");
-        } else {
-            getSupportActionBar().setTitle(municipality.getMunicipalityName());
-        }
+
         //Track PaymentStartActivity
         CityApplication ca = (CityApplication) getApplication();
         Tracker t = ca.getTracker(

@@ -148,27 +148,30 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO response) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressBar.setVisibility(View.GONE);
-                        if (response.getStatusCode() == 0) {
-                            complaintUpdateStatusList = response.getComplaintUpdateStatusList();
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.GONE);
+                            if (response.getStatusCode() == 0) {
+                                complaintUpdateStatusList = response.getComplaintUpdateStatusList();
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
 
             @Override
             public void onError(final String message) {
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressBar.setVisibility(View.GONE);
-                        Util.showErrorToast(ctx,message);
-                    }
-                });
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.GONE);
+                            Util.showErrorToast(ctx, message);
+                        }
+                    });
+                }
             }
 
             @Override

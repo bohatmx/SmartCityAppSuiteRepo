@@ -116,12 +116,12 @@ public class ZipUtil {
         return df.format(m.doubleValue()) + " KB";
     }
     static final DecimalFormat df = new DecimalFormat("###,###,###,###,###,###,###,##0.00");
-    public static void unpack(ByteBuffer bb, WebSocketUtil.WebSocketListener listener) throws ZipException {
-        //notify photoCacheListener
-        ResponseDTO response = unpackBytes(bb);
-        Log.e(LOG, "##### unpack - telling photoCacheListener that response object is ready after unpack");
-        listener.onMessage(response);
-    }
+//    public static void unpack(ByteBuffer bb, WebSocketUtil.WebSocketListener listener) throws ZipException {
+//        //notify photoCacheListener
+//        ResponseDTO response = unpackBytes(bb);
+//        Log.e(LOG, "##### unpack - telling photoCacheListener that response object is ready after unpack");
+//        listener.onMessage(response);
+//    }
 
     public static ResponseDTO unpackBytes(ByteBuffer bb) throws ZipException {
         Log.d(LOG, "##### unpack - starting to unpack byte buffer: " + bb.capacity());

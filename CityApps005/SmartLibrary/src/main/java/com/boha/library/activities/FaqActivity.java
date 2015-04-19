@@ -1,17 +1,15 @@
 package com.boha.library.activities;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.boha.library.R;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.fragments.FaqFragment;
-import com.boha.library.transfer.ResponseDTO;
-import com.boha.library.util.CacheUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 
@@ -27,13 +25,13 @@ public class FaqActivity extends ActionBarActivity {
         faqFragment = (FaqFragment)getSupportFragmentManager().findFragmentById(R.id.fragment);
 
         MunicipalityDTO municipality = SharedUtil.getMunicipality(ctx);
-        int logo = getIntent().getIntExtra("logo", android.R.drawable.star_on);
+        int logo = getIntent().getIntExtra("logo", R.drawable.ic_action_globe);
 
         ActionBar actionBar = getSupportActionBar();
         Util.setCustomActionBar(ctx,
                 actionBar,
                 municipality.getMunicipalityName(),
-                ctx.getResources().getDrawable(logo));
+                ctx.getResources().getDrawable(logo),logo);
         getSupportActionBar().setTitle("");
 
 

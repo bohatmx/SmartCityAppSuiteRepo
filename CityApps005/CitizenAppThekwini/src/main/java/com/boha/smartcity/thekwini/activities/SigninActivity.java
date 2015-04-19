@@ -69,6 +69,7 @@ public class SigninActivity extends ActionBarActivity {
         activity = this;
 
         municipality = SharedUtil.getMunicipality(ctx);
+        int logo = getIntent().getIntExtra("logo", R.drawable.ic_action_globe);
         registerGCMDevice();
 
         setFields();
@@ -78,7 +79,7 @@ public class SigninActivity extends ActionBarActivity {
         Util.setCustomActionBar(ctx,
                 actionBar,
                 municipality.getMunicipalityName(),
-                ctx.getResources().getDrawable(R.drawable.logo));
+                ctx.getResources().getDrawable(R.drawable.logo),logo);
         getSupportActionBar().setTitle("");
     }
 

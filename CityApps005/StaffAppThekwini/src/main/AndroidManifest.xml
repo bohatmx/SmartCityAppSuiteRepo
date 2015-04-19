@@ -16,7 +16,7 @@
     <application
         android:allowBackup="true"
         android:name="com.boha.library.activities.CityApplication"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@style/StaffThemeOrange" >
         <meta-data
@@ -50,7 +50,10 @@
         <activity
             android:name="com.boha.library.activities.FaqActivity"
             android:parentActivityName=".activities.MainDrawerActivity" >
+
         </activity>
+        <activity android:name="com.boha.library.activities.NewsMapActivity"
+            android:parentActivityName=".activities.MainDrawerActivity"/>
 
 
         <!-- RECEIVERS and SERVICES -->

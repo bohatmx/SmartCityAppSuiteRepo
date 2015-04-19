@@ -78,7 +78,7 @@ public class ComplaintMapActivity extends ActionBarActivity {
     TextView text, txtCount;
     ImageView iconCollapse;
     View topLayout, mapInfo;
-    TextView addr1, addr2, dist, dur;
+    TextView addr1, addr2, dist, dur, txtTitle;
     ProgressBar progressBar;
     LayoutInflater inflater;
     static final Locale loc = Locale.getDefault();
@@ -128,7 +128,7 @@ public class ComplaintMapActivity extends ActionBarActivity {
             Drawable d = ctx.getResources().getDrawable(logo);
             Util.setCustomActionBar(ctx,
                     getSupportActionBar(),
-                    municipality.getMunicipalityName(), d);
+                    municipality.getMunicipalityName(), d,logo);
             getSupportActionBar().setTitle("");
         } else {
             getSupportActionBar().setTitle(municipality.getMunicipalityName());
@@ -299,13 +299,15 @@ public class ComplaintMapActivity extends ActionBarActivity {
         txtCount = (TextView) findViewById(R.id.MAP_count);
         txtCount.setText("0");
         text.setText(getString(R.string.complaints_around_me));
-        Statics.setRobotoFontLight(ctx,text);
+        Statics.setRobotoFontLight(ctx, text);
         mapInfo = findViewById(R.id.MAP_info);
         mapInfo.setVisibility(View.GONE);
         addr1 = (TextView) mapInfo.findViewById(R.id.MAP_addressFrom);
         addr2 = (TextView) mapInfo.findViewById(R.id.MAP_addressTo);
         dist = (TextView) mapInfo.findViewById(R.id.MAP_distance);
         dur = (TextView) mapInfo.findViewById(R.id.MAP_duration);
+        txtTitle = (TextView) findViewById(R.id.MAP_text);
+        txtTitle.setText(getString(R.string.map_complaints));
         progressBar = (ProgressBar) findViewById(R.id.MAP_progressBar);
         progressBar.setVisibility(View.GONE);
         Statics.setRobotoFontBold(ctx, text);
@@ -387,7 +389,7 @@ public class ComplaintMapActivity extends ActionBarActivity {
                 });
             } else {
                 list.remove(1);
-                Util.showPopupBasicWithHeroImage(ctx, activity, list, topLayout, "Actions", new Util.UtilPopupListener() {
+                Util.showPopupBasicWithHeroImage(ctx, activity, list, topLayout, complaint.getComplaintType().getComplaintTypeName(), new Util.UtilPopupListener() {
                     @Override
                     public void onItemSelected(int index) {
                         if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {

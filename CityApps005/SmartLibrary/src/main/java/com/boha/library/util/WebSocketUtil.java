@@ -7,161 +7,102 @@ import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.google.gson.Gson;
 
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.exceptions.WebsocketNotConnectedException;
-import org.java_websocket.handshake.ServerHandshake;
-
-import java.math.BigDecimal;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 
+import de.tavendo.autobahn.WebSocketConnection;
+import de.tavendo.autobahn.WebSocketException;
+import de.tavendo.autobahn.WebSocketHandler;
+import de.tavendo.autobahn.WebSocketOptions;
+
 /**
- * Utility class to manage web socket communications for the application
- * Created by aubreyM on 2014/08/10.
+ * Created by aubreyM on 15/04/19.
  */
 public class WebSocketUtil {
-    public interface WebSocketListener {
-         void onMessage(ResponseDTO response);
 
-         void onClose();
-
-         void onError(String message);
-
+    static final String LOG = WebSocketUtil.class.getSimpleName();
+    static SocketListener socketListener;
+    static final WebSocketConnection mConnection = new WebSocketConnection();
+    static final Gson GSON = new Gson();
+    static boolean shouldReconnect;
+    public interface SocketListener {
+        void onOpen();
+        void onMessage(ResponseDTO response);
+        void onError(String message);
     }
 
-    static WebSocketListener webSocketListener;
-    static RequestDTO request;
-    static Context ctx;
-    static long start, end;
-
-    public static void disconnectSession() {
-        if (mWebSocketClient != null) {
-            mWebSocketClient.close();
-            Log.e(LOG, "@@ webSocket session disconnected");
-        }
-    }
-
-    public static void sendRequest(Context c, final String suffix, RequestDTO req,
-                                   WebSocketListener listener) {
-        webSocketListener = listener;
-        request = req;
-        ctx = c;
-        TimerUtil.startTimer(new TimerUtil.TimerListener() {
-            @Override
-            public void onSessionDisconnected() {
-                try {
-                    connectWebSocket(suffix);
-                    return;
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+    public static void sendRequest(Context ctx, final String suffix,RequestDTO w, SocketListener listener) {
+        socketListener = listener;
+        final String url = Statics.WEBSOCKET_URL + suffix;
+        final String json = GSON.toJson(w);
         try {
-            if (mWebSocketClient == null) {
-                connectWebSocket(suffix);
+
+            if (mConnection.isConnected()) {
+                Log.i(LOG, "### WebSocket Status: Connected. using: " + url + " sending: \n" + json);
+                mConnection.sendTextMessage(json);
             } else {
-                String json = gson.toJson(req);
-                start = System.currentTimeMillis();
-                mWebSocketClient.send(json);
-                URI uri = new URI(Statics.WEBSOCKET_URL + suffix);
-                Log.i(LOG, "## sent request, uri: " + uri.toString() + "web socket message sent\n"
-                        + json);
+               connect(url,json);
             }
-
-
-        } catch (WebsocketNotConnectedException e) {
-            Log.e(LOG, "Problems with web socket", e);
-            webSocketListener.onError("Problem starting server socket communications\n");
-
-        } catch (URISyntaxException e) {
-            Log.e(LOG, "Problems with web socket", e);
-            webSocketListener.onError("Problem starting server socket communications");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+    private static void connect(final String url, final String json) {
+        WebSocketOptions options = new WebSocketOptions();
+        options.setSocketConnectTimeout(5000);
+        options.setSocketReceiveTimeout(1000);
+        try {
 
-    private static void connectWebSocket(String socketSuffix) throws URISyntaxException {
-        URI uri = new URI(Statics.WEBSOCKET_URL + socketSuffix);
-        Log.e(LOG, "## connectWebSocket uri: " + uri.toString());
-        start = System.currentTimeMillis();
-        mWebSocketClient = new WebSocketClient(uri) {
-            @Override
-            public void onOpen(ServerHandshake serverHandshake) {
-                Log.i(LOG, "########## WEBSOCKET Opened: " + serverHandshake.getHttpStatusMessage());
-            }
-
-            @Override
-            public void onMessage(String response) {
-                TimerUtil.killTimer();
-                end = System.currentTimeMillis();
-                Log.i(LOG, "### onMessage(String) returning, length: " + response.length() + " elapsed: " + Util.getElapsed(start, end) + " seconds"
-                        + "\n" + response);
-                try {
-                    ResponseDTO r = gson.fromJson(response, ResponseDTO.class);
-                    if (r.getStatusCode() == 0) {
-                        if (r.getSessionID() != null) {
-                            //SharedUtil.saveSessionID(ctx, r.getSessionID());
-                            String json = gson.toJson(request);
-                            mWebSocketClient.send(json);
-                            Log.i(LOG, "### web socket request sent after onOpen\n" + json);
-
-                        }
-                    } else {
-                        Log.i(LOG, "### onMessage(String) ERROR, status code: " + r.getStatusCode());
-                        webSocketListener.onError(r.getMessage());
+            if (mConnection.isConnected()) {
+                Log.i(LOG, "### Status: Connected to " + url + " sending: \n" + json);
+                mConnection.sendTextMessage(json);
+            } else {
+                mConnection.connect(url, new WebSocketHandler() {
+                    @Override
+                    public void onOpen() {
+                        Log.e(LOG, "OnOpen: Connected to " + url + " sending...: \n" + json);
+                        mConnection.sendTextMessage(json);
                     }
-                } catch (Exception e) {
-                    Log.e(LOG, "Failed to parse response from server.", e);
-                    webSocketListener.onError("Failed to parse response from server");
-                }
 
+                    @Override
+                    public void onTextMessage(String payload) {
+                        try {
+                            ResponseDTO r = GSON.fromJson(payload, ResponseDTO.class);
+                            Log.i(LOG, "Response with sessionID: " + r.getSessionID());
+                        } catch (Exception e) {
+                            socketListener.onError("Failed to communicate, data format may be a problem");
+                        }
+                    }
+
+                    @Override
+                    public void onBinaryMessage(byte[] payload) {
+                        ByteBuffer byteBuffer = ByteBuffer.wrap(payload);
+                        parseData(byteBuffer);
+                    }
+
+                    @Override
+                    public void onClose(int code, String reason) {
+                        Log.e(LOG, "Connection lost. " + reason + ". will issue disconnect");
+                        mConnection.disconnect();
+                        socketListener.onError("Connection to server lost. Please try again.");
+                    }
+                },options);
             }
-
-            @Override
-            public void onMessage(ByteBuffer bb) {
-                TimerUtil.killTimer();
-                end = System.currentTimeMillis();
-                Log.i(LOG, "### onMessage(ByteBuffer) returning data, roundtrip elapsed: " + Util.getElapsed(start, end) + " seconds");
-                parseData(bb);
-            }
-
-
-            @Override
-            public void onClose(final int i, String s, boolean b) {
-                Log.e(LOG, "########## WEBSOCKET onClose, status code:  " + i);
-                TimerUtil.killTimer();
-                webSocketListener.onClose();
-            }
-
-            @Override
-            public void onError(final Exception e) {
-                Log.e(LOG, "onError ", e);
-                TimerUtil.killTimer();
-                webSocketListener.onError("Error communicating with server");
-
-
-            }
-        };
-
-        Log.d(LOG, "### #### -------------> starting mWebSocketClient.connect ...");
-
-        mWebSocketClient.connect();
+        } catch (WebSocketException e) {
+            Log.e(LOG, "WebSocket failed.", e);
+            socketListener.onError(e.getMessage());
+        }
     }
-
     private static void parseData(ByteBuffer bb) {
         Log.i(LOG, "### parseData ByteBuffer capacity: " + ZipUtil.getKilobytes(bb.capacity()));
         String content = null;
-        start = System.currentTimeMillis();
         try {
             try {
                 content = new String(bb.array());
-                end = System.currentTimeMillis();
-                ResponseDTO response = gson.fromJson(content, ResponseDTO.class);
+                ResponseDTO response = GSON.fromJson(content, ResponseDTO.class);
                 if (response.getStatusCode() == 0) {
-                    webSocketListener.onMessage(response);
+                    socketListener.onMessage(response);
                 } else {
-                    webSocketListener.onError(response.getMessage());
+                    socketListener.onError(response.getMessage());
                 }
                 return;
 
@@ -170,32 +111,25 @@ public class WebSocketUtil {
             }
 
             if (content != null) {
-                ResponseDTO response = gson.fromJson(content, ResponseDTO.class);
+                ResponseDTO response = GSON.fromJson(content, ResponseDTO.class);
                 if (response.getStatusCode() == 0) {
                     Log.w(LOG, "### response status code is 0 - OK");
-                    webSocketListener.onMessage(response);
+                    socketListener.onMessage(response);
                 } else {
                     Log.e(LOG, "## response status code is > 0 - server found ERROR");
-                    webSocketListener.onError(response.getMessage());
+                    socketListener.onError(response.getMessage());
                 }
             } else {
                 Log.e(LOG, "-- Content from server failed. Response content is null");
-                webSocketListener.onError("Content from server failed. Response is null");
+                socketListener.onError("Content from server failed. Response is null");
             }
 
         } catch (Exception e) {
             Log.e(LOG, "parseData Failed", e);
-            webSocketListener.onError("Failed to unpack server response");
+            socketListener.onError("Failed to unpack server response");
         }
     }
 
-    static WebSocketClient mWebSocketClient;
-    static final String LOG = WebSocketUtil.class.getSimpleName();
-    static final Gson gson = new Gson();
 
-    public static String getElapsed() {
-        BigDecimal m = new BigDecimal(end - start).divide(new BigDecimal(1000));
-
-        return "" + m.doubleValue() + " seconds";
-    }
 }
+

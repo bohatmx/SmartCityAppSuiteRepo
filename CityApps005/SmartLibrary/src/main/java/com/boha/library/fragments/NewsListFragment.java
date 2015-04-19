@@ -16,7 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.activities.AlertMapActivity;
+import com.boha.library.activities.NewsMapActivity;
 import com.boha.library.adapters.NewsListAdapter;
 import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.transfer.ResponseDTO;
@@ -136,10 +136,10 @@ public class NewsListFragment extends Fragment implements PageFragment {
                 Util.flashOnce(btnCount, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        Intent i = new Intent(ctx, AlertMapActivity.class);
+                        Intent i = new Intent(ctx, NewsMapActivity.class);
                         ResponseDTO r = new ResponseDTO();
                         r.setNewsArticleList(newsList);
-                        i.putExtra("newsList", r);
+                        i.putExtra("newsArticleList", r);
                         startActivity(i);
                     }
                 });
@@ -190,7 +190,12 @@ public class NewsListFragment extends Fragment implements PageFragment {
         newsListAdapter = new NewsListAdapter(ctx, R.layout.news_item, newsList, new NewsListAdapter.NewsListListener() {
             @Override
             public void onNewsClicked(int position) {
-                mListener.onNewsClicked(newsList.get(position));
+//                mListener.onNewsClicked(newsList.get(position));
+                Intent i = new Intent(ctx, NewsMapActivity.class);
+                ResponseDTO r = new ResponseDTO();
+                r.setNewsArticleList(newsList);
+                i.putExtra("newsArticle", newsList.get(position));
+                startActivity(i);
             }
         });
 
