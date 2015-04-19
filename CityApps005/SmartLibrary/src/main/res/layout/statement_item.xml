@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="@dimen/mon_divider_small"
+    android:paddingTop="@dimen/mon_divider"
     android:id="@+id/SI_main"
     android:background="@color/grey"
     android:layout_width="match_parent"

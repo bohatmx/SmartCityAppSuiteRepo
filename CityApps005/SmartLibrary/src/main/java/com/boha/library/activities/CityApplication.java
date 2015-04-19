@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.boha.library.R;
+import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.util.LocaleUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Statics;
@@ -17,6 +18,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.utils.L;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
+import org.acra.ACRA;
 import org.acra.ReportField;
 import org.acra.annotation.ReportsCrashes;
 
@@ -71,20 +73,26 @@ public class CityApplication extends Application {
         sb.append("#######################################\n\n");
 
         Log.d(LOG, sb.toString());
-        //ACRA.init(this);
-        //ACRA.getErrorReporter().putCustomData("companyStaffID", SharedUtil.getID());
-        //Log.w(LOG, "###### ACRA initialised");
+
+
+
+            ACRA.init(this);
+            MunicipalityDTO m = SharedUtil.getMunicipality(getApplicationContext());
+            if (m != null) {
+                ACRA.getErrorReporter().putCustomData("municipalityID", "" + m.getMunicipalityID());
+            }
+            Log.e(LOG, "###### ACRA initialised. Exceptions will be grabbed and sent.");
 
         DisplayImageOptions defaultOptions =
                 new DisplayImageOptions.Builder()
                         .cacheInMemory(true)
                         .cacheOnDisk(true)
-                        .showImageOnFail(getApplicationContext().getResources().getDrawable(R.drawable.banner1))
-                        .showImageOnLoading(getApplicationContext().getResources().getDrawable(R.drawable.banner1))
+                        .showImageOnFail(getApplicationContext().getResources().getDrawable(R.drawable.under_construction))
+                        .showImageOnLoading(getApplicationContext().getResources().getDrawable(R.drawable.under_construction2))
                         .build();
 
         File cacheDir = StorageUtils.getCacheDirectory(this, true);
-        Log.d(LOG, "## onCreate, ImageLoader cacheDir, files: " + cacheDir.listFiles().length);
+        Log.e(LOG, "## onCreate, ImageLoader cacheDir, files: " + cacheDir.listFiles().length);
         //
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
                 .denyCacheImageMultipleSizesInMemory()

@@ -22,9 +22,22 @@ public class NewsArticleDTO implements Serializable {
     private Boolean activeFlag;
     private Integer color;
     private CityDTO city;
+    private int index;
     private Integer municipalityID;
     private NewsArticleTypeDTO newsArticleType;
     private List<NewsArticleImageDTO> newsArticleImageList;
+
+    public Boolean isActiveFlag() {
+        return activeFlag;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
 
     public Integer getId() {
         return id;

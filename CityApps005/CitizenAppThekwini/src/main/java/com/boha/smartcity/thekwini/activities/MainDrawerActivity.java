@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -122,7 +121,7 @@ public class MainDrawerActivity extends ActionBarActivity
         Util.setCustomActionBar(ctx,
                 actionBar,
                 municipality.getMunicipalityName(),
-                ctx.getResources().getDrawable(R.drawable.logo));
+                ctx.getResources().getDrawable(R.drawable.logo),logo);
         getSupportActionBar().setTitle("");
 
         googleApiClient = new GoogleApiClient.Builder(this)
@@ -216,6 +215,7 @@ public class MainDrawerActivity extends ActionBarActivity
     static final int CREATE_COMPLAINT_REQUESTED = 5413;
 
     private void getCachedLoginData() {
+
         CacheUtil.getCacheLoginData(ctx, new CacheUtil.CacheRetrievalListener() {
             @Override
             public void onCacheRetrieved(ResponseDTO r) {
@@ -257,14 +257,7 @@ public class MainDrawerActivity extends ActionBarActivity
                     @Override
                     public void run() {
                         progressBar.setVisibility(View.GONE);
-                        Log.w(LOG, "onResponse status: " + resp.getStatusCode());
-                        if (resp.getStatusCode() > 0) {
-                            Util.showErrorToast(ctx, resp.getMessage());
-                            return;
-                        }
-
                         response = resp;
-                        Log.i("Splash", "### response OK from server");
                         profileInfo = response.getProfileInfoList().get(0);
                         if (profileInfoFragment != null) {
                             profileInfoFragment.setProfileInfo(profileInfo);
@@ -306,7 +299,13 @@ public class MainDrawerActivity extends ActionBarActivity
 
             @Override
             public void onWebSocketClose() {
-
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+                        Util.showErrorToast(ctx,"Network connection closed");
+                    }
+                });
             }
         });
 
@@ -371,6 +370,13 @@ public class MainDrawerActivity extends ActionBarActivity
                 currentPageIndex = position;
                 PageFragment pf = pageFragmentList.get(position);
                 pf.animateSomething();
+                if (pf.getPageTitle().equalsIgnoreCase(ctx.getString(R.string.complaints_around_me))) {
+                    if (complaintsAroundMeFragment.getComplaintList() == null || complaintsAroundMeFragment.getComplaintList().isEmpty()) {
+                        complaintsAroundMeFragment.getComplaintsAroundMe();
+                    }else {
+                        complaintsAroundMeFragment.setList();
+                    }
+                }
             }
 
             @Override
@@ -395,6 +401,7 @@ public class MainDrawerActivity extends ActionBarActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+
                 String ref = "Reference Number: " + complaint.getReferenceNumber();
                 AlertDialog.Builder d = new AlertDialog.Builder(activity);
                 d.setTitle("Complaint Pictures")
@@ -405,13 +412,14 @@ public class MainDrawerActivity extends ActionBarActivity
                                 Intent x = new Intent(getApplicationContext(), PictureActivity.class);
                                 x.putExtra("complaint", complaint);
                                 x.putExtra("imageType", PictureActivity.COMPLAINT_IMAGE);
+                                x.putExtra("logo",logo);
                                 startActivityForResult(x, REQUEST_COMPLAINT_PICTURES);
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                getLoginData();
                             }
                         })
                         .show();
@@ -481,15 +489,12 @@ public class MainDrawerActivity extends ActionBarActivity
 
     @Override
     public void onCreateAlertRequested() {
-        int index = 0;
-        for (PageFragment pf : pageFragmentList) {
-            if (pf instanceof CreateAlertFragment) {
-                mPager.setCurrentItem(index, true);
-                return;
-            }
 
-            index++;
-        }
+    }
+
+    @Override
+    public void onFreshLocationRequested() {
+        startLocationUpdates();
     }
 
     @Override
@@ -607,32 +612,15 @@ public class MainDrawerActivity extends ActionBarActivity
                     googleApiClient, mLocationRequest, this);
             Log.d(LOG, "## GoogleApiClient connected, requesting location updates ...");
         } else {
-            Log.e(LOG, "------- GoogleApiClient is NOT connected, trying to connect ...");
-            new LocTask().execute();
+            Log.e(LOG, "------- GoogleApiClient is NOT connected, not sure where we are...");
+
 
         }
     }
 
     MainDrawerActivity activity;
-    class LocTask extends AsyncTask<Void,Void,Integer> {
 
-        @Override
-        protected Integer doInBackground(Void... params) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.d(LOG,"@@@@@@ running in separate Thread");
-                    ConnectionResult cx = googleApiClient.blockingConnect();
-                    if (cx.isSuccess()) {
-                        LocationServices.FusedLocationApi.requestLocationUpdates(
-                                googleApiClient, mLocationRequest, activity);
-                        Log.i(LOG, "## GoogleApiClient FORCE connected, requesting location updates ...");
-                    }
-                }
-            }).start();
-            return null;
-        }
-    }
+
     protected void stopLocationUpdates() {
         Log.e(LOG, "### stopLocationUpdates ...");
         if (googleApiClient.isConnected()) {
@@ -646,8 +634,9 @@ public class MainDrawerActivity extends ActionBarActivity
     public void onActivityResult(int reqCode, int result, Intent data) {
         switch (reqCode) {
             case REQUEST_COMPLAINT_PICTURES:
-                if (result == RESULT_OK) {
-
+                getLoginData();
+                if (result != RESULT_OK) {
+                    Util.showToast(ctx,getString(R.string.no_compl_photo));
                 }
                 break;
             case CREATE_COMPLAINT_REQUESTED:

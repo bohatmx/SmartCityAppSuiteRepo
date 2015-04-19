@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.boha.library.R;
@@ -42,7 +43,7 @@ public class StatementFragment extends Fragment implements PageFragment{
 
     ResponseDTO response;
     TextView txtTitle, txtDate, txtCount;
-    View view, fab, topView;
+    View view, fab, topView, handle;
     Context ctx;
     ImageView heroImage;
     Activity activity;
@@ -54,6 +55,7 @@ public class StatementFragment extends Fragment implements PageFragment{
     List<String> fileNames;
     StatementAdapter statementAdapter;
     ListView listView;
+    ProgressBar progressBar;
 
     public void setAccountList(List<AccountDTO> accountList) {
         Log.d(LOG,"### setAccountList");
@@ -145,12 +147,15 @@ public class StatementFragment extends Fragment implements PageFragment{
         });
     }
     private void setFields() {
-        topView = view.findViewById(R.id.FAQ_handle);
+        topView = view.findViewById(R.id.ST_top);
+        handle = view.findViewById(R.id.ST_handle);
         txtDate = (TextView) view.findViewById(R.id.ST_subtitle);
         txtCount = (TextView) view.findViewById(R.id.ST_count);
         heroImage = (ImageView)view.findViewById(R.id.ST_hero);
         txtTitle = (TextView) view.findViewById(R.id.ST_title);
         listView = (ListView)view.findViewById(R.id.ST_list);
+        progressBar = (ProgressBar)view.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
         fab = view.findViewById(R.id.FAB);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,6 +219,9 @@ public class StatementFragment extends Fragment implements PageFragment{
     public void setThemeColors(int primaryColor, int primaryDarkColor) {
         this.primaryColor = primaryColor;
         this.darkColor = primaryDarkColor;
+        if (topView != null) {
+            topView.setBackgroundColor(primaryColor);
+        }
     }
 
     @Override
@@ -234,50 +242,61 @@ public class StatementFragment extends Fragment implements PageFragment{
         w.setMonth(month);
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
 
+        progressBar.setVisibility(View.VISIBLE);
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO response) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (response.getStatusCode() == 0) {
-                            Log.i(LOG,"+++ we cool, cool ...");
-                            fileNames = response.getPdfFileNameList();
-                            FileDownloader.downloadStatementPDF(ctx, account.getAccountNumber(),
-                                    year, month, new FileDownloader.FileDownloaderListener() {
-                                        @Override
-                                        public void onFileDownloaded(File file) {
-                                            Intent w = new Intent(ctx, StatementService.class);
-                                            w.putExtra("response",response);
-                                            w.putExtra("accountNumber", account.getAccountNumber());
-                                            ctx.startService(w);
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.GONE);
+                            if (response.getStatusCode() == 0) {
+                                Log.i(LOG, "+++ we cool, cool ...");
+                                if (response.isMunicipalityAccessFailed()) {
+                                    Util.showErrorToast(ctx, ctx.getString(R.string.unable_connect_muni));
+                                    return;
+                                }
+                                fileNames = response.getPdfFileNameList();
+                                FileDownloader.downloadStatementPDF(ctx, account.getAccountNumber(),
+                                        year, month, new FileDownloader.FileDownloaderListener() {
+                                            @Override
+                                            public void onFileDownloaded(File file) {
+                                                Intent w = new Intent(ctx, StatementService.class);
+                                                w.putExtra("response", response);
+                                                w.putExtra("accountNumber", account.getAccountNumber());
+                                                ctx.startService(w);
 
-                                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                                            intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-                                            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                                            ctx.startActivity(intent);
+                                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                                intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                                ctx.startActivity(intent);
 
-                                        }
+                                            }
 
-                                        @Override
-                                        public void onError() {
+                                            @Override
+                                            public void onError() {
 
-                                        }
-                                    });
+                                            }
+                                        });
+                            }
                         }
-                    }
-                });
+                    });
+                }
 
             }
 
             @Override
             public void onError(final String message) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Util.showErrorToast(ctx,message);
-                    }
-                });
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.GONE);
+                            Util.showErrorToast(ctx, message);
+                        }
+                    });
+                }
             }
 
             @Override

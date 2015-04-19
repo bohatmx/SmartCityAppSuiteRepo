@@ -14,7 +14,7 @@
             android:id="@+id/MAP_text"
             android:text="Map Title"
             android:padding="@dimen/mon_padding"
-            style="@style/TextStyleSmall"
+            style="@style/TextStyleBlue"
             android:textColor="@color/blue_600"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

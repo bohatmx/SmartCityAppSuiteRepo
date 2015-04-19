@@ -1,4 +1,4 @@
-package com.boha.library.util;
+package com.boha.foureyes.util;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
@@ -29,17 +29,12 @@ import android.widget.ListPopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.boha.library.R;
-import com.boha.library.activities.MuniContactsActivity;
-import com.boha.library.adapters.PopupListAdapter;
-import com.boha.library.dto.AlertImageDTO;
-import com.boha.library.dto.ComplaintImageDTO;
-import com.boha.library.dto.NewsArticleImageDTO;
+import com.boha.foureyes.R;
+import com.boha.foureyes.adapters.PopupListAdapter;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -63,26 +58,9 @@ public class Util {
         return bitmap;
     }
 
-    public static void setCustomActionBarNoAction(final Context ctx,
-                                          ActionBar actionBar, String text, Drawable image) {
-        actionBar.setDisplayShowCustomEnabled(true);
-
-        LayoutInflater inflator = (LayoutInflater)
-                ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflator.inflate(R.layout.action_bar_logo, null);
-        TextView txt = (TextView) v.findViewById(R.id.ACTION_BAR_text);
-        final ImageView logo = (ImageView) v.findViewById(R.id.ACTION_BAR_logo);
-        txt.setText(text);
-        //
-        logo.setImageDrawable(image);
-        actionBar.setCustomView(v);
-        actionBar.setTitle("");
-
-
-    }
 
     public static void setCustomActionBar(final Context ctx,
-                                          ActionBar actionBar, String text, Drawable image, final int logoInt) {
+                                          ActionBar actionBar, String text, Drawable image) {
         actionBar.setDisplayShowCustomEnabled(true);
 
         LayoutInflater inflator = (LayoutInflater)
@@ -101,10 +79,7 @@ public class Util {
                 Util.flashOnce(logo, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        Intent w = new Intent(ctx, MuniContactsActivity.class);
-                        w.putExtra("logo",logoInt);
-                        w.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        ctx.startActivity(w);
+
                     }
                 });
             }
@@ -112,52 +87,6 @@ public class Util {
 
     }
 
-
-    public static String getStatementURL(Context ctx, String accountNumber, int year, int month) {
-        StringBuilder sb = getStartURL(SharedUtil.getMunicipality(ctx).getMunicipalityID());
-        sb.append("/documents/");
-        sb.append("account_")
-                .append(accountNumber).append("/")
-                .append(accountNumber).append("_")
-                .append(year).append("_").append(month).append(".pdf");
-        Log.d("Util","Statement URL: " + sb.toString());
-        return sb.toString();
-    }
-
-    public static String getAlertImageURL(AlertImageDTO p) {
-        StringBuilder sb = getStartURL(p.getMunicipalityID());
-        sb.append("/alerts/alert")
-                .append(p.getAlertID()).append("/")
-                .append(p.getFileName());
-        Log.i("Util", "Loading alert image: " + sb.toString());
-        return sb.toString();
-    }
-    public static String getNewsImageURL(NewsArticleImageDTO p) {
-        StringBuilder sb = getStartURL(p.getMunicipalityID());
-        sb.append("/news/");
-        sb.append("/news")
-                .append(p.getNewsArticleID()).append("/")
-                .append(p.getFileName());
-        Log.i("Util", "Loading news image: " + sb.toString());
-        return sb.toString();
-    }
-
-    public static String getComplaintImageURL(ComplaintImageDTO p) {
-        StringBuilder sb = getStartURL(p.getMunicipalityID());
-        sb.append("/complaints/");
-        sb.append("complaint")
-                .append(p.getComplaintID()).append("/")
-                .append(p.getFileName());
-        Log.i("Util", "Loading complaint image: " + sb.toString());
-        return sb.toString();
-    }
-
-    public static StringBuilder getStartURL(Integer municipalityID) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(Statics.IMAGE_URL).append("smartcity_images/")
-                .append("municipality").append(municipalityID);
-        return stringBuilder;
-    }
 
     public static double getElapsed(long start, long end) {
         BigDecimal m = new BigDecimal(end - start).divide(new BigDecimal(1000));
@@ -335,11 +264,11 @@ public class Util {
             txt.setVisibility(View.GONE);
         }
         ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
-        img.setImageDrawable(getRandomBackgroundImage(ctx));
+        //img.setImageDrawable(getRandomBackgroundImage(ctx));
 
         pop.setPromptView(v);
         pop.setPromptPosition(ListPopupWindow.POSITION_PROMPT_ABOVE);
-        pop.setAdapter(new PopupListAdapter(ctx, R.layout.xspinner_item,
+        pop.setAdapter(new PopupListAdapter(ctx, R.layout.popup_item,
                 list, false));
         pop.setAnchorView(anchorView);
         pop.setHorizontalOffset(getPopupHorizontalOffset(act));
@@ -381,18 +310,7 @@ public class Util {
         return e.intValue();
     }
 
-    private static List<Drawable> images, banners;
-    private static int lastIndex, lastBannerIndex;
 
-    private static void loadBanners(Context ctx) {
-        banners = new ArrayList<>();
-        banners.add(ctx.getResources().getDrawable(R.drawable.banner1));
-        banners.add(ctx.getResources().getDrawable(R.drawable.banner2));
-        banners.add(ctx.getResources().getDrawable(R.drawable.banner3));
-        banners.add(ctx.getResources().getDrawable(R.drawable.banner4));
-
-
-    }
 
     static public boolean hasStorage(boolean requireWriteAccess) {
         String state = Environment.getExternalStorageState();
@@ -434,19 +352,6 @@ public class Util {
         return height;
     }
 
-    public static Drawable getRandomBanner(Context ctx) {
-        if (banners == null) {
-            loadBanners(ctx);
-        }
-        int index = random.nextInt(4);
-        if (index == lastBannerIndex) {
-            getRandomBanner(ctx);
-        }
-        lastBannerIndex = index;
-        return banners.get(index);
-    }
-
-    static Random random = new Random(System.currentTimeMillis());
 
     public static void showErrorToast(Context ctx, String caption) {
         LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -562,94 +467,6 @@ public class Util {
     }
 
     static int count, cityIndex, bIndex;
-    public static Drawable getRandomBackgroundImage(Context ctx) {
-        bIndex = random.nextInt(14);
-        switch (bIndex) {
-            case 0:
-                return ctx.getResources().getDrawable(R.drawable.back1);
-            case 1:
-                return ctx.getResources().getDrawable(R.drawable.back2);
-            case 2:
-                return ctx.getResources().getDrawable(R.drawable.back3);
-            case 3:
-                return ctx.getResources().getDrawable(R.drawable.back4);
-            case 4:
-                return ctx.getResources().getDrawable(R.drawable.back5);
-            case 5:
-                return ctx.getResources().getDrawable(R.drawable.back6);
-            case 6:
-                return ctx.getResources().getDrawable(R.drawable.back7);
-            case 7:
-                return ctx.getResources().getDrawable(R.drawable.back8);
-            case 8:
-                return ctx.getResources().getDrawable(R.drawable.back9);
-            case 9:
-                return ctx.getResources().getDrawable(R.drawable.back10);
-            case 10:
-                return ctx.getResources().getDrawable(R.drawable.back11);
-            case 11:
-                return ctx.getResources().getDrawable(R.drawable.back12);
-            case 12:
-                return ctx.getResources().getDrawable(R.drawable.back13);
-            case 13:
-                return ctx.getResources().getDrawable(R.drawable.back14);
-            case 14:
-                return ctx.getResources().getDrawable(R.drawable.back15);
-
-        }
-        return ctx.getResources().getDrawable(R.drawable.back11);
-    }
-    public static Drawable getRandomCityImage(final Context ctx) {
-        cityIndex = random.nextInt(21);
-        switch (cityIndex) {
-            case 0:
-                return ctx.getResources().getDrawable(R.drawable.city1);
-            case 1:
-                return ctx.getResources().getDrawable(R.drawable.city2);
-            case 2:
-                return ctx.getResources().getDrawable(R.drawable.city3);
-            case 3:
-                return ctx.getResources().getDrawable(R.drawable.city4);
-            case 4:
-                return ctx.getResources().getDrawable(R.drawable.city5);
-            case 5:
-                return ctx.getResources().getDrawable(R.drawable.city6);
-            case 6:
-                return ctx.getResources().getDrawable(R.drawable.city7);
-            case 7:
-                return ctx.getResources().getDrawable(R.drawable.city8);
-            case 8:
-                return ctx.getResources().getDrawable(R.drawable.city9);
-            case 9:
-                return ctx.getResources().getDrawable(R.drawable.city10);
-            case 10:
-                return ctx.getResources().getDrawable(R.drawable.city11);
-            case 11:
-                return ctx.getResources().getDrawable(R.drawable.city12);
-            case 12:
-                return ctx.getResources().getDrawable(R.drawable.city13);
-            case 13:
-                return ctx.getResources().getDrawable(R.drawable.city14);
-            case 14:
-                return ctx.getResources().getDrawable(R.drawable.city15);
-            case 15:
-                return ctx.getResources().getDrawable(R.drawable.city16);
-            case 16:
-                return ctx.getResources().getDrawable(R.drawable.city17);
-            case 17:
-                return ctx.getResources().getDrawable(R.drawable.city18);
-            case 18:
-                return ctx.getResources().getDrawable(R.drawable.city19);
-            case 19:
-                return ctx.getResources().getDrawable(R.drawable.city20);
-            case 20:
-                return ctx.getResources().getDrawable(R.drawable.city21);
-            case 21:
-                return ctx.getResources().getDrawable(R.drawable.city22);
-
-        }
-        return ctx.getResources().getDrawable(R.drawable.city22);
-    }
     public static void checkGPS(final Context ctx) {
         LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
         if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
@@ -687,5 +504,81 @@ public class Util {
         }
         Log.e("Util","## pdf file: " + file.getAbsolutePath() + " length: " + file.length());
         return file;
+    }
+
+    static Random random = new Random(System.currentTimeMillis());
+    public static Drawable getRandomBackgroundImage(Context ctx) {
+        bIndex = random.nextInt(14);
+        switch (bIndex) {
+            case 0:
+                return ctx.getResources().getDrawable(R.drawable.back1);
+            case 1:
+                return ctx.getResources().getDrawable(R.drawable.back2);
+            case 2:
+                return ctx.getResources().getDrawable(R.drawable.back3);
+            case 3:
+                return ctx.getResources().getDrawable(R.drawable.back4);
+            case 4:
+                return ctx.getResources().getDrawable(R.drawable.back5);
+            case 5:
+                return ctx.getResources().getDrawable(R.drawable.back6);
+            case 6:
+                return ctx.getResources().getDrawable(R.drawable.back7);
+            case 7:
+                return ctx.getResources().getDrawable(R.drawable.back8);
+            case 8:
+                return ctx.getResources().getDrawable(R.drawable.back9);
+            case 9:
+                return ctx.getResources().getDrawable(R.drawable.back10);
+            case 10:
+                return ctx.getResources().getDrawable(R.drawable.back11);
+            case 11:
+                return ctx.getResources().getDrawable(R.drawable.back12);
+            case 12:
+                return ctx.getResources().getDrawable(R.drawable.back13);
+            case 13:
+                return ctx.getResources().getDrawable(R.drawable.back14);
+            case 14:
+                return ctx.getResources().getDrawable(R.drawable.back15);
+
+        }
+        return ctx.getResources().getDrawable(R.drawable.back11);
+    }
+    public static int getRandomBackgroundImageResource(Context ctx) {
+        bIndex = random.nextInt(14);
+        switch (bIndex) {
+            case 0:
+                return R.drawable.back1;
+            case 1:
+                return R.drawable.back2;
+            case 2:
+                return R.drawable.back3;
+            case 3:
+                return R.drawable.back4;
+            case 4:
+                return R.drawable.back5;
+            case 5:
+                return R.drawable.back6;
+            case 6:
+                return R.drawable.back7;
+            case 7:
+                return R.drawable.back8;
+            case 8:
+                return R.drawable.back9;
+            case 9:
+                return R.drawable.back10;
+            case 10:
+                return R.drawable.back11;
+            case 11:
+                return R.drawable.back12;
+            case 12:
+                return R.drawable.back13;
+            case 13:
+                return R.drawable.back14;
+            case 14:
+                return R.drawable.back15;
+
+        }
+        return R.drawable.back11;
     }
 }

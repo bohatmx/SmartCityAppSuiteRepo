@@ -86,5 +86,8 @@
     <string name="title_activity_faq">FaqActivity</string>
     <string name="title_activity_muni_contacts">MuniContactsActivity</string>
     <string name="title_activity_statement">StatementActivity</string>
+    <string name="news_map">News on the Map</string>
+    <string name="map_complaints">Complaints on the Map</string>
+    <string name="no_network">No network connected. Please connect and try again</string>
 
 </resources>

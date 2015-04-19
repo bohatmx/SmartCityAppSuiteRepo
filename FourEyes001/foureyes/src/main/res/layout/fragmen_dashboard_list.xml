@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="@dimen/mon_padding"
+    android:background="@color/grey"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/FD_top"
+        android:layout_width="match_parent"
+        android:padding="@dimen/mon_padding"
+        android:background="@color/white"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/FD_label"
+            android:text="Municipalities"
+            style="@style/TextStyleGrey"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/FD_muniCount"
+            android:text="99"
+            style="@style/Title1TextStyleBlue"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/mon_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/FD_list"
+        android:layout_below="@id/FD_top"
+        android:layout_marginTop="@dimen/mon_padding"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="@dimen/mon_padding"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>

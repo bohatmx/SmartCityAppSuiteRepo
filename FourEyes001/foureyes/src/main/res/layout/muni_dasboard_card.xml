@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/CITIZEN_topLayout"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/card_view"
+        android:padding="@dimen/mon_margin"
+        app:cardElevation="@dimen/mon_padding"
+        tools:cardCornerRadius="16dp">
+
+
+        <RelativeLayout
+            android:id="@+id/MD_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/MD_top"
+                android:elevation="@dimen/mon_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/MD_hero"
+                    android:src="@drawable/back6"
+                    android:scaleType="centerCrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/mon_hero_height_medium" />
+                <TextView
+                    android:id="@+id/MD_muni"
+                    android:text="Municipality Name"
+                    style="@style/Title2TextStyleWhite"
+                    android:layout_marginTop="@dimen/mon_margin"
+                    android:layout_marginLeft="@dimen/mon_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <RelativeLayout
+                    android:id="@+id/MD_staffLayout"
+                    android:layout_below="@id/MD_muni"
+                    android:layout_marginTop="@dimen/mon_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/MD_muniStaff"
+                        android:text="33"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/mon_wide"
+                        style="@style/Title1TextStyleWhite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/MD_muniStafflabel"
+                        android:text="Staff on App"
+                        android:layout_toLeftOf="@id/MD_muniStaff"
+                        style="@style/TextStyleGrey"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/mon_margin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_below="@id/MD_staffLayout"
+                    android:layout_marginTop="@dimen/mon_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/MD_muniCitizens"
+                        android:text="1,999,833"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/mon_wide"
+                        style="@style/Title2TextStyleWhite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/MD_muniCitizenlabel"
+                        android:text="Citizens on App"
+                        android:layout_toLeftOf="@id/MD_muniCitizens"
+                        style="@style/TextStyleGrey"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/mon_margin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/MD_middle"
+                android:layout_below="@id/MD_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/mon_margin"
+                    android:padding="@dimen/mon_padding"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/MD_muniComplaints"
+                        android:text="8,788"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/mon_wide"
+                        style="@style/Title0TextStyleRed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/MD_muniComlabel"
+                        android:text="Number of Complaints"
+                        android:layout_toLeftOf="@id/MD_muniComplaints"
+                        style="@style/TextStyleGrey"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/mon_margin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/MD_middleToo"
+                android:layout_below="@id/MD_middle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/mon_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/MD_muniAlerts"
+                        android:text="8,788"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/mon_wider"
+                        style="@style/Title2TextStyleGreen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/MD_muniAlertlabel"
+                        android:text="Number of Alerts"
+                        android:layout_toLeftOf="@id/MD_muniAlerts"
+                        style="@style/TextStyleGrey"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/mon_margin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/MD_bottom"
+                android:layout_below="@id/MD_middleToo"
+                android:padding="@dimen/mon_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:id="@+id/MD_complaintImageLayout"
+                    android:layout_marginTop="@dimen/mon_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/MD_compImages"
+                        android:text="11,258,788"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/mon_wider"
+                        style="@style/Title3TextStyleBlue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/MD_comlabel"
+                        android:text="Number of Complaiint Images"
+                        android:layout_toLeftOf="@id/MD_compImages"
+                        style="@style/TextStyleGreySmall"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/mon_margin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/MD_alertImageLayout"
+                    android:layout_below="@id/MD_complaintImageLayout"
+                    android:layout_marginTop="@dimen/mon_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/MD_alertImages"
+                        android:text="6,118,258,788"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/mon_wider"
+                        style="@style/Title3TextStyleBlack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/MD_allabel"
+                        android:text="Number of Alert Images"
+                        android:layout_toLeftOf="@id/MD_alertImages"
+                        style="@style/TextStyleGreySmall"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/mon_margin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+
+</RelativeLayout>
+
