@@ -26,7 +26,6 @@ import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.MyComplaintsActivity;
-import com.boha.library.adapters.ComplaintAdapter;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintTypeDTO;
 import com.boha.library.transfer.RequestDTO;
@@ -71,7 +70,6 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             txtGetAddress, txtComplaintType;
     List<ComplaintTypeDTO> complaintTypeList;
     ComplaintTypeDTO complaintType;
-    ComplaintAdapter complaintAdapter;
     List<String> stringList;
     Activity activity;
     View topView;
@@ -192,14 +190,21 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO response) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressBar.setVisibility(View.GONE);
-                        ComplaintDTO x = response.getComplaintList().get(0);
-                        mListener.onComplaintAdded(x);
-                    }
-                });
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.GONE);
+                            if (response.isMunicipalityAccessFailed()) {
+                                Util.showErrorToast(ctx,ctx.getString(R.string.unable_connect_muni));
+                                return;
+                            }
+
+                            ComplaintDTO x = response.getComplaintList().get(0);
+                            mListener.onComplaintAdded(x);
+                        }
+                    });
+                }
 
             }
 

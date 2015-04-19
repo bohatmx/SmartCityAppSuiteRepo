@@ -1,6 +1,7 @@
 package com.boha.library.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import com.boha.library.dto.AlertTypeDTO;
 import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -118,11 +121,11 @@ public class AlertListAdapter extends ArrayAdapter<AlertDTO> {
             item.image.setVisibility(View.VISIBLE);
             if (p.getAlertImageList().size() == 1) {
                 String url = Util.getAlertImageURL(p.getAlertImageList().get(0));
-                ImageLoader.getInstance().displayImage(url, item.image);
+                setImage(url,item.image);
             } else {
                 int index = random.nextInt(p.getAlertImageList().size() - 1);
                 String url = Util.getAlertImageURL(p.getAlertImageList().get(index));
-                ImageLoader.getInstance().displayImage(url, item.image);
+                setImage(url,item.image);
             }
 
         } else {
@@ -131,7 +134,30 @@ public class AlertListAdapter extends ArrayAdapter<AlertDTO> {
         return (convertView);
     }
 
+    private void setImage(String url, final ImageView  image) {
+        ImageLoader.getInstance().displayImage(url, image, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String s, View view) {
 
+            }
+
+            @Override
+            public void onLoadingFailed(String s, View view, FailReason failReason) {
+                image.setImageDrawable(ctx.getResources().getDrawable(R.drawable.under_construction));
+                image.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+
+            }
+
+            @Override
+            public void onLoadingCancelled(String s, View view) {
+
+            }
+        });
+    }
     public interface AlertListListener {
         public void onAlertClicked(int position);
     }

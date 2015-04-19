@@ -35,7 +35,7 @@ public class SplashActivity extends ActionBarActivity {
 
     MunicipalityStaffDTO staff;
     Timer timer;
-    ImageView heroImage, logo;
+    ImageView heroImage, logoImage;
     View actionsView;
     Button btnSignIn;
     static Context ctx;
@@ -59,8 +59,8 @@ public class SplashActivity extends ActionBarActivity {
         setContentView(R.layout.activity_splash);
         ctx = getApplicationContext();
         setFields();
-        //eThekwini logo - will be different for each municipality
-        logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.logo));
+        //eThekwini logoImage - will be different for each municipality
+        logoImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.logo));
         setTitle(MUNICIPALITY_NAME + " SmartCity");
         startTimer();
         getMunicipality();
@@ -72,7 +72,7 @@ public class SplashActivity extends ActionBarActivity {
         Util.setCustomActionBar(ctx,
                 actionBar,
                 MUNICIPALITY_NAME,
-                ctx.getResources().getDrawable(R.drawable.logo));
+                ctx.getResources().getDrawable(R.drawable.logo), R.drawable.logo);
         getSupportActionBar().setTitle("");
 
     }
@@ -82,7 +82,7 @@ public class SplashActivity extends ActionBarActivity {
         actionsView.setVisibility(View.GONE);
         heroImage = (ImageView) findViewById(R.id.SPLASH_image);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        logo = (ImageView) findViewById(R.id.SPLASH_logo);
+        logoImage = (ImageView) findViewById(R.id.SPLASH_logo);
         btnSignIn = (Button) findViewById(R.id.SPLASH_btnSignin);
         progressBar.setVisibility(View.GONE);
         btnSignIn.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +92,7 @@ public class SplashActivity extends ActionBarActivity {
                     @Override
                     public void onAnimationEnded() {
                         Intent intent = new Intent(ctx, SigninActivity.class);
+                        intent.putExtra("logo", R.drawable.logo);
                         startActivityForResult(intent, REQUEST_SIGN_IN);
 
                     }

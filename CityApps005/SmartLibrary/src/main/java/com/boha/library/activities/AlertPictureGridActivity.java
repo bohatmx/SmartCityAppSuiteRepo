@@ -60,7 +60,7 @@ public class AlertPictureGridActivity extends ActionBarActivity {
         ctx = getApplicationContext();
         setFields();
 
-        alert = (AlertDTO) getIntent().getSerializableExtra("alert");
+        alert = (AlertDTO) getIntent().getSerializableExtra("newsArticle");
         logo = getIntent().getIntExtra("logo", R.drawable.ic_action_globe);
         photoList = alert.getAlertImageList();
         txtAlertType.setText(alert.getAlertType().getAlertTypeName());
@@ -75,7 +75,7 @@ public class AlertPictureGridActivity extends ActionBarActivity {
             Drawable d = ctx.getResources().getDrawable(logo);
             Util.setCustomActionBar(ctx,
                     actionBar,
-                    municipality.getMunicipalityName(), d);
+                    municipality.getMunicipalityName(), d,logo);
             getSupportActionBar().setTitle("");
         } else {
             getSupportActionBar().setTitle(municipality.getMunicipalityName());
@@ -145,7 +145,7 @@ public class AlertPictureGridActivity extends ActionBarActivity {
 //                    @Override
 //                    public void onAnimationEnded() {
 //                        Intent intent = new Intent(ctx, AlertMapActivity.class);
-//                        intent.putExtra("complaint", alert);
+//                        intent.putExtra("complaint", newsArticle);
 //                        startActivity(intent);
 //                    }
 //                });
@@ -174,7 +174,7 @@ public class AlertPictureGridActivity extends ActionBarActivity {
                 Log.e(LOG, "Picture clicked..., position = " + position);
                 lastIndex = position;
                 Intent i = new Intent(getApplicationContext(), FullPhotoActivity.class);
-                i.putExtra("alert", alert);
+                i.putExtra("newsArticle", alert);
                 i.putExtra("index", position);
                 i.putExtra("type", 1);
 //                startActivity(i);

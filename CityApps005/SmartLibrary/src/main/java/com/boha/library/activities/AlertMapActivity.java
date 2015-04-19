@@ -126,7 +126,7 @@ public class AlertMapActivity extends ActionBarActivity {
             Drawable d = ctx.getResources().getDrawable(logo);
             Util.setCustomActionBar(ctx,
                     getSupportActionBar(),
-                    municipality.getMunicipalityName(), d);
+                    municipality.getMunicipalityName(), d,logo);
             getSupportActionBar().setTitle("");
         } else {
             getSupportActionBar().setTitle(municipality.getMunicipalityName());
@@ -383,7 +383,7 @@ public class AlertMapActivity extends ActionBarActivity {
                 });
             } else {
                 list.remove(1);
-                Util.showPopupBasicWithHeroImage(ctx, activity, list, topLayout, "Actions", new Util.UtilPopupListener() {
+                Util.showPopupBasicWithHeroImage(ctx, activity, list, topLayout, alert.getAlertType().getAlertTypeName(), new Util.UtilPopupListener() {
                     @Override
                     public void onItemSelected(int index) {
                         if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {
@@ -406,7 +406,7 @@ public class AlertMapActivity extends ActionBarActivity {
 
 
         Intent i = new Intent(ctx, AlertPictureGridActivity.class);
-        i.putExtra("alert", alert);
+        i.putExtra("newsArticle", alert);
         i.putExtra("logo",logo);
         startActivity(i);
     }

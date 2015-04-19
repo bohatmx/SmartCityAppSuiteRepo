@@ -1,15 +1,16 @@
 package com.boha.library.util;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.VolleyError;
+import com.boha.library.R;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.volley.BaseVolley;
 import com.google.gson.Gson;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by aubreyM on 15/01/31.
@@ -26,53 +27,20 @@ public class NetUtil {
     public static void sendRequest(Context ctx, RequestDTO request, NetUtilListener utilListener) {
         listener = utilListener;
 
-        WebCheckResult wcr = WebCheck.checkNetworkAvailability(ctx);
+        WebCheckResult wcr = WebCheck.checkNetworkAvailability(ctx,true);
         if (!wcr.isWifiConnected() && !wcr.isMobileConnected()) {
-            listener.onError("No network connected. Please connect and try again");
+            listener.onError(ctx.getString(R.string.no_network));
             return;
         }
         if (request.getRideWebSocket()) {
-            sendViaWebSocket(ctx,request);
+            sendViaAutobahn(ctx,request);
         } else {
             sendViaHttp(ctx, request);
         }
-        if (Statics.URL.contains("192.168.1.33")) { //Pecanwood dev
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    timer.cancel();
-                    if (!hasResponded) {
-                        listener.onError("Development Server not available via Mobile Network.\nRequest TimeOut. Try again.");
-                        return;
-                    }
 
-                }
-            }, 3000);
-        }
     }
     private static boolean hasResponded;
-    private static void sendViaWebSocket(Context ctx, RequestDTO request) {
 
-        WebSocketUtil.sendRequest(ctx, Statics.GATEWAY_SOCKET, request, new WebSocketUtil.WebSocketListener() {
-            @Override
-            public void onMessage(ResponseDTO response) {
-                hasResponded = true;
-                listener.onResponse(response);
-            }
-
-            @Override
-            public void onClose() {
-                listener.onWebSocketClose();
-            }
-
-            @Override
-            public void onError(String message) {
-                hasResponded = true;
-                listener.onError(message);
-            }
-        });
-    }
     private static void sendViaHttp(Context ctx, RequestDTO request) {
         BaseVolley.getRemoteData(Statics.GATEWAY_SERVLET, request, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
@@ -86,6 +54,25 @@ public class NetUtil {
             public void onVolleyError(VolleyError error) {
                 hasResponded = true;
                 listener.onError("Error communicating with server");
+            }
+        });
+    }
+
+    private static void sendViaAutobahn(Context ctx, RequestDTO request) {
+        WebSocketUtil.sendRequest(ctx, Statics.GATEWAY_SOCKET, request, new WebSocketUtil.SocketListener() {
+            @Override
+            public void onOpen() {
+                Log.i("NetUtil", "Hooray! websocket opened!!");
+            }
+
+            @Override
+            public void onMessage(ResponseDTO response) {
+                listener.onResponse(response);
+            }
+
+            @Override
+            public void onError(String message) {
+                listener.onError(message);
             }
         });
     }

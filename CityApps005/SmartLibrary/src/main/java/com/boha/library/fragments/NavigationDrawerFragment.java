@@ -172,6 +172,7 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
+                drawerImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
                 if (!isAdded()) {
                     return;
                 }
@@ -182,7 +183,7 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                drawerImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+
                 if (!isAdded()) {
                     return;
                 }

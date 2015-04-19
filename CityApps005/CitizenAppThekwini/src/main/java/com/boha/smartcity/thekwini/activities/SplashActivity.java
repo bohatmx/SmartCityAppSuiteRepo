@@ -66,7 +66,7 @@ public class SplashActivity extends ActionBarActivity {
         Util.setCustomActionBar(ctx,
                 actionBar,
                 MUNICIPALITY_NAME,
-                ctx.getResources().getDrawable(R.drawable.logo));
+                ctx.getResources().getDrawable(R.drawable.logo),R.drawable.logo);
         getSupportActionBar().setTitle("");
         getMunicipality();
 
@@ -91,6 +91,7 @@ public class SplashActivity extends ActionBarActivity {
                     @Override
                     public void onAnimationEnded() {
                         Intent intent = new Intent(ctx, RegistrationActivity.class);
+                        intent.putExtra("logo", R.drawable.logo);
                         startActivityForResult(intent, REQUEST_SIGN_IN);
                     }
                 });
@@ -104,6 +105,7 @@ public class SplashActivity extends ActionBarActivity {
                     @Override
                     public void onAnimationEnded() {
                         Intent intent = new Intent(ctx, SigninActivity.class);
+                        intent.putExtra("logo", R.drawable.logo);
                         startActivityForResult(intent, REQUEST_SIGN_IN);
                     }
                 });

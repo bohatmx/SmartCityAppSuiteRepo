@@ -263,31 +263,40 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO response) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressBar.setVisibility(View.GONE);
-                        btnGetType.setText(ctx.getString(com.boha.library.R.string.sel_type));
-                        editDesc.setText("");
-                        TrafficLightUtil.disable(ctx, trafficLights);
-                        Util.preen(trafficLights, 500, new Util.UtilAnimationListener() {
-                            @Override
-                            public void onAnimationEnded() {
-                                if (response.getStatusCode() == 0) {
-                                    alert = response.getAlertList().get(0);
-                                    mListener.onAlertSent(alert);
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.GONE);
+                            btnGetType.setText(ctx.getString(com.boha.library.R.string.sel_type));
+                            editDesc.setText("");
+                            TrafficLightUtil.disable(ctx, trafficLights);
+                            Util.preen(trafficLights, 500, new Util.UtilAnimationListener() {
+                                @Override
+                                public void onAnimationEnded() {
+                                    if (response.getStatusCode() == 0) {
+                                        alert = response.getAlertList().get(0);
+                                        mListener.onAlertSent(alert);
+                                    }
+                                    Log.w(LOG, "++ alert has been sent OK: " + response.getMessage());
                                 }
-                                Log.w(LOG, "++ alert has been sent OK: " + response.getMessage());
-                            }
-                        });
+                            });
 
-                    }
-                });
+                        }
+                    });
+                }
             }
 
             @Override
-            public void onError(String message) {
-
+            public void onError(final String message) {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Util.showErrorToast(ctx,message);
+                        }
+                    });
+                }
             }
 
             @Override

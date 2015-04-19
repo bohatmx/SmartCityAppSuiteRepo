@@ -38,10 +38,10 @@
 
         <TextView
             android:id="@+id/AI_type"
-            style="@style/TextStyleSmall"
+            style="@style/Title3TextStyleBlue"
             android:text="AlertType"
             android:layout_below="@id/AI_top"
-            android:layout_marginLeft="64dp"
+            android:layout_marginLeft="44dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -73,7 +73,7 @@
     </RelativeLayout>
     <ImageView
         android:id="@+id/AI_image"
-        android:src="@drawable/under_construction"
+        android:src="@drawable/under_construction2"
         android:scaleType="centerCrop"
         android:layout_below="@id/AI_toptop"
         android:layout_width="match_parent"

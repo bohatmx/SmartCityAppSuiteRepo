@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <string name="app_name">SmartCity</string>
-    <string name="title_activity_maps">Map</string>
-    <string name="select_language">Kies jou taal</string>
-
-</resources>

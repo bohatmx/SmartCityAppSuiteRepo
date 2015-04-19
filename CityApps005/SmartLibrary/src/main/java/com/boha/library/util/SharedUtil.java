@@ -75,7 +75,7 @@ public class SharedUtil {
             Log.i(LOG, "#### GCM id NOT retrieved: ");
             return null;
         }
-        Log.i(LOG, "#### GCM id retrieved: " + j);
+//        Log.i(LOG, "#### GCM id retrieved: " + j);
         return j;
     }
 
@@ -101,7 +101,7 @@ public class SharedUtil {
             Log.e(LOG, "#### profile NOT retrieved");
             return null;
         }
-        Log.i(LOG, "#### profile retrieved: " + json);
+//        Log.i(LOG, "#### profile retrieved: " + json);
         return gson.fromJson(json, ProfileInfoDTO.class);
     }
     static Gson gson = new Gson();
@@ -128,7 +128,7 @@ public class SharedUtil {
         if (j == null) {
             return null;
         }
-        Log.i(LOG, "#### muni retrieved: " + j);
+//        Log.i(LOG, "#### muni retrieved: " + j);
         return gson.fromJson(j, MunicipalityDTO.class);
     }
 
@@ -151,7 +151,7 @@ public class SharedUtil {
         if (j == null) {
             return null;
         }
-        Log.i(LOG, "#### muni staff retrieved: " + j);
+//        Log.i(LOG, "#### muni staff retrieved: " + j);
         return gson.fromJson(j, MunicipalityStaffDTO.class);
     }
     static final String LOG = SharedUtil.class.getSimpleName();

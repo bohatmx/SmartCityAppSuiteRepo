@@ -44,7 +44,7 @@ import java.util.TimerTask;
 
 public class SigninActivity extends ActionBarActivity {
 
-    ImageView heroImage, logo;
+    ImageView heroImage, logoImage;
     Timer timer;
     TextView txtWelcome;
     View handle;
@@ -73,11 +73,12 @@ public class SigninActivity extends ActionBarActivity {
         setFields();
         getEmail();
         municipality = SharedUtil.getMunicipality(ctx);
+        int logo = getIntent().getIntExtra("logoImage", R.drawable.ic_action_globe);
         ActionBar actionBar = getSupportActionBar();
         Util.setCustomActionBar(ctx,
                 actionBar,
                 municipality.getMunicipalityName(),
-                ctx.getResources().getDrawable(R.drawable.logo));
+                ctx.getResources().getDrawable(R.drawable.logo),logo);
         getSupportActionBar().setTitle("");
     }
 
@@ -96,9 +97,9 @@ public class SigninActivity extends ActionBarActivity {
         progressBar = (ProgressBar) findViewById(R.id.SIGNIN_progress);
         heroImage = (ImageView) findViewById(R.id.SIGNIN_heroImage);
         txtWelcome = (TextView) findViewById(R.id.SIGNIN_welcome);
-        logo = (ImageView) findViewById(R.id.SIGNIN_dome);
+        logoImage = (ImageView) findViewById(R.id.SIGNIN_dome);
 
-        logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.logo));
+        logoImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.logo));
         handle = findViewById(R.id.SIGNIN_handle);
         progressBar.setVisibility(View.GONE);
 

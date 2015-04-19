@@ -41,7 +41,7 @@ public class MyComplaintsActivity extends ActionBarActivity implements MyComplai
             Drawable d = ctx.getResources().getDrawable(logo);
             Util.setCustomActionBar(ctx,
                     actionBar,
-                    municipality.getMunicipalityName(), d);
+                    municipality.getMunicipalityName(), d,logo);
             getSupportActionBar().setTitle("");
         } else {
             getSupportActionBar().setTitle(municipality.getMunicipalityName());

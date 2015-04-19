@@ -81,6 +81,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
 
     public void setLocation(Location location) {
         this.location = location;
+        Log.w(LOG,"### setLocation: will refresh alerts");
         refreshAlerts();
 
     }
@@ -178,7 +179,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
                         Intent i = new Intent(ctx, AlertMapActivity.class);
                         ResponseDTO r = new ResponseDTO();
                         r.setAlertList(alertList);
-                        i.putExtra("newsList", r);
+                        i.putExtra("alertList", r);
                         startActivity(i);
                     }
                 });
@@ -216,20 +217,31 @@ public class AlertListFragment extends Fragment implements PageFragment {
 
         ResponseDTO r = new ResponseDTO();
         r.setAlertList(alertList);
-        CacheUtil.cacheAlertData(ctx,r,null);
+        CacheUtil.cacheAlertData(ctx, r, null);
 
     }
     public void refreshAlerts() {
         if (location == null) {
+            Log.e(LOG,"--- location is null, return from refreshAlerts");
             return;
         }
-
+        Log.d("AlertListFragment", "refreshAlerts");
         RequestDTO w = new RequestDTO(RequestDTO.GET_ALERTS_WITHIN_RADIUS);
         w.setLatitude(location.getLatitude());
         w.setLongitude(location.getLongitude());
         w.setRadius(radius);
 
-        progressBar.setVisibility(View.VISIBLE);
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+            });
+        } else {
+            return;
+        }
+
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO response) {
@@ -254,6 +266,22 @@ public class AlertListFragment extends Fragment implements PageFragment {
                     response.setAlertList(alertList);
                     CacheUtil.cacheAlertData(ctx, response, null);
 
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressBar.setVisibility(View.GONE);
+                                setList();
+
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String message) {
+                if (getActivity() != null) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -263,11 +291,6 @@ public class AlertListFragment extends Fragment implements PageFragment {
                         }
                     });
                 }
-            }
-
-            @Override
-            public void onError(String message) {
-
             }
 
             @Override
@@ -359,9 +382,10 @@ public class AlertListFragment extends Fragment implements PageFragment {
     }
 
     public interface AlertListener {
-        public void onAlertClicked(AlertDTO alert);
+         void onAlertClicked(AlertDTO alert);
+         void onCreateAlertRequested();
+        void  onFreshLocationRequested();
 
-        public void onCreateAlertRequested();
     }
 
     static final String LOG = AlertListFragment.class.getSimpleName();

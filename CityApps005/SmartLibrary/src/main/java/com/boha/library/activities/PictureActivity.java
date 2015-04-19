@@ -8,6 +8,7 @@ import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.ExifInterface;
@@ -17,6 +18,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -81,7 +83,7 @@ public class PictureActivity extends ActionBarActivity
             COMPLAINT_IMAGE = 2,
             NEWS_ARTICLE_IMAGE = 3,
             MUNICIPALITY_IMAGE = 4;
-    private int imageType;
+    private int imageType, logo;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,9 +94,10 @@ public class PictureActivity extends ActionBarActivity
         setFields();
 
         imageType = getIntent().getIntExtra("imageType", MUNICIPALITY_IMAGE);
+        logo = getIntent().getIntExtra("logo", R.drawable.ic_action_globe);
         switch (imageType) {
             case MUNICIPALITY_IMAGE:
-                municipality = (MunicipalityDTO)getIntent().getSerializableExtra("municipality");
+                municipality = SharedUtil.getMunicipality(ctx);
                 break;
             case ALERT_IMAGE:
                 alert = (AlertDTO) getIntent().getSerializableExtra("alert");
@@ -116,7 +119,13 @@ public class PictureActivity extends ActionBarActivity
                 .addApi(LocationServices.API)
                 .build();
 
-
+        MunicipalityDTO municipality = SharedUtil.getMunicipality(ctx);
+        ActionBar actionBar = getSupportActionBar();
+        Drawable d = ctx.getResources().getDrawable(logo);
+        Util.setCustomActionBar(ctx,
+                actionBar,
+                municipality.getMunicipalityName(), d,logo);
+        getSupportActionBar().setTitle("");
         dispatchTakePictureIntent();
 
     }
@@ -685,9 +694,9 @@ public class PictureActivity extends ActionBarActivity
         TextView num = (TextView) v.findViewById(R.id.number);
         num.setText("" + currentSessionPhotos.size());
         Uri uri = Uri.fromFile(currentThumbFile);
+
         ImageLoader.getInstance().displayImage(uri.toString(), img);
         imageContainerLayout.addView(v, 0);
-
         txtMessage.setVisibility(View.VISIBLE);
         uploadPhotos();
 

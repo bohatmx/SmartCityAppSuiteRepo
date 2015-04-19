@@ -109,19 +109,29 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
 
         progressBar.setVisibility(View.VISIBLE);
+        fab.setAlpha(0.4f);
+        fab.setEnabled(false);
+        txtCount.setAlpha(0.4f);
+        txtCount.setEnabled(false);
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO response) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressBar.setVisibility(View.GONE);
-                        if (response.getComplaintList() != null) {
-                            complaintList = response.getComplaintList();
-                            setList();
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.GONE);
+                            fab.setAlpha(1.0f);
+                            fab.setEnabled(true);
+                            txtCount.setAlpha(1.0f);
+                            txtCount.setEnabled(true);
+                            if (response.getComplaintList() != null) {
+                                complaintList = response.getComplaintList();
+                                setList();
+                            }
                         }
-                    }
-                });
+                    });
+                }
 
             }
 
@@ -144,9 +154,15 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
 
     }
 
-    private void setList() {
+    public void setList() {
 
         txtCount.setText("" + complaintList.size());
+        recyclerView = (RecyclerView) view.findViewById(R.id.CAR_listView);
+        LinearLayoutManager lm = new LinearLayoutManager(ctx);
+        lm.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(lm);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(ctx, RecyclerView.VERTICAL));
         complaintAdapter = new ComplaintAdapter(ctx, complaintList, primaryDarkColor, new ComplaintAdapter.ComplaintListener() {
 
             @Override
@@ -226,12 +242,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         fab = view.findViewById(R.id.FAB);
 
         txtCount = (TextView) view.findViewById(R.id.CAR_count);
-        recyclerView = (RecyclerView) view.findViewById(R.id.CAR_listView);
-        LinearLayoutManager lm = new LinearLayoutManager(ctx);
-        lm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(lm);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(ctx, RecyclerView.VERTICAL));
+
 
         txtTitle.setText(ctx.getString(R.string.complaints_around_me));
         txtSubTitle.setVisibility(View.GONE);
@@ -380,5 +391,9 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         } else {
             mListener.onLocationForComplaintsAroundMe();
         }
+    }
+
+    public List<ComplaintDTO> getComplaintList() {
+        return complaintList;
     }
 }

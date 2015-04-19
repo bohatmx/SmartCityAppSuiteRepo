@@ -164,7 +164,8 @@ public class RequestDTO {
             GET_COMPLAINTS_WITHIN_RADIUS = 311,
             GET_COMPLAINTS_AROUND_ADDRESS = 312,
             REFRESH_CITIZEN_COMPLAINTS_FROM_SERVICE = 313,
-            REFRESH_CITIZEN_ACCOUNTS = 314;
+            REFRESH_CITIZEN_ACCOUNTS = 314,
+            GET_ERROR_REPORTS = 315;
 
     public ComplaintFollowerDTO getComplaintFollower() {
         return complaintFollower;
