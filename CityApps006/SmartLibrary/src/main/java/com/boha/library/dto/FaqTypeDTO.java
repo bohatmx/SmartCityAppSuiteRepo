@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Type of FAQ
- * Created by aubreyM on 15/04/17.
+ * Created by aubreyM on 15/04/22.
  */
 public class FaqTypeDTO implements Serializable{
     private Integer municipalityID;
