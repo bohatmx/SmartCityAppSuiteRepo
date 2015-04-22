@@ -1,0 +1,7 @@
+<resources>
+    <string name="my_name">eThekwini Staff</string>
+    <string name="action_settings">Settings</string>
+    <string name="choose_email">Select account for sign in</string>
+    <string name="photo_uploading">Alert photos are being uploaded ...</string>
+    <string name="title_activity_main">MainActivity</string>
+</resources>

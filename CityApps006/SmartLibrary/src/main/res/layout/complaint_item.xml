@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="@dimen/mon_divider"
+    android:background="@color/grey"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/CI_topTop"
+        android:padding="@dimen/mon_padding"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/CI_iconFollow"
+            android:src="@android:drawable/btn_star_big_on"
+            android:tint="@color/grey"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/CI_iconDetail"
+            android:src="@drawable/ic_action_search"
+            android:tint="@color/grey"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/CI_iconCamera"
+            android:src="@drawable/ic_camera_alt_black_36dp"
+            android:tint="@color/grey"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/CI_iconRoll"
+            android:src="@drawable/ic_camera_roll_black_36dp"
+            android:tint="@color/grey"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/CI_top"
+        android:layout_below="@id/CI_topTop"
+        android:background="@color/white"
+        android:padding="@dimen/mon_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/CI_color"
+            android:background="@drawable/xamber_oval_small"
+            android:text="1"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/CI_complaintType"
+            style="@style/Title3TextStyleBlack"
+            android:text="ComplaintType"
+            android:layout_toRightOf="@id/CI_color"
+            android:layout_marginLeft="@dimen/mon_margin"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/CI_middle"
+        android:layout_below="@id/CI_top"
+        android:background="@color/white"
+        android:padding="@dimen/mon_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/CI_date"
+            style="@style/TextStyleBoldBlueSmall"
+            android:text="Tuesday, 09 December 2099 12:33"
+            android:layout_marginLeft="@dimen/mon_wider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:id="@+id/CI_refLayout"
+            android:layout_below="@id/CI_date"
+            android:layout_marginTop="@dimen/mon_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/CI_referenceLabel"
+                style="@style/TextStyle"
+                android:text="REF: "
+
+                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/CI_reference"
+                style="@style/Title3TextStyleRed"
+                android:text="6568586865876"
+                android:layout_toRightOf="@id/CI_referenceLabel"
+                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/CI_detailsView"
+        android:layout_below="@id/CI_middle"
+        android:background="@color/beige_pale"
+        android:padding="@dimen/mon_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/CI_address"
+            style="TextStyle"
+            android:text="30 Kingfisher Drive, Pecanwood Estate, Hartbeestpoort, 2016, North West, South Africa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/CI_comment"
+            style="@style/Title3TextStyleGreen"
+            android:text="The municipality response text"
+            android:layout_below="@id/CI_address"
+            android:layout_marginTop="@dimen/mon_margin"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@id/CI_detailsView"
+        android:padding="@dimen/mon_margin"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/CI_followers"
+            android:text="0"
+            style="@style/Title2TextStyleRed"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/mon_middle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/CI_label"
+            android:text="Followed By"
+            android:layout_toLeftOf="@id/CI_followers"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/mon_margin"
+            style="@style/TextStyleBoldBlueSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+
+</RelativeLayout>
