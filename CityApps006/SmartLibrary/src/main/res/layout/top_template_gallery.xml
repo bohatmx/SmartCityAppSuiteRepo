@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/TOPG_layout"
+    android:paddingBottom="@dimen/mon_divider"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/TOPG_titleLayout"
+        android:background="@color/purple"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mon_hero_height_small">
+
+        <TextView
+            android:id="@+id/TOPG_title"
+            android:text="My Alert Type Here"
+            style="@style/Title1TextStyleWhite"
+            android:layout_marginTop="@dimen/mon_padding"
+            android:layout_centerHorizontal="false"
+            android:layout_marginLeft="@dimen/mon_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:id="@+id/TOPG_subLayout"
+            android:layout_below="@id/TOPG_title"
+            android:layout_marginTop="@dimen/mon_margin"
+            android:padding="@dimen/mon_padding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:id="@+id/TOPG_time"
+                android:text="10:10"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/mon_padding"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/TOPG_date"
+                android:text="Saturday, 23 December 2078"
+                style="@style/TextStyleSmall"
+                android:textColor="@color/white"
+                android:layout_toLeftOf="@id/TOPG_time"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/mon_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/TOPG_addressLayout"
+        android:layout_below="@id/TOPG_titleLayout"
+        android:padding="@dimen/mon_padding"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/TOPG_label"
+            style="@style/TextStyleGreySmall"
+            android:text="Approximate Address Calculated"
+            android:layout_marginRight="@dimen/mon_padding"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/TOPG_address"
+            style="@style/TextStyleRed"
+            android:layout_below="@id/TOPG_label"
+            android:layout_marginTop="@dimen/mon_padding"
+            android:text="The Dungeon, 30 Kingfisher Drive, Pecanwood Estate, 2016, Hartbeestpoort, North West, South Africa ZA"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/TOPG_fab"
+        android:text="A"
+        style="@style/BlackCircleLarge"
+        android:layout_marginTop="@dimen/mon_widest"
+        android:textColor="@color/white"
+        android:layout_marginLeft="@dimen/mon_wide"
+        android:elevation="@dimen/mon_padding"
+        android:layout_width="64dp"
+        android:layout_height="64dp" />
+
+    <ImageView
+        android:id="@+id/TOPG_icon"
+        android:src="@android:drawable/ic_dialog_map"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/mon_padding"
+        android:elevation="@dimen/mon_padding"
+        android:tint="@color/yellow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

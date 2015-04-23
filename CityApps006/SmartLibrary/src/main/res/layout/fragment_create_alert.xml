@@ -1,0 +1,116 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/grey"
+    android:padding="@dimen/mon_padding"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.boha.library.activities.CreateAlertActivity">
+
+    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context="com.boha.library.activities.CreateAlertActivity">
+
+        <RelativeLayout
+            android:id="@+id/ALERT_topTop"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/ALERT_handle"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></RelativeLayout>
+
+            <include
+                layout="@layout/top_template_blue"
+                android:id="@+id/ALERT_heroImage" />
+
+            <include
+                android:id="@+id/ALERT_category"
+                android:layout_below="@id/ALERT_heroImage"
+                layout="@layout/blue_button"
+                android:layout_marginTop="@dimen/mon_wider"
+                android:layout_centerHorizontal="true"
+                android:padding="@dimen/mon_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout
+                android:id="@+id/ALERT_midLayout"
+                android:layout_below="@id/ALERT_category"
+                android:paddingLeft="@dimen/mon_padding"
+                android:paddingRight="@dimen/mon_padding"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/ALERT_label"
+                    android:text="@string/optional"
+                    style="@style/TextStyleGrey"
+                    android:layout_marginTop="@dimen/mon_padding"
+                    android:padding="@dimen/mon_padding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <RelativeLayout
+                    android:id="@+id/ALERT_messageLayout"
+                    android:layout_below="@id/ALERT_label"
+                    android:background="@color/grey"
+                    android:padding="2dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/ALERT_message"
+                        android:hint="@string/enter_message"
+                        android:background="@color/beige_pale"
+                        android:padding="@dimen/mon_padding"
+                        android:inputType="textMultiLine"
+
+                        android:lines="4"
+                        android:minLines="2"
+                        android:gravity="top|left"
+                        android:maxLines="10"
+                        android:layout_height="wrap_content"
+                        android:layout_width="fill_parent"
+                        android:scrollbars="vertical" />
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/ALERT_lightsLayout"
+                android:layout_below="@id/ALERT_midLayout"
+                android:paddingTop="@dimen/mon_padding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/traffic_lights" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_below="@id/ALERT_lightsLayout"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mon_hero_height_small">
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/mon_padding"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </RelativeLayout>
+</ScrollView>

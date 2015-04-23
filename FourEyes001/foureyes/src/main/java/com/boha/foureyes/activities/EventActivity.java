@@ -67,6 +67,7 @@ public class EventActivity extends ActionBarActivity
                         progressBar.setVisibility(View.GONE);
                         response = r;
                         buildPages();
+                        Log.e(LOG,"Booyah!!!");
                     }
                 });
             }

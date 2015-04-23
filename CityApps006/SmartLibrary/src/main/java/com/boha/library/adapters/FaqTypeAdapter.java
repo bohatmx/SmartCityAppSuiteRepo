@@ -7,22 +7,21 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.boha.library.R;
-import com.boha.library.dto.FaqTypeDTO;
+import com.boha.library.dto.FreqQuestionTypeDTO;
 import com.boha.library.util.Statics;
-
+import com.boha.library.R;
 import java.util.List;
 
-public class FaqTypeAdapter extends ArrayAdapter<FaqTypeDTO> {
+public class FaqTypeAdapter extends ArrayAdapter<FreqQuestionTypeDTO> {
 
     private final LayoutInflater mInflater;
     private final int mLayoutRes;
-    private List<FaqTypeDTO> mList;
+    private List<FreqQuestionTypeDTO> mList;
     private Context ctx;
     static final String LOG = FaqTypeAdapter.class.getSimpleName();
 
     public FaqTypeAdapter(Context context, int textViewResourceId,
-                          List<FaqTypeDTO> list) {
+                          List<FreqQuestionTypeDTO> list) {
         super(context, textViewResourceId, list);
         this.mLayoutRes = textViewResourceId;
         mList = list;
@@ -61,7 +60,7 @@ public class FaqTypeAdapter extends ArrayAdapter<FaqTypeDTO> {
             item = (ViewHolderItem) convertView.getTag();
         }
 
-        final FaqTypeDTO p = mList.get(position);
+        final FreqQuestionTypeDTO p = mList.get(position);
         item.txtNumber.setText("" + (position + 1));
         item.txtFaqType.setText(p.getFaqTypeName());
         Statics.setRobotoFontLight(ctx,item.txtFaqType);

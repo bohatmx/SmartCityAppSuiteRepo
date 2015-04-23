@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="mon_divider_small">2dp</dimen>
+    <dimen name="mon_divider_tiny">1dp</dimen>
+    <dimen name="mon_divider">4dp</dimen>
+    <dimen name="mon_padding">8dp</dimen>
+    <dimen name="mon_margin">16dp</dimen>
+    <dimen name="mon_middle">12dp</dimen>
+    <dimen name="mon_wide">24dp</dimen>
+    <dimen name="mon_wider">48dp</dimen>
+    <dimen name="mon_widest">72dp</dimen>
+    <dimen name="mon_nav_width">240dp</dimen>
+    <dimen name="mon_hero_height_small">100dp</dimen>
+    <dimen name="mon_hero_height_medium_lite">130dp</dimen>
+    <dimen name="mon_hero_height_medium">160dp</dimen>
+    <dimen name="mon_hero_height_large">210dp</dimen>
+    <dimen name="mon_picture_large">400dp</dimen>
+    <dimen name="mon_picture_larger">600dp</dimen>
+</resources>
