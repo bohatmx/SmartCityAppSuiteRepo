@@ -91,5 +91,6 @@
     <string name="no_network">No network connected. Please connect and try again</string>
     <string name="conn_interrupted">Connections to server interrupted. Please try again.</string>
     <string name="loc_services">Location Services</string>
+    <string name="failed_comms">Failed to communicate, data format may be a problem</string>
 
 </resources>

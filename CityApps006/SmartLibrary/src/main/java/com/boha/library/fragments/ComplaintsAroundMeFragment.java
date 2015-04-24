@@ -1,16 +1,13 @@
 package com.boha.library.fragments;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,10 +85,24 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_complaints_around, container, false);
-
         ctx = getActivity();
         activity = getActivity();
         setFields();
+        if (savedInstanceState != null) {
+            Log.e(LOG,"##onCreateView, savedInstanceState not null");
+            location = new Location(LocationManager.GPS_PROVIDER);
+            if (savedInstanceState.getDouble("latitude") != 0.0) {
+                location.setLatitude(savedInstanceState.getDouble("latitude"));
+                location.setLongitude(savedInstanceState.getDouble("longitude"));
+            }
+            ResponseDTO w = (ResponseDTO)savedInstanceState.getSerializable("response");
+            if (w != null) {
+                complaintList = w.getComplaintList();
+                setList();
+            }
+
+        }
+
 
         return view;
     }
@@ -339,6 +350,20 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         animateSomething();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle b) {
+        Log.e(LOG, "**onSaveInstanceState");
+        if (location != null) {
+            b.putDouble("latitude", location.getLatitude());
+            b.putDouble("longitude", location.getLongitude());
+        }
+        if (complaintList != null) {
+            ResponseDTO w = new ResponseDTO();
+            w.setComplaintList(complaintList);
+            b.putSerializable("response",w);
+        }
+        super.onSaveInstanceState(b);
+    }
     public void setLocation(Location location) {
         this.location = location;
         getComplaintsAroundMe();
@@ -363,9 +388,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
 
     @Override
     public void animateSomething() {
-        if (complaintList == null) {
-            getComplaintsAroundMe();
-        }
+
         final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -378,6 +401,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
                         Util.expand(hero, 1000, new Util.UtilAnimationListener() {
                             @Override
                             public void onAnimationEnded() {
+                                Util.flashSeveralTimes(fab,100,3,null);
                             }
                         });
                     }
@@ -414,27 +438,6 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         this.pageTitle = pageTitle;
     }
 
-    public void checkGPS() {
-        LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
-        if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            // Build the alert dialog
-            AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-            builder.setTitle(ctx.getString(R.string.loc_services_not));
-            builder.setMessage(ctx.getString(R.string.enable_gps));
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    ctx.startActivity(intent);
-                }
-            });
-            Dialog alertDialog = builder.create();
-            alertDialog.setCanceledOnTouchOutside(false);
-            alertDialog.show();
-        } else {
-            mListener.onLocationForComplaintsAroundMe();
-        }
-    }
 
     public List<ComplaintDTO> getComplaintList() {
         return complaintList;

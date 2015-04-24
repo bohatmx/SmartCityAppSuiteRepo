@@ -7,11 +7,14 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.google.gson.Gson;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.zip.InflaterInputStream;
 
 public class BohaRequest extends Request<String> {
 
@@ -32,37 +35,42 @@ public class BohaRequest extends Request<String> {
         Log.i(LOG, "...Cloud Server communication started ...");
 
     }
-
+    public static String decompress(byte[] bytes) {
+        InputStream in = new InflaterInputStream(new ByteArrayInputStream(bytes));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            byte[] buffer = new byte[8192];
+            int len;
+            while((len = in.read(buffer))>0)
+                baos.write(buffer, 0, len);
+            return new String(baos.toByteArray(), "UTF-8");
+        } catch (IOException e) {
+            throw new AssertionError(e);
+        }
+    }
     @Override
     protected Response<String> parseNetworkResponse(
             NetworkResponse response) {
-        String dto = new String();
-        try {
-            Gson gson = new Gson();
-            dto = new String(response.data);
-            Log.i(LOG, "response string length returned: " + dto.length());
-
-//            InputStream is = new ByteArrayInputStream(response.data);
-//            ZipInputStream zis = new ZipInputStream(is);
-//            @SuppressWarnings("unused")
-//            ZipEntry entry;
-//            ByteArrayBuffer bab = new ByteArrayBuffer(2048);
-//
-//            while ((entry = zis.getNextEntry()) != null) {
-//                int size = 0;
-//                byte[] buffer = new byte[2048];
-//                while ((size = zis.read(buffer, 0, buffer.length)) != -1) {
-//                    bab.append(buffer, 0, size);
-//                }
-//                resp = new String(bab.toByteArray());
-//                dto = gson.fromJson(resp, String.class);
+        String dto = new String(response.data);
+//        try {
+//            Gson gson = new Gson();
+//            dto = new String(response.data);
+//            Log.i(LOG, "response string length returned: " + dto.length());
+//            byte[] bytes = Base64.decode(dto,Base64.NO_WRAP);
+//            GZIPInputStream zis = new GZIPInputStream(new ByteArrayInputStream(bytes));
+//            BufferedReader bf = new BufferedReader(new InputStreamReader(zis));
+//            String outStr = "";
+//            String line;
+//            while ((line=bf.readLine())!=null) {
+//                outStr += line;
 //            }
-        } catch (Exception e) {
-            VolleyError ve = new VolleyError("Exception parsing server data", e);
-            errorListener.onErrorResponse(ve);
-            Log.e(LOG, "Unable to complete request", e);
-            return Response.error(new VolleyError("Server error"));
-        }
+//            dto = outStr;
+//        } catch (Exception e) {
+//            VolleyError ve = new VolleyError("Exception parsing server data", e);
+//            errorListener.onErrorResponse(ve);
+//            Log.e(LOG, "Unable to complete request", e);
+//            return Response.error(new VolleyError("Server error"));
+//        }
         end = System.currentTimeMillis();
         Log.e(LOG, "#### comms elapsed time in seconds: " + getElapsed(start, end));
         return Response.success(dto,

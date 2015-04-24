@@ -1,6 +1,7 @@
 package com.boha.library.util;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.boha.library.R;
@@ -32,19 +33,39 @@ public class NetUtil {
             return;
         }
         if (request.getRideWebSocket()) {
-            sendViaAutobahn(ctx,request);
+            sendViaWebSocket(ctx, request);
         } else {
             sendViaHttp(ctx, request);
         }
 
     }
 
-    private static void sendViaHttp(Context ctx, RequestDTO request) {
+    private static void sendViaHttp(final Context ctx, RequestDTO request) {
         BaseVolley.getRemoteData(Statics.GATEWAY_SERVLET, request, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(String response) {
-                ResponseDTO resp = gson.fromJson(response, ResponseDTO.class);
-                listener.onResponse(resp);
+                try {
+                    ResponseDTO resp = gson.fromJson(response, ResponseDTO.class);
+                    if (resp.getStatusCode() == 0) {
+                        listener.onResponse(resp);
+                    } else {
+                        listener.onError(resp.getMessage());
+                    }
+                } catch (Exception e) {
+                    try {
+                        String json = ZipUtil.uncompressString(response);
+                        ResponseDTO resp = gson.fromJson(json, ResponseDTO.class);
+                        if (resp.getStatusCode() == 0) {
+                            listener.onResponse(resp);
+                        } else {
+                            listener.onError(resp.getMessage());
+                        }
+                    } catch (Exception e1) {
+                        Log.e("NetUtil", "Failed", e1);
+                        listener.onError("Failed to unpack response");
+                    }
+
+                }
             }
 
             @Override
@@ -54,8 +75,8 @@ public class NetUtil {
         });
     }
 
-    private static void sendViaAutobahn(Context ctx, RequestDTO request) {
-        WebSocketUtil.sendRequest(ctx, Statics.GATEWAY_SOCKET, request, new WebSocketUtil.SocketListener() {
+    private static void sendViaWebSocket(Context ctx, RequestDTO request) {
+        WebSocketUtil.sendRequest(ctx, Statics.GATEWAY_SOCKET, request, new WebSocketUtil.WebSocketListener() {
 
             @Override
             public void onMessage(ResponseDTO response) {

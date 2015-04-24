@@ -34,7 +34,6 @@ import com.boha.library.dto.NewsArticleImageDTO;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -377,18 +376,8 @@ public class Util {
         return e.intValue();
     }
 
-    private static List<Drawable> images, banners;
     private static int lastIndex, lastBannerIndex;
 
-    private static void loadBanners(Context ctx) {
-        banners = new ArrayList<>();
-        banners.add(ctx.getResources().getDrawable(R.drawable.banner1));
-        banners.add(ctx.getResources().getDrawable(R.drawable.banner2));
-        banners.add(ctx.getResources().getDrawable(R.drawable.banner3));
-        banners.add(ctx.getResources().getDrawable(R.drawable.banner4));
-
-
-    }
 
     static public boolean hasStorage(boolean requireWriteAccess) {
         String state = Environment.getExternalStorageState();
@@ -430,17 +419,6 @@ public class Util {
         return height;
     }
 
-    public static Drawable getRandomBanner(Context ctx) {
-        if (banners == null) {
-            loadBanners(ctx);
-        }
-        int index = random.nextInt(4);
-        if (index == lastBannerIndex) {
-            getRandomBanner(ctx);
-        }
-        lastBannerIndex = index;
-        return banners.get(index);
-    }
 
     static Random random = new Random(System.currentTimeMillis());
 
@@ -647,14 +625,10 @@ public class Util {
         return ctx.getResources().getDrawable(R.drawable.city22);
     }
 
-    public static interface GPSCheckListener {
-        public void onGPSon();
-    }
 
-    public static File writeToFile(Context ctx, String data, String fileName)  throws Exception{
+    public static File writeToFile(String data, String fileName)  throws Exception{
 
-        File dir  = new File(ctx.getExternalFilesDir(null), fileName);
-        File file = new File(dir, fileName);
+        File file  = new File(fileName);
         FileOutputStream stream = null;
         try {
             stream = new FileOutputStream(file);

@@ -175,12 +175,8 @@ public class SigninActivity extends ActionBarActivity {
                     @Override
                     public void run() {
                         progressBar.setVisibility(View.GONE);
-                        if (resp.getStatusCode() > 0) {
-                            Util.showErrorToast(ctx, resp.getMessage());
-                            return;
-                        }
+
                         response = resp;
-                        Log.i(LOG, "### response OK from server");
                         profileInfo = response.getProfileInfoList().get(0);
 
                         ProfileInfoDTO sp = new ProfileInfoDTO();

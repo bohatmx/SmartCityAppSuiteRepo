@@ -165,7 +165,7 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
             @Override
             public void onClick(View v) {
 
-                mListener.onLocationRequested();
+                mListener.onAlertLocationRequested();
 
                 Util.flashOnce(btnGetType, 200, new Util.UtilAnimationListener() {
                     @Override
@@ -385,7 +385,7 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
 
     public interface CreateAlertFragmentListener {
         public void onAlertSent(AlertDTO alert);
-        public void onLocationRequested();
+        public void onAlertLocationRequested();
     }
 
     static final String LOG = CreateAlertFragment.class.getSimpleName();

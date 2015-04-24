@@ -7,6 +7,7 @@ package com.boha.library.util;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -56,7 +57,7 @@ public class FileDownloader {
                                             String accountNumber,
                                             String fileName,
                                             FileDownloaderListener mFileDownloaderListener){
-
+        Log.w("FileDownloader","### downloading " + fileName);
         ctx = c;
         listener = mFileDownloaderListener;
         File directory = Environment.getExternalStorageDirectory();
@@ -92,8 +93,8 @@ public class FileDownloader {
                     fileOutputStream.write(buffer, 0, bufferLength);
                 }
                 fileOutputStream.close();
-                System.out.println("##### pdf file: " + pdfFile.getAbsolutePath()
-                + " length: " + pdfFile.length());
+                Log.d("FileDownloader","##### pdf file: " + pdfFile.getAbsolutePath()
+                        + " length: " + pdfFile.length());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 return 9;

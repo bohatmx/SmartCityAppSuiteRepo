@@ -49,8 +49,12 @@ public class RequestDTO {
     private String userName, password, referenceNumber,
             gcmRegistrationID, email,municipalityName, accountNumber;
     private Double latitude = 0.0, longitude = 0.0;
+
+    //select network protocol, FALSE = http, TRUE = websocket
     private Boolean rideWebSocket = Boolean.TRUE;
+    //response from server, format TRUE = zipped, compressed JSON, FALSE = normal JSON
     private Boolean zipResponse = Boolean.TRUE;
+    //
     private AlertDTO alert;
     private ComplaintDTO complaint;
     private CountryDTO country;

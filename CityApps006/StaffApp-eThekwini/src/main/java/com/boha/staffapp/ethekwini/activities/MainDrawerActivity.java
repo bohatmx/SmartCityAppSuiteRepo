@@ -140,7 +140,7 @@ public class MainDrawerActivity extends ActionBarActivity
                 public void onClick(DialogInterface dialogInterface, int i) {
                     // Show location settings when the user acknowledges the alert dialog
                     Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST_LOCATION_ENABLE);
                 }
             });
             dialog.setCancelable(false);
@@ -148,6 +148,7 @@ public class MainDrawerActivity extends ActionBarActivity
             dialog.show();
         }
     }
+    static final int REQUEST_LOCATION_ENABLE = 9231;
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         //actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -459,11 +460,12 @@ public class MainDrawerActivity extends ActionBarActivity
     @Override
     public void onActivityResult(int reqCode, int result, Intent data) {
         switch (reqCode) {
+            case REQUEST_LOCATION_ENABLE:
+                checkGPS();
+                break;
+
             case ALERT_PICTURES_REQUESTED:
                 if (result == RESULT_OK) {
-                    Log.e(LOG, "### pics taken, pausing 5 seconds and refreshing alertlistFragment");
-                    Log.w(LOG, "### onActivityResult: will refresh alerts, after photos taken");
-//                    alertListFragment.refreshAlerts();
                     Util.showToast(ctx, getString(R.string.photo_uploading));
                 }
                 break;
@@ -471,7 +473,7 @@ public class MainDrawerActivity extends ActionBarActivity
     }
 
     @Override
-    public void onLocationRequested() {
+    public void onAlertLocationRequested() {
         startLocationUpdates();
     }
 
@@ -487,7 +489,6 @@ public class MainDrawerActivity extends ActionBarActivity
         mLocationRequest.setInterval(3000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setFastestInterval(1000);
-        startLocationUpdates();
     }
 
     @Override
@@ -544,14 +545,10 @@ public class MainDrawerActivity extends ActionBarActivity
 
     @Override
     public void onResume() {
-        Log.d(LOG, "@@@ onResume...........");
         super.onResume();
-        if (googleApiClient.isConnected()) {
-            if (!mRequestingLocationUpdates) {
-                startLocationUpdates();
-            }
-        } else {
-            Log.d(LOG, "## re-connecting GoogleApiClient ...");
+        if (!googleApiClient.isConnected()) {
+
+            Log.d(LOG, "##onResume re-connecting GoogleApiClient ...");
             googleApiClient.connect();
         }
 

@@ -2,17 +2,14 @@ package com.boha.library.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -94,7 +91,6 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         ctx = getActivity();
         activity = getActivity();
         setFields();
-//        mListener.onLocationRequested();
         getCachedComplaintTypes();
         return view;
     }
@@ -132,7 +128,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         confirmLocationRequested = true;
                         progressBar.setVisibility(View.VISIBLE);
-                        mListener.onLocationRequested();
+                        mListener.onComplaintLocationRequested();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -162,7 +158,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             }
         }
         if (complaintType.isLocationIsRequired() && location == null) {
-            mListener.onLocationRequested();
+            confirmLocation();
             return;
         }
         RequestDTO w = new RequestDTO(RequestDTO.ADD_COMPLAINT);
@@ -272,7 +268,6 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                         progressBar.setVisibility(View.VISIBLE);
                         txtGetAddress.setEnabled(false);
                         txtGetAddress.setAlpha(0.5f);
-                        checkGPS();
                     }
                 });
             }
@@ -296,7 +291,6 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         txtComplaintType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-//                mListener.onLocationRequested();
                 Util.flashOnce(txtComplaintType, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
@@ -309,7 +303,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                                         txtComplaintType.setText(stringList.get(index));
                                         complaintType = complaintTypeList.get(index);
                                         if (complaintType.isLocationIsRequired()) {
-                                            mListener.onLocationRequested();
+                                            mListener.onComplaintLocationRequested();
                                             Util.expand(addressLayout, 500, null);
 
                                         } else {
@@ -326,7 +320,6 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         });
 
         animateSomething();
-        checkGPS();
     }
 
     @Override
@@ -384,7 +377,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
         public void onComplaintAdded(ComplaintDTO complaint);
 
-        public void onLocationRequested();
+        public void onComplaintLocationRequested();
     }
 
     Location location;
@@ -465,27 +458,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         this.pageTitle = pageTitle;
     }
 
-    public void checkGPS() {
-        LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
-        if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            // Build the alert dialog
-            AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-            builder.setTitle(ctx.getString(R.string.loc_services_not));
-            builder.setMessage(ctx.getString(R.string.enable_gps));
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    ctx.startActivity(intent);
-                }
-            });
-            Dialog alertDialog = builder.create();
-            alertDialog.setCanceledOnTouchOutside(false);
-            alertDialog.show();
-        } else {
-            mListener.onLocationRequested();
-        }
-    }
+
 
     public int getLogo() {
         return logo;

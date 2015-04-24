@@ -30,7 +30,7 @@ public class ZipUtil {
     static final int BUFFER = 2048;
 
     public static boolean unzip(File zippedFile, File unpackedFile) {
-        Log.d("ZipU", "staring unzip");
+        Log.d("ZipUtil", "staring unzip");
         try {
             BufferedOutputStream dest = null;
             FileInputStream fis = new
@@ -101,6 +101,23 @@ public class ZipUtil {
         int len;
         while ((len = gzipInputStream.read(buf)) > 0) {
             out.write(buf, 0, len);
+        }
+        gzipInputStream.close();
+        out.close();
+
+        String res = out.toString();
+        Log.i("ZipUtil", "## unpacked length: " + getKilobytes(res.length()));
+        return res;
+
+
+    }
+    public static String uncompressString(String string) throws Exception {
+        GZIPInputStream gzipInputStream = new GZIPInputStream(new ByteArrayInputStream(string.getBytes()));
+        OutputStream out = new ByteArrayOutputStream();
+        byte[] buf = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = gzipInputStream.read(buf)) > 0) {
+            out.write(buf, 0, bytesRead);
         }
         gzipInputStream.close();
         out.close();

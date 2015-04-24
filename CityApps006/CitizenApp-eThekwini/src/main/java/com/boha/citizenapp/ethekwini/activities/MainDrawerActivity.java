@@ -144,19 +144,20 @@ public class MainDrawerActivity extends ActionBarActivity
         LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
         if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                 !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            // Build the alert dialog
+
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.setTitle(getString(R.string.loc_services));
             dialog.setMessage(ctx.getString(R.string.enable_gps));
             dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    // Show location settings when the user acknowledges the alert dialog
                     Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     startActivityForResult(intent, REQUEST_LOCATION_ENABLE);
                 }
             });
             dialog.setCancelable(false);
-            dialog.setIcon(ctx.getResources().getDrawable(R.drawable.ic_action_globe));
+            if (ctx != null) {
+                dialog.setIcon(ctx.getResources().getDrawable(R.drawable.ic_action_globe));
+            }
             dialog.show();
         }
     }
@@ -274,6 +275,9 @@ public class MainDrawerActivity extends ActionBarActivity
         RequestDTO w = new RequestDTO(RequestDTO.SIGN_IN_CITIZEN);
         w.setUserName(profileInfo.getiDNumber());
         w.setPassword(profileInfo.getPassword());
+//        w.setZipResponse(false);
+//        w.setRideWebSocket(false);
+        
 
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
         progressBar.setVisibility(View.VISIBLE);
@@ -397,13 +401,13 @@ public class MainDrawerActivity extends ActionBarActivity
                 currentPageIndex = position;
                 PageFragment pf = pageFragmentList.get(position);
                 pf.animateSomething();
-                if (pf.getPageTitle().equalsIgnoreCase(ctx.getString(R.string.complaints_around_me))) {
-                    if (complaintsAroundMeFragment.getComplaintList() == null || complaintsAroundMeFragment.getComplaintList().isEmpty()) {
-                        complaintsAroundMeFragment.getComplaintsAroundMe();
-                    } else {
-                        complaintsAroundMeFragment.setList();
-                    }
-                }
+//                if (pf.getPageTitle().equalsIgnoreCase(ctx.getString(R.string.complaints_around_me))) {
+//                    if (complaintsAroundMeFragment.getComplaintList() == null || complaintsAroundMeFragment.getComplaintList().isEmpty()) {
+//                        complaintsAroundMeFragment.getComplaintsAroundMe();
+//                    } else {
+//                        complaintsAroundMeFragment.setList();
+//                    }
+//                }
             }
 
             @Override
@@ -522,6 +526,7 @@ public class MainDrawerActivity extends ActionBarActivity
 
     @Override
     public void onFreshLocationRequested() {
+        Log.d(LOG, "##### onFreshLocationRequested");
         startLocationUpdates();
     }
 
@@ -531,8 +536,14 @@ public class MainDrawerActivity extends ActionBarActivity
     }
 
     @Override
-    public void onLocationRequested() {
-        Log.d(LOG, "##### onLocationChanged ...");
+    public void onAlertLocationRequested() {
+        Log.d(LOG, "##### onAlertLocationRequested .....");
+        startLocationUpdates();
+    }
+
+    @Override
+    public void onComplaintLocationRequested() {
+        Log.d(LOG, "##### onComplaintLocationRequested .....");
         startLocationUpdates();
     }
 
@@ -547,7 +558,6 @@ public class MainDrawerActivity extends ActionBarActivity
         mLocationRequest.setInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setFastestInterval(500);
-        startLocationUpdates();
     }
 
     @Override
@@ -608,14 +618,9 @@ public class MainDrawerActivity extends ActionBarActivity
 
     @Override
     public void onResume() {
-        Log.d(LOG, "@@@ onResume...........");
         super.onResume();
-        if (googleApiClient.isConnected()) {
-            if (!mRequestingLocationUpdates) {
-                startLocationUpdates();
-            }
-        } else {
-            Log.d(LOG, "## re-connecting GoogleApiClient ...");
+        if (!googleApiClient.isConnected()) {
+            Log.d(LOG, "##onResume connecting GoogleApiClient ...");
             googleApiClient.connect();
         }
 
@@ -623,7 +628,6 @@ public class MainDrawerActivity extends ActionBarActivity
 
     static final int ONE_MINUTE = 1000 * 60 * 60,
             TWO_MINUTES = ONE_MINUTE * 2, REQUEST_COMPLAINT_PICTURES = 1123;
-    long lastAccurateGPStime;
 
     protected void startLocationUpdates() {
         Log.d(LOG, "### startLocationUpdates ....");
