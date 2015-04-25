@@ -67,6 +67,8 @@ public class StatementService extends IntentService {
         this.accountNumber = accountNumber;
         fileNameList = fileNames;
         statementListener = listener;
+        count = 0;
+        index = 0;
 
         controlDownloads();
 

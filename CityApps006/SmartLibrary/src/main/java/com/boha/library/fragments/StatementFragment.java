@@ -109,7 +109,12 @@ public class StatementFragment extends Fragment implements PageFragment {
     private void getCachedStatements() {
 
         File dir = Environment.getExternalStorageDirectory();
-        File[] files = dir.listFiles();
+        File myDir = new File(dir, "smartCity");
+        if (!myDir.exists()) {
+            myDir.mkdir();
+        }
+        File[] files = myDir.listFiles();
+        filePathList = new ArrayList<>();
         for (File file : files) {
             if (file.getName().contains(account.getAccountNumber())) {
                 if (file.getName().contains(".pdf")) {
@@ -183,6 +188,7 @@ public class StatementFragment extends Fragment implements PageFragment {
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
         txtDate.setText("Not Downloaded");
+        txtCount.setText("0");
         fab = view.findViewById(R.id.FAB);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -277,6 +283,9 @@ public class StatementFragment extends Fragment implements PageFragment {
             year = dateTime.getYear();
             month = dateTime.getMonthOfYear();
         }
+        Log.d(LOG,"*** year: " + year
+                + " month: " + month + " selected for statement download");
+
         Log.w(LOG, "$$$ getPDFStatements ......");
         RequestDTO w = new RequestDTO(RequestDTO.GET_PDF_STATEMENT);
         w.setAccountNumber(account.getAccountNumber());
@@ -300,10 +309,14 @@ public class StatementFragment extends Fragment implements PageFragment {
                                     Util.showErrorToast(ctx, ctx.getString(R.string.unable_connect_muni));
                                     return;
                                 }
-                                filePathList = response.getPdfFileNameList();
-                                setList();
-                                busyDownloading = true;
-                                statementFragmentListener.onPDFDownloadRequested(account.getAccountNumber(), filePathList);
+                                Log.i(LOG,"Statements found: " + response.getPdfFileNameList().size());
+                                if (!response.getPdfFileNameList().isEmpty()) {
+                                    busyDownloading = true;
+                                    statementFragmentListener.onPDFDownloadRequested(account.getAccountNumber(),
+                                            response.getPdfFileNameList());
+                                } else {
+                                    Util.showToast(ctx, "No statements found for the month selected");
+                                }
                             }
                         }
                     });
@@ -335,6 +348,7 @@ public class StatementFragment extends Fragment implements PageFragment {
         progressBar.setVisibility(View.GONE);
         busyDownloading = false;
         enableFab();
+        getCachedStatements();
     }
 
     private void enableFab() {
@@ -358,8 +372,12 @@ public class StatementFragment extends Fragment implements PageFragment {
             public void onYearMonthPicked(int y, int m) {
                 year = y;
                 month = m + 1;
+//                Log.d(LOG,"*** year: " + year
+//                        + " month: " + month + " selected for statement download");
                 getPDFStatements();
             }
+
+
         });
         newFragment.show(fragmentManager, "datePicker");
     }

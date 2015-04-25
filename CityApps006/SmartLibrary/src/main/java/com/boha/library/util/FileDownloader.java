@@ -40,11 +40,15 @@ public class FileDownloader {
         ctx = c;
         listener = mFileDownloaderListener;
         File directory = Environment.getExternalStorageDirectory();
+        File myDir = new File(directory, "smartCity");
+        if (!myDir.exists()) {
+            myDir.mkdir();
+        }
         StringBuilder x = new StringBuilder();
         x.append(accountNumber).append("_").append(mYear).append("_")
                 .append(mMonth).append(".pdf");
         String fileName = x.toString();
-        pdfFile = new File(directory,fileName);
+        pdfFile = new File(myDir,fileName);
         String u = Util.getStatementURL(ctx,accountNumber,mYear,mMonth);
         try {
             url = new URL(u);
@@ -61,7 +65,11 @@ public class FileDownloader {
         ctx = c;
         listener = mFileDownloaderListener;
         File directory = Environment.getExternalStorageDirectory();
-        pdfFile = new File(directory,fileName);
+        File myDir = new File(directory, "smartCity");
+        if (!myDir.exists()) {
+            myDir.mkdir();
+        }
+        pdfFile = new File(myDir,fileName);
         StringBuilder sb = Util.getStartURL(SharedUtil.getMunicipality(ctx).getMunicipalityID());
         sb.append("/documents/account_").append(accountNumber).append("/");
         sb.append(fileName);

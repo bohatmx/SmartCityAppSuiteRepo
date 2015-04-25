@@ -95,10 +95,14 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
                 location.setLatitude(savedInstanceState.getDouble("latitude"));
                 location.setLongitude(savedInstanceState.getDouble("longitude"));
             }
-            ResponseDTO w = (ResponseDTO)savedInstanceState.getSerializable("response");
-            if (w != null) {
-                complaintList = w.getComplaintList();
-                setList();
+            try {
+                ResponseDTO w = (ResponseDTO) savedInstanceState.getSerializable("response");
+                if (w != null) {
+                    complaintList = w.getComplaintList();
+                    setList();
+                }
+            }catch (Exception e) {
+                Log.e("","Error: " + e.getMessage());
             }
 
         }
