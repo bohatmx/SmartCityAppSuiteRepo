@@ -12,6 +12,8 @@ import com.boha.library.R;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 public class MuniContactsActivity extends ActionBarActivity {
 
@@ -37,6 +39,12 @@ public class MuniContactsActivity extends ActionBarActivity {
         } else {
             getSupportActionBar().setTitle(municipality.getMunicipalityName());
         }
+        //Track analytics
+        CityApplication ca = (CityApplication) getApplication();
+        Tracker t = ca.getTracker(
+                CityApplication.TrackerName.APP_TRACKER);
+        t.setScreenName(MuniContactsActivity.class.getSimpleName());
+        t.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override

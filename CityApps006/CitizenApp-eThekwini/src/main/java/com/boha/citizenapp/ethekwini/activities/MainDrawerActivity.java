@@ -26,6 +26,8 @@ import android.widget.ProgressBar;
 
 import com.boha.citizenapp.ethekwini.R;
 import com.boha.library.activities.AlertMapActivity;
+import com.boha.library.activities.CityApplication;
+import com.boha.library.activities.AccountDetailWithDrawer;
 import com.boha.library.activities.FaqActivity;
 import com.boha.library.activities.MyComplaintsActivity;
 import com.boha.library.activities.PictureActivity;
@@ -49,6 +51,8 @@ import com.boha.library.util.CacheUtil;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -70,6 +74,7 @@ public class MainDrawerActivity extends ActionBarActivity
         ComplaintCreateFragment.ComplaintFragmentListener,
         ComplaintsAroundMeFragment.ComplaintAroundMeListener,
         LocationListener,
+        ProfileInfoFragment.ProfileInfoListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     ProfileInfoFragment profileInfoFragment;
@@ -138,11 +143,17 @@ public class MainDrawerActivity extends ActionBarActivity
         startPhotoService();
         getCachedLoginData();
         checkGPS();
+        //Track analytics
+        CityApplication ca = (CityApplication) getApplication();
+        Tracker t = ca.getTracker(
+                CityApplication.TrackerName.APP_TRACKER);
+        t.setScreenName(MainDrawerActivity.class.getSimpleName());
+        t.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
-    private  void checkGPS() {
+    private void checkGPS() {
         LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
-        if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+        if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                 !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -161,7 +172,9 @@ public class MainDrawerActivity extends ActionBarActivity
             dialog.show();
         }
     }
+
     static final int REQUEST_LOCATION_ENABLE = 9231;
+
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         //actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -207,6 +220,9 @@ public class MainDrawerActivity extends ActionBarActivity
     public void onDestinationSelected(int position, String text) {
         if (pageFragmentList == null) {
             Log.e(LOG, "### onDestinationSelected pageFragmentList is null");
+            return;
+        }
+        if (text == null) {
             return;
         }
         if (text.equalsIgnoreCase(ctx.getString(R.string.my_complaints))) {
@@ -277,7 +293,7 @@ public class MainDrawerActivity extends ActionBarActivity
         w.setPassword(profileInfo.getPassword());
 //        w.setZipResponse(false);
 //        w.setRideWebSocket(false);
-        
+
 
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
         progressBar.setVisibility(View.VISIBLE);
@@ -477,6 +493,18 @@ public class MainDrawerActivity extends ActionBarActivity
 
     }
 
+    @Override
+    public void onAccountDetailRequested(ProfileInfoDTO profileInfo) {
+        Intent intent = new Intent(ctx, AccountDetailWithDrawer.class);
+        intent.putExtra("profileInfo", profileInfo);
+        intent.putExtra("logo", logo);
+        intent.putExtra("darkColor",themeDarkColor);
+        intent.putExtra("primaryColor",themePrimaryColor);
+        startActivityForResult(intent, CHECK_DESTINATION);
+
+    }
+
+    static final int CHECK_DESTINATION = 9086;
     /**
      * Adapter to manage fragments in view pager
      */
@@ -657,9 +685,19 @@ public class MainDrawerActivity extends ActionBarActivity
 
     @Override
     public void onActivityResult(int reqCode, int result, Intent data) {
+        Log.e(LOG,"### onActivityResult reqCode: " + reqCode + " result: " + result);
         switch (reqCode) {
+            case CHECK_DESTINATION:
+                if (result == RESULT_OK) {
+                    int position = data.getIntExtra("position", 0);
+                    String text = data.getStringExtra("destinationSelected");
+                    onDestinationSelected(position, text);
+                } else {
+                    Log.e(LOG,"onActivityResult cancelled: " + RESULT_CANCELED);
+                }
+                break;
             case REQUEST_LOCATION_ENABLE:
-                Log.e(LOG,"### sneaky, sneaky. check gps again!");
+                Log.e(LOG, "### sneaky, sneaky. check gps again!");
                 checkGPS();
                 break;
             case REQUEST_COMPLAINT_PICTURES:

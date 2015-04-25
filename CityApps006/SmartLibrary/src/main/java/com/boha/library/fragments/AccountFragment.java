@@ -126,6 +126,10 @@ public class AccountFragment extends Fragment implements PageFragment{
 
     public void setProfileInfo(ProfileInfoDTO profileInfo) {
         this.profileInfo = profileInfo;
+        if (profileInfo.getAccountList().isEmpty()) {
+            Log.e("AccountFragment", "--- account list is empty");
+            return;
+        }
         account = profileInfo.getAccountList().get(0);
         setAccountFields(account);
         txtFAB.setText("1");
@@ -311,19 +315,21 @@ public class AccountFragment extends Fragment implements PageFragment{
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        timer.cancel();
-                        hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-                        Util.expand(hero, 1000, new Util.UtilAnimationListener() {
-                            @Override
-                            public void onAnimationEnded() {
-                                Util.flashSeveralTimes(btnCurrBal, 30, 3, null);
-                            }
-                        });
-                    }
-                });
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            timer.cancel();
+                            hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+                            Util.expand(hero, 1000, new Util.UtilAnimationListener() {
+                                @Override
+                                public void onAnimationEnded() {
+                                    Util.flashSeveralTimes(btnCurrBal, 30, 3, null);
+                                }
+                            });
+                        }
+                    });
+                }
             }
         }, 500);
 

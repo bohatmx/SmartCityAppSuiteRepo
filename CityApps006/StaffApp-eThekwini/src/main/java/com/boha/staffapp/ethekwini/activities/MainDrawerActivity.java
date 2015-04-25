@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.boha.library.activities.AlertMapActivity;
+import com.boha.library.activities.CityApplication;
 import com.boha.library.activities.FaqActivity;
 import com.boha.library.activities.PictureActivity;
 import com.boha.library.dto.AlertDTO;
@@ -45,6 +46,8 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 import com.boha.staffapp.ethekwini.R;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -127,6 +130,12 @@ public class MainDrawerActivity extends ActionBarActivity
 
         getCachedLoginData();
         checkGPS();
+        //Track analytics
+        CityApplication ca = (CityApplication) getApplication();
+        Tracker t = ca.getTracker(
+                CityApplication.TrackerName.APP_TRACKER);
+        t.setScreenName(MainDrawerActivity.class.getSimpleName());
+        t.send(new HitBuilders.ScreenViewBuilder().build());
     }
     private  void checkGPS() {
         LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -175,6 +176,17 @@ public class StatementFragment extends Fragment implements PageFragment {
                 }
             }
         });
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                // TODO Auto-generated method stub
+            }
+
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    //Log.i("StatementFragment", "scrolling stopped...");
+                }
+            }
+        });
     }
 
     private void setFields() {
@@ -244,7 +256,11 @@ public class StatementFragment extends Fragment implements PageFragment {
                         Util.expand(heroImage, 1000, new Util.UtilAnimationListener() {
                             @Override
                             public void onAnimationEnded() {
-                                Util.flashOnce(fab, 300, null);
+                                Util.flashOnce(fab, 300, new Util.UtilAnimationListener() {
+                                    @Override
+                                    public void onAnimationEnded() {
+                                    }
+                                });
                             }
                         });
                     }
@@ -366,20 +382,21 @@ public class StatementFragment extends Fragment implements PageFragment {
     }
 
     private void showDatePicker() {
-        DatePickerFragment newFragment = new DatePickerFragment();
-        newFragment.setDatePickerListener(new DatePickerFragment.DatePickerListener() {
+        DateTime x = new DateTime();
+        DateTime y = x.minusYears(10);
+        DatePickerFragment datePicker = new DatePickerFragment();
+        datePicker.setDatePickerListener(new DatePickerFragment.DatePickerListener() {
             @Override
             public void onYearMonthPicked(int y, int m) {
                 year = y;
                 month = m + 1;
-//                Log.d(LOG,"*** year: " + year
-//                        + " month: " + month + " selected for statement download");
+
                 getPDFStatements();
             }
 
 
         });
-        newFragment.show(fragmentManager, "datePicker");
+        datePicker.show(fragmentManager, "datePicker");
     }
 
     static final Locale d = Locale.getDefault();

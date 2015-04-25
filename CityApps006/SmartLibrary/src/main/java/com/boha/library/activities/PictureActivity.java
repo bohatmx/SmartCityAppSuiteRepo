@@ -128,6 +128,13 @@ public class PictureActivity extends ActionBarActivity
         getSupportActionBar().setTitle("");
         dispatchTakePictureIntent();
 
+        //Track analytics
+        CityApplication ca = (CityApplication) getApplication();
+        Tracker t = ca.getTracker(
+                CityApplication.TrackerName.APP_TRACKER);
+        t.setScreenName(PictureActivity.class.getSimpleName());
+        t.send(new HitBuilders.ScreenViewBuilder().build());
+
     }
 
     @Override

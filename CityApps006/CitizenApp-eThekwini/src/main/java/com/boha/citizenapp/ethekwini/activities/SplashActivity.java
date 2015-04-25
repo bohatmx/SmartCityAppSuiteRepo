@@ -70,9 +70,12 @@ public class SplashActivity extends ActionBarActivity {
                 ctx.getResources().getDrawable(R.drawable.logo), R.drawable.logo);
         getSupportActionBar().setTitle("");
         getMunicipality();
-
-
-        //TODO - custom action bar here
+        //Track analytics
+        CityApplication ca = (CityApplication) getApplication();
+        Tracker t = ca.getTracker(
+                CityApplication.TrackerName.APP_TRACKER);
+        t.setScreenName(SplashActivity.class.getSimpleName());
+        t.send(new HitBuilders.ScreenViewBuilder().build());
 
     }
     private void setFields() {
@@ -233,24 +236,12 @@ public class SplashActivity extends ActionBarActivity {
                             index = RANDOM.nextInt(32);
                         }
                         heroImage.setImageDrawable(getImage(ctx));
-                        imageCount++;
-                        if (imageCount > IMAGE_COUNT_MAX) {
-                            if (timer != null) {
-                                timer.cancel();
-                            }
-                            //Track SplashActivity
-                            CityApplication ca = (CityApplication) getApplication();
-                            Tracker t = ca.getTracker(
-                                    CityApplication.TrackerName.APP_TRACKER);
-                            t.setScreenName(SplashActivity.class.getSimpleName());
-                            t.send(new HitBuilders.ScreenViewBuilder().build());
-                            //
-                        }
+
                     }
                 });
 
             }
-        }, ONE_SECOND, FIVE_SECONDS);
+        }, ONE_SECOND/2, FIVE_SECONDS * 2);
     }
 
     @Override

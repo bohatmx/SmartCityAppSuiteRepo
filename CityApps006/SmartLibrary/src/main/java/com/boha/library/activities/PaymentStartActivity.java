@@ -77,6 +77,11 @@ public class PaymentStartActivity extends ActionBarActivity implements PaymentSt
     }
 
     @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
     public void onPause() {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         super.onPause();

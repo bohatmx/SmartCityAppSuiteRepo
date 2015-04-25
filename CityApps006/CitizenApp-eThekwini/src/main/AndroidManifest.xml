@@ -91,6 +91,14 @@
             android:screenOrientation="portrait"
             android:parentActivityName=".activities.MainDrawerActivity" >
         </activity>
+        <activity
+            android:name="com.boha.library.activities.AccountDrawerActivity"
+            android:parentActivityName=".activities.MainDrawerActivity" >
+        </activity>
+        <activity
+            android:name="com.boha.library.activities.AccountDetailWithDrawer"
+            android:parentActivityName="com.boha.library.activities.AccountActivity" >
+        </activity>
 
         <!-- RECEIVERS and SERVICES -->
         <receiver

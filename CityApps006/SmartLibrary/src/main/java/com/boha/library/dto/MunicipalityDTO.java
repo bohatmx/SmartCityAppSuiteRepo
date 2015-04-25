@@ -1,7 +1,6 @@
 package com.boha.library.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,7 +20,7 @@ public class MunicipalityDTO implements Serializable {
     private String cellphone;
     private Double latitude;
     private Double longitude;
-    private Date dateRegistered;
+    private Long dateRegistered;
     private Boolean activeFlag;
     //
     private List<MunicipalityCityDTO> municipalityCityList;
@@ -176,11 +175,11 @@ public class MunicipalityDTO implements Serializable {
         this.longitude = longitude;
     }
 
-    public Date getDateRegistered() {
+    public Long getDateRegistered() {
         return dateRegistered;
     }
 
-    public void setDateRegistered(Date dateRegistered) {
+    public void setDateRegistered(Long dateRegistered) {
         this.dateRegistered = dateRegistered;
     }
 

@@ -3,15 +3,18 @@
     <integer name="ga_sessionTimeout">300</integer>
     <bool name="ga_autoActivityTracking">true</bool>
 
-    <!-- The screen names that will appear in reports -->
-    <screenName name="com.boha.citizenapp.activities.MainDrawerActivity">
-        ThekwiniCitizenApp MainScreen
-    </screenName>
-    <screenName name="com.boha.citizenapp.activities.AlertPictureGridActivity">
-        ThekwiniCitizenApp AlertPictureGrid
-    </screenName>
-    <screenName name="com.boha.citizenapp.activities.AlertMapActivity">
-        ThekwiniCitizenApp AlertMapActivity
-    </screenName>
+    <!--&lt;!&ndash; The screen names that will appear in reports &ndash;&gt;-->
+    <!--<screenName name="com.boha.citizenapp.activities.MainDrawerActivity">-->
+        <!--CitizenAppThekwini MainScreen-->
+    <!--</screenName>-->
+    <!--<screenName name="com.boha.citizenapp.activities.AlertPictureGridActivity">-->
+        <!--CitizenAppThekwini AlertPictureGrid-->
+    <!--</screenName>-->
+    <!--<screenName name="com.boha.citizenapp.activities.AlertMapActivity">-->
+        <!--CitizenAppThekwini AlertMapActivity-->
+    <!--</screenName>-->
+    <!--<screenName name="com.boha.citizenapp.activities.AlertMapActivity">-->
+        <!--CitizenAppThekwini AlertMapActivity-->
+    <!--</screenName>-->
     <string name="ga_trackingId">UA-53661372-3</string>
 </resources>

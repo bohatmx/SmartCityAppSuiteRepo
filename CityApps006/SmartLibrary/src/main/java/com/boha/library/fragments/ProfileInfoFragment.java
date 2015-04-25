@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.activities.AccountActivity;
 import com.boha.library.activities.MyComplaintsActivity;
 import com.boha.library.dto.AccountDTO;
 import com.boha.library.dto.ComplaintDTO;
@@ -216,10 +215,13 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
     }
 
     private void startAccountActivity() {
-        Intent intent = new Intent(ctx, AccountActivity.class);
-        intent.putExtra("profileInfo", profileInfo);
-        intent.putExtra("logo", logo);
-        startActivity(intent);
+        profileInfoListener.onAccountDetailRequested(profileInfo);
+//        Intent intent = new Intent(ctx, FakeMainActivity.class);
+//        intent.putExtra("profileInfo", profileInfo);
+//        intent.putExtra("logo", logo);
+//        intent.putExtra("darkColor",primaryDarkColor);
+//        intent.putExtra("primaryColor",primaryColor);
+//        startActivity(intent);
     }
     private void startMyComplaintsActivity() {
         Intent intent = new Intent(ctx, MyComplaintsActivity.class);
@@ -229,11 +231,20 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
         startActivity(intent);
     }
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Activity a) {
+        super.onAttach(a);
+        if (a instanceof ProfileInfoListener) {
+            profileInfoListener = (ProfileInfoListener)a;
+        } else {
+            throw new ClassCastException("Host activity "
+            + a.getLocalClassName() + " must implement ProfileInfoListener");
+        }
 
     }
 
+    public interface ProfileInfoListener {
+        void onAccountDetailRequested(ProfileInfoDTO profileInfo);
+    }
     @Override
     public void onDetach() {
         super.onDetach();
@@ -274,6 +285,7 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
     }
 
     int primaryColor, primaryDarkColor;
+    ProfileInfoListener profileInfoListener;
 
     @Override
     public void setThemeColors(int primaryColor, int primaryDarkColor) {

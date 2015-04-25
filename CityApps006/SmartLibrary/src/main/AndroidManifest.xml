@@ -12,12 +12,9 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <application
-        android:allowBackup="true" >
+    <application android:allowBackup="true" >
         <service android:name=".services.GCMDeviceService" />
         <service android:name=".services.PhotoUploadService" />
-
-
         <service
             android:name=".services.StatementService"
             android:exported="false" >

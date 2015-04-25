@@ -78,6 +78,7 @@ public class RegistrationActivity extends ActionBarActivity {
 
         setFields();
         getEmail();
+
         //Track RegistrationActivity
         CityApplication ca = (CityApplication) getApplication();
         Tracker t = ca.getTracker(

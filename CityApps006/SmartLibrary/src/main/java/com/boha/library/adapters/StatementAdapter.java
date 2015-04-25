@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.util.Statics;
+import com.boha.library.util.Util;
 
 import org.joda.time.DateTime;
 
@@ -23,6 +24,7 @@ public class StatementAdapter extends ArrayAdapter<String> {
     private final int mLayoutRes;
     private List<String> mList;
     private Context ctx;
+
     static final String LOG = StatementAdapter.class.getSimpleName();
 
     public StatementAdapter(Context context, int textViewResourceId,
@@ -87,7 +89,7 @@ public class StatementAdapter extends ArrayAdapter<String> {
             item.txtDate.setText("Unavailable date");
         }
 
-        int rand = random.nextInt(mList.size() - 1);
+        int rand = random.nextInt(11);
         switch (rand) {
             case 0:
                 item.txtNumber.setBackground(ctx.getResources().getDrawable(R.drawable.xgreen_oval_small));
@@ -129,7 +131,7 @@ public class StatementAdapter extends ArrayAdapter<String> {
 
 
         Statics.setRobotoFontLight(ctx, item.txtFileName);
-
+        Util.scaleDownAndUp(convertView,200);
         return (convertView);
     }
 

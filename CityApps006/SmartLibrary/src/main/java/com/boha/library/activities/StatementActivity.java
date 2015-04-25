@@ -22,6 +22,8 @@ import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.List;
 
@@ -50,6 +52,12 @@ public class StatementActivity extends ActionBarActivity implements StatementFra
                 actionBar,
                 municipality.getMunicipalityName(), d,logo);
         getSupportActionBar().setTitle("");
+        //Track analytics
+        CityApplication ca = (CityApplication) getApplication();
+        Tracker t = ca.getTracker(
+                CityApplication.TrackerName.APP_TRACKER);
+        t.setScreenName(StatementActivity.class.getSimpleName());
+        t.send(new HitBuilders.ScreenViewBuilder().build());
 
     }
 
@@ -95,7 +103,7 @@ public class StatementActivity extends ActionBarActivity implements StatementFra
     @Override
     public void onStart() {
 
-        Log.w(LOG, "## onStart Bind to PhotoUploadService");
+        Log.w(LOG, "## onStart Bind to StatementService");
         Intent intent = new Intent(this, StatementService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
         super.onStart();

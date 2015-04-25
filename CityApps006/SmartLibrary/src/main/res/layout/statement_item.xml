@@ -20,7 +20,7 @@
 
             <TextView
                 android:id="@+id/SI_number"
-                style="@style/BlueCircle"
+                style="@style/BlueCircleSmall"
                 android:text="0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

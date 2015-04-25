@@ -2,6 +2,7 @@ package com.boha.library.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.library.R;
+import com.boha.library.activities.StatementActivity;
 import com.boha.library.dto.AccountDTO;
 import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
@@ -38,7 +40,7 @@ public class PaymentStartFragment extends Fragment implements PageFragment{
     private int index, logo;
     private TextView txtTitle, txtSubTitle, txtFAB;
     private EditText editAmount;
-    private ImageView fabIcon, hero;
+    private ImageView fabIcon, hero, icon;
     private Button btnPay;
     Context ctx;
 
@@ -99,11 +101,28 @@ public class PaymentStartFragment extends Fragment implements PageFragment{
         fabIcon = (ImageView)view.findViewById(R.id.FAB_icon);
         hero = (ImageView)view.findViewById(R.id.TOP_heroImage);
         editAmount = (EditText)view.findViewById(R.id.PAY_amount);
+        icon = (ImageView) topView.findViewById(R.id.TOP_icon);
         txtFAB.setVisibility(View.GONE);
         txtFAB.setText(getActivity().getString(R.string.pay));
         fabIcon.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_action_secure));
         fabIcon.setVisibility(View.VISIBLE);
+        icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.flashOnce(icon, 300, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        Intent w = new Intent(ctx, StatementActivity.class);
+                        w.putExtra("primaryColor", primaryColor);
+                        w.putExtra("darkColor", primaryDarkColor);
+                        w.putExtra("logo", logo);
+                        startActivity(w);
 
+                    }
+                });
+
+            }
+        });
         Statics.setRobotoFontLight(getActivity(),editAmount);
         animateSomething();
         

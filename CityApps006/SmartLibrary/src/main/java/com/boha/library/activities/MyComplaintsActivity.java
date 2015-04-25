@@ -13,6 +13,8 @@ import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.fragments.MyComplaintsFragment;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 public class MyComplaintsActivity extends ActionBarActivity implements MyComplaintsFragment.MyComplaintsListener{
 
@@ -46,6 +48,12 @@ public class MyComplaintsActivity extends ActionBarActivity implements MyComplai
         } else {
             getSupportActionBar().setTitle(municipality.getMunicipalityName());
         }
+        //Track analytics
+        CityApplication ca = (CityApplication) getApplication();
+        Tracker t = ca.getTracker(
+                CityApplication.TrackerName.APP_TRACKER);
+        t.setScreenName(MyComplaintsActivity.class.getSimpleName());
+        t.send(new HitBuilders.ScreenViewBuilder().build());
 
     }
 

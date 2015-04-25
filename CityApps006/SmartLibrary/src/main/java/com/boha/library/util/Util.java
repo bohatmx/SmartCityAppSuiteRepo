@@ -1,7 +1,9 @@
 package com.boha.library.util;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
@@ -18,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListPopupWindow;
@@ -46,6 +49,47 @@ public class Util {
         public void onAnimationEnded();
     }
 
+    public static void scaleDownAndUp(View view, int duration) {
+        ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(view,
+                PropertyValuesHolder.ofFloat("scaleX", 0.8f),
+                PropertyValuesHolder.ofFloat("scaleY", 0.8f));
+        scaleDown.setDuration(duration);
+        scaleDown.setInterpolator(new AccelerateInterpolator());
+
+        ObjectAnimator scaleUp = ObjectAnimator.ofPropertyValuesHolder(view,
+                PropertyValuesHolder.ofFloat("scaleX", 1.0f),
+                PropertyValuesHolder.ofFloat("scaleY", 1.0f));
+        scaleUp.setDuration(duration);
+        scaleUp.setInterpolator(new AccelerateDecelerateInterpolator());
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        //animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
+        animatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+
+        animatorSet.playSequentially(scaleDown,scaleUp);
+        animatorSet.start();
+
+    }
     public static Bitmap createBitmapFromView(Context context, View view, DisplayMetrics displayMetrics) {
         view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
         view.layout(0, 0, displayMetrics.widthPixels,
@@ -83,7 +127,7 @@ public class Util {
         LayoutInflater inflator = (LayoutInflater)
                 ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflator.inflate(R.layout.action_bar_logo, null);
-        TextView txt = (TextView) v.findViewById(R.id.ACTION_BAR_text);
+        final TextView txt = (TextView) v.findViewById(R.id.ACTION_BAR_text);
         final ImageView logo = (ImageView) v.findViewById(R.id.ACTION_BAR_logo);
         txt.setText(text);
         //
@@ -94,6 +138,20 @@ public class Util {
             @Override
             public void onClick(View v) {
                 Util.flashOnce(logo, 300, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        Intent w = new Intent(ctx, MuniContactsActivity.class);
+                        w.putExtra("logo", logoInt);
+                        w.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        ctx.startActivity(w);
+                    }
+                });
+            }
+        });
+        txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.flashOnce(txt, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
                         Intent w = new Intent(ctx, MuniContactsActivity.class);

@@ -12,17 +12,20 @@ import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.fragments.FaqFragment;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 public class FaqActivity extends ActionBarActivity {
 
     FaqFragment faqFragment;
     Context ctx;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ctx = getApplicationContext();
         setContentView(R.layout.activity_faq);
-        faqFragment = (FaqFragment)getSupportFragmentManager().findFragmentById(R.id.fragment);
+        faqFragment = (FaqFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
 
         MunicipalityDTO municipality = SharedUtil.getMunicipality(ctx);
         int logo = getIntent().getIntExtra("logo", R.drawable.ic_action_globe);
@@ -31,9 +34,15 @@ public class FaqActivity extends ActionBarActivity {
         Util.setCustomActionBar(ctx,
                 actionBar,
                 municipality.getMunicipalityName(),
-                ctx.getResources().getDrawable(logo),logo);
+                ctx.getResources().getDrawable(logo), logo);
         getSupportActionBar().setTitle("");
 
+        //Track analytics
+        CityApplication ca = (CityApplication) getApplication();
+        Tracker t = ca.getTracker(
+                CityApplication.TrackerName.APP_TRACKER);
+        t.setScreenName(FaqActivity.class.getSimpleName());
+        t.send(new HitBuilders.ScreenViewBuilder().build());
 
     }
 
