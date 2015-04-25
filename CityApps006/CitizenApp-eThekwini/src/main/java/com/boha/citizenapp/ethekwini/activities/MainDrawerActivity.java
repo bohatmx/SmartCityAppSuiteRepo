@@ -586,6 +586,11 @@ public class MainDrawerActivity extends ActionBarActivity
         mLocationRequest.setInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setFastestInterval(500);
+
+        if (startLocationUpdates) {
+            startLocationUpdates = false;
+            startLocationUpdates();
+        }
     }
 
     @Override
@@ -657,6 +662,7 @@ public class MainDrawerActivity extends ActionBarActivity
     static final int ONE_MINUTE = 1000 * 60 * 60,
             TWO_MINUTES = ONE_MINUTE * 2, REQUEST_COMPLAINT_PICTURES = 1123;
 
+    boolean startLocationUpdates;
     protected void startLocationUpdates() {
         Log.d(LOG, "### startLocationUpdates ....");
         if (googleApiClient.isConnected()) {
@@ -666,7 +672,8 @@ public class MainDrawerActivity extends ActionBarActivity
             Log.d(LOG, "## GoogleApiClient connected, requesting location updates ...");
         } else {
             Log.e(LOG, "------- GoogleApiClient is NOT connected, not sure where we are...");
-
+            googleApiClient.connect();
+            startLocationUpdates = true;
 
         }
     }
