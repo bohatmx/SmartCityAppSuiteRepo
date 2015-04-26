@@ -110,6 +110,7 @@ public class SplashActivity extends ActionBarActivity {
                     public void onAnimationEnded() {
                         Intent intent = new Intent(ctx, SigninActivity.class);
                         intent.putExtra("logo", R.drawable.logo);
+
                         startActivityForResult(intent, REQUEST_SIGN_IN);
                     }
                 });
@@ -122,16 +123,22 @@ public class SplashActivity extends ActionBarActivity {
             }
         });
 
+        if (SharedUtil.getProfile(ctx) != null) {
+            btnSignIn.setVisibility(View.GONE);
+            btnRegister.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
     public void onActivityResult(int reqCode, int resCode, Intent data) {
-        Log.w(LOG, "## onActivityResult resCode: " + resCode);
+        Log.d(LOG, "##--------> onActivityResult resCode: " + resCode);
         switch (reqCode) {
             case REQUEST_SIGN_IN:
                 if (resCode == RESULT_OK) {
-                    Log.w(LOG, "## Collapsing sign in layout");
-                    Util.collapse(actionsView, 100, null);
+                    Log.w(LOG, "## Collapsing sign in layout.....");
+                    btnSignIn.setVisibility(View.GONE);
+                    btnRegister.setVisibility(View.GONE);
                     finish();
                 }
                 break;
@@ -411,6 +418,15 @@ public class SplashActivity extends ActionBarActivity {
         return p;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("SplashActivity","### onResume");
+        if (SharedUtil.getProfile(ctx) != null) {
+            btnSignIn.setVisibility(View.GONE);
+            btnRegister.setVisibility(View.GONE);
+        }
+    }
     @Override
     public void onPause() {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);

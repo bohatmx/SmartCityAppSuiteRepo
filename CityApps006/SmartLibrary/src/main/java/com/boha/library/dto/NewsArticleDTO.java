@@ -2,7 +2,6 @@
 package com.boha.library.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,7 +17,7 @@ public class NewsArticleDTO implements Serializable {
     private String href;
     private Double latitude;
     private Double longitude;
-    private Date newsDate;
+    private Long newsDate;
     private Boolean activeFlag;
     private Integer color;
     private CityDTO city;
@@ -124,11 +123,11 @@ public class NewsArticleDTO implements Serializable {
         this.longitude = longitude;
     }
 
-    public Date getNewsDate() {
+    public Long getNewsDate() {
         return newsDate;
     }
 
-    public void setNewsDate(Date newsDate) {
+    public void setNewsDate(Long newsDate) {
         this.newsDate = newsDate;
     }
 

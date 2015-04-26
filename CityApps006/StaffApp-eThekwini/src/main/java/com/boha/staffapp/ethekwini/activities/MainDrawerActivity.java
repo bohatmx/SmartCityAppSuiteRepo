@@ -345,7 +345,8 @@ public class MainDrawerActivity extends ActionBarActivity
         adapter = new PagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(adapter);
         strip = (PagerTitleStrip) findViewById(com.boha.library.R.id.pager_title_strip);
-        strip.setVisibility(View.GONE);
+        strip.setVisibility(View.VISIBLE);
+        strip.setBackgroundColor(themeDarkColor);
         mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

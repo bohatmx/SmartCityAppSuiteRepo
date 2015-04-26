@@ -291,9 +291,6 @@ public class MainDrawerActivity extends ActionBarActivity
         RequestDTO w = new RequestDTO(RequestDTO.SIGN_IN_CITIZEN);
         w.setUserName(profileInfo.getiDNumber());
         w.setPassword(profileInfo.getPassword());
-//        w.setZipResponse(false);
-//        w.setRideWebSocket(false);
-
 
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
         progressBar.setVisibility(View.VISIBLE);

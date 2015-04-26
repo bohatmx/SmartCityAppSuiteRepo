@@ -190,9 +190,7 @@ public class SigninActivity extends ActionBarActivity {
                         CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
                             @Override
                             public void onDataCached() {
-                                Intent i = new Intent(ctx, MainDrawerActivity.class);
-                                startActivity(i);
-                                finish();
+
                                 onBackPressed();
                             }
 
@@ -225,14 +223,18 @@ public class SigninActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        Log.w(LOG, "## onBackPressed");
+        Log.w(LOG, "########### onBackPressed");
         profileInfo = SharedUtil.getProfile(ctx);
         if (profileInfo != null) {
             setResult(RESULT_OK);
+            finish();
+            Intent i = new Intent(ctx, MainDrawerActivity.class);
+            startActivity(i);
         } else {
             setResult(RESULT_CANCELED);
+            finish();
         }
-        finish();
+
     }
     public void getEmail() {
         AccountManager am = AccountManager.get(getApplicationContext());

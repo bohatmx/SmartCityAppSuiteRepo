@@ -51,8 +51,8 @@ public class Util {
 
     public static void scaleDownAndUp(View view, int duration) {
         ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(view,
-                PropertyValuesHolder.ofFloat("scaleX", 0.8f),
-                PropertyValuesHolder.ofFloat("scaleY", 0.8f));
+                PropertyValuesHolder.ofFloat("scaleX", 0.7f),
+                PropertyValuesHolder.ofFloat("scaleY", 0.7f));
         scaleDown.setDuration(duration);
         scaleDown.setInterpolator(new AccelerateInterpolator());
 
@@ -88,6 +88,19 @@ public class Util {
 
         animatorSet.playSequentially(scaleDown,scaleUp);
         animatorSet.start();
+
+    }
+    public static void scaleUp(View view, int duration) {
+
+
+        ObjectAnimator scaleUp = ObjectAnimator.ofPropertyValuesHolder(view,
+                PropertyValuesHolder.ofFloat("scaleX", 0.6f, 1.0f),
+                PropertyValuesHolder.ofFloat("scaleY", 0.6f, 1.0f));
+        scaleUp.setDuration(duration);
+        scaleUp.setInterpolator(new AccelerateDecelerateInterpolator());
+        scaleUp.start();
+
+
 
     }
     public static Bitmap createBitmapFromView(Context context, View view, DisplayMetrics displayMetrics) {

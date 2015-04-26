@@ -184,9 +184,9 @@ public class FAQCommsUtil {
 				is = con.getInputStream();
 				int httpCode = con.getResponseCode();
 				String msg = con.getResponseMessage();
-				Log.d(COMMS, "### HTTP response code: " + httpCode + " msg: " + msg);
+				Log.i(COMMS, "### HTTP response code: " + httpCode + " msg: " + msg + " request: " + request);
 				response = readStream(is);
-				Log.d(COMMS, "### RESPONSE: \n" + response);
+//				Log.d(COMMS, "### RESPONSE: \n" + response);
 
 			} catch (IOException e) {
 				Log.e(COMMS, "Houston, we have an IOException. F%$%K!", e);

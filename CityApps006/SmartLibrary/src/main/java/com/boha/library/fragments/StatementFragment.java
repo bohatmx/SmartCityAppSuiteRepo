@@ -129,12 +129,12 @@ public class StatementFragment extends Fragment implements PageFragment {
             getPDFStatements();
         } else {
             fileContainerList.clear();
-            for (String d: filePathList) {
+            for (String d : filePathList) {
                 fileContainerList.add(new FileContainer(d));
             }
             Collections.sort(fileContainerList);
             filePathList.clear();
-            for (FileContainer f: fileContainerList) {
+            for (FileContainer f : fileContainerList) {
                 filePathList.add(f.fileName);
             }
             setList();
@@ -299,7 +299,7 @@ public class StatementFragment extends Fragment implements PageFragment {
             year = dateTime.getYear();
             month = dateTime.getMonthOfYear();
         }
-        Log.d(LOG,"*** year: " + year
+        Log.d(LOG, "*** year: " + year
                 + " month: " + month + " selected for statement download");
 
         Log.w(LOG, "$$$ getPDFStatements ......");
@@ -321,17 +321,20 @@ public class StatementFragment extends Fragment implements PageFragment {
 
                             if (response.getStatusCode() == 0) {
                                 Log.i(LOG, "+++ we cool, cool ...");
-                                if (response.isMunicipalityAccessFailed()) {
-                                    Util.showErrorToast(ctx, ctx.getString(R.string.unable_connect_muni));
-                                    return;
-                                }
-                                Log.i(LOG,"Statements found: " + response.getPdfFileNameList().size());
+
+                                Log.i(LOG, "Statements found: " + response.getPdfFileNameList().size());
                                 if (!response.getPdfFileNameList().isEmpty()) {
                                     busyDownloading = true;
                                     statementFragmentListener.onPDFDownloadRequested(account.getAccountNumber(),
                                             response.getPdfFileNameList());
                                 } else {
-                                    Util.showToast(ctx, "No statements found for the month selected");
+                                    progressBar.setVisibility(View.GONE);
+                                    enableFab();
+                                    if (response.isMunicipalityAccessFailed()) {
+                                        Util.showErrorToast(ctx, ctx.getString(R.string.unable_connect_muni));
+                                    } else {
+                                        Util.showToast(ctx, "No statements found for the month selected");
+                                    }
                                 }
                             }
                         }
@@ -347,6 +350,7 @@ public class StatementFragment extends Fragment implements PageFragment {
                         @Override
                         public void run() {
                             progressBar.setVisibility(View.GONE);
+                            enableFab();
                             Util.showErrorToast(ctx, message);
                         }
                     });
@@ -404,7 +408,7 @@ public class StatementFragment extends Fragment implements PageFragment {
 
     List<FileContainer> fileContainerList = new ArrayList<>();
 
-    class FileContainer implements Comparable<FileContainer>{
+    class FileContainer implements Comparable<FileContainer> {
         String fileName;
         Date date;
 
@@ -419,7 +423,7 @@ public class StatementFragment extends Fragment implements PageFragment {
                 DateTime dateTime = new DateTime(Integer.parseInt(ys), Integer.parseInt(ms), 1, 0, 0);
                 date = dateTime.toDate();
             } catch (Exception e) {
-                Log.e("FileContainer","problem",e);
+                Log.e("FileContainer", "problem", e);
                 date = new Date();
             }
         }

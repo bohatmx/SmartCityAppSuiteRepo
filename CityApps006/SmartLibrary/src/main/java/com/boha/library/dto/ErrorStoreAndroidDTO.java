@@ -2,7 +2,6 @@
 package com.boha.library.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  *
@@ -11,7 +10,7 @@ import java.util.Date;
 public class ErrorStoreAndroidDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     private Integer errorStoreAndroidID;
-    private Date errorDate;
+    private Long errorDate;
     private String packageName;
     private String appVersionName;
     private String appVersionCode;
@@ -64,11 +63,11 @@ public class ErrorStoreAndroidDTO implements Serializable {
         this.errorStoreAndroidID = errorStoreAndroidID;
     }
 
-    public Date getErrorDate() {
+    public Long getErrorDate() {
         return errorDate;
     }
 
-    public void setErrorDate(Date errorDate) {
+    public void setErrorDate(Long errorDate) {
         this.errorDate = errorDate;
     }
 

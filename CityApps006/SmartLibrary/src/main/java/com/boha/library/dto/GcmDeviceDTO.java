@@ -2,7 +2,6 @@
 package com.boha.library.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  *
@@ -14,7 +13,7 @@ public class GcmDeviceDTO implements Serializable {
     private String manufacturer,  gcmRegistrationID;
     private String model;
     private Integer messageCount;
-    private Date dateRegistered;
+    private Long dateRegistered;
     private String serialNumber;
     private String androidVersion;
     private Integer municipalityID;
@@ -81,11 +80,11 @@ public class GcmDeviceDTO implements Serializable {
         this.messageCount = messageCount;
     }
 
-    public Date getDateRegistered() {
+    public Long getDateRegistered() {
         return dateRegistered;
     }
 
-    public void setDateRegistered(Date dateRegistered) {
+    public void setDateRegistered(Long dateRegistered) {
         this.dateRegistered = dateRegistered;
     }
 

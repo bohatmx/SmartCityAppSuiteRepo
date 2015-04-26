@@ -2,7 +2,6 @@
 package com.boha.library.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  *
@@ -13,7 +12,7 @@ public class ComplaintUpdateStatusDTO implements Serializable {
     private String customerComment;
     private static final long serialVersionUID = 1L;
     private Integer complaintUpdateStatusID;
-    private Date dateUpdated;
+    private Long dateUpdated;
     private boolean resolvedFlag;
     private String remarks;
     private Integer complaintID;
@@ -32,12 +31,20 @@ public class ComplaintUpdateStatusDTO implements Serializable {
         this.complaintUpdateStatusID = complaintUpdateStatusID;
     }
 
-    public Date getDateUpdated() {
+    public Boolean isCustomerOKFlag() {
+        return customerOKFlag;
+    }
+
+    public Long getDateUpdated() {
         return dateUpdated;
     }
 
-    public void setDateUpdated(Date dateUpdated) {
+    public void setDateUpdated(Long dateUpdated) {
         this.dateUpdated = dateUpdated;
+    }
+
+    public boolean isResolvedFlag() {
+        return resolvedFlag;
     }
 
     public boolean getResolvedFlag() {

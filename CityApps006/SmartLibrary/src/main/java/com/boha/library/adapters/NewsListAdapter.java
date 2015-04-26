@@ -128,6 +128,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsArticleDTO> {
         } else {
             item.image.setVisibility(View.GONE);
         }
+        Util.scaleDownAndUp(convertView,300);
         return (convertView);
     }
 

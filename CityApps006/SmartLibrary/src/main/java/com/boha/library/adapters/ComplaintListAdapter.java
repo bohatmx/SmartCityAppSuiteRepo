@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.boha.library.R;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintTypeDTO;
+import com.boha.library.util.Util;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -139,6 +140,7 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
             }
         });
 
+        Util.scaleUp(convertView,500);
         return (convertView);
     }
 

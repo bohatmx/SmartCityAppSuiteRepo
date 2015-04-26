@@ -2,7 +2,6 @@
 package com.boha.library.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,7 +19,7 @@ public class MunicipalityStaffDTO implements Serializable {
     private String lastName;
     private String email;
     private String cellphone;
-    private Date dateRegistered;
+    private Long dateRegistered;
     private String password;
     private Boolean activeFlag;
     private List<StaffImageDTO> staffImageList;
@@ -72,11 +71,11 @@ public class MunicipalityStaffDTO implements Serializable {
         this.cellphone = cellphone;
     }
 
-    public Date getDateRegistered() {
+    public Long getDateRegistered() {
         return dateRegistered;
     }
 
-    public void setDateRegistered(Date dateRegistered) {
+    public void setDateRegistered(Long dateRegistered) {
         this.dateRegistered = dateRegistered;
     }
 

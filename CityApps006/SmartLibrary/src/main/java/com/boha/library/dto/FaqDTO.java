@@ -7,7 +7,6 @@
 package com.boha.library.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  *
@@ -18,7 +17,7 @@ public class FaqDTO implements Serializable {
     private Integer faqID;
     private String question;
     private String answer;
-    private Date dateUpdated;
+    private Long dateUpdated;
     private Boolean activeFlag;
     private Integer sequenceNumber;
     private Integer municipalityID;
@@ -58,11 +57,11 @@ public class FaqDTO implements Serializable {
         this.answer = answer;
     }
 
-    public Date getDateUpdated() {
+    public Long getDateUpdated() {
         return dateUpdated;
     }
 
-    public void setDateUpdated(Date dateUpdated) {
+    public void setDateUpdated(Long dateUpdated) {
         this.dateUpdated = dateUpdated;
     }
 

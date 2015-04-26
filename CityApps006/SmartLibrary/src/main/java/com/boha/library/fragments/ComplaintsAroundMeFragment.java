@@ -29,6 +29,7 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -59,7 +60,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
     ListView listView;
     TextView txtCount, txtTitle, txtSubTitle, txtRadius;
     SeekBar seekBar;
-    List<ComplaintDTO> complaintList;
+    List<ComplaintDTO> complaintList = new ArrayList<>();
     List<String> stringList;
     Activity activity;
     View topView;
@@ -113,7 +114,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
 
     public void getComplaintsAroundMe() {
         if (location == null) {
-            progressBar.setVisibility(View.VISIBLE);
+            disableFAB();
             mListener.onLocationForComplaintsAroundMe();
             return;
         }
@@ -123,11 +124,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         w.setLongitude(location.getLongitude());
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
 
-        progressBar.setVisibility(View.VISIBLE);
-        fab.setAlpha(0.4f);
-        fab.setEnabled(false);
-        txtCount.setAlpha(0.4f);
-        txtCount.setEnabled(false);
+        disableFAB();
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO response) {
@@ -135,11 +132,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            progressBar.setVisibility(View.GONE);
-                            fab.setAlpha(1.0f);
-                            fab.setEnabled(true);
-                            txtCount.setAlpha(1.0f);
-                            txtCount.setEnabled(true);
+                            enableFAB();
                             if (response.getComplaintList() != null) {
                                 complaintList = response.getComplaintList();
                                 setList();
@@ -156,6 +149,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
                     @Override
                     public void run() {
                         progressBar.setVisibility(View.GONE);
+                        enableFAB();
                         Util.showErrorToast(ctx, message);
                     }
                 });
@@ -169,10 +163,69 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
 
     }
 
+    private void enableFAB() {
+        progressBar.setVisibility(View.GONE);
+        fab.setAlpha(1.0f);
+        fab.setEnabled(true);
+        txtCount.setAlpha(1.0f);
+        txtCount.setEnabled(true);
+    }
+    private void disableFAB() {
+        progressBar.setVisibility(View.VISIBLE);
+        fab.setAlpha(0.4f);
+        fab.setEnabled(false);
+        txtCount.setAlpha(0.4f);
+        txtCount.setEnabled(false);
+    }
+
+    View header;
+    private void setHeader() {
+        header = getActivity().getLayoutInflater().inflate(R.layout.complaints_header,null);
+        handle = header.findViewById(R.id.CAR_handle);
+
+        hero = (ImageView) header.findViewById(R.id.CAR_hero);
+        seekBar = (SeekBar) header.findViewById(R.id.CAR_seekBar);
+        txtRadius = (TextView) header.findViewById(R.id.CAR_labelKM);
+        txtTitle = (TextView) header.findViewById(R.id.CAR_title);
+        txtSubTitle = (TextView) header.findViewById(R.id.CAR_subTitle);
+        fab = header.findViewById(R.id.FAB);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                txtRadius.setText("" + progress + " KM");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        txtTitle.setText(ctx.getString(R.string.complaints_around_me));
+        txtSubTitle.setVisibility(View.GONE);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                Util.flashOnce(fab, 300, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        disableFAB();
+                        mListener.onLocationForComplaintsAroundMe();
+                    }
+                });
+            }
+        });
+
+    }
     public void setList() {
 
         txtCount.setText("" + complaintList.size());
-        ComplaintListAdapter adapter = new ComplaintListAdapter(ctx, R.layout.complaint_item, complaintList, new ComplaintListAdapter.CmplaintListListener() {
+        ComplaintListAdapter adapter = new ComplaintListAdapter(ctx, R.layout.complaint_item,
+                complaintList, new ComplaintListAdapter.CmplaintListListener() {
             @Override
             public void onFollowRequested(ComplaintDTO complaint) {
                 underConstruction();
@@ -193,6 +246,12 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
                 underConstruction();
             }
         });
+
+
+
+        if (listView.getHeaderViewsCount() == 0) {
+            listView.addHeaderView(header);
+        }
         listView.setAdapter(adapter);
 
     }
@@ -286,36 +345,12 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         Util.showToast(ctx, getString(R.string.under_cons));
     }
     private void setFields() {
+        setHeader();
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
-        handle = view.findViewById(R.id.CAR_handle);
-        topView = view.findViewById(R.id.CAR_titleLayout);
-        topView.setBackgroundColor(primaryDarkColor);
-        hero = (ImageView) view.findViewById(R.id.CAR_hero);
-        seekBar = (SeekBar) view.findViewById(R.id.CAR_seekBar);
-        txtRadius = (TextView) view.findViewById(R.id.CAR_labelKM);
-        txtTitle = (TextView) view.findViewById(R.id.CAR_title);
-        txtSubTitle = (TextView) view.findViewById(R.id.CAR_subTitle);
-        listView = (ListView) view.findViewById(R.id.CAR_listView);
-        fab = view.findViewById(R.id.FAB);
-
         txtCount = (TextView) view.findViewById(R.id.CAR_count);
+        listView = (ListView) view.findViewById(R.id.CAR_listView);
 
-
-        txtTitle.setText(ctx.getString(R.string.complaints_around_me));
-        txtSubTitle.setVisibility(View.GONE);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                Util.flashOnce(fab, 300, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        progressBar.setVisibility(View.VISIBLE);
-                        mListener.onLocationForComplaintsAroundMe();
-                    }
-                });
-            }
-        });
         txtCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -327,30 +362,15 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
                             ResponseDTO x = new ResponseDTO();
                             x.setComplaintList(complaintList);
                             w.putExtra("complaintList", x);
-                            w.putExtra("logo",logo);
+                            w.putExtra("logo", logo);
                             startActivity(w);
                         }
                     }
                 });
             }
         });
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                txtRadius.setText("" + progress + " KM");
-            }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
+        setList();
         animateSomething();
     }
 

@@ -16,7 +16,7 @@
         android:icon="@drawable/logo"
         android:label="@string/my_name"
         android:name="com.boha.library.activities.CityApplication"
-        android:theme="@style/IndigoTheme" >
+        android:theme="@style/StaffThemeTeal" >
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBqstBvhRJUPcR-0tMjZSL9Uy3M87plIdk" />
