@@ -2,7 +2,6 @@
 package com.boha.foureyes.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  *
@@ -13,7 +12,7 @@ public class ErrorStoreDTO implements Serializable {
     private Integer errorStoreID;
     private int statusCode;
     private String message;
-    private Date dateOccured;
+    private Long dateOccured;
     private String origin;
     
     public static final int SERVER_ERROR = 1,
@@ -53,11 +52,11 @@ public class ErrorStoreDTO implements Serializable {
         this.message = message;
     }
 
-    public Date getDateOccured() {
+    public Long getDateOccured() {
         return dateOccured;
     }
 
-    public void setDateOccured(Date dateOccured) {
+    public void setDateOccured(Long dateOccured) {
         this.dateOccured = dateOccured;
     }
 

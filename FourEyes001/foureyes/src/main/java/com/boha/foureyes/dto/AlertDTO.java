@@ -6,7 +6,6 @@
 package com.boha.foureyes.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,7 +16,7 @@ public class AlertDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Integer alertID, municipalityID, municipalityStaffID, profileInfoID;
-    private Date updated;
+    private Long updated;
     private Integer id;
     private int index;
     private String description,municipalityName, profileName;
@@ -129,11 +128,11 @@ public class AlertDTO implements Serializable {
         this.alertID = alertID;
     }
 
-    public Date getUpdated() {
+    public Long getUpdated() {
         return updated;
     }
 
-    public void setUpdated(Date updated) {
+    public void setUpdated(Long updated) {
         this.updated = updated;
     }
 
