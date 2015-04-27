@@ -8,12 +8,32 @@ import android.util.Log;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.MunicipalityStaffDTO;
 import com.boha.library.dto.ProfileInfoDTO;
+import com.boha.library.dto.UserDTO;
 import com.google.gson.Gson;
 
 /**
  * Created by aubreyM on 15/01/13.
  */
 public class SharedUtil {
+
+    public static void setThemeSelection(Context ctx, int theme) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putInt(THEME, theme);
+        ed.commit();
+
+        Log.w(LOG, "#### theme saved: " + theme);
+
+    }
+    public static int getThemeSelection(Context ctx) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+        int j = sp.getInt(THEME, -1);
+        Log.i(LOG, "#### theme retrieved: " + j);
+        return j;
+    }
 
     public static void setLanguageIndex(Context ctx, int languageIndex) {
         SharedPreferences sp = PreferenceManager
@@ -33,6 +53,10 @@ public class SharedUtil {
         Log.i(LOG, "#### language index retrieved: " + j);
         return j;
     }
+
+
+
+
     public static void setID(Context ctx, String id) {
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(ctx);
@@ -106,8 +130,9 @@ public class SharedUtil {
     }
     static Gson gson = new Gson();
     static final String LANGUAGE_INDEX = "langIndex",
+            THEME = "theme",
             ID = "id", MUNICIPALITY = "muni", MUNI_STAFF = "muniStaff",
-            PROFILE = "profile", GCM = "gcm";
+            USER = "user", PROFILE = "profile", GCM = "gcm", SLIDING_TAB_COUNT = "slidingTabs";
 
     public static void saveMunicipality(Context ctx, MunicipalityDTO m) {
         SharedPreferences sp = PreferenceManager
@@ -154,5 +179,55 @@ public class SharedUtil {
 //        Log.i(LOG, "#### muni staff retrieved: " + j);
         return gson.fromJson(j, MunicipalityStaffDTO.class);
     }
+
+    public static void incrementSlidingMenuCount(Context ctx) {
+        int count = getSlidingMenuCount(ctx);
+        if (count > MAX_SLIDING_TAB_VIEWS) {
+            return;
+        }
+        count++;
+
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putInt(SLIDING_TAB_COUNT, count);
+        ed.commit();
+
+        Log.i(LOG, "#### SLIDING_TAB_COUNT saved: " + count);
+
+    }
+    public static int getSlidingMenuCount(Context ctx) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+        int j = sp.getInt(SLIDING_TAB_COUNT, 0);
+        Log.i(LOG, "#### SLIDING_TAB_COUNT retrieved: " + j);
+        return j;
+    }
+    public static void saveUser(Context ctx, UserDTO user) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+
+        String json = gson.toJson(user);
+
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putString(USER, json);
+        ed.commit();
+
+        Log.w(LOG, "#### user  saved: " + json);
+
+    }
+    public static UserDTO getUser(Context ctx) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+        String json = sp.getString(USER, null);
+
+        if (json == null) {
+            Log.e(LOG, "#### user NOT retrieved");
+            return null;
+        }
+        return gson.fromJson(json, UserDTO.class);
+    }
+    public static final int MAX_SLIDING_TAB_VIEWS = 36;
     static final String LOG = SharedUtil.class.getSimpleName();
 }

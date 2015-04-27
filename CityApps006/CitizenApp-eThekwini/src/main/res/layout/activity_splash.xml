@@ -26,7 +26,7 @@
             android:textColor="@color/white"
             android:elevation="@dimen/mon_padding"
             android:drawableLeft="@android:drawable/ic_menu_send"
-            android:background="@color/absa_red"
+            android:background="@color/red_800"
             android:layout_marginLeft="@dimen/mon_margin"
             android:layout_marginRight="@dimen/mon_margin"
             android:layout_width="match_parent"
@@ -36,7 +36,7 @@
         <Button
             android:id="@+id/SPLASH_btnRegister"
             android:text="Register"
-            android:background="@color/green"
+            android:background="@color/teal_900"
             android:textColor="@color/white"
             android:elevation="@dimen/mon_padding"
 

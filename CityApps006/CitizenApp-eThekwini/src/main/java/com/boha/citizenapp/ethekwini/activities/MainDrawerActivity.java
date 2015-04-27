@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
@@ -22,12 +23,14 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 
 import com.boha.citizenapp.ethekwini.R;
+import com.boha.library.activities.AccountDetailWithDrawer;
 import com.boha.library.activities.AlertMapActivity;
 import com.boha.library.activities.CityApplication;
-import com.boha.library.activities.AccountDetailWithDrawer;
 import com.boha.library.activities.FaqActivity;
 import com.boha.library.activities.MyComplaintsActivity;
 import com.boha.library.activities.PictureActivity;
@@ -36,6 +39,7 @@ import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.dto.ProfileInfoDTO;
+import com.boha.library.dto.UserDTO;
 import com.boha.library.fragments.AlertListFragment;
 import com.boha.library.fragments.ComplaintCreateFragment;
 import com.boha.library.fragments.ComplaintsAroundMeFragment;
@@ -50,6 +54,7 @@ import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
+import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -102,6 +107,7 @@ public class MainDrawerActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.w(LOG, "#### onCreate");
+        ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_main_drawer);
         ctx = getApplicationContext();
         activity = this;
@@ -126,13 +132,19 @@ public class MainDrawerActivity extends ActionBarActivity
         mPager = (ViewPager) findViewById(com.boha.library.R.id.pager);
         municipality = SharedUtil.getMunicipality(ctx);
         profileInfo = SharedUtil.getProfile(ctx);
+        user = SharedUtil.getUser(ctx);
 
         ActionBar actionBar = getSupportActionBar();
         Util.setCustomActionBar(ctx,
                 actionBar,
                 municipality.getMunicipalityName(),
                 ctx.getResources().getDrawable(R.drawable.logo), logo);
-        getSupportActionBar().setTitle("");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(themeDarkColor);
+            window.setNavigationBarColor(themeDarkColor);
+        }
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -264,15 +276,12 @@ public class MainDrawerActivity extends ActionBarActivity
             @Override
             public void onCacheRetrieved(ResponseDTO r) {
                 response = r;
-                profileInfo = response.getProfileInfoList().get(0);
-                Util.preen(mPager, 1000, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        buildPages();
-                        profileInfoFragment.setProfileInfo(profileInfo);
+                if (profileInfo != null) {
+                    profileInfo = response.getProfileInfoList().get(0);
+                }
 
-                    }
-                });
+                buildPages();
+
 
             }
 
@@ -285,12 +294,18 @@ public class MainDrawerActivity extends ActionBarActivity
     }
 
     ProfileInfoDTO profileInfo;
+    UserDTO user;
 
     private void getLoginData() {
         Log.d(LOG, "getLoginData ");
-        RequestDTO w = new RequestDTO(RequestDTO.SIGN_IN_CITIZEN);
-        w.setUserName(profileInfo.getiDNumber());
-        w.setPassword(profileInfo.getPassword());
+        final RequestDTO w = new RequestDTO(RequestDTO.SIGN_IN_CITIZEN);
+        if (user != null) {
+            w.setUser(user);
+            w.setRequestType(RequestDTO.SIGN_IN_USER);
+        } else {
+            w.setUserName(profileInfo.getiDNumber());
+            w.setPassword(profileInfo.getPassword());
+        }
 
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
         progressBar.setVisibility(View.VISIBLE);
@@ -302,9 +317,21 @@ public class MainDrawerActivity extends ActionBarActivity
                     public void run() {
                         progressBar.setVisibility(View.GONE);
                         response = resp;
-                        profileInfo = response.getProfileInfoList().get(0);
-                        if (profileInfoFragment != null) {
-                            profileInfoFragment.setProfileInfo(profileInfo);
+                        if (w.getRequestType() == RequestDTO.SIGN_IN_CITIZEN) {
+                            profileInfo = response.getProfileInfoList().get(0);
+                            if (profileInfoFragment != null) {
+                                profileInfoFragment.setProfileInfo(profileInfo);
+                            }
+                            ProfileInfoDTO sp = new ProfileInfoDTO();
+                            sp.setProfileInfoID(profileInfo.getProfileInfoID());
+                            sp.setFirstName(profileInfo.getFirstName());
+                            sp.setLastName(profileInfo.getLastName());
+                            sp.setiDNumber(profileInfo.getiDNumber());
+                            sp.setPassword(profileInfo.getPassword());
+
+                            SharedUtil.saveProfile(ctx, sp);
+                        } else {
+                            SharedUtil.saveUser(ctx,response.getUserList().get(0));
                         }
                         if (alertListFragment != null) {
                             if (isRefresh) {
@@ -313,19 +340,9 @@ public class MainDrawerActivity extends ActionBarActivity
                             }
                         }
                         buildPages();
-                        ProfileInfoDTO sp = new ProfileInfoDTO();
-                        sp.setProfileInfoID(profileInfo.getProfileInfoID());
-                        sp.setFirstName(profileInfo.getFirstName());
-                        sp.setLastName(profileInfo.getLastName());
-                        sp.setiDNumber(profileInfo.getiDNumber());
-                        sp.setPassword(profileInfo.getPassword());
 
-                        SharedUtil.saveProfile(ctx, sp);
                         CacheUtil.cacheLoginData(ctx, response, null);
-                        if (response.isMunicipalityAccessFailed()) {
-                            Util.showErrorToast(ctx, getString(R.string.unable_connect_muni));
-                            return;
-                        }
+
                     }
                 });
             }
@@ -363,10 +380,21 @@ public class MainDrawerActivity extends ActionBarActivity
 
     }
 
+    /**
+     * Build fragments for the ViewPager. Check user type and omit fragments
+     * as appropriate
+     */
     private void buildPages() {
 
         pageFragmentList = new ArrayList<>();
-        profileInfoFragment = ProfileInfoFragment.newInstance();
+        if (profileInfo != null) {
+            profileInfoFragment = ProfileInfoFragment.newInstance();
+            profileInfoFragment.setThemeColors(themePrimaryColor, themeDarkColor);
+            profileInfoFragment.setLogo(logo);
+            profileInfoFragment.setPageTitle(ctx.getString(R.string.my_accounts));
+            profileInfoFragment.setProfileInfo(profileInfo);
+        }
+
         complaintCreateFragment = ComplaintCreateFragment.newInstance();
         alertListFragment = AlertListFragment.newInstance(response);
         complaintsAroundMeFragment = ComplaintsAroundMeFragment.newInstance();
@@ -375,23 +403,23 @@ public class MainDrawerActivity extends ActionBarActivity
 
         alertListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         complaintCreateFragment.setThemeColors(themePrimaryColor, themeDarkColor);
-        profileInfoFragment.setThemeColors(themePrimaryColor, themeDarkColor);
+
         complaintsAroundMeFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         newsListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 
-        profileInfoFragment.setLogo(logo);
         complaintCreateFragment.setLogo(logo);
         complaintsAroundMeFragment.setLogo(logo);
         alertListFragment.setLogo(logo);
         newsListFragment.setLogo(logo);
 
-        profileInfoFragment.setPageTitle(ctx.getString(R.string.my_accounts));
         alertListFragment.setPageTitle(ctx.getString(R.string.city_alerts));
         complaintCreateFragment.setPageTitle(ctx.getString(R.string.make_complaint));
         complaintsAroundMeFragment.setPageTitle(ctx.getString(R.string.complaints_around_me));
         newsListFragment.setPageTitle(ctx.getString(R.string.city_news));
 
-        pageFragmentList.add(profileInfoFragment);
+        if (profileInfo != null) {
+            pageFragmentList.add(profileInfoFragment);
+        }
         pageFragmentList.add(alertListFragment);
         pageFragmentList.add(complaintCreateFragment);
         pageFragmentList.add(complaintsAroundMeFragment);

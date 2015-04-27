@@ -23,6 +23,7 @@ import com.boha.library.dto.NewsArticleTypeDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.ProvinceDTO;
 import com.boha.library.dto.StaffTypeDTO;
+import com.boha.library.dto.UserDTO;
 
 import java.util.List;
 
@@ -56,6 +57,7 @@ public class RequestDTO {
     private Boolean zipResponse = Boolean.TRUE;
     //
     private AlertDTO alert;
+    private UserDTO user;
     private ComplaintDTO complaint;
     private CountryDTO country;
     private ComplaintFollowerDTO complaintFollower;
@@ -88,12 +90,14 @@ public class RequestDTO {
             REGISTER_MUNICIPALITY = 1,
             REGISTER_MUNICIPALITY_STAFF = 2,
             REGISTER_CITIZEN = 3,
-            SEND_GCM_REGISTRATION = 4;
+            SEND_GCM_REGISTRATION = 4,
+            REGISTER_USER = 5;
 
     //sign-in
     public static final int
             SIGN_IN_MUNICIPALITY_STAFF = 6,
-            SIGN_IN_CITIZEN = 7;
+            SIGN_IN_CITIZEN = 7,
+            SIGN_IN_USER = 8;
 
     //Create new data
     public static final int 
@@ -205,6 +209,14 @@ public class RequestDTO {
 
     public void setMunicipalityName(String municipalityName) {
         this.municipalityName = municipalityName;
+    }
+
+    public UserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
     public String getEmail() {

@@ -75,7 +75,11 @@ public class WebSocketUtil {
                         if (r.getSessionID() != null) {
                             Log.i(LOG, "Response with sessionID: " + r.getSessionID());
                         } else {
-                            webSocketListener.onMessage(r);
+                            if (r.getStatusCode() == 0) {
+                                webSocketListener.onMessage(r);
+                            } else {
+                                webSocketListener.onError(r.getMessage());
+                            }
                         }
                     } catch (Exception e) {
                         webSocketListener.onError(context.getString(R.string.failed_comms));

@@ -80,9 +80,9 @@
 
         <TextView
             android:id="@+id/CI_date"
-            style="@style/TextStyleBoldBlueSmall"
-            android:text="Tuesday, 09 December 2099 12:33"
-            android:layout_marginLeft="@dimen/mon_wider"
+            style="@style/Title2TextStyleBlue"
+            android:text="Tuesday, 09 December 2099"
+            android:layout_marginLeft="@dimen/mon_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

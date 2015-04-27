@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey"
-    android:padding="@dimen/mon_padding"
+    android:padding="@dimen/mon_divider"
     tools:context="com.boha.library.activities.FaqActivity">
 
     <fragment

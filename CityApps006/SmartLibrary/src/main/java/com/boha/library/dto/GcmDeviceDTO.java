@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 public class GcmDeviceDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Integer gcmDeviceID;
+    private Integer gcmDeviceID, userID;
     private String manufacturer,  gcmRegistrationID;
     private String model;
     private Integer messageCount;
@@ -38,6 +38,14 @@ public class GcmDeviceDTO implements Serializable {
 
     public void setGcmRegistrationID(String gcmRegistrationID) {
         this.gcmRegistrationID = gcmRegistrationID;
+    }
+
+    public Integer getUserID() {
+        return userID;
+    }
+
+    public void setUserID(Integer userID) {
+        this.userID = userID;
     }
 
     public Boolean getActiveFlag() {

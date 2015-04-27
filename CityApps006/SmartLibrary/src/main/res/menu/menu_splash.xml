@@ -4,6 +4,12 @@
     tools:context="com.boha.citizenapp.activities.SplashActivity">
 
     <item
+        android:id="@+id/action_theme"
+        android:title="Change Theme"
+        android:icon="@drawable/ic_action_new_picture"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_help"
         android:title="@string/hello_world"
         android:icon="@drawable/ic_action_help"

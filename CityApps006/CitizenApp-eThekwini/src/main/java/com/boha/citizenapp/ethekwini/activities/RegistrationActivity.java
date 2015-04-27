@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,9 +16,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -27,13 +29,18 @@ import com.boha.library.activities.CityApplication;
 import com.boha.library.dto.GcmDeviceDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.ProfileInfoDTO;
+import com.boha.library.dto.UserDTO;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
+import com.boha.library.util.CommsException;
 import com.boha.library.util.GCMUtil;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
+import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
+import com.boha.library.util.event.BusProvider;
+import com.boha.library.util.event.UserSignedInEvent;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -42,12 +49,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class RegistrationActivity extends ActionBarActivity {
+public class RegistrationActivity extends AppCompatActivity {
 
     ImageView heroImage, logo;
     Timer timer;
     TextView txtWelcome;
-    View handle;
+    View handle, editView;
     Context ctx;
     ProgressBar progressBar;
     Activity activity;
@@ -59,6 +66,7 @@ public class RegistrationActivity extends ActionBarActivity {
     Spinner spinner;
     GcmDeviceDTO gcmDevice;
     MunicipalityDTO municipality;
+    RadioButton radioYes, radioNo;
     public static final int
             ONE_SECOND = 1000,
             FIVE_SECONDS = ONE_SECOND * 5,
@@ -68,6 +76,7 @@ public class RegistrationActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.e(LOG, "#### onCreate");
+        ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_registration);
         ctx = getApplicationContext();
         activity = this;
@@ -92,30 +101,30 @@ public class RegistrationActivity extends ActionBarActivity {
                 actionBar,
                 municipality.getMunicipalityName(),
                 ctx.getResources().getDrawable(R.drawable.logo), logo);
-        getSupportActionBar().setTitle("");
     }
 
     @Override
     public void onResume() {
-        Log.w(LOG, "##### onResume");
         super.onResume();
+        BusProvider.getInstance().register(this);
     }
 
 
     private void setFields() {
+        editView = findViewById(R.id.REG_editLayout);
+        editView.setVisibility(View.GONE);
+        radioNo = (RadioButton) findViewById(R.id.REG_radioNo);
+        radioYes = (RadioButton) findViewById(R.id.REG_radioYes);
         btnSend = (Button) findViewById(R.id.REG_btnSignin);
         editID = (EditText) findViewById(R.id.REG_editUserID);
         editFirstName = (EditText) findViewById(R.id.REG_editFirstName);
         editLastName = (EditText) findViewById(R.id.REG_editLastName);
-        spinner = (Spinner)findViewById(R.id.REG_emailSpinner);
+        spinner = (Spinner) findViewById(R.id.REG_emailSpinner);
 
         editPassword = (EditText) findViewById(R.id.REG_editPIN);
         progressBar = (ProgressBar) findViewById(R.id.REG_progress);
         heroImage = (ImageView) findViewById(R.id.REG_heroImage);
         txtWelcome = (TextView) findViewById(R.id.REG_welcome);
-        logo = (ImageView) findViewById(R.id.REG_dome);
-
-        logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.logo));
         handle = findViewById(R.id.REG_handle);
         progressBar.setVisibility(View.GONE);
 
@@ -129,7 +138,11 @@ public class RegistrationActivity extends ActionBarActivity {
                 Util.flashOnce(btnSend, QUICK, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        sendRegistration();
+                        if (radioNo.isChecked()) {
+                            sendUserRegistration();
+                        } else {
+                            sendCitizenRegistration();
+                        }
                     }
                 });
             }
@@ -147,12 +160,122 @@ public class RegistrationActivity extends ActionBarActivity {
                 });
 
             }
-        }, ONE_SECOND, FIVE_SECONDS);
+        }, ONE_SECOND / 2, FIVE_SECONDS * 2);
+
+        radioYes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    setFieldsForCitizen();
+                }
+            }
+        });
+        radioNo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Util.collapse(editView, 1000, new Util.UtilAnimationListener() {
+                        @Override
+                        public void onAnimationEnded() {
+                            spinner.setVisibility(View.VISIBLE);
+                        }
+                    });
+                }
+            }
+        });
 
     }
 
-    private void sendRegistration() {
+    private void setFieldsForCitizen() {
+        editFirstName.setHint("Enter FirstName (Optional)");
+        editLastName.setHint("Enter LastName (Optional)");
+        editID.setHint("Enter ID Number");
+        editPassword.setHint("Enter Password");
+        editID.setVisibility(View.VISIBLE);
+        editPassword.setVisibility(View.VISIBLE);
+        Util.expand(editView, 1000, new Util.UtilAnimationListener() {
+            @Override
+            public void onAnimationEnded() {
+                spinner.setVisibility(View.GONE);
+            }
+        });
+    }
 
+    UserDTO user;
+
+    private void sendUserRegistration() {
+
+        if (email == null) {
+            Util.showErrorToast(ctx, getString(R.string.select_email));
+            return;
+        }
+
+        RequestDTO w = new RequestDTO(RequestDTO.REGISTER_USER);
+        UserDTO p = new UserDTO();
+        p.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
+        w.setMunicipalityID(p.getMunicipalityID());
+        p.setEmail(email);
+        p.setGcmDevice(gcmDevice);
+
+        w.setUser(p);
+
+        progressBar.setVisibility(View.VISIBLE);
+        NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
+            @Override
+            public void onResponse(final ResponseDTO resp) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+                        if (resp.getStatusCode() > 0) {
+                            Util.showErrorToast(ctx, resp.getMessage());
+                            return;
+                        }
+                        response = resp;
+                        user = response.getUserList().get(0);
+                        SharedUtil.saveUser(ctx, user);
+                        CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
+                            @Override
+                            public void onDataCached() throws CommsException {
+                                BusProvider.getInstance().post(new UserSignedInEvent());
+                            }
+
+                            @Override
+                            public void onError() {
+
+                            }
+                        });
+                        Intent i = new Intent(ctx, MainDrawerActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(final String message) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Util.showErrorToast(ctx, message);
+                    }
+                });
+            }
+
+            @Override
+            public void onWebSocketClose() {
+
+            }
+        });
+    }
+
+    private void sendCitizenRegistration() {
+
+        int x = 8;
+        if (x == 8) {
+            Util.showToast(ctx, ctx.getString(R.string.under_cons));
+            return;
+        }
         if (editID.getText().toString().isEmpty()) {
             Util.showErrorToast(ctx, getString(R.string.enter_id));
             return;
@@ -209,7 +332,17 @@ public class RegistrationActivity extends ActionBarActivity {
                         sp.setLastName(profileInfo.getLastName());
 
                         SharedUtil.saveProfile(ctx, sp);
-                        CacheUtil.cacheLoginData(ctx, response, null);
+                        CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
+                            @Override
+                            public void onDataCached() throws CommsException {
+                                BusProvider.getInstance().post(new UserSignedInEvent());
+                            }
+
+                            @Override
+                            public void onError() {
+
+                            }
+                        });
                         Intent i = new Intent(ctx, MainDrawerActivity.class);
                         startActivity(i);
                         finish();
@@ -236,18 +369,13 @@ public class RegistrationActivity extends ActionBarActivity {
 
     public void getEmail() {
         AccountManager am = AccountManager.get(getApplicationContext());
-        Account[] accts = am.getAccounts();
+        Account[] accts = am.getAccountsByType("com.google");
         if (accts.length == 0) {
             Util.showErrorToast(ctx, getString(R.string.no_accts));
             finish();
             return;
         }
         if (accts != null) {
-            if (accts.length == 1) {
-                email = accts[0].name;
-                spinner.setVisibility(View.GONE);
-                return;
-            }
             tarList.add(getString(R.string.select_email));
             for (int i = 0; i < accts.length; i++) {
                 tarList.add(accts[i].name);
@@ -284,7 +412,6 @@ public class RegistrationActivity extends ActionBarActivity {
         });
 
 
-
     }
 
     @Override
@@ -306,6 +433,7 @@ public class RegistrationActivity extends ActionBarActivity {
     @Override
     public void onPause() {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        BusProvider.getInstance().unregister(this);
         super.onPause();
     }
 

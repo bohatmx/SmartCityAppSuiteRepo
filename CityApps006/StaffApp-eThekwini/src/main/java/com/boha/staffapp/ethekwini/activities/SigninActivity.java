@@ -240,7 +240,7 @@ public class SigninActivity extends ActionBarActivity {
     static final String LOG = SplashActivity.class.getSimpleName();
     public void getEmail() {
         AccountManager am = AccountManager.get(getApplicationContext());
-        Account[] accts = am.getAccounts();
+        Account[] accts = am.getAccountsByType("com.google");
         if (accts.length == 0) {
             Util.showErrorToast(ctx, "No Accounts found. Please create one and try again");
             finish();

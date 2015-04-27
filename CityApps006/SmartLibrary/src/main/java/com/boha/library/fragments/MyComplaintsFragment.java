@@ -16,6 +16,8 @@ import com.boha.library.R;
 import com.boha.library.adapters.ComplaintListAdapter;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintUpdateStatusDTO;
+import com.boha.library.dto.ProfileInfoDTO;
+import com.boha.library.dto.UserDTO;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
@@ -23,7 +25,9 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -57,7 +61,8 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     List<String> stringList;
     Activity activity;
     View topView;
-    ImageView hero;
+    ImageView hero, noCompImage;
+    TextView txtNoComp;
     ProgressBar progressBar;
 
 
@@ -100,6 +105,13 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     }
 
     private void setList() {
+        if (complaintList == null) {
+            complaintList = new ArrayList<>();
+        }
+        if (complaintList.size() > 0) {
+            noCompImage.setVisibility(View.GONE);
+            txtNoComp.setVisibility(View.GONE);
+        }
         txtCount.setText("" + complaintList.size());
 
         ComplaintListAdapter adapter = new ComplaintListAdapter(ctx, R.layout.complaint_item, complaintList, new ComplaintListAdapter.CmplaintListListener() {
@@ -190,6 +202,8 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
         fab = view.findViewById(R.id.FAB);
 
         txtCount = (TextView) view.findViewById(R.id.FLC_count);
+        txtNoComp = (TextView) view.findViewById(R.id.FLC_noComplaints);
+        noCompImage = (ImageView) view.findViewById(R.id.FLC_image);
         listView = (ListView) view.findViewById(R.id.FLC_listView);
 
 
@@ -207,10 +221,54 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
             }
         });
 
-        txtUserName.setText(SharedUtil.getProfile(ctx).getFirstName() + " " + SharedUtil.getProfile(ctx).getLastName());
+        ProfileInfoDTO x = SharedUtil.getProfile(ctx);
+        UserDTO z = SharedUtil.getUser(ctx);
+        if (x != null) {
+            txtUserName.setText(x.getFirstName() + " " + x.getLastName());
+        }
+        if (z != null) {
+            txtUserName.setText(z.getEmail());
+        }
+        setNoCompImage();
         animateSomething();
     }
 
+    Random random = new Random(System.currentTimeMillis());
+    private void setNoCompImage() {
+        int index = random.nextInt(9);
+        switch (index) {
+            case 0:
+                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy1));
+                return;
+            case 1:
+                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy2));
+                return;
+            case 2:
+                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy3));
+                return;
+            case 3:
+                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy4));
+                return;
+            case 4:
+                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy5));
+                return;
+            case 5:
+                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy6));
+                return;
+            case 6:
+                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy7));
+                return;
+            case 7:
+                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy8));
+                return;
+            case 8:
+                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy9));
+                return;
+            case 9:
+                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy10));
+                return;
+        }
+    }
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

@@ -20,7 +20,10 @@
             android:exported="false" >
         </service>
 
-
+        <activity
+            android:name=".activities.ThemeSelectorActivity"
+            android:label="@string/title_activity_theme_selector" >
+        </activity>
     </application>
 
 </manifest>

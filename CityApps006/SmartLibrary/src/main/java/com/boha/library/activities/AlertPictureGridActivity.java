@@ -25,6 +25,7 @@ import com.boha.library.dto.AlertImageDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.util.DividerItemDecoration;
 import com.boha.library.util.SharedUtil;
+import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -59,6 +60,7 @@ public class AlertPictureGridActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeChooser.setTheme(this);
         setContentView(R.layout.fragment_alert_gallery);
         ctx = getApplicationContext();
         setFields();

@@ -42,6 +42,7 @@ import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.ImageUtil;
 import com.boha.library.util.PhotoCacheUtil;
 import com.boha.library.util.SharedUtil;
+import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -90,6 +91,7 @@ public class PictureActivity extends ActionBarActivity
         Log.d(LOG, "### onCreate............");
         ctx = getApplicationContext();
         inflater = getLayoutInflater();
+        ThemeChooser.setTheme(this);
         setContentView(R.layout.camera);
         setFields();
 

@@ -25,6 +25,8 @@ import com.boha.library.R;
 import com.boha.library.activities.MyComplaintsActivity;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintTypeDTO;
+import com.boha.library.dto.ProfileInfoDTO;
+import com.boha.library.dto.UserDTO;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
@@ -100,7 +102,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             @Override
             public void onCacheRetrieved(ResponseDTO response) {
 
-                if (response.getComplaintList() != null) {
+                if (response.getComplaintTypeList() != null) {
                     complaintTypeList = response.getComplaintTypeList();
                     stringList = new ArrayList<String>();
                     for (ComplaintTypeDTO x : complaintTypeList) {
@@ -170,17 +172,29 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             complaint.setLatitude(location.getLatitude());
             complaint.setLongitude(location.getLongitude());
         }
-        complaint.setProfileInfo(SharedUtil.getProfile(ctx));
-        complaint.getProfileInfo().setAccountList(null);
-        complaint.getProfileInfo().setComplaintList(null);
-        complaint.getProfileInfo().setFirstName(null);
-        complaint.getProfileInfo().setLastName(null);
-        complaint.getProfileInfo().setEmail(null);
-        complaint.getProfileInfo().setCellNumber(null);
+        ProfileInfoDTO prof = SharedUtil.getProfile(ctx);
+        UserDTO user = SharedUtil.getUser(ctx);
+        if (prof != null) {
+            complaint.setProfileInfo(prof);
+            complaint.getProfileInfo().setAccountList(null);
+            complaint.getProfileInfo().setComplaintList(null);
+            complaint.getProfileInfo().setFirstName(null);
+            complaint.getProfileInfo().setLastName(null);
+            complaint.getProfileInfo().setEmail(null);
+            complaint.getProfileInfo().setCellNumber(null);
+
+        }
+        if (user != null) {
+            user.setDateRegistered(null);
+            user.setFirstName(null);
+            user.setLastName(null);
+            complaint.setUser(user);
+
+        }
+        w.setComplaint(complaint);
         complaintType.setComplaintCategory(null);
         complaint.setComplaintType(complaintType);
         complaint.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
-        w.setComplaint(complaint);
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
         progressBar.setVisibility(View.VISIBLE);
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
@@ -191,10 +205,6 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                         @Override
                         public void run() {
                             progressBar.setVisibility(View.GONE);
-                            if (response.isMunicipalityAccessFailed()) {
-                                Util.showErrorToast(ctx,ctx.getString(R.string.unable_connect_muni));
-                                return;
-                            }
 
                             ComplaintDTO x = response.getComplaintList().get(0);
                             mListener.onComplaintAdded(x);

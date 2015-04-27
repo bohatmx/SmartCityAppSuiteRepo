@@ -16,9 +16,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -27,13 +29,17 @@ import com.boha.library.activities.CityApplication;
 import com.boha.library.dto.GcmDeviceDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.ProfileInfoDTO;
+import com.boha.library.dto.UserDTO;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.GCMUtil;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
+import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
+import com.boha.library.util.event.BusProvider;
+import com.boha.library.util.event.UserSignedInEvent;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -47,7 +53,8 @@ public class SigninActivity extends ActionBarActivity {
     ImageView heroImage;
     Timer timer;
     TextView txtWelcome;
-    View handle;
+    View handle, editView;
+    RadioButton radioYes, radioNo;
     Context ctx;
     ProgressBar progressBar;
     Activity activity;
@@ -59,11 +66,12 @@ public class SigninActivity extends ActionBarActivity {
     Spinner spinner;
     GcmDeviceDTO gcmDevice;
     MunicipalityDTO municipality;
-
+//3301045068086 mavis1
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.e(LOG, "#### onCreate");
+        ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_signin);
         ctx = getApplicationContext();
         activity = this;
@@ -81,16 +89,28 @@ public class SigninActivity extends ActionBarActivity {
                 municipality.getMunicipalityName(),
                 ctx.getResources().getDrawable(R.drawable.logo), logo);
         getSupportActionBar().setTitle("");
+        //Track Signin
+        CityApplication ca = (CityApplication) getApplication();
+        Tracker t = ca.getTracker(
+                CityApplication.TrackerName.APP_TRACKER);
+        t.setScreenName(SigninActivity.class.getSimpleName());
+        t.send(new HitBuilders.ScreenViewBuilder().build());
+        //
     }
 
     @Override
     public void onResume() {
         Log.w(LOG, "##### onResume");
+        BusProvider.getInstance().register(this);
         super.onResume();
     }
 
 
     private void setFields() {
+        editView = findViewById(R.id.SIGNIN_editLayout);
+        editView.setVisibility(View.GONE);
+        radioNo = (RadioButton)findViewById(R.id.SIGNIN_radioNo);
+        radioYes = (RadioButton)findViewById(R.id.SIGNIN_radioYes);
         btnSend = (Button) findViewById(R.id.SIGNIN_btnSignin);
         editID = (EditText) findViewById(R.id.SIGNIN_editUserID);
         spinner = (Spinner)findViewById(R.id.SIGNIN_emailSpinner);
@@ -115,7 +135,11 @@ public class SigninActivity extends ActionBarActivity {
                 Util.flashOnce(btnSend, 200, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        sendSignIn();
+                        if (radioNo.isChecked()) {
+                            sendSignInUser();
+                        } else {
+                            sendSignInCitizen();
+                        }
                     }
                 });
             }
@@ -135,9 +159,45 @@ public class SigninActivity extends ActionBarActivity {
             }
         }, 1000, 5000);
 
+        radioNo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    setFieldsUser();
+                }
+            }
+        });
+        radioYes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    setFieldsCitizen();
+                }
+            }
+        });
+
     }
 
-    private void sendSignIn() {
+    private void setFieldsCitizen() {
+        Util.expand(editView, 500, new Util.UtilAnimationListener() {
+            @Override
+            public void onAnimationEnded() {
+                spinner.setVisibility(View.GONE);
+                //todo - remove after testing
+                editID.setText("3301045068086");
+                editPassword.setText("mavis1");
+            }
+        });
+    }
+    private void setFieldsUser() {
+        Util.collapse(editView, 500, new Util.UtilAnimationListener() {
+            @Override
+            public void onAnimationEnded() {
+                spinner.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+    private void sendSignInCitizen() {
 
         if (editID.getText().toString().isEmpty()) {
             Util.showErrorToast(ctx, getString(R.string.enter_id));
@@ -153,13 +213,7 @@ public class SigninActivity extends ActionBarActivity {
             }
         }
 
-        //Track Signin
-        CityApplication ca = (CityApplication) getApplication();
-        Tracker t = ca.getTracker(
-                CityApplication.TrackerName.APP_TRACKER);
-        t.setScreenName(SigninActivity.class.getSimpleName());
-        t.send(new HitBuilders.ScreenViewBuilder().build());
-        //
+
         RequestDTO w = new RequestDTO(RequestDTO.SIGN_IN_CITIZEN);
         w.setUserName(editID.getText().toString());
         w.setPassword(editPassword.getText().toString());
@@ -175,7 +229,12 @@ public class SigninActivity extends ActionBarActivity {
                     @Override
                     public void run() {
                         progressBar.setVisibility(View.GONE);
-
+                        if (resp.isMunicipalityAccessFailed()) {
+                            Util.showErrorToast(ctx,ctx.getString(com.boha.library.R.string.unable_connect_muni));
+                            if (resp.getProfileInfoList() == null || resp.getProfileInfoList().isEmpty()) {
+                                return;
+                            }
+                        }
                         response = resp;
                         profileInfo = response.getProfileInfoList().get(0);
 
@@ -190,7 +249,73 @@ public class SigninActivity extends ActionBarActivity {
                         CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
                             @Override
                             public void onDataCached() {
+                                BusProvider.getInstance().post(new UserSignedInEvent());
+                                onBackPressed();
+                            }
 
+                            @Override
+                            public void onError() {
+                                Util.showErrorToast(ctx, "Problem saving data");
+                            }
+                        });
+
+                    }
+                });
+            }
+
+            @Override
+            public void onError(final String message) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Util.showErrorToast(ctx, message);
+                    }
+                });
+            }
+
+            @Override
+            public void onWebSocketClose() {
+
+            }
+        });
+    }
+    private void sendSignInUser() {
+
+        if (email == null) {
+            if (tarList.size() > 1) {
+                email = tarList.get(1);
+            }
+        }
+
+        RequestDTO w = new RequestDTO(RequestDTO.SIGN_IN_USER);
+        UserDTO u = new UserDTO();
+        u.setMunicipalityID(municipality.getMunicipalityID());
+        u.setEmail(email);
+        u.setGcmDevice(gcmDevice);
+        w.setUser(u);
+        w.setMunicipalityID(municipality.getMunicipalityID());
+
+        progressBar.setVisibility(View.VISIBLE);
+        NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
+            @Override
+            public void onResponse(final ResponseDTO resp) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+                        if (resp.isMunicipalityAccessFailed()) {
+                            Util.showErrorToast(ctx,ctx.getString(com.boha.library.R.string.unable_connect_muni));
+                            if (response.getUserList() == null || response.getUserList().isEmpty()) {
+                                return;
+                            }
+                        }
+                        response = resp;
+
+                        SharedUtil.saveUser(ctx, response.getUserList().get(0));
+                        CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
+                            @Override
+                            public void onDataCached() {
+                                BusProvider.getInstance().post(new UserSignedInEvent());
                                 onBackPressed();
                             }
 
@@ -238,7 +363,7 @@ public class SigninActivity extends ActionBarActivity {
     }
     public void getEmail() {
         AccountManager am = AccountManager.get(getApplicationContext());
-        Account[] accts = am.getAccounts();
+        Account[] accts = am.getAccountsByType("com.google");
         if (accts.length == 0) {
             Util.showErrorToast(ctx, "No Accounts found. Please create one and try again");
             finish();
@@ -308,6 +433,7 @@ public class SigninActivity extends ActionBarActivity {
     @Override
     public void onPause() {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        BusProvider.getInstance().unregister(this);
         super.onPause();
     }
 

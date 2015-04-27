@@ -21,6 +21,7 @@ import com.boha.library.services.StatementService;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.SharedUtil;
+import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -36,6 +37,7 @@ public class StatementActivity extends ActionBarActivity implements StatementFra
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_statement);
         ctx = getApplicationContext();
         primaryColor = getIntent().getIntExtra("primaryColor", ctx.getResources().getColor(R.color.teal_500));

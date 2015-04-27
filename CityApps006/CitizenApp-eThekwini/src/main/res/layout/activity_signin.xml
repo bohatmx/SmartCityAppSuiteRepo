@@ -1,12 +1,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:background="@color/grey"
-        android:padding="@dimen/mon_padding"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/grey"
+        android:padding="@dimen/mon_divider">
 
         <RelativeLayout
             android:id="@+id/SIGNIN_heroLayout"
@@ -20,72 +21,128 @@
 
             <ImageView
                 android:id="@+id/SIGNIN_heroImage"
-                android:layout_below="@id/SIGNIN_handle"
-                android:src="@drawable/durban13"
-                android:scaleType="centerCrop"
                 android:layout_width="match_parent"
-                android:layout_height="260dp" />
-
+                android:layout_height="@dimen/mon_hero_height_medium"
+                android:layout_below="@id/SIGNIN_handle"
+                android:scaleType="centerCrop"
+                android:src="@drawable/city1" />
 
 
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_below="@id/SIGNIN_heroLayout"
-            android:padding="@dimen/mon_wide"
-            android:background="@color/white"
+            android:id="@+id/SIGNIN_choiceLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@id/SIGNIN_heroLayout"
+            android:background="@color/beige_pale"
+            android:padding="@dimen/mon_padding">
 
-
-            <EditText
-                android:id="@+id/SIGNIN_editUserID"
-                android:layout_marginTop="@dimen/mon_wide"
-                android:inputType="number"
-                style="@style/Title1TextStyleBlue"
-                android:text="3301045068086"
-                android:hint="@string/enter_id"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <EditText
-                android:id="@+id/SIGNIN_editPIN"
-                android:layout_below="@id/SIGNIN_editUserID"
-                android:hint="@string/enter_pswd"
-                android:inputType="textPassword"
-                android:text="mavis1"
+            <TextView
+                android:id="@+id/REG_labelx"
+                style="@style/Title3TextStyleBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/mon_margin"
-                style="@style/Title3TextStyleRed"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:text="Do you have a Municipality Account?" />
 
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/REG_labelx"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/mon_margin"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/SIGNIN_radioYes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Yes" />
+
+                <RadioButton
+                    android:id="@+id/SIGNIN_radioNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mon_wider"
+                    android:checked="true"
+                    android:text="No" />
+            </RadioGroup>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/mon_padding"
+            android:layout_below="@id/SIGNIN_choiceLayout"
+            android:layout_marginBottom="@dimen/mon_margin"
+            android:background="@color/white">
+
+            <RelativeLayout
+                android:id="@+id/SIGNIN_editLayout"
+                android:layout_width="match_parent"
+                android:padding="@dimen/mon_wide"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+
+                <EditText
+                    android:id="@+id/SIGNIN_editUserID"
+                    style="@style/Title1TextStyleBlue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mon_wide"
+                    android:hint="@string/enter_id"
+                    android:inputType="number" />
+
+                <EditText
+                    android:id="@+id/SIGNIN_editPIN"
+                    style="@style/Title3TextStyleRed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/SIGNIN_editUserID"
+                    android:layout_marginTop="@dimen/mon_margin"
+                    android:hint="@string/enter_pswd"
+                    android:inputType="textPassword" />
+
+            </RelativeLayout>
 
             <Spinner
                 android:id="@+id/SIGNIN_emailSpinner"
-                android:layout_below="@id/SIGNIN_editPIN"
-                android:layout_marginTop="@dimen/mon_padding"
-                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:padding="@dimen/mon_padding"
+                android:layout_below="@id/SIGNIN_editLayout"
+                android:layout_marginTop="@dimen/mon_padding" />
 
             <RelativeLayout
-                android:layout_below="@id/SIGNIN_emailSpinner"
-                android:layout_marginTop="@dimen/mon_padding"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/mon_margin"
+                android:layout_below="@id/SIGNIN_emailSpinner"
+                android:layout_marginTop="@dimen/mon_padding">
 
-                <Button
-                    android:id="@+id/SIGNIN_btnSignin"
-                    android:text="Send"
-                    android:elevation="@dimen/mon_padding"
-                    android:background="@color/absa_red"
-                    android:textColor="@color/white"
-                    android:drawableLeft="@android:drawable/ic_menu_send"
-                    android:backgroundTint="@color/absa_red"
-                    android:layout_marginLeft="@dimen/mon_padding"
-                    android:layout_marginRight="@dimen/mon_padding"
+                <com.dd.ShadowLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/REG_emailSpinner"
+                    app:sl_cornerRadius="8dp"
+                    app:sl_dx="2dp"
+                    app:sl_dy="2dp"
+                    app:sl_shadowColor="#AA000000"
+                    app:sl_shadowRadius="4dp">
+
+                    <Button
+                        android:id="@+id/SIGNIN_btnSignin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@color/red_800"
+                        android:padding="@dimen/mon_margin"
+                        android:text="Send SignIn"
+                        android:textColor="@color/white" />
+                </com.dd.ShadowLayout>
 
 
             </RelativeLayout>
@@ -94,20 +151,20 @@
         <ProgressBar
             android:id="@+id/SIGNIN_progress"
 
-            android:layout_alignParentRight="true"
-            android:layout_margin="16dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="16dp" />
 
         <TextView
             android:id="@+id/SIGNIN_welcome"
-            android:text="@string/welcome"
-            style="@style/Title1TextStyleWhite"
-            android:textColor="@color/white"
-            android:layout_marginTop="@dimen/mon_hero_height_medium_lite"
-            android:layout_centerHorizontal="true"
+            style="@style/Title2TextStyleWhite"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/mon_hero_height_small"
+            android:text="@string/welcome"
+            android:textColor="@color/white" />
 
     </RelativeLayout>
 </ScrollView>

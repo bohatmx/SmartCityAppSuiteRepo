@@ -80,13 +80,12 @@ public class CityApplication extends Application {
         Log.d(LOG, sb.toString());
 
 
-
-            ACRA.init(this);
-            MunicipalityDTO m = SharedUtil.getMunicipality(getApplicationContext());
-            if (m != null) {
-                ACRA.getErrorReporter().putCustomData("municipalityID", "" + m.getMunicipalityID());
-            }
-            Log.e(LOG, "###### ACRA initialised. Exceptions will be grabbed and sent.");
+        ACRA.init(this);
+        MunicipalityDTO m = SharedUtil.getMunicipality(getApplicationContext());
+        if (m != null) {
+            ACRA.getErrorReporter().putCustomData("municipalityID", "" + m.getMunicipalityID());
+        }
+        Log.e(LOG, "###### ACRA initialised. Exceptions will be grabbed and sent.");
 
         DisplayImageOptions defaultOptions =
                 new DisplayImageOptions.Builder()
@@ -115,8 +114,10 @@ public class CityApplication extends Application {
 
         int index = SharedUtil.getLanguageIndex(getApplicationContext());
         setLocale(index);
+        int theme = SharedUtil.getThemeSelection(getApplicationContext());
 
     }
+
 
     private void setLocale(int index) {
         switch (index) {
@@ -140,6 +141,22 @@ public class CityApplication extends Application {
                 break;
         }
     }
+
+    public final static int THEME_BLUE = 20;
+    public final static int THEME_INDIGO = 1;
+    public final static int THEME_RED = 2,
+            THEME_TEAL = 3,
+            THEME_BLUE_GRAY = 4,
+            THEME_ORANGE = 5,
+            THEME_PINK = 6,
+            THEME_CYAN = 7,
+            THEME_GREEN = 8,
+            THEME_LIGHT_GREEN = 9,
+            THEME_LIME = 10,
+            THEME_AMBER = 11,
+            THEME_GREY = 12,
+            THEME_BROWN = 14,
+            THEME_PURPLE = 15;
 
     static final String LOG = CityApplication.class.getSimpleName();
 }

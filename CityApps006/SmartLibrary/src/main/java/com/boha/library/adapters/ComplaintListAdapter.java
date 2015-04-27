@@ -176,6 +176,6 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
     }
     static final Random random = new Random(System.currentTimeMillis());
     static final Locale loc = Locale.getDefault();
-    static final SimpleDateFormat sdfDate = new SimpleDateFormat("EEE dd MMM yyyy", loc);
+    static final SimpleDateFormat sdfDate = new SimpleDateFormat("EEEE dd MMMM yyyy", loc);
     static final SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm", loc);
 }

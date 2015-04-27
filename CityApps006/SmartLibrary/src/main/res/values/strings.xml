@@ -94,5 +94,6 @@
     <string name="failed_comms">Failed to communicate, data format may be a problem</string>
     <string name="title_activity_account_drawer">AccountDrawerActivity</string>
     <string name="title_activity_fake_main">FakeMainActivity</string>
+    <string name="title_activity_theme_selector">ThemeSelectorActivity</string>
 
 </resources>

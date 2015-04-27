@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -15,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -28,6 +31,7 @@ import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.fragments.NavigationDrawerFragment;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Statics;
+import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 
 import java.text.DecimalFormat;
@@ -74,6 +78,7 @@ public class AccountDetailWithDrawer extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_fake_main);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -97,6 +102,12 @@ public class AccountDetailWithDrawer extends ActionBarActivity
         Util.setCustomActionBar(ctx,
                 getSupportActionBar(),
                 municipality.getMunicipalityName(), d, logo);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(darkColor);
+            window.setNavigationBarColor(primaryColor);
+        }
     }
 
     private void setFields() {
@@ -297,6 +308,8 @@ public class AccountDetailWithDrawer extends ActionBarActivity
         Intent w = new Intent(this, PaymentStartActivity.class);
         w.putExtra("account", account);
         w.putExtra("logo",logo);
+        w.putExtra("primaryColor",primaryColor);
+        w.putExtra("darkColor",darkColor);
         startActivity(w);
 
     }

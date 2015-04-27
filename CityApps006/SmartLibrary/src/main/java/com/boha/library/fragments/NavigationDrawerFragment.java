@@ -31,6 +31,7 @@ import com.boha.library.adapters.DrawerListAdapter;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.MunicipalityStaffDTO;
 import com.boha.library.dto.ProfileInfoDTO;
+import com.boha.library.dto.UserDTO;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 
@@ -82,6 +83,7 @@ public class NavigationDrawerFragment extends Fragment {
     MunicipalityDTO municipality;
     MunicipalityStaffDTO staff;
     ProfileInfoDTO profileInfo;
+    UserDTO user;
     static final String LOG = NavigationDrawerFragment.class.getSimpleName();
 
     public NavigationDrawerFragment() {
@@ -92,6 +94,7 @@ public class NavigationDrawerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Log.d(LOG,"## onCreate");
         ctx = getActivity();
+
         Resources.Theme theme = getActivity().getTheme();
         TypedValue typedValue = new TypedValue();
         theme.resolveAttribute(com.boha.library.R.attr.colorPrimaryDark, typedValue, true);
@@ -115,8 +118,10 @@ public class NavigationDrawerFragment extends Fragment {
         municipality = SharedUtil.getMunicipality(ctx);
         staff = SharedUtil.getMunicipalityStaff(ctx);
         profileInfo = SharedUtil.getProfile(ctx);
+        user = SharedUtil.getUser(ctx);
         makeDestinations();
-        selectItem(mCurrentSelectedPosition);
+
+//        selectItem(mCurrentSelectedPosition);
     }
 
     @Override
@@ -176,7 +181,7 @@ public class NavigationDrawerFragment extends Fragment {
                 if (!isAdded()) {
                     return;
                 }
-
+                SharedUtil.incrementSlidingMenuCount(ctx);
                 getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
 
@@ -188,23 +193,17 @@ public class NavigationDrawerFragment extends Fragment {
                     return;
                 }
 
-                if (!mUserLearnedDrawer) {
-                    // The user manually opened the drawer; store this flag to prevent auto-showing
-                    // the navigation drawer automatically in the future.
-                    mUserLearnedDrawer = true;
-                    SharedPreferences sp = PreferenceManager
-                            .getDefaultSharedPreferences(getActivity());
-                    sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
-                }
-
+                SharedUtil.incrementSlidingMenuCount(ctx);
                 getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
         };
 
         // If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,
         // per the navigation drawer design guidelines.
-        if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
-            mDrawerLayout.openDrawer(mFragmentContainerView);
+        if (SharedUtil.getSlidingMenuCount(ctx) < SharedUtil.MAX_SLIDING_TAB_VIEWS) {
+            if (!mFromSavedInstanceState) {
+                mDrawerLayout.openDrawer(mFragmentContainerView);
+            }
         }
 
         // Defer code dependent on restoration of previous instance state.
@@ -223,12 +222,16 @@ public class NavigationDrawerFragment extends Fragment {
     private void setFields() {
         mDrawerListView = (ListView) view.findViewById(R.id.NAV_list);
         drawerImage = (ImageView)view.findViewById(R.id.NAV_image);
+        drawerImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
         txtSubTitle = (TextView) view.findViewById(R.id.NAV_subtitle);
         if (staff != null) {
             txtSubTitle.setText(staff.getFirstName() + " " + staff.getLastName());
         }
         if (profileInfo != null) {
             txtSubTitle.setText(profileInfo.getFirstName() + " " + profileInfo.getLastName());
+        }
+        if (user != null) {
+            txtSubTitle.setText(user.getEmail());
         }
         mDrawerListView.setDividerHeight(1);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -353,16 +356,24 @@ public class NavigationDrawerFragment extends Fragment {
 
             destinationList.add(ctx.getString(R.string.faq));
         }
+        if (user != null) {
+            destinationList.add(ctx.getString(R.string.make_complaint));
+            destinationList.add(ctx.getString(R.string.my_complaints));
+            destinationList.add(ctx.getString(R.string.comps_around_me));
+
+            destinationList.add(ctx.getString(R.string.city_alerts));
+            destinationList.add(ctx.getString(R.string.city_news));
+
+            destinationList.add(ctx.getString(R.string.faq));
+        }
     }
 
 
     public void setPrimaryColor(int primaryColor) {
-        Log.d(LOG,"## setPrimaryColor");
         this.primaryColor = primaryColor;
     }
 
     public void setPrimaryDarkColor(int primaryDarkColor) {
-        Log.d(LOG,"## setPrimaryDarkColor");
         this.primaryDarkColor = primaryDarkColor;
     }
 }

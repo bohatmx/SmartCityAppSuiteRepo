@@ -22,6 +22,7 @@ import com.boha.library.dto.NewsArticleTypeDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.ProvinceDTO;
 import com.boha.library.dto.StaffTypeDTO;
+import com.boha.library.dto.UserDTO;
 
 import java.io.Serializable;
 import java.util.List;
@@ -71,6 +72,7 @@ public class ResponseDTO implements Serializable {
     private List<StaffTypeDTO> staffTypeList;
     private List<FaqDTO> faqList;
     private List<FreqQuestionTypeDTO> faqTypeList;
+    private List<UserDTO> userList;
 
     public Boolean isMunicipalityAccessFailed() {
         return municipalityAccessFailed;
@@ -78,6 +80,14 @@ public class ResponseDTO implements Serializable {
 
     public void setMunicipalityAccessFailed(Boolean municipalityAccessFailed) {
         this.municipalityAccessFailed = municipalityAccessFailed;
+    }
+
+    public List<UserDTO> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<UserDTO> userList) {
+        this.userList = userList;
     }
 
     public List<String> getPdfFileNameList() {

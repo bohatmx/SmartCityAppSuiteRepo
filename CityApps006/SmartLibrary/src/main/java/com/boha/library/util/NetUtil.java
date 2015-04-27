@@ -55,6 +55,8 @@ public class NetUtil {
                     try {
                         String json = ZipUtil.uncompressString(response);
                         ResponseDTO resp = gson.fromJson(json, ResponseDTO.class);
+
+                        listener.onResponse(resp);
                         if (resp.getStatusCode() == 0) {
                             listener.onResponse(resp);
                         } else {
@@ -75,11 +77,12 @@ public class NetUtil {
         });
     }
 
-    private static void sendViaWebSocket(Context ctx, RequestDTO request) {
+    private static void sendViaWebSocket(final Context ctx, RequestDTO request) {
         WebSocketUtil.sendRequest(ctx, Statics.GATEWAY_SOCKET, request, new WebSocketUtil.WebSocketListener() {
 
             @Override
             public void onMessage(ResponseDTO response) {
+
                 listener.onResponse(response);
             }
 

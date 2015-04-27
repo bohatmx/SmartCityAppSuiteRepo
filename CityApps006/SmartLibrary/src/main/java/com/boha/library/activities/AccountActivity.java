@@ -3,6 +3,7 @@ package com.boha.library.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -10,6 +11,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.boha.library.R;
 import com.boha.library.dto.AccountDTO;
@@ -20,6 +23,7 @@ import com.boha.library.fragments.NavigationDrawerFragment;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.SharedUtil;
+import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -41,6 +45,7 @@ public class AccountActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.e("AccountActivity", "### onCreate");
+        ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_account);
         ctx = getApplicationContext();
         accountFragment = (AccountFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
@@ -82,7 +87,13 @@ public class AccountActivity extends ActionBarActivity
                 CityApplication.TrackerName.APP_TRACKER);
         t.setScreenName(AccountActivity.class.getSimpleName());
         t.send(new HitBuilders.ScreenViewBuilder().build());
-        Log.d("AccountActivity", "onCreate return");
+        //
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(themeDarkColor);
+            window.setNavigationBarColor(themeDarkColor);
+        }
     }
 
     NavigationDrawerFragment mNavigationDrawerFragment;

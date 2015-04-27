@@ -2,16 +2,20 @@ package com.boha.library.activities;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.boha.library.R;
 import com.boha.library.dto.AccountDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.fragments.PaymentStartFragment;
 import com.boha.library.util.SharedUtil;
+import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -25,11 +29,14 @@ public class PaymentStartActivity extends ActionBarActivity implements PaymentSt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_payment_start);
         ctx = getApplicationContext();
 
         account = (AccountDTO)getIntent().getSerializableExtra("account");
         logo = getIntent().getIntExtra("logo",R.drawable.ic_action_globe);
+        themeDarkColor = getIntent().getIntExtra("darkColor",R.color.blue_900);
+        themePrimaryColor = getIntent().getIntExtra("primaryColor",R.color.blue_500);
         int index = getIntent().getIntExtra("index",0);
         paymentStartFragment = (PaymentStartFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragment);
@@ -51,6 +58,12 @@ public class PaymentStartActivity extends ActionBarActivity implements PaymentSt
         t.setScreenName(PaymentStartActivity.class.getSimpleName());
         t.send(new HitBuilders.ScreenViewBuilder().build());
         //
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(themeDarkColor);
+            window.setNavigationBarColor(themeDarkColor);
+        }
     }
 
 

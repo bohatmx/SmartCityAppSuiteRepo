@@ -88,6 +88,8 @@ public class NewsListFragment extends Fragment implements PageFragment {
         if (newsList != null) {
             setList();
         } else {
+            newsList = new ArrayList<>();
+            setList();
             getCachedNews();
         }
 

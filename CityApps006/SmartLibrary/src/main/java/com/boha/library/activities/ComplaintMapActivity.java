@@ -31,6 +31,7 @@ import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.DistanceUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Statics;
+import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -94,6 +95,7 @@ public class ComplaintMapActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         ctx = getApplicationContext();
         activity = this;
+        ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_maps);
         inflater = getLayoutInflater();
         setFields();
