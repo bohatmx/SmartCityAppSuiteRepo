@@ -35,7 +35,6 @@ public class Statics {
     public static final String INVITE_PROJECT_MGR = INVITE_DESTINATION + "com.boha.monitor.pmanager";
     public static final String INVITE_SITE_MGR = INVITE_DESTINATION + "com.boha.monitor.site";
 
-    public static final String UPLOAD_URL_REQUEST = "uploadUrl?";
     public static final String CRASH_REPORTS_URL = URL + "crash?";
     public static final String GOOGLE_DISTANCE_MATRIX_URL = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=";
 

@@ -173,7 +173,18 @@ public class RequestDTO {
             GET_COMPLAINTS_AROUND_ADDRESS = 312,
             REFRESH_CITIZEN_COMPLAINTS_FROM_SERVICE = 313,
             REFRESH_CITIZEN_ACCOUNTS = 314,
-            GET_ERROR_REPORTS = 315;
+            GET_ERROR_REPORTS = 315,
+            CLEAN_UP_ERROR_STORES = 999;
+
+    int numberOfDays;
+
+    public int getNumberOfDays() {
+        return numberOfDays;
+    }
+
+    public void setNumberOfDays(int numberOfDays) {
+        this.numberOfDays = numberOfDays;
+    }
 
     public ComplaintFollowerDTO getComplaintFollower() {
         return complaintFollower;

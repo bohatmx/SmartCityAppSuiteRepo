@@ -80,7 +80,7 @@ public class AccountActivity extends ActionBarActivity
         mNavigationDrawerFragment.setPrimaryColor(themePrimaryColor);
         //
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+                (DrawerLayout) findViewById(R.id.drawer_layout), NavigationDrawerFragment.FROM_ACCOUNT);
         //Track analytics
         CityApplication ca = (CityApplication) getApplication();
         Tracker t = ca.getTracker(

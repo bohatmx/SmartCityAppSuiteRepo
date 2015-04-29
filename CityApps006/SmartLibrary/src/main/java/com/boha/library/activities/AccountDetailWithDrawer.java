@@ -88,7 +88,7 @@ public class AccountDetailWithDrawer extends ActionBarActivity
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+                (DrawerLayout) findViewById(R.id.drawer_layout), NavigationDrawerFragment.FROM_ACCOUNT);
 
         Log.d(LOG, "@@@@@@@ onCreate");
         ctx = getApplicationContext();

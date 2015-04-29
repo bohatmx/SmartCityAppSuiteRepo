@@ -16,7 +16,6 @@ import com.boha.library.R;
 import com.boha.library.dto.FreqQuestionTypeDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
-import com.boha.library.util.CommsException;
 import com.boha.library.util.FAQCommsUtil;
 import com.boha.library.util.FaqStrings;
 import com.boha.library.util.SharedUtil;
@@ -135,13 +134,12 @@ public class FaqFragment extends Fragment implements PageFragment{
         });
     }
     private void getRemoteFAQs() {
-        try {
             progressBar.setVisibility(View.VISIBLE);
             FAQCommsUtil.getFAQfiles(ctx,
                     SharedUtil.getMunicipality(ctx).getMunicipalityID(),
                     new FAQCommsUtil.FAQListener() {
                 @Override
-                public void onSuccess(FaqStrings fs) throws CommsException {
+                public void onSuccess(FaqStrings fs)  {
                     progressBar.setVisibility(View.GONE);
                     faqStrings = fs;
                     setWebView(0);
@@ -153,9 +151,7 @@ public class FaqFragment extends Fragment implements PageFragment{
                     Util.showErrorToast(ctx,message);
                 }
             });
-        } catch (CommsException e) {
-            e.printStackTrace();
-        }
+
     }
     private void setFields() {
         topView = view.findViewById(R.id.FAQ_handle);

@@ -95,5 +95,6 @@
     <string name="title_activity_account_drawer">AccountDrawerActivity</string>
     <string name="title_activity_fake_main">FakeMainActivity</string>
     <string name="title_activity_theme_selector">ThemeSelectorActivity</string>
+    <string name="unable_download_faq">Unable to download Frequently Asked Questions</string>
 
 </resources>

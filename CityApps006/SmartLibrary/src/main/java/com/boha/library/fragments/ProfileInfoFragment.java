@@ -72,6 +72,7 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(LOG,"******* onCreateView ....");
         view = inflater.inflate(R.layout.fragment_citizen, container, false);
         ctx = getActivity();
         setFields();
@@ -86,6 +87,7 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(LOG, "******* onResume ....");
         btnAccountDetails = (Button) view.findViewById(R.id.button);
     }
 
@@ -107,8 +109,9 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
         });
     }
 
-    public void setProfileInfo(ProfileInfoDTO profileInfo) {
+    private void setProfileInfo(ProfileInfoDTO profileInfo) {
         this.profileInfo = profileInfo;
+        Log.d(LOG,"******* setProfileInfo ....");
         getTotals();
     }
 

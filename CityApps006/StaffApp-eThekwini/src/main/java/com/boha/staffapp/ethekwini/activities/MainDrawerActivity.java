@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,8 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 
 import com.boha.library.activities.AlertMapActivity;
@@ -44,6 +47,7 @@ import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
+import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 import com.boha.staffapp.ethekwini.R;
 import com.google.android.gms.analytics.HitBuilders;
@@ -90,6 +94,7 @@ public class MainDrawerActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_main_drawer);
         ctx = getApplicationContext();
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -110,7 +115,7 @@ public class MainDrawerActivity extends ActionBarActivity
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+                (DrawerLayout) findViewById(R.id.drawer_layout), NavigationDrawerFragment.FROM_MAIN);
 
         mPager = (ViewPager) findViewById(com.boha.library.R.id.pager);
         municipality = SharedUtil.getMunicipality(ctx);
@@ -130,6 +135,12 @@ public class MainDrawerActivity extends ActionBarActivity
 
         getCachedLoginData();
         checkGPS();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(themeDarkColor);
+            window.setNavigationBarColor(themeDarkColor);
+        }
         //Track analytics
         CityApplication ca = (CityApplication) getApplication();
         Tracker t = ca.getTracker(
@@ -455,14 +466,31 @@ public class MainDrawerActivity extends ActionBarActivity
     }
 
     @Override
-    public void onAlertSent(AlertDTO alert) {
+    public void onAlertSent(final AlertDTO alert) {
         getLoginData();
         alertListFragment.onNewAlertSent(alert);
-        Intent w = new Intent(ctx, PictureActivity.class);
-        w.putExtra("alert", alert);
-        w.putExtra("imageType", PictureActivity.ALERT_IMAGE);
-        w.putExtra("logoImage", logo);
-        startActivityForResult(w, ALERT_PICTURES_REQUESTED);
+        AlertDialog.Builder d = new AlertDialog.Builder(this);
+        d.setTitle("Alert Pictures")
+                .setMessage("Do you want to take pictures for this alert?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent w = new Intent(ctx, PictureActivity.class);
+                        w.putExtra("alert", alert);
+                        w.putExtra("imageType", PictureActivity.ALERT_IMAGE);
+                        w.putExtra("logoImage", logo);
+                        startActivityForResult(w, ALERT_PICTURES_REQUESTED);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setIcon(ctx.getResources().getDrawable(R.drawable.ic_camera_alt_black_24dp))
+                .show();
+
     }
 
     static final int ALERT_PICTURES_REQUESTED = 1131;

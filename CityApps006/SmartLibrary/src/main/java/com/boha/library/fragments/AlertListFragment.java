@@ -222,7 +222,6 @@ public class AlertListFragment extends Fragment implements PageFragment {
     }
     public void refreshAlerts() {
         if (location == null) {
-            Log.e(LOG,"--- location is null, return from refreshAlerts");
             return;
         }
         Log.d("AlertListFragment", "refreshAlerts");

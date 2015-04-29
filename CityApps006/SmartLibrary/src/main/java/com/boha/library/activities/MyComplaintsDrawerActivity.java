@@ -45,7 +45,7 @@ public class MyComplaintsDrawerActivity extends ActionBarActivity
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+                (DrawerLayout) findViewById(R.id.drawer_layout), NavigationDrawerFragment.FROM_ACCOUNT);
         ActionBar bar = getSupportActionBar();
         Util.setCustomActionBar(ctx, bar,
                 SharedUtil.getMunicipality(ctx).getMunicipalityName(),

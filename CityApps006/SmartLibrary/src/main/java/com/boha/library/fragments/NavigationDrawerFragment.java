@@ -85,6 +85,7 @@ public class NavigationDrawerFragment extends Fragment {
     ProfileInfoDTO profileInfo;
     UserDTO user;
     static final String LOG = NavigationDrawerFragment.class.getSimpleName();
+    public static final int FROM_MAIN = 1, FROM_ACCOUNT = 2;
 
     public NavigationDrawerFragment() {
     }
@@ -155,7 +156,7 @@ public class NavigationDrawerFragment extends Fragment {
      * @param fragmentId   The android:id of this fragment in its activity's layout.
      * @param drawerLayout The DrawerLayout containing this fragment's UI.
      */
-    public void setUp(int fragmentId, DrawerLayout drawerLayout) {
+    public void setUp(int fragmentId, DrawerLayout drawerLayout, int type) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
 
@@ -200,9 +201,12 @@ public class NavigationDrawerFragment extends Fragment {
 
         // If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,
         // per the navigation drawer design guidelines.
-        if (SharedUtil.getSlidingMenuCount(ctx) < SharedUtil.MAX_SLIDING_TAB_VIEWS) {
-            if (!mFromSavedInstanceState) {
-                mDrawerLayout.openDrawer(mFragmentContainerView);
+
+        if (type == FROM_MAIN) {
+            if (SharedUtil.getSlidingMenuCount(ctx) < SharedUtil.MAX_SLIDING_TAB_VIEWS) {
+                if (!mFromSavedInstanceState) {
+                    mDrawerLayout.openDrawer(mFragmentContainerView);
+                }
             }
         }
 

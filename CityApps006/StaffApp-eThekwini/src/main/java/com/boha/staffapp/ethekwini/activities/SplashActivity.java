@@ -2,19 +2,24 @@ package com.boha.staffapp.ethekwini.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.boha.library.activities.CityApplication;
+import com.boha.library.activities.ThemeSelectorActivity;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.MunicipalityStaffDTO;
 import com.boha.library.services.GCMDeviceService;
@@ -22,10 +27,9 @@ import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
+import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 import com.boha.staffapp.ethekwini.R;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 import java.util.Random;
 import java.util.Timer;
@@ -41,6 +45,7 @@ public class SplashActivity extends ActionBarActivity {
     static Context ctx;
     ProgressBar progressBar;
     MunicipalityDTO municipality;
+    int themeDarkColor, themePrimaryColor;
     static final Random RANDOM = new Random(System.currentTimeMillis());
     static final int ONE_SECOND = 1000, QUICK = 200, FIVE_SECONDS = ONE_SECOND * 5;
     static final String LOG = SplashActivity.class.getSimpleName();
@@ -56,9 +61,18 @@ public class SplashActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.w("Splash", "## onCreate");
+        ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_splash);
         ctx = getApplicationContext();
         setFields();
+
+        Resources.Theme theme = getTheme();
+        TypedValue typedValue = new TypedValue();
+        theme.resolveAttribute(com.boha.library.R.attr.colorPrimaryDark, typedValue, true);
+        themeDarkColor = typedValue.data;
+        theme.resolveAttribute(com.boha.library.R.attr.colorPrimary, typedValue, true);
+        themePrimaryColor = typedValue.data;
+
         //eThekwini logoImage - will be different for each municipality
         logoImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.logo));
         setTitle(MUNICIPALITY_NAME + " SmartCity");
@@ -73,8 +87,13 @@ public class SplashActivity extends ActionBarActivity {
                 actionBar,
                 MUNICIPALITY_NAME,
                 ctx.getResources().getDrawable(R.drawable.logo), R.drawable.logo);
-        getSupportActionBar().setTitle("");
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = this.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(themeDarkColor);
+            window.setNavigationBarColor(themeDarkColor);
+        }
     }
 
     private void setFields() {
@@ -108,7 +127,7 @@ public class SplashActivity extends ActionBarActivity {
 
     }
 
-    static final int REQUEST_SIGN_IN = 9033;
+    static final int REQUEST_SIGN_IN = 9033, REQUEST_THEME_CHANGE = 5063;
 
     @Override
     public void onActivityResult(int reqCode, int resCode, Intent data) {
@@ -120,6 +139,12 @@ public class SplashActivity extends ActionBarActivity {
                     Util.collapse(actionsView, 100, null);
                     finish();
                 }
+                break;
+            case REQUEST_THEME_CHANGE:
+                finish();
+                Intent w = new Intent(this,SplashActivity.class);
+                startActivity(w);
+
                 break;
         }
     }
@@ -228,20 +253,7 @@ public class SplashActivity extends ActionBarActivity {
                             index = RANDOM.nextInt(9);
                         }
                         heroImage.setImageDrawable(getImage(ctx));
-                        imageCount++;
-                        if (imageCount > IMAGE_COUNT_MAX) {
-                            if (timer != null) {
-                                timer.cancel();
-                                timer = null;
-                            }
-                            //Track SplashActivity
-                            CityApplication ca = (CityApplication) getApplication();
-                            Tracker t = ca.getTracker(
-                                    CityApplication.TrackerName.APP_TRACKER);
-                            t.setScreenName(SplashActivity.class.getSimpleName());
-                            t.send(new HitBuilders.ScreenViewBuilder().build());
-                            //
-                        }
+                        timer.cancel();
                     }
                 });
 
@@ -261,6 +273,13 @@ public class SplashActivity extends ActionBarActivity {
 
         if (id == R.id.action_help) {
             Util.showToast(ctx, ctx.getString(R.string.under_cons));
+            return true;
+        }
+        if (id == R.id.action_theme) {
+            Intent w = new Intent(this, ThemeSelectorActivity.class);
+            w.putExtra("darkColor",themeDarkColor);
+            w.putExtra("primaryColor",themePrimaryColor);
+            startActivityForResult(w, REQUEST_THEME_CHANGE);
             return true;
         }
         if (id == R.id.action_afrikaans) {

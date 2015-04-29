@@ -194,14 +194,12 @@ public class SharedUtil {
         ed.putInt(SLIDING_TAB_COUNT, count);
         ed.commit();
 
-        Log.i(LOG, "#### SLIDING_TAB_COUNT saved: " + count);
 
     }
     public static int getSlidingMenuCount(Context ctx) {
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(ctx);
         int j = sp.getInt(SLIDING_TAB_COUNT, 0);
-        Log.i(LOG, "#### SLIDING_TAB_COUNT retrieved: " + j);
         return j;
     }
     public static void saveUser(Context ctx, UserDTO user) {

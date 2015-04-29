@@ -23,16 +23,22 @@ import java.io.InputStreamReader;
 public class CacheUtil {
     public interface CacheRetrievalListener {
         public void onCacheRetrieved(ResponseDTO response);
+
         public void onError();
     }
+
     public interface FAQCacheRetrievalListener {
         public void onCacheRetrieved(FaqStrings faqStrings);
+
         public void onError();
     }
+
     public interface CacheListener {
-        public void onDataCached() throws CommsException;
+        public void onDataCached();
+
         public void onError();
     }
+
     static Context ctx;
     static int dataType;
     public static final int CACHE_LOGIN = 1, CACHE_ALERTS = 2, CACHE_NEWS = 3, CACHE_FAQ = 4;
@@ -49,20 +55,25 @@ public class CacheUtil {
         dataType = CACHE_LOGIN;
         new CacheTask().execute();
     }
+
     public static void getCacheLoginData(Context context, CacheRetrievalListener listener) {
         cacheRetrievalListener = listener;
         ctx = context;
         dataType = CACHE_LOGIN;
         new CacheRetrieveTask().execute();
     }
+
     static FAQCacheRetrievalListener faqCacheRetrievalListener;
+
     public static void getCachedFAQ(Context context, FAQCacheRetrievalListener listener) {
         faqCacheRetrievalListener = listener;
         ctx = context;
         dataType = CACHE_FAQ;
         new FAQCacheRetrieveTask().execute();
     }
+
     static FaqStrings faqStrings;
+
     public static void cacheAlertData(Context context, ResponseDTO w, CacheListener listener) {
         cacheListener = listener;
         response = w;
@@ -70,6 +81,7 @@ public class CacheUtil {
         dataType = CACHE_ALERTS;
         new CacheTask().execute();
     }
+
     public static void cacheNewsData(Context context, ResponseDTO w, CacheListener listener) {
         cacheListener = listener;
         response = w;
@@ -77,6 +89,7 @@ public class CacheUtil {
         dataType = CACHE_NEWS;
         new CacheTask().execute();
     }
+
     public static void cacheFAQ(Context context, FaqStrings w, CacheListener listener) {
         cacheListener = listener;
         faqStrings = w;
@@ -84,6 +97,7 @@ public class CacheUtil {
         dataType = CACHE_FAQ;
         new CacheTask().execute();
     }
+
     public static void getCacheAlertData(Context context, CacheRetrievalListener listener) {
         cacheRetrievalListener = listener;
         ctx = context;
@@ -165,11 +179,8 @@ public class CacheUtil {
                 if (v > 0) {
                     cacheListener.onError();
                 } else
-                    try {
-                        cacheListener.onDataCached();
-                    } catch (CommsException e) {
-                        e.printStackTrace();
-                    }
+                    cacheListener.onDataCached();
+
             }
 
 
@@ -182,9 +193,9 @@ public class CacheUtil {
             String json = getStringFromInputStream(stream);
             ResponseDTO response = null;
             try {
-                 response = gson.fromJson(json, ResponseDTO.class);
+                response = gson.fromJson(json, ResponseDTO.class);
             } catch (JsonSyntaxException e) {
-                Log.e(LOG,"-- JSON Error: " + e.getMessage());
+                Log.e(LOG, "-- JSON Error: " + e.getMessage());
                 throw new IOException(e.getMessage());
             }
             return response;
@@ -237,16 +248,17 @@ public class CacheUtil {
 
         }
     }
+
     static class FAQCacheRetrieveTask extends AsyncTask<Void, Void, FaqStrings> {
 
         private FaqStrings getData(FileInputStream stream) throws IOException {
             String json = getStringFromInputStream(stream);
-            Log.e(LOG,"++ faq json: " + json);
+            Log.e(LOG, "++ faq json: " + json);
             FaqStrings faqStrings = null;
             try {
                 faqStrings = gson.fromJson(json, FaqStrings.class);
             } catch (JsonSyntaxException e) {
-                Log.e(LOG,"-- JSON Error: " + e.getMessage());
+                Log.e(LOG, "-- JSON Error: " + e.getMessage());
                 throw new IOException(e.getMessage());
             }
             return faqStrings;
@@ -254,7 +266,7 @@ public class CacheUtil {
 
         @Override
         protected FaqStrings doInBackground(Void... voids) {
-            Log.w(LOG,"### doInBackground FAQCacheRetrieveTask");
+            Log.w(LOG, "### doInBackground FAQCacheRetrieveTask");
             FaqStrings faqStrings = new FaqStrings();
             FileInputStream stream;
             try {
@@ -278,7 +290,7 @@ public class CacheUtil {
 
         @Override
         public void onPostExecute(FaqStrings result) {
-            Log.i(LOG,"+++ onPostExecute result: " + result);
+            Log.i(LOG, "+++ onPostExecute result: " + result);
             if (faqCacheRetrievalListener != null) {
                 if (result == null) {
                     faqCacheRetrievalListener.onError();

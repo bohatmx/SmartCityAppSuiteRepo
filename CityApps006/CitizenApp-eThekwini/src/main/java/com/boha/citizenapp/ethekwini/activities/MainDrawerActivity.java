@@ -102,6 +102,7 @@ public class MainDrawerActivity extends ActionBarActivity
     GoogleApiClient googleApiClient;
     ProgressBar progressBar;
     int themeDarkColor, themePrimaryColor, logo;
+    boolean goToAlerts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +129,7 @@ public class MainDrawerActivity extends ActionBarActivity
         logo = R.drawable.logo;
         //
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+                (DrawerLayout) findViewById(R.id.drawer_layout),NavigationDrawerFragment.FROM_MAIN);
         mPager = (ViewPager) findViewById(com.boha.library.R.id.pager);
         municipality = SharedUtil.getMunicipality(ctx);
         profileInfo = SharedUtil.getProfile(ctx);
@@ -152,8 +153,15 @@ public class MainDrawerActivity extends ActionBarActivity
                 .addApi(LocationServices.API)
                 .build();
 
-        startPhotoService();
-        getCachedLoginData();
+        String json = getIntent().getStringExtra("message");
+        if (json == null) {
+            startPhotoService();
+            getCachedLoginData();
+        } else {
+            Log.e("MainDrawerActivity", "@@@@ started because of message: " + json);
+            goToAlerts = true;
+            getLoginData();
+        }
         checkGPS();
         //Track analytics
         CityApplication ca = (CityApplication) getApplication();
@@ -297,7 +305,7 @@ public class MainDrawerActivity extends ActionBarActivity
     UserDTO user;
 
     private void getLoginData() {
-        Log.d(LOG, "getLoginData ");
+        Log.e(LOG, "@@@@@@@@@ getLoginData ...... ");
         final RequestDTO w = new RequestDTO(RequestDTO.SIGN_IN_CITIZEN);
         if (user != null) {
             w.setUser(user);
@@ -318,10 +326,7 @@ public class MainDrawerActivity extends ActionBarActivity
                         progressBar.setVisibility(View.GONE);
                         response = resp;
                         if (w.getRequestType() == RequestDTO.SIGN_IN_CITIZEN) {
-                            profileInfo = response.getProfileInfoList().get(0);
-                            if (profileInfoFragment != null) {
-                                profileInfoFragment.setProfileInfo(profileInfo);
-                            }
+
                             ProfileInfoDTO sp = new ProfileInfoDTO();
                             sp.setProfileInfoID(profileInfo.getProfileInfoID());
                             sp.setFirstName(profileInfo.getFirstName());
@@ -339,9 +344,19 @@ public class MainDrawerActivity extends ActionBarActivity
                                 alertListFragment.refreshAlerts();
                             }
                         }
-                        buildPages();
 
-                        CacheUtil.cacheLoginData(ctx, response, null);
+
+                        CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
+                            @Override
+                            public void onDataCached()  {
+                                buildPages();
+                            }
+
+                            @Override
+                            public void onError() {
+
+                            }
+                        });
 
                     }
                 });
@@ -392,7 +407,6 @@ public class MainDrawerActivity extends ActionBarActivity
             profileInfoFragment.setThemeColors(themePrimaryColor, themeDarkColor);
             profileInfoFragment.setLogo(logo);
             profileInfoFragment.setPageTitle(ctx.getString(R.string.my_accounts));
-            profileInfoFragment.setProfileInfo(profileInfo);
         }
 
         complaintCreateFragment = ComplaintCreateFragment.newInstance();
@@ -456,6 +470,11 @@ public class MainDrawerActivity extends ActionBarActivity
 
             }
         });
+
+        if (goToAlerts) {
+            goToAlerts = false;
+            mPager.setCurrentItem(1,true);
+        }
     }
 
     @Override
@@ -677,8 +696,8 @@ public class MainDrawerActivity extends ActionBarActivity
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(LOG, "##onResume connecting GoogleApiClient ...if needed");
         if (!googleApiClient.isConnected()) {
-            Log.d(LOG, "##onResume connecting GoogleApiClient ...");
             googleApiClient.connect();
         }
 

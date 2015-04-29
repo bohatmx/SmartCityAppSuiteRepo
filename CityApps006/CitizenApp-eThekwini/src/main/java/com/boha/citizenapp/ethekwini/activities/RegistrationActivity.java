@@ -33,7 +33,6 @@ import com.boha.library.dto.UserDTO;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
-import com.boha.library.util.CommsException;
 import com.boha.library.util.GCMUtil;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
@@ -236,7 +235,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         SharedUtil.saveUser(ctx, user);
                         CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
                             @Override
-                            public void onDataCached() throws CommsException {
+                            public void onDataCached()  {
                                 BusProvider.getInstance().post(new UserSignedInEvent());
                             }
 
@@ -257,6 +256,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        progressBar.setVisibility(View.GONE);
                         Util.showErrorToast(ctx, message);
                     }
                 });
@@ -334,7 +334,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         SharedUtil.saveProfile(ctx, sp);
                         CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
                             @Override
-                            public void onDataCached() throws CommsException {
+                            public void onDataCached()  {
                                 BusProvider.getInstance().post(new UserSignedInEvent());
                             }
 

@@ -12,7 +12,9 @@ import android.util.Log;
 
 import com.boha.citizenapp.ethekwini.R;
 import com.boha.citizenapp.ethekwini.activities.MainDrawerActivity;
+import com.boha.library.dto.AlertDTO;
 import com.boha.library.util.GCMUtil;
+import com.boha.library.util.SharedUtil;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
@@ -49,7 +51,6 @@ public class GcmIntentService extends GCMBaseIntentService {
 				
 			} else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE
 					.equals(messageType)) {
-				//It's a regular GCM message, do some work.
 				sendNotification(intent);
 			}
 		}
@@ -76,7 +77,7 @@ public class GcmIntentService extends GCMBaseIntentService {
 		String message = msgIntent.getExtras().getString("message");
 
 		Intent resultIntent = new Intent(this, MainDrawerActivity.class);
-		resultIntent.putExtra("notifier", message);
+		resultIntent.putExtra("message", message);
 		
 
 
@@ -84,18 +85,25 @@ public class GcmIntentService extends GCMBaseIntentService {
         stackBuilder.addParentStack(MainDrawerActivity.class);
         stackBuilder.addNextIntent(resultIntent);
 
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
+		AlertDTO alert = null;
+		try {
+			alert = gson.fromJson(message,AlertDTO.class);
+			message = alert.getDescription();
+		} catch (Exception e) {}
+
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setContentIntent(resultPendingIntent)
-                .addAction(R.drawable.ic_plusone_medium_off_client, "More", resultPendingIntent)
-                .setSmallIcon(R.drawable.common_ic_googleplayservices)
-				.setContentTitle("Message")
-				.setContentText("contentText");
+//                .addAction(R.drawable.logo, SharedUtil.getMunicipality(getApplicationContext()).getMunicipalityName(), resultPendingIntent)
+                .setSmallIcon(R.drawable.logo)
+				.setContentTitle("Message from " + SharedUtil.getMunicipality(getApplicationContext()).getMunicipalityName())
+				.setContentText(message);
 
 		mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+		Log.e(TAG,"Notification sent: " + message);
 	}
 	
-	static final String TAG = "GcmIntentService";
+	static final String TAG = GcmIntentService.class.getSimpleName();
 
 }

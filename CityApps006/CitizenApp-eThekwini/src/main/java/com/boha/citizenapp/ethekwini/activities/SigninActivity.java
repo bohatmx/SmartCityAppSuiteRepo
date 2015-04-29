@@ -268,6 +268,7 @@ public class SigninActivity extends ActionBarActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        progressBar.setVisibility(View.GONE);
                         Util.showErrorToast(ctx, message);
                     }
                 });
@@ -334,6 +335,7 @@ public class SigninActivity extends ActionBarActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        progressBar.setVisibility(View.GONE);
                         Util.showErrorToast(ctx, message);
                     }
                 });
@@ -363,7 +365,7 @@ public class SigninActivity extends ActionBarActivity {
     }
     public void getEmail() {
         AccountManager am = AccountManager.get(getApplicationContext());
-        Account[] accts = am.getAccountsByType("com.google");
+        Account[] accts = am.getAccounts();
         if (accts.length == 0) {
             Util.showErrorToast(ctx, "No Accounts found. Please create one and try again");
             finish();

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.ActionBar;
@@ -12,6 +13,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.boha.library.R;
 import com.boha.library.dto.MunicipalityDTO;
@@ -53,7 +56,13 @@ public class StatementActivity extends ActionBarActivity implements StatementFra
         Util.setCustomActionBar(ctx,
                 actionBar,
                 municipality.getMunicipalityName(), d,logo);
-        getSupportActionBar().setTitle("");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(darkColor);
+            window.setNavigationBarColor(darkColor);
+        }
         //Track analytics
         CityApplication ca = (CityApplication) getApplication();
         Tracker t = ca.getTracker(
