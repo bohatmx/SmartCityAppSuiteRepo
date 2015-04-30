@@ -469,6 +469,7 @@ public class MainDrawerActivity extends ActionBarActivity
     public void onAlertSent(final AlertDTO alert) {
         getLoginData();
         alertListFragment.onNewAlertSent(alert);
+
         AlertDialog.Builder d = new AlertDialog.Builder(this);
         d.setTitle("Alert Pictures")
                 .setMessage("Do you want to take pictures for this alert?")

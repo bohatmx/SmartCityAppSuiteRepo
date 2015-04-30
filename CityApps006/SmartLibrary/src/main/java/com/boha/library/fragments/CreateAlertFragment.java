@@ -271,16 +271,11 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
                             btnGetType.setText(ctx.getString(com.boha.library.R.string.sel_type));
                             editDesc.setText("");
                             TrafficLightUtil.disable(ctx, trafficLights);
-                            Util.preen(trafficLights, 500, new Util.UtilAnimationListener() {
-                                @Override
-                                public void onAnimationEnded() {
-                                    if (response.getStatusCode() == 0) {
-                                        alert = response.getAlertList().get(0);
-                                        mListener.onAlertSent(alert);
-                                    }
-                                    Log.w(LOG, "++ alert has been sent OK: " + response.getMessage());
-                                }
-                            });
+                            if (response.getAlertList() != null) {
+                                alert = response.getAlertList().get(0);
+                                mListener.onAlertSent(alert);
+                                Log.w(LOG, "++ alert has been sent OK: " + response.getMessage());
+                            }
 
                         }
                     });

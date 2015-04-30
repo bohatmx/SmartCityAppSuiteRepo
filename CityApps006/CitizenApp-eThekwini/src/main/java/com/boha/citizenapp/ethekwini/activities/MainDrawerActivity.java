@@ -159,8 +159,7 @@ public class MainDrawerActivity extends ActionBarActivity
             getCachedLoginData();
         } else {
             Log.e("MainDrawerActivity", "@@@@ started because of message: " + json);
-            goToAlerts = true;
-            getLoginData();
+            refreshListFromNotification();
         }
         checkGPS();
         //Track analytics
@@ -171,6 +170,10 @@ public class MainDrawerActivity extends ActionBarActivity
         t.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
+    private void refreshListFromNotification() {
+        goToAlerts = true;
+        getLoginData();
+    }
     private void checkGPS() {
         LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
         if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||

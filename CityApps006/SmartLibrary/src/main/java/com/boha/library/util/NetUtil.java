@@ -82,8 +82,11 @@ public class NetUtil {
 
             @Override
             public void onMessage(ResponseDTO response) {
-
-                listener.onResponse(response);
+                if (response == null) {
+                    listener.onError("Corrupted, null response from server. Please try again.");
+                } else {
+                    listener.onResponse(response);
+                }
             }
 
             @Override
@@ -93,5 +96,5 @@ public class NetUtil {
         });
     }
 
-    static Gson gson = new Gson();
+    static final Gson gson = new Gson();
 }

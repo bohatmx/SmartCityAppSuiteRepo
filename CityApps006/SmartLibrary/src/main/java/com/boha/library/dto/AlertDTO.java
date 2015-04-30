@@ -29,6 +29,15 @@ public class AlertDTO implements Serializable {
     private AlertTypeDTO alertType;
     private MunicipalityStaffDTO staff;
     private List<AlertImageDTO> alertImageList;
+    private Boolean createdFromNotification;
+
+    public Boolean isCreatedFromNotification() {
+        return createdFromNotification;
+    }
+
+    public void setCreatedFromNotification(Boolean createdFromNotification) {
+        this.createdFromNotification = createdFromNotification;
+    }
 
     public AlertDTO() {
     }

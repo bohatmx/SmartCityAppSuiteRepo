@@ -42,6 +42,7 @@ import com.boha.library.util.event.BusProvider;
 import com.boha.library.util.event.UserSignedInEvent;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -236,28 +237,33 @@ public class SigninActivity extends ActionBarActivity {
                             }
                         }
                         response = resp;
-                        profileInfo = response.getProfileInfoList().get(0);
+                        if (response.getProfileInfoList() != null && !response.getProfileInfoList().isEmpty()) {
+                            profileInfo = response.getProfileInfoList().get(0);
 
-                        ProfileInfoDTO sp = new ProfileInfoDTO();
-                        sp.setProfileInfoID(profileInfo.getProfileInfoID());
-                        sp.setFirstName(profileInfo.getFirstName());
-                        sp.setLastName(profileInfo.getLastName());
-                        sp.setiDNumber(profileInfo.getiDNumber());
-                        sp.setPassword(profileInfo.getPassword());
+                            ProfileInfoDTO sp = new ProfileInfoDTO();
+                            sp.setProfileInfoID(profileInfo.getProfileInfoID());
+                            sp.setFirstName(profileInfo.getFirstName());
+                            sp.setLastName(profileInfo.getLastName());
+                            sp.setiDNumber(profileInfo.getiDNumber());
+                            sp.setPassword(profileInfo.getPassword());
 
-                        SharedUtil.saveProfile(ctx, sp);
-                        CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
-                            @Override
-                            public void onDataCached() {
-                                BusProvider.getInstance().post(new UserSignedInEvent());
-                                onBackPressed();
-                            }
+                            SharedUtil.saveProfile(ctx, sp);
+                            CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
+                                @Override
+                                public void onDataCached() {
+                                    BusProvider.getInstance().post(new UserSignedInEvent());
+                                    onBackPressed();
+                                }
 
-                            @Override
-                            public void onError() {
-                                Util.showErrorToast(ctx, "Problem saving data");
-                            }
-                        });
+                                @Override
+                                public void onError() {
+                                    Util.showErrorToast(ctx, "Problem saving data");
+                                }
+                            });
+                        } else {
+                            Gson gson = new Gson();
+                            Log.e(LOG,"-- sendSignInCitizen - some kind of error, json from server: " + gson.toJson(resp));
+                        }
 
                     }
                 });
