@@ -1,19 +1,109 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/CITIZEN_topLayout"
+    android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/mon_divider"
-    android:background="@color/grey"
-    tools:context="com.boha.library.fragments.ProfileInfoFragment">
+    android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/CITIZEN_topLayout"
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <include layout="@layout/citizen_card" />
+        <android.support.v7.widget.CardView xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/card_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            android:background="@color/blue_300"
+            app:cardElevation="@dimen/mon_padding"
+            tools:cardCornerRadius="16dp">
+
+
+            <RelativeLayout
+                android:id="@+id/CITIZEN_midLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/beige_pale">
+
+
+                <ImageView
+                    android:id="@+id/CITIZEN_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/mon_hero_height_medium"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/back8" />
+
+                <TextView
+                    android:id="@+id/CITIZEN_title"
+                    style="@style/Title1TextStyleWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mon_margin"
+                    android:layout_marginTop="@dimen/mon_margin"
+                    android:text="@string/my_accounts" />
+
+                <TextView
+                    android:id="@+id/CITIZEN_name"
+                    style="@style/Title3TextStyleGrey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/CITIZEN_title"
+                    android:layout_below="@id/CITIZEN_title"
+                    android:layout_marginTop="@dimen/mon_margin"
+                    android:text="Citizen Name" />
+
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <RelativeLayout
+            android:id="@+id/CITIZEN_acctsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/card_view"
+            android:background="@color/beige_pale"
+
+            android:gravity="right"
+            android:padding="@dimen/mon_margin">
+
+
+            <RelativeLayout
+                android:id="@+id/buttonLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.dd.ShadowLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:sl_cornerRadius="8dp"
+                    app:sl_dx="2dp"
+                    app:sl_dy="2dp"
+                    app:sl_shadowColor="#AA000000"
+                    app:sl_shadowRadius="4dp">
+
+                    <Button
+                        android:id="@+id/button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@color/red_800"
+                        android:padding="@dimen/mon_margin"
+                        android:text="Account Detail"
+                        android:textColor="@color/white" />
+                </com.dd.ShadowLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <include
+            layout="@layout/dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/CITIZEN_acctsLayout" />
 
     </RelativeLayout>
+</ScrollView>
 
-</RelativeLayout>

@@ -16,6 +16,31 @@ import com.google.gson.Gson;
  */
 public class SharedUtil {
 
+    public static void setCityImages(Context ctx, CityImages images) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+
+        SharedPreferences.Editor ed = sp.edit();
+        String json = gson.toJson(images);
+        ed.putString(CITY_IMAGES, json);
+        ed.commit();
+
+        Log.w(LOG, "#### cityImages saved: " + json);
+
+    }
+    public static CityImages getCityImages(Context ctx) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+        String json = sp.getString(CITY_IMAGES, null);
+        if (json == null) {
+            Log.e(LOG, "#### cityImages NOT retrieved");
+            return null;
+        }
+        CityImages cityImages = gson.fromJson(json, CityImages.class);
+        Log.i(LOG, "#### cityImages retrieved: " + json);
+        return cityImages;
+    }
+
     public static void setThemeSelection(Context ctx, int theme) {
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(ctx);
@@ -130,7 +155,7 @@ public class SharedUtil {
     }
     static Gson gson = new Gson();
     static final String LANGUAGE_INDEX = "langIndex",
-            THEME = "theme",
+            THEME = "theme", CITY_IMAGES = "cityImages",
             ID = "id", MUNICIPALITY = "muni", MUNI_STAFF = "muniStaff",
             USER = "user", PROFILE = "profile", GCM = "gcm", SLIDING_TAB_COUNT = "slidingTabs";
 

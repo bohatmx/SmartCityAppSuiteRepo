@@ -64,6 +64,8 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import org.acra.ACRA;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,6 +133,8 @@ public class MainDrawerActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout),NavigationDrawerFragment.FROM_MAIN);
         mPager = (ViewPager) findViewById(com.boha.library.R.id.pager);
+        mPager.setOffscreenPageLimit(NUM_ITEMS);
+
         municipality = SharedUtil.getMunicipality(ctx);
         profileInfo = SharedUtil.getProfile(ctx);
         user = SharedUtil.getUser(ctx);
@@ -306,6 +310,7 @@ public class MainDrawerActivity extends ActionBarActivity
 
     ProfileInfoDTO profileInfo;
     UserDTO user;
+    private static final int NUM_ITEMS = 5;
 
     private void getLoginData() {
         Log.e(LOG, "@@@@@@@@@ getLoginData ...... ");
@@ -406,10 +411,11 @@ public class MainDrawerActivity extends ActionBarActivity
 
         pageFragmentList = new ArrayList<>();
         if (profileInfo != null) {
-            profileInfoFragment = ProfileInfoFragment.newInstance();
+            profileInfoFragment = ProfileInfoFragment.newInstance(response);
             profileInfoFragment.setThemeColors(themePrimaryColor, themeDarkColor);
             profileInfoFragment.setLogo(logo);
             profileInfoFragment.setPageTitle(ctx.getString(R.string.my_accounts));
+//            profileInfoFragment.setp
         }
 
         complaintCreateFragment = ComplaintCreateFragment.newInstance();
@@ -443,22 +449,23 @@ public class MainDrawerActivity extends ActionBarActivity
         pageFragmentList.add(newsListFragment);
 
 
-        adapter = new PagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(adapter);
-        strip = (PagerTitleStrip) findViewById(com.boha.library.R.id.pager_title_strip);
-        strip.setBackgroundColor(themeDarkColor);
-        //strip.setVisibility(View.GONE);
-        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        try {
+            adapter = new PagerAdapter(getSupportFragmentManager());
+            mPager.setAdapter(adapter);
+            strip = (PagerTitleStrip) findViewById(com.boha.library.R.id.pager_title_strip);
+            strip.setBackgroundColor(themeDarkColor);
+            //strip.setVisibility(View.GONE);
+            mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            }
+                }
 
-            @Override
-            public void onPageSelected(int position) {
-                currentPageIndex = position;
-                PageFragment pf = pageFragmentList.get(position);
-                pf.animateSomething();
+                @Override
+                public void onPageSelected(int position) {
+                    currentPageIndex = position;
+                    PageFragment pf = pageFragmentList.get(position);
+                    pf.animateSomething();
 //                if (pf.getPageTitle().equalsIgnoreCase(ctx.getString(R.string.complaints_around_me))) {
 //                    if (complaintsAroundMeFragment.getComplaintList() == null || complaintsAroundMeFragment.getComplaintList().isEmpty()) {
 //                        complaintsAroundMeFragment.getComplaintsAroundMe();
@@ -466,17 +473,25 @@ public class MainDrawerActivity extends ActionBarActivity
 //                        complaintsAroundMeFragment.setList();
 //                    }
 //                }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+
+            if (goToAlerts) {
+                goToAlerts = false;
+                mPager.setCurrentItem(1, true);
             }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
-        if (goToAlerts) {
-            goToAlerts = false;
-            mPager.setCurrentItem(1,true);
+        } catch (Exception e) {
+            try {
+                ACRA.getErrorReporter().handleException(e, false);
+                finish();
+                Intent w = new Intent(this, MainDrawerActivity.class);
+                startActivity(w);
+            } catch (Exception e2) {}
         }
     }
 

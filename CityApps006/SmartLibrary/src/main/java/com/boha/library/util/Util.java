@@ -606,7 +606,7 @@ public class Util {
 
     }
 
-    static int count, cityIndex, bIndex;
+    static int count, bIndex;
     public static Drawable getRandomBackgroundImage(Context ctx) {
         bIndex = random.nextInt(14);
         switch (bIndex) {
@@ -644,56 +644,13 @@ public class Util {
         }
         return ctx.getResources().getDrawable(R.drawable.back11);
     }
-    public static Drawable getRandomCityImage(final Context ctx) {
-        cityIndex = random.nextInt(21);
-        switch (cityIndex) {
-            case 0:
-                return ctx.getResources().getDrawable(R.drawable.city1);
-            case 1:
-                return ctx.getResources().getDrawable(R.drawable.city2);
-            case 2:
-                return ctx.getResources().getDrawable(R.drawable.city3);
-            case 3:
-                return ctx.getResources().getDrawable(R.drawable.city4);
-            case 4:
-                return ctx.getResources().getDrawable(R.drawable.city5);
-            case 5:
-                return ctx.getResources().getDrawable(R.drawable.city6);
-            case 6:
-                return ctx.getResources().getDrawable(R.drawable.city7);
-            case 7:
-                return ctx.getResources().getDrawable(R.drawable.city8);
-            case 8:
-                return ctx.getResources().getDrawable(R.drawable.city9);
-            case 9:
-                return ctx.getResources().getDrawable(R.drawable.city10);
-            case 10:
-                return ctx.getResources().getDrawable(R.drawable.city11);
-            case 11:
-                return ctx.getResources().getDrawable(R.drawable.city12);
-            case 12:
-                return ctx.getResources().getDrawable(R.drawable.city13);
-            case 13:
-                return ctx.getResources().getDrawable(R.drawable.city14);
-            case 14:
-                return ctx.getResources().getDrawable(R.drawable.city15);
-            case 15:
-                return ctx.getResources().getDrawable(R.drawable.city16);
-            case 16:
-                return ctx.getResources().getDrawable(R.drawable.city17);
-            case 17:
-                return ctx.getResources().getDrawable(R.drawable.city18);
-            case 18:
-                return ctx.getResources().getDrawable(R.drawable.city19);
-            case 19:
-                return ctx.getResources().getDrawable(R.drawable.city20);
-            case 20:
-                return ctx.getResources().getDrawable(R.drawable.city21);
-            case 21:
-                return ctx.getResources().getDrawable(R.drawable.city22);
 
+    public static Drawable getRandomCityImage(final Context ctx) {
+        CityImages images = SharedUtil.getCityImages(ctx);
+        if (images != null) {
+            return images.getImage(ctx);
         }
-        return ctx.getResources().getDrawable(R.drawable.city22);
+        return ctx.getResources().getDrawable(R.drawable.under_construction);
     }
 
 

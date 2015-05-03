@@ -96,6 +96,10 @@ public class AlertMapActivity extends ActionBarActivity {
         ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_maps);
         inflater = getLayoutInflater();
+        displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay()
+                .getMetrics(displayMetrics);
+
         setFields();
         ResponseDTO r = (ResponseDTO) getIntent().getSerializableExtra("alertList");
         if (r != null) {
@@ -111,24 +115,29 @@ public class AlertMapActivity extends ActionBarActivity {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.MAP_map);
 
-        googleMap = mapFragment.getMap();
-        if (googleMap == null) {
-            Util.showToast(ctx, getString(R.string.map_not_avail));
+        try {
+            googleMap = mapFragment.getMap();
+            if (googleMap == null) {
+                Util.showToast(ctx, getString(R.string.map_not_avail));
+                finish();
+                return;
+            }
+            setGoogleMap();
+        } catch (Exception e) {
+            Log.e(LOG, "Map failed", e);
             finish();
             return;
         }
-        displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay()
-                .getMetrics(displayMetrics);
 
-        setGoogleMap();
+
+
         MunicipalityDTO municipality = SharedUtil.getMunicipality(ctx);
-        logo = getIntent().getIntExtra("logo",0);
+        logo = getIntent().getIntExtra("logo", 0);
         if (logo != 0) {
             Drawable d = ctx.getResources().getDrawable(logo);
             Util.setCustomActionBar(ctx,
                     getSupportActionBar(),
-                    municipality.getMunicipalityName(), d,logo);
+                    municipality.getMunicipalityName(), d, logo);
             getSupportActionBar().setTitle("");
         } else {
             getSupportActionBar().setTitle(municipality.getMunicipalityName());
@@ -297,7 +306,7 @@ public class AlertMapActivity extends ActionBarActivity {
         txtCount = (TextView) findViewById(R.id.MAP_count);
         txtCount.setText("0");
         text.setText(getString(R.string.active_alerts));
-        Statics.setRobotoFontLight(ctx,text);
+        Statics.setRobotoFontLight(ctx, text);
         mapInfo = findViewById(R.id.MAP_info);
         mapInfo.setVisibility(View.GONE);
         addr1 = (TextView) mapInfo.findViewById(R.id.MAP_addressFrom);
@@ -322,6 +331,7 @@ public class AlertMapActivity extends ActionBarActivity {
         topLayout = findViewById(R.id.MAP_top);
 
     }
+
     List<String> list;
 
     private void showPopup(final double lat, final double lng, final String title) {
@@ -408,7 +418,7 @@ public class AlertMapActivity extends ActionBarActivity {
 
         Intent i = new Intent(ctx, AlertPictureGridActivity.class);
         i.putExtra("alert", alert);
-        i.putExtra("logo",logo);
+        i.putExtra("logo", logo);
         startActivity(i);
     }
 
@@ -466,7 +476,7 @@ public class AlertMapActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-                int id = item.getItemId();
+        int id = item.getItemId();
 //        if (id == R.id.action_settings) {
 //            return true;
 //        }

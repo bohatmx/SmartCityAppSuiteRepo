@@ -28,6 +28,7 @@ import com.boha.library.dto.UserDTO;
 import com.boha.library.services.GCMDeviceService;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
+import com.boha.library.util.CityImages;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
@@ -279,7 +280,7 @@ public class SplashActivity extends AppCompatActivity {
                         if (index == lastIndex) {
                             index = RANDOM.nextInt(32);
                         }
-                        heroImage.setImageDrawable(getImage(ctx));
+                        heroImage.setImageDrawable(getImage());
                         timer.cancel();
 
                     }
@@ -335,140 +336,10 @@ public class SplashActivity extends AppCompatActivity {
 
     static int index, imageCount;
     static int lastIndex;
-    static final int REQUEST_SIGN_IN = 9033, REQUEST_THEME_CHANGE = 1782;
-    static final int IMAGE_COUNT_MAX = 20;
+    static final int REQUEST_SIGN_IN = 9033,
+            REQUEST_THEME_CHANGE = 1782,
+            NUMBER_OF_IMAGES = 30;
 
-    public static Drawable getImage(Context ctx) {
-        if (ctx == null) {
-            return null;
-        }
-        int index = RANDOM.nextInt(32);
-        if (index == lastIndex) {
-            index = RANDOM.nextInt(32);
-        }
-        try {
-            Drawable p = null;
-            switch (index) {
-                case 0:
-
-                    p = ctx.getResources().getDrawable(R.drawable.durban17);
-                    break;
-                case 1:
-                    p = ctx.getResources().getDrawable(R.drawable.durban16);
-                    break;
-                case 2:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn3);
-                    break;
-                case 3:
-                    p = ctx.getResources().getDrawable(R.drawable.durban14);
-                    break;
-                case 4:
-                    p = ctx.getResources().getDrawable(R.drawable.durban9);
-                    break;
-
-                case 5:
-                    p = ctx.getResources().getDrawable(R.drawable.durban13);
-                    break;
-                case 6:
-                    p = ctx.getResources().getDrawable(R.drawable.durban6);
-                    break;
-                case 7:
-                    p = ctx.getResources().getDrawable(R.drawable.durban12);
-                    break;
-                case 8:
-                    p = ctx.getResources().getDrawable(R.drawable.durban11);
-                    break;
-                case 9:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn13);
-                    break;
-
-                case 10:
-                    p = ctx.getResources().getDrawable(R.drawable.durban8);
-                    break;
-                case 11:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn15);
-                    break;
-                case 12:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn16);
-                    break;
-                case 13:
-                    p = ctx.getResources().getDrawable(R.drawable.durban8);
-                    break;
-                case 14:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn21);
-                    break;
-
-                case 15:
-                    p = ctx.getResources().getDrawable(R.drawable.durban2);
-                    break;
-                case 16:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn20);
-                    break;
-                case 17:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn21);
-                    break;
-                case 18:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn22);
-                    break;
-                case 19:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn23);
-                    break;
-
-                case 20:
-                    p = ctx.getResources().getDrawable(R.drawable.durban16);
-                    break;
-                case 21:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn25);
-                    break;
-                case 22:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn33);
-                    break;
-                case 23:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn13);
-                    break;
-                case 24:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn28);
-                    break;
-
-                case 25:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn29);
-                    break;
-                case 26:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn30);
-                    break;
-                case 27:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn31);
-                    break;
-                case 28:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn32);
-                    break;
-                case 29:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn33);
-                    break;
-                case 30:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn34);
-                    break;
-                case 31:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn35);
-                    break;
-                case 32:
-                    p = ctx.getResources().getDrawable(R.drawable.dbn37);
-                    break;
-                default:
-                    p = ctx.getResources().getDrawable(R.drawable.durban9);
-                    break;
-
-            }
-
-            lastIndex = index;
-            return p;
-        } catch (OutOfMemoryError e) {
-            Log.e("SplashActivity","Error loading bitmap: " + index);
-            return ctx.getResources().getDrawable(R.drawable.durban9);
-        } catch (Exception e) {
-            return ctx.getResources().getDrawable(R.drawable.durban9);
-        }
-    }
 
     @Subscribe
     public void onUserSignedIn(UserSignedInEvent e) {
@@ -491,5 +362,59 @@ public class SplashActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         BusProvider.getInstance().unregister(this);
         super.onPause();
+    }
+
+    static CityImages cityImages;
+
+    public  static Drawable getImage() {
+        if (cityImages == null) {
+            getLocalCityImages();
+        }
+        return cityImages.getImage(ctx);
+    }
+    //todo - download new, improved images in background if available.
+    private static void getLocalCityImages() {
+
+        if (SharedUtil.getCityImages(ctx) != null) {
+            cityImages = SharedUtil.getCityImages(ctx);
+            return;
+        }
+
+        cityImages = new CityImages();
+        int[]imageResourceIDs = new int[NUMBER_OF_IMAGES];
+        imageResourceIDs[0] = R.drawable.acity1;
+        imageResourceIDs[1] = R.drawable.acity2;
+        imageResourceIDs[2] = R.drawable.acity3;
+        imageResourceIDs[3] = R.drawable.acity4;
+        imageResourceIDs[4] = R.drawable.acity5;
+        imageResourceIDs[5] = R.drawable.acity6;
+        imageResourceIDs[6] = R.drawable.acity7;
+        imageResourceIDs[7] = R.drawable.acity8;
+        imageResourceIDs[8] = R.drawable.acity9;
+        imageResourceIDs[9] = R.drawable.acity10;
+        imageResourceIDs[10] = R.drawable.acity11;
+        imageResourceIDs[11] = R.drawable.acity12;
+        imageResourceIDs[12] = R.drawable.acity13;
+        imageResourceIDs[13] = R.drawable.acity14;
+        imageResourceIDs[14] = R.drawable.acity15;
+        imageResourceIDs[15] = R.drawable.acity16;
+        imageResourceIDs[16] = R.drawable.acity17;
+        imageResourceIDs[17] = R.drawable.acity18;
+        imageResourceIDs[18] = R.drawable.acity19;
+        imageResourceIDs[19] = R.drawable.acity20;
+        imageResourceIDs[20] = R.drawable.acity21;
+        imageResourceIDs[21] = R.drawable.acity22;
+        imageResourceIDs[22] = R.drawable.acity23;
+        imageResourceIDs[23] = R.drawable.acity24;
+        imageResourceIDs[24] = R.drawable.acity25;
+        imageResourceIDs[25] = R.drawable.acity26;
+        imageResourceIDs[26] = R.drawable.acity27;
+        imageResourceIDs[27] = R.drawable.acity28;
+        imageResourceIDs[28] = R.drawable.acity29;
+        imageResourceIDs[29] = R.drawable.acity30;
+
+        cityImages.setImageResourceIDs(imageResourceIDs);
+        SharedUtil.setCityImages(ctx,cityImages);
+
     }
 }

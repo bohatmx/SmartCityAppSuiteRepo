@@ -58,6 +58,8 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import org.acra.ACRA;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -148,9 +150,10 @@ public class MainDrawerActivity extends ActionBarActivity
         t.setScreenName(MainDrawerActivity.class.getSimpleName());
         t.send(new HitBuilders.ScreenViewBuilder().build());
     }
-    private  void checkGPS() {
+
+    private void checkGPS() {
         LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
-        if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+        if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                 !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             // Build the alert dialog
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -168,7 +171,9 @@ public class MainDrawerActivity extends ActionBarActivity
             dialog.show();
         }
     }
+
     static final int REQUEST_LOCATION_ENABLE = 9231;
+
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         //actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -353,36 +358,46 @@ public class MainDrawerActivity extends ActionBarActivity
         pageFragmentList.add(complaintsAroundMeFragment);
         pageFragmentList.add(newsListFragment);
 
-        adapter = new PagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(adapter);
-        strip = (PagerTitleStrip) findViewById(com.boha.library.R.id.pager_title_strip);
-        strip.setVisibility(View.VISIBLE);
-        strip.setBackgroundColor(themeDarkColor);
-        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        try {
+            adapter = new PagerAdapter(getSupportFragmentManager());
+            mPager.setAdapter(adapter);
+            strip = (PagerTitleStrip) findViewById(com.boha.library.R.id.pager_title_strip);
+            strip.setVisibility(View.VISIBLE);
+            strip.setBackgroundColor(themeDarkColor);
+            mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            }
+                }
 
-            @Override
-            public void onPageSelected(int position) {
-                currentPageIndex = position;
-                PageFragment pf = pageFragmentList.get(position);
-                pf.animateSomething();
-                if (pf.getPageTitle().equalsIgnoreCase(ctx.getString(R.string.complaints_around_me))) {
-                    if (complaintsAroundMeFragment.getComplaintList() == null || complaintsAroundMeFragment.getComplaintList().isEmpty()) {
-                        complaintsAroundMeFragment.getComplaintsAroundMe();
-                    } else {
-                        complaintsAroundMeFragment.setList();
+                @Override
+                public void onPageSelected(int position) {
+                    currentPageIndex = position;
+                    PageFragment pf = pageFragmentList.get(position);
+                    pf.animateSomething();
+                    if (pf.getPageTitle().equalsIgnoreCase(ctx.getString(R.string.complaints_around_me))) {
+                        if (complaintsAroundMeFragment.getComplaintList() == null || complaintsAroundMeFragment.getComplaintList().isEmpty()) {
+                            complaintsAroundMeFragment.getComplaintsAroundMe();
+                        } else {
+                            complaintsAroundMeFragment.setList();
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
+                @Override
+                public void onPageScrollStateChanged(int state) {
 
+                }
+            });
+        } catch (Exception e) {
+            try {
+                ACRA.getErrorReporter().handleException(e, false);
+                finish();
+                Intent w = new Intent(this, MainDrawerActivity.class);
+                startActivity(w);
+            } catch (Exception e2) {
             }
-        });
+        }
     }
 
     boolean isLocationForComplaints;

@@ -5,9 +5,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
@@ -21,6 +23,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -576,10 +579,10 @@ public class PictureActivity extends ActionBarActivity
             if (fileUri != null) {
                 try {
                     exif = new ExifInterface(photoFile.getAbsolutePath());
-                    String orient = exif.getAttribute(ExifInterface.TAG_ORIENTATION);
+                    int orient = getScreenOrientation();
                     Log.i(LOG, "@@@@@@@@@@@@@@@@@@@@@@ Orientation says: " + orient);
                     float rotate = 0f;
-                    if (orient.equalsIgnoreCase("6")) {
+                    if (orient == Configuration.ORIENTATION_LANDSCAPE) {
                         rotate = 90f;
                         Log.i(LOG, "@@@@@--------->> picture, rotate = " + rotate);
                     }
@@ -595,6 +598,9 @@ public class PictureActivity extends ActionBarActivity
                         getLog(bm, "Bitmap after decode - sample size = " + options.inSampleSize);
                         Matrix matrixThumbnail = new Matrix();
                         matrixThumbnail.postScale(0.6f, 0.6f);
+                        if (rotate > 0f) {
+                            matrixThumbnail.postRotate(rotate);
+                        }
                         Bitmap thumb = Bitmap.createBitmap
                                 (bm, 0, 0, bm.getWidth(),
                                         bm.getHeight(), matrixThumbnail, true);
@@ -814,5 +820,22 @@ public class PictureActivity extends ActionBarActivity
         return dto;
     }
 
+    protected int getScreenOrientation()
+    {
+        Display getOrient = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
 
+        getOrient.getSize(size);
+
+        int orientation;
+        if (size.x < size.y)
+        {
+            orientation = Configuration.ORIENTATION_PORTRAIT;
+        }
+        else
+        {
+            orientation = Configuration.ORIENTATION_LANDSCAPE;
+        }
+        return orientation;
+    }
 }

@@ -19,8 +19,6 @@ import com.boha.library.dto.AccountDTO;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.transfer.ResponseDTO;
-import com.boha.library.util.CacheUtil;
-import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
 
@@ -38,10 +36,10 @@ import java.util.TimerTask;
 public class ProfileInfoFragment extends Fragment implements PageFragment {
 
 
-    public static ProfileInfoFragment newInstance() {
+    public static ProfileInfoFragment newInstance(ResponseDTO p) {
         ProfileInfoFragment fragment = new ProfileInfoFragment();
         Bundle args = new Bundle();
-
+        args.putSerializable("response",p);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,10 +74,13 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
         view = inflater.inflate(R.layout.fragment_citizen, container, false);
         ctx = getActivity();
         setFields();
-
-        profileInfo = SharedUtil.getProfile(getActivity());
-        txtName.setText(profileInfo.getFirstName() + " " + profileInfo.getLastName());
-        getCachedInfo();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            ResponseDTO dto = (ResponseDTO)bundle.getSerializable("response");
+            profileInfo = dto.getProfileInfoList().get(0);
+            complaintList = dto.getComplaintList();
+            getTotals();
+        }
 
         return view;
     }
@@ -91,23 +92,6 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
         btnAccountDetails = (Button) view.findViewById(R.id.button);
     }
 
-    private void getCachedInfo() {
-        CacheUtil.getCacheLoginData(ctx, new CacheUtil.CacheRetrievalListener() {
-            @Override
-            public void onCacheRetrieved(ResponseDTO response) {
-                if (response != null) {
-                    profileInfo = response.getProfileInfoList().get(0);
-                    complaintList = response.getComplaintList();
-                    getTotals();
-                }
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
-    }
 
     private void setProfileInfo(ProfileInfoDTO profileInfo) {
         this.profileInfo = profileInfo;

@@ -21,7 +21,7 @@
 
             <TextView
                 android:id="@+id/DASH_currBal"
-                android:text="75,000,000.00"
+                android:text="0.00"
                 android:elevation="@dimen/mon_padding"
                 android:padding="@dimen/mon_padding"
                 style="@style/Title1TextStyleGreen"
@@ -38,7 +38,7 @@
 
             <TextView
                 android:id="@+id/DASH_arrears"
-                android:text="237,000,000.00"
+                android:text="0.00"
                 android:padding="@dimen/mon_padding"
                 style="@style/Title3TextStyleRed"
                 android:textStyle="bold" />
@@ -54,7 +54,7 @@
 
             <TextView
                 android:id="@+id/DASH_complaintCount"
-                android:text="33"
+                android:text="0"
                 android:elevation="@dimen/mon_padding"
                 android:padding="@dimen/mon_padding"
                 style="@style/Title1TextStyleBlue"
@@ -71,13 +71,14 @@
 
             <TextView
                 android:id="@+id/DASH_resolvedCount"
-                android:text="11"
+                android:text="0"
                 android:padding="@dimen/mon_padding"
                 style="@style/Title2TextStyleGreen"
                 android:textStyle="bold" />
         </TableRow>
         <TableRow
             android:paddingTop="@dimen/mon_wide"
+            android:visibility="gone"
             android:paddingBottom="@dimen/mon_padding"
             android:paddingLeft="@dimen/mon_padding">
 

@@ -25,6 +25,7 @@ import com.boha.library.dto.MunicipalityStaffDTO;
 import com.boha.library.services.GCMDeviceService;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
+import com.boha.library.util.CityImages;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
@@ -252,13 +253,13 @@ public class SplashActivity extends ActionBarActivity {
                         if (index == lastIndex) {
                             index = RANDOM.nextInt(9);
                         }
-                        heroImage.setImageDrawable(getImage(ctx));
+                        heroImage.setImageDrawable(getImage());
                         timer.cancel();
                     }
                 });
 
             }
-        }, ONE_SECOND, FIVE_SECONDS);
+        }, ONE_SECOND/2, FIVE_SECONDS);
     }
 
     @Override
@@ -307,63 +308,65 @@ public class SplashActivity extends ActionBarActivity {
 
     static int index, imageCount;
     static int lastIndex;
-    static final int IMAGE_COUNT_MAX = 10;
+    static final int NUMBER_OF_IMAGES = 30;
 
-    public static Drawable getImage(Context ctx) {
-        if (ctx == null) {
-            return null;
-        }
-        int index = RANDOM.nextInt(9);
-        if (index == lastIndex) {
-            index = RANDOM.nextInt(9);
-        }
-        Drawable p = null;
-        switch (index) {
-            case 0:
-
-                p = ctx.getResources().getDrawable(R.drawable.dbn10);
-                break;
-            case 1:
-                p = ctx.getResources().getDrawable(R.drawable.dbn11);
-                break;
-            case 2:
-                p = ctx.getResources().getDrawable(R.drawable.dbn12);
-                break;
-            case 3:
-                p = ctx.getResources().getDrawable(R.drawable.dbn13);
-                break;
-            case 4:
-                p = ctx.getResources().getDrawable(R.drawable.dbn14);
-                break;
-
-            case 5:
-                p = ctx.getResources().getDrawable(R.drawable.dbn15);
-                break;
-            case 6:
-                p = ctx.getResources().getDrawable(R.drawable.dbn16);
-                break;
-            case 7:
-                p = ctx.getResources().getDrawable(R.drawable.dbn17);
-                break;
-            case 8:
-                p = ctx.getResources().getDrawable(R.drawable.dbn18);
-                break;
-            case 9:
-                p = ctx.getResources().getDrawable(R.drawable.dbn19);
-                break;
-            default:
-                p = ctx.getResources().getDrawable(R.drawable.dbn13);
-                break;
-
-        }
-
-        lastIndex = index;
-        return p;
-    }
 
     @Override
     public void onPause() {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         super.onPause();
+    }
+    static CityImages cityImages;
+
+    public  static Drawable getImage() {
+        if (cityImages == null) {
+            getLocalCityImages();
+        }
+        return cityImages.getImage(ctx);
+    }
+    //todo - download new, improved images in background if available.
+    private static void getLocalCityImages() {
+
+        if (SharedUtil.getCityImages(ctx) != null) {
+            cityImages = SharedUtil.getCityImages(ctx);
+            return;
+        }
+
+        cityImages = new CityImages();
+        int[]imageResourceIDs = new int[NUMBER_OF_IMAGES];
+        imageResourceIDs[0] = R.drawable.acity1;
+        imageResourceIDs[1] = R.drawable.acity2;
+        imageResourceIDs[2] = R.drawable.acity3;
+        imageResourceIDs[3] = R.drawable.acity4;
+        imageResourceIDs[4] = R.drawable.acity5;
+        imageResourceIDs[5] = R.drawable.acity6;
+        imageResourceIDs[6] = R.drawable.acity7;
+        imageResourceIDs[7] = R.drawable.acity8;
+        imageResourceIDs[8] = R.drawable.acity9;
+        imageResourceIDs[9] = R.drawable.acity10;
+        imageResourceIDs[10] = R.drawable.acity11;
+        imageResourceIDs[11] = R.drawable.acity12;
+        imageResourceIDs[12] = R.drawable.acity13;
+        imageResourceIDs[13] = R.drawable.acity14;
+        imageResourceIDs[14] = R.drawable.acity15;
+        imageResourceIDs[15] = R.drawable.acity16;
+        imageResourceIDs[16] = R.drawable.acity17;
+        imageResourceIDs[17] = R.drawable.acity18;
+        imageResourceIDs[18] = R.drawable.acity19;
+        imageResourceIDs[19] = R.drawable.acity20;
+        imageResourceIDs[20] = R.drawable.acity21;
+        imageResourceIDs[21] = R.drawable.acity22;
+        imageResourceIDs[22] = R.drawable.acity23;
+        imageResourceIDs[23] = R.drawable.acity24;
+        imageResourceIDs[24] = R.drawable.acity25;
+        imageResourceIDs[25] = R.drawable.acity26;
+        imageResourceIDs[26] = R.drawable.acity27;
+        imageResourceIDs[27] = R.drawable.acity28;
+        imageResourceIDs[28] = R.drawable.acity29;
+        imageResourceIDs[29] = R.drawable.acity30;
+
+        cityImages.setImageResourceIDs(imageResourceIDs);
+        SharedUtil.setCityImages(ctx, cityImages);
+
     }
 }

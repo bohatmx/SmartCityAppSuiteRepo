@@ -14,7 +14,7 @@
 
                 <ImageView
                     android:id="@+id/NEWS_LIST_heroImage"
-                    android:src="@drawable/city4"
+                    android:src="@drawable/under_construction"
                     android:scaleType="centerCrop"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/mon_hero_height_medium" />

@@ -154,7 +154,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        heroImage.setImageDrawable(SplashActivity.getImage(ctx));
+                        heroImage.setImageDrawable(SplashActivity.getImage());
                     }
                 });
 

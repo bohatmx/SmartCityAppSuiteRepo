@@ -25,7 +25,7 @@
                 android:layout_height="@dimen/mon_hero_height_medium"
                 android:layout_below="@id/SIGNIN_handle"
                 android:scaleType="centerCrop"
-                android:src="@drawable/city1" />
+                android:src="@drawable/under_construction" />
 
 
         </RelativeLayout>

@@ -96,9 +96,8 @@ public class GcmIntentService extends GCMBaseIntentService {
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
 				.setContentIntent(resultPendingIntent)
-//				.addAction(R.drawable.logo, SharedUtil.getMunicipality(getApplicationContext()).getMunicipalityName(), resultPendingIntent)
 				.setSmallIcon(R.drawable.logo)
-				.setContentTitle("Message from " + SharedUtil.getMunicipality(getApplicationContext()).getMunicipalityName())
+				.setContentTitle(SharedUtil.getMunicipality(getApplicationContext()).getMunicipalityName())
 				.setContentText(message);
 
 		mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
