@@ -240,11 +240,11 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
     private void sendAlert() {
         RequestDTO w = new RequestDTO(RequestDTO.ADD_ALERT);
         AlertDTO a = new AlertDTO();
-        if (editDesc.getText().toString().isEmpty()) {
-            Util.showErrorToast(ctx,"Please enter a brief description or message");
-            return;
-
-        }
+//        if (editDesc.getText().toString().isEmpty()) {
+//            Util.showErrorToast(ctx,"Please enter a brief description or message");
+//            return;
+//
+//        }
         a.setDescription(editDesc.getText().toString());
         a.setAlertType(alertType);
         a.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());

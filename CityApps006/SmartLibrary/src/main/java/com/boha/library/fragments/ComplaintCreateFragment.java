@@ -145,10 +145,10 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     private void sendComplaint() {
 
 
-        if (editComment.getText().toString().isEmpty()) {
-            Util.showToast(ctx, "Please enter complaint");
-            return;
-        }
+//        if (editComment.getText().toString().isEmpty()) {
+//            Util.showToast(ctx, "Please enter complaint");
+//            return;
+//        }
         if (complaintType == null) {
             Util.showToast(ctx, "Please select complaint type");
             return;

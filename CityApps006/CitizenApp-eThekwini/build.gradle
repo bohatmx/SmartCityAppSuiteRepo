@@ -12,7 +12,7 @@ android {
         applicationId "com.boha.citizenapp.ethekwini"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 7
+        versionCode 9
         versionName "1.0"
     }
     buildTypes {

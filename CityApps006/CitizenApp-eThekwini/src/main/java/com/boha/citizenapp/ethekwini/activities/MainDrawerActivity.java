@@ -131,7 +131,7 @@ public class MainDrawerActivity extends ActionBarActivity
         logo = R.drawable.logo;
         //
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout),NavigationDrawerFragment.FROM_MAIN);
+                (DrawerLayout) findViewById(R.id.drawer_layout), NavigationDrawerFragment.FROM_MAIN);
         mPager = (ViewPager) findViewById(com.boha.library.R.id.pager);
         mPager.setOffscreenPageLimit(NUM_ITEMS);
 
@@ -178,6 +178,7 @@ public class MainDrawerActivity extends ActionBarActivity
         goToAlerts = true;
         getLoginData();
     }
+
     private void checkGPS() {
         LocationManager lm = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
         if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
@@ -291,11 +292,15 @@ public class MainDrawerActivity extends ActionBarActivity
             @Override
             public void onCacheRetrieved(ResponseDTO r) {
                 response = r;
-                if (profileInfo != null) {
-                    profileInfo = response.getProfileInfoList().get(0);
+                if (response.getProfileInfoList() != null && !response.getProfileInfoList().isEmpty()) {
+                    buildPages();
+                } else {
+                    if (response.getUserList() != null && !response.getUserList().isEmpty()) {
+                        buildPages();
+                    } else {
+                        getLoginData();
+                    }
                 }
-
-                buildPages();
 
 
             }
@@ -308,7 +313,7 @@ public class MainDrawerActivity extends ActionBarActivity
         });
     }
 
-    ProfileInfoDTO profileInfo;
+    private ProfileInfoDTO profileInfo;
     UserDTO user;
     private static final int NUM_ITEMS = 5;
 
@@ -344,7 +349,7 @@ public class MainDrawerActivity extends ActionBarActivity
 
                             SharedUtil.saveProfile(ctx, sp);
                         } else {
-                            SharedUtil.saveUser(ctx,response.getUserList().get(0));
+                            SharedUtil.saveUser(ctx, response.getUserList().get(0));
                         }
                         if (alertListFragment != null) {
                             if (isRefresh) {
@@ -356,7 +361,7 @@ public class MainDrawerActivity extends ActionBarActivity
 
                         CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
                             @Override
-                            public void onDataCached()  {
+                            public void onDataCached() {
                                 buildPages();
                             }
 
@@ -410,12 +415,11 @@ public class MainDrawerActivity extends ActionBarActivity
     private void buildPages() {
 
         pageFragmentList = new ArrayList<>();
-        if (profileInfo != null) {
+        if (response.getProfileInfoList() != null && !response.getProfileInfoList().isEmpty()) {
             profileInfoFragment = ProfileInfoFragment.newInstance(response);
             profileInfoFragment.setThemeColors(themePrimaryColor, themeDarkColor);
             profileInfoFragment.setLogo(logo);
             profileInfoFragment.setPageTitle(ctx.getString(R.string.my_accounts));
-//            profileInfoFragment.setp
         }
 
         complaintCreateFragment = ComplaintCreateFragment.newInstance();
@@ -440,7 +444,7 @@ public class MainDrawerActivity extends ActionBarActivity
         complaintsAroundMeFragment.setPageTitle(ctx.getString(R.string.complaints_around_me));
         newsListFragment.setPageTitle(ctx.getString(R.string.city_news));
 
-        if (profileInfo != null) {
+        if (profileInfoFragment != null) {
             pageFragmentList.add(profileInfoFragment);
         }
         pageFragmentList.add(alertListFragment);
@@ -491,7 +495,8 @@ public class MainDrawerActivity extends ActionBarActivity
                 finish();
                 Intent w = new Intent(this, MainDrawerActivity.class);
                 startActivity(w);
-            } catch (Exception e2) {}
+            } catch (Exception e2) {
+            }
         }
     }
 
@@ -560,13 +565,14 @@ public class MainDrawerActivity extends ActionBarActivity
         Intent intent = new Intent(ctx, AccountDetailWithDrawer.class);
         intent.putExtra("profileInfo", profileInfo);
         intent.putExtra("logo", logo);
-        intent.putExtra("darkColor",themeDarkColor);
-        intent.putExtra("primaryColor",themePrimaryColor);
+        intent.putExtra("darkColor", themeDarkColor);
+        intent.putExtra("primaryColor", themePrimaryColor);
         startActivityForResult(intent, CHECK_DESTINATION);
 
     }
 
     static final int CHECK_DESTINATION = 9086;
+
     /**
      * Adapter to manage fragments in view pager
      */
@@ -725,6 +731,7 @@ public class MainDrawerActivity extends ActionBarActivity
             TWO_MINUTES = ONE_MINUTE * 2, REQUEST_COMPLAINT_PICTURES = 1123;
 
     boolean startLocationUpdates;
+
     protected void startLocationUpdates() {
         Log.d(LOG, "### startLocationUpdates ....");
         if (googleApiClient.isConnected()) {
@@ -754,7 +761,7 @@ public class MainDrawerActivity extends ActionBarActivity
 
     @Override
     public void onActivityResult(int reqCode, int result, Intent data) {
-        Log.e(LOG,"### onActivityResult reqCode: " + reqCode + " result: " + result);
+        Log.e(LOG, "### onActivityResult reqCode: " + reqCode + " result: " + result);
         switch (reqCode) {
             case CHECK_DESTINATION:
                 if (result == RESULT_OK) {
@@ -762,7 +769,7 @@ public class MainDrawerActivity extends ActionBarActivity
                     String text = data.getStringExtra("destinationSelected");
                     onDestinationSelected(position, text);
                 } else {
-                    Log.e(LOG,"onActivityResult cancelled: " + RESULT_CANCELED);
+                    Log.e(LOG, "onActivityResult cancelled: " + RESULT_CANCELED);
                 }
                 break;
             case REQUEST_LOCATION_ENABLE:

@@ -358,7 +358,8 @@ public class SigninActivity extends ActionBarActivity {
     public void onBackPressed() {
         Log.w(LOG, "########### onBackPressed");
         profileInfo = SharedUtil.getProfile(ctx);
-        if (profileInfo != null) {
+        UserDTO user = SharedUtil.getUser(ctx);
+        if (profileInfo != null || user != null) {
             setResult(RESULT_OK);
             finish();
             Intent i = new Intent(ctx, MainDrawerActivity.class);

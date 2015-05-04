@@ -136,7 +136,7 @@ public class AccountDetailWithDrawer extends ActionBarActivity
 
         fabIcon.setVisibility(View.GONE);
         txtFAB.setVisibility(View.VISIBLE);
-        //btnCurrBal.setTextSize(2f);
+        hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
         setFont();
         btnCurrBal.setOnClickListener(new View.OnClickListener() {
             @Override
