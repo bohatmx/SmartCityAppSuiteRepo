@@ -34,7 +34,7 @@ public class AlertListAdapter extends ArrayAdapter<AlertDTO> {
     static final String LOG = AlertListAdapter.class.getSimpleName();
 
     public AlertListAdapter(Context context, int textViewResourceId,
-                            List<AlertDTO> list,AlertListListener listener) {
+                            List<AlertDTO> list, AlertListListener listener) {
         super(context, textViewResourceId, list);
         this.mLayoutRes = textViewResourceId;
         this.listener = listener;
@@ -115,26 +115,19 @@ public class AlertListAdapter extends ArrayAdapter<AlertDTO> {
                 listener.onAlertClicked(position);
             }
         });
-        Statics.setRomanFontLight(ctx,item.txtDesc);
-        //get random image if available ...
+        Statics.setRomanFontLight(ctx, item.txtDesc);
+        //get first image if available ...
         if (p.getAlertImageList() != null && !p.getAlertImageList().isEmpty()) {
             item.image.setVisibility(View.VISIBLE);
-            if (p.getAlertImageList().size() == 1) {
-                String url = Util.getAlertImageURL(p.getAlertImageList().get(0));
-                setImage(url,item.image);
-            } else {
-                int index = random.nextInt(p.getAlertImageList().size() - 1);
-                String url = Util.getAlertImageURL(p.getAlertImageList().get(index));
-                setImage(url,item.image);
-            }
-
+            String url = Util.getAlertImageURL(p.getAlertImageList().get(0));
+            setImage(url, item.image);
         } else {
             item.image.setVisibility(View.GONE);
         }
         return (convertView);
     }
 
-    private void setImage(String url, final ImageView  image) {
+    private void setImage(String url, final ImageView image) {
         ImageLoader.getInstance().displayImage(url, image, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String s, View view) {
@@ -158,9 +151,11 @@ public class AlertListAdapter extends ArrayAdapter<AlertDTO> {
             }
         });
     }
+
     public interface AlertListListener {
         public void onAlertClicked(int position);
     }
+
     static final Random random = new Random(System.currentTimeMillis());
     static final Locale loc = Locale.getDefault();
     static final SimpleDateFormat sdfDate = new SimpleDateFormat("EEE dd MMM yyyy", loc);

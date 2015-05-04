@@ -16,6 +16,7 @@ import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
@@ -582,9 +583,12 @@ public class PictureActivity extends ActionBarActivity
                     int orient = getScreenOrientation();
                     Log.i(LOG, "@@@@@@@@@@@@@@@@@@@@@@ Orientation says: " + orient);
                     float rotate = 0f;
-                    if (orient == Configuration.ORIENTATION_LANDSCAPE) {
+//                    if (orient == Configuration.ORIENTATION_LANDSCAPE) {
+//                        rotate = 90f;
+//                        Log.i(LOG, "@@@@@--------->> picture, rotate = " + rotate);
+//                    }
+                    if (Build.MANUFACTURER.contains("SAMSUNG")) {
                         rotate = 90f;
-                        Log.i(LOG, "@@@@@--------->> picture, rotate = " + rotate);
                     }
                     try {
                         BitmapFactory.Options options = new BitmapFactory.Options();

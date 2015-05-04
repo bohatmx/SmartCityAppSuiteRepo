@@ -1,7 +1,6 @@
 package com.boha.library.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,6 @@ import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintTypeDTO;
 import com.boha.library.util.Util;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,7 +22,7 @@ import java.util.Random;
 
 public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
 
-    CmplaintListListener listener;
+    ComplaintListListener listener;
 
     private final LayoutInflater mInflater;
     private final int mLayoutRes;
@@ -34,7 +31,7 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
     static final String LOG = ComplaintListAdapter.class.getSimpleName();
 
     public ComplaintListAdapter(Context context, int textViewResourceId,
-                                List<ComplaintDTO> list, CmplaintListListener listener) {
+                                List<ComplaintDTO> list, ComplaintListListener listener) {
         super(context, textViewResourceId, list);
         this.mLayoutRes = textViewResourceId;
         this.listener = listener;
@@ -66,7 +63,7 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
     }
 
     public View getCustomView(final int position, View convertView, ViewGroup parent) {
-         ViewHolderItem item;
+         final ViewHolderItem item;
         if (convertView == null) {
             convertView = mInflater.inflate(mLayoutRes, null);
             item = new ViewHolderItem();
@@ -82,6 +79,7 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
             item.iconFollow = (ImageView)convertView.findViewById(R.id.CI_iconFollow);
             item.iconCamera = (ImageView)convertView.findViewById(R.id.CI_iconCamera);
             item.iconRoll = (ImageView)convertView.findViewById(R.id.CI_iconRoll);
+            item.image = (ImageView)convertView.findViewById(R.id.CI_image);
 
 
             convertView.setTag(item);
@@ -100,6 +98,11 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
         item.txtComment.setText(p.getRemarks());
         item.txtRef.setText(p.getReferenceNumber());
         item.position = position;
+        if (p.getAddress() != null) {
+            item.txtAddress.setText(p.getAddress());
+        } else {
+            item.txtAddress.setText("");
+        }
 
 
         if (p.getComplaintType() != null) {
@@ -115,28 +118,56 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
                     break;
             }
         }
+        if (p.getComplaintImageList() != null && !p.getComplaintImageList().isEmpty()) {
+            item.image.setVisibility(View.VISIBLE);
+            String url = Util.getComplaintImageURL(p.getComplaintImageList().get(0));
+            ImageLoader.getInstance().displayImage(url,item.image);
+        } else {
+            item.image.setVisibility(View.GONE);
+        }
+
         item.iconFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onFollowRequested(p);
+                Util.flashOnce(item.iconFollow, 300, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        listener.onComplaintFollowRequested(p);
+                    }
+                });
             }
         });
         item.iconDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onStatusRequested(p);
+                Util.flashOnce(item.iconDetails, 300, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        listener.onComplaintStatusRequested(p);
+                    }
+                });
             }
         });
         item.iconCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onCameraRequested(p);
+                Util.flashOnce(item.iconCamera, 300, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        listener.onComplaintCameraRequested(p);
+                    }
+                });
             }
         });
         item.iconRoll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onImagesRequested(p);
+                Util.flashOnce(item.iconRoll, 300, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        listener.onComplaintImagesRequested(p);
+                    }
+                });
             }
         });
 
@@ -144,35 +175,12 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
         return (convertView);
     }
 
-    private void setImage(String url, final ImageView  image) {
-        ImageLoader.getInstance().displayImage(url, image, new ImageLoadingListener() {
-            @Override
-            public void onLoadingStarted(String s, View view) {
 
-            }
-
-            @Override
-            public void onLoadingFailed(String s, View view, FailReason failReason) {
-                image.setImageDrawable(ctx.getResources().getDrawable(R.drawable.under_construction));
-                image.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-
-            }
-
-            @Override
-            public void onLoadingCancelled(String s, View view) {
-
-            }
-        });
-    }
-    public interface CmplaintListListener {
-        void onFollowRequested(ComplaintDTO complaint);
-        void onStatusRequested(ComplaintDTO complaint);
-        void onCameraRequested(ComplaintDTO complaint);
-        void onImagesRequested(ComplaintDTO complaint);
+    public interface ComplaintListListener {
+        void onComplaintFollowRequested(ComplaintDTO complaint);
+        void onComplaintStatusRequested(ComplaintDTO complaint);
+        void onComplaintCameraRequested(ComplaintDTO complaint);
+        void onComplaintImagesRequested(ComplaintDTO complaint);
     }
     static final Random random = new Random(System.currentTimeMillis());
     static final Locale loc = Locale.getDefault();

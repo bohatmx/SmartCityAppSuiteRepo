@@ -142,8 +142,16 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/CI_image"
+        android:src="@drawable/back4"
+        android:scaleType="centerCrop"
         android:layout_below="@id/CI_detailsView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mon_picture_large" />
+    <RelativeLayout
+        android:id="@+id/CI_followLayout"
+        android:layout_below="@id/CI_image"
         android:padding="@dimen/mon_margin"
         android:background="@color/white"
         android:layout_width="match_parent"

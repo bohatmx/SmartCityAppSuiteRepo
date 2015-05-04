@@ -225,24 +225,24 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
 
         txtCount.setText("" + complaintList.size());
         ComplaintListAdapter adapter = new ComplaintListAdapter(ctx, R.layout.complaint_item,
-                complaintList, new ComplaintListAdapter.CmplaintListListener() {
+                complaintList, new ComplaintListAdapter.ComplaintListListener() {
             @Override
-            public void onFollowRequested(ComplaintDTO complaint) {
-                underConstruction();
+            public void onComplaintFollowRequested(ComplaintDTO complaint) {
+                addFollower(complaint);
             }
 
             @Override
-            public void onStatusRequested(ComplaintDTO complaint) {
+            public void onComplaintStatusRequested(ComplaintDTO complaint) {
                 getCaseDetails(complaint.getReferenceNumber());
             }
 
             @Override
-            public void onCameraRequested(ComplaintDTO complaint) {
+            public void onComplaintCameraRequested(ComplaintDTO complaint) {
                 underConstruction();
             }
 
             @Override
-            public void onImagesRequested(ComplaintDTO complaint) {
+            public void onComplaintImagesRequested(ComplaintDTO complaint) {
                 underConstruction();
             }
         });
