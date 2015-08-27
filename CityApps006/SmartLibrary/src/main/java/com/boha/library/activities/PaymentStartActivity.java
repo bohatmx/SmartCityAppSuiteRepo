@@ -4,7 +4,8 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -20,7 +21,8 @@ import com.boha.library.util.Util;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
-public class PaymentStartActivity extends ActionBarActivity implements PaymentStartFragment.PaymentStartListener{
+public class PaymentStartActivity extends AppCompatActivity
+        implements PaymentStartFragment.PaymentStartListener{
 
     AccountDTO account;
     PaymentStartFragment paymentStartFragment;
@@ -45,7 +47,7 @@ public class PaymentStartActivity extends ActionBarActivity implements PaymentSt
 
 
         MunicipalityDTO municipality = SharedUtil.getMunicipality(getApplicationContext());
-            Drawable d = ctx.getResources().getDrawable(logo);
+            Drawable d = ContextCompat.getDrawable(ctx,logo);
             Util.setCustomActionBar(ctx,
                     getSupportActionBar(),
                     municipality.getMunicipalityName(), d,logo);

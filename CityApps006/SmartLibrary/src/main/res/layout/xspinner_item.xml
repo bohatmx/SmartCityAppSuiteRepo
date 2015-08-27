@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="0dp">
+    android:padding="@dimen/mon_padding">
 
 
     <RelativeLayout
@@ -12,8 +12,7 @@
 
         <ImageView
             android:id="@+id/image1"
-            android:src="@android:drawable/ic_dialog_info"
-            android:tint="@color/absa_red"
+            android:src="@drawable/zwaste_water"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

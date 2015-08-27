@@ -22,7 +22,7 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -67,7 +67,7 @@ import java.util.List;
 /**
  * Created by aubreyM on 2014/04/21.
  */
-public class PictureActivity extends ActionBarActivity
+public class PictureActivity extends AppCompatActivity
         implements LocationListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
@@ -110,11 +110,11 @@ public class PictureActivity extends ActionBarActivity
                 txtType.setText(alert.getAlertType().getAlertTypeName());
                 break;
             case COMPLAINT_IMAGE:
-                complaint = (ComplaintDTO)getIntent().getSerializableExtra("complaint");
+                complaint = (ComplaintDTO) getIntent().getSerializableExtra("complaint");
                 txtType.setText(complaint.getComplaintType().getComplaintTypeName());
                 break;
             case NEWS_ARTICLE_IMAGE:
-                newsArticle = (NewsArticleDTO)getIntent().getSerializableExtra("newsArticle");
+                newsArticle = (NewsArticleDTO) getIntent().getSerializableExtra("alert");
                 break;
         }
 
@@ -130,7 +130,7 @@ public class PictureActivity extends ActionBarActivity
         Drawable d = ctx.getResources().getDrawable(logo);
         Util.setCustomActionBar(ctx,
                 actionBar,
-                municipality.getMunicipalityName(), d,logo);
+                municipality.getMunicipalityName(), d, logo);
         getSupportActionBar().setTitle("");
         dispatchTakePictureIntent();
 
@@ -157,7 +157,7 @@ public class PictureActivity extends ActionBarActivity
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         Log.e(LOG, "%%%%%%%%%%%% onRestoreInstanceState" + savedInstanceState);
         type = savedInstanceState.getInt("type", 0);
-        alert = (AlertDTO) savedInstanceState.getSerializable("complaint");
+        alert = (AlertDTO) savedInstanceState.getSerializable("alert");
         String path = savedInstanceState.getString("photoFile");
         if (path != null) {
             photoFile = new File(path);
@@ -298,8 +298,8 @@ public class PictureActivity extends ActionBarActivity
     }
 
     Location location;
-    static final float ACCURACY_THRESHOLD = 25;
-    ActionBarActivity activity;
+    static final float ACCURACY_THRESHOLD = 15;
+    AppCompatActivity activity;
 
     @Override
     public void onConnected(Bundle bundle) {
@@ -476,7 +476,7 @@ public class PictureActivity extends ActionBarActivity
 
     class PhotoTask extends AsyncTask<Void, Void, Integer> {
 
-        private  int calculateInSampleSize(
+        private int calculateInSampleSize(
                 BitmapFactory.Options options, int reqWidth, int reqHeight) {
             // Raw height and width of image
             final int height = options.outHeight;
@@ -498,7 +498,8 @@ public class PictureActivity extends ActionBarActivity
             Log.w(LOG, "## calculateInSampleSize: " + inSampleSize);
             return inSampleSize;
         }
-        public  void writeLocationToExif(String filePath, Location loc) {
+
+        public void writeLocationToExif(String filePath, Location loc) {
             try {
                 ExifInterface ef = new ExifInterface(filePath);
                 ef.setAttribute(ExifInterface.TAG_GPS_LATITUDE, decimalToDMS(loc.getLatitude()));
@@ -518,7 +519,8 @@ public class PictureActivity extends ActionBarActivity
             } catch (IOException e) {
             }
         }
-        private  String decimalToDMS(double coord) {
+
+        private String decimalToDMS(double coord) {
             coord = coord > 0 ? coord : -coord;  // -105.9876543 -> 105.9876543
             String sOut = Integer.toString((int) coord) + "/1,";   // 105/1,
             coord = (coord % 1) * 60;         // .987654321 * 60 = 59.259258
@@ -529,7 +531,7 @@ public class PictureActivity extends ActionBarActivity
             return sOut;
         }
 
-        public  Location getLocationFromExif(String filePath) {
+        public Location getLocationFromExif(String filePath) {
             String sLat = "", sLatR = "", sLon = "", sLonR = "";
             try {
                 ExifInterface ef = new ExifInterface(filePath);
@@ -557,7 +559,7 @@ public class PictureActivity extends ActionBarActivity
         }
 
         //-------------------------------------------------------------------------
-        private  double DMSToDouble(String sDMS) {
+        private double DMSToDouble(String sDMS) {
             double dRV = 999.0;
             try {
                 String[] DMSs = sDMS.split(",", 3);
@@ -571,6 +573,7 @@ public class PictureActivity extends ActionBarActivity
             }
             return dRV;
         }
+
         @Override
         protected Integer doInBackground(Void... voids) {
             Log.w(LOG, "## PhotoTask doInBackground, file length: " + photoFile.length());
@@ -654,7 +657,7 @@ public class PictureActivity extends ActionBarActivity
                     photo.setMunicipalityID(municipality.getMunicipalityID());
                     switch (imageType) {
                         case ALERT_IMAGE:
-                            final AlertImageDTO ai = new AlertImageDTO();
+                            ai = new AlertImageDTO();
                             ai.setAlertID(alert.getAlertID());
                             ai.setMunicipalityID(municipality.getMunicipalityID());
                             ai.setLocalFilepath(currentThumbFile.getAbsolutePath());
@@ -664,7 +667,7 @@ public class PictureActivity extends ActionBarActivity
                             photo.setAlertImage(ai);
                             break;
                         case COMPLAINT_IMAGE:
-                            final ComplaintImageDTO ci = new ComplaintImageDTO();
+                            ci = new ComplaintImageDTO();
                             ci.setComplaintID(complaint.getComplaintID());
                             ci.setMunicipalityID(municipality.getMunicipalityID());
                             ci.setLocalFilepath(currentThumbFile.getAbsolutePath());
@@ -688,10 +691,9 @@ public class PictureActivity extends ActionBarActivity
 
                         @Override
                         public void onError() {
-                            Util.showErrorToast(ctx,getString(R.string.unable_save_photo));
+                            Util.showErrorToast(ctx, getString(R.string.unable_save_photo));
                         }
                     });
-
 
 
                 } catch (Exception e) {
@@ -702,7 +704,10 @@ public class PictureActivity extends ActionBarActivity
         }
     }
 
+    ComplaintImageDTO ci;
+    AlertImageDTO ai;
     static final DecimalFormat df = new DecimalFormat("###,###,###,###,###,###,###,###.0");
+
     private void addImageToScroller() {
         Log.i(LOG, "## addImageToScroller");
         if (currentSessionPhotos.size() == 1) {
@@ -824,20 +829,16 @@ public class PictureActivity extends ActionBarActivity
         return dto;
     }
 
-    protected int getScreenOrientation()
-    {
+    protected int getScreenOrientation() {
         Display getOrient = getWindowManager().getDefaultDisplay();
         Point size = new Point();
 
         getOrient.getSize(size);
 
         int orientation;
-        if (size.x < size.y)
-        {
+        if (size.x < size.y) {
             orientation = Configuration.ORIENTATION_PORTRAIT;
-        }
-        else
-        {
+        } else {
             orientation = Configuration.ORIENTATION_LANDSCAPE;
         }
         return orientation;

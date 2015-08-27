@@ -38,12 +38,11 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
-import com.boha.library.util.event.BusProvider;
-import com.boha.library.util.event.UserSignedInEvent;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -105,7 +104,6 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        BusProvider.getInstance().register(this);
     }
 
 
@@ -154,7 +152,8 @@ public class RegistrationActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        heroImage.setImageDrawable(SplashActivity.getImage());
+
+                        heroImage.setImageDrawable(SplashActivity.getImage(0));
                     }
                 });
 
@@ -185,6 +184,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
+    Random RANDOM = new Random(System.currentTimeMillis());
     private void setFieldsForCitizen() {
         editFirstName.setHint("Enter FirstName (Optional)");
         editLastName.setHint("Enter LastName (Optional)");
@@ -236,7 +236,6 @@ public class RegistrationActivity extends AppCompatActivity {
                         CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
                             @Override
                             public void onDataCached()  {
-                                BusProvider.getInstance().post(new UserSignedInEvent());
                             }
 
                             @Override
@@ -244,7 +243,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
                             }
                         });
-                        Intent i = new Intent(ctx, MainDrawerActivity.class);
+                        Intent i = new Intent(ctx, CitizenDrawerActivity.class);
                         startActivity(i);
                         finish();
                     }
@@ -335,7 +334,6 @@ public class RegistrationActivity extends AppCompatActivity {
                         CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
                             @Override
                             public void onDataCached()  {
-                                BusProvider.getInstance().post(new UserSignedInEvent());
                             }
 
                             @Override
@@ -343,7 +341,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
                             }
                         });
-                        Intent i = new Intent(ctx, MainDrawerActivity.class);
+                        Intent i = new Intent(ctx, CitizenDrawerActivity.class);
                         startActivity(i);
                         finish();
                     }
@@ -433,7 +431,6 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-        BusProvider.getInstance().unregister(this);
         super.onPause();
     }
 

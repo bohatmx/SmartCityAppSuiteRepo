@@ -2,6 +2,7 @@ package com.boha.library.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,6 @@ import android.widget.TextView;
 import com.boha.library.R;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.AlertTypeDTO;
-import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -86,20 +86,21 @@ public class AlertListAdapter extends ArrayAdapter<AlertDTO> {
 
         final AlertDTO p = mList.get(position);
         item.txtColor.setText("" + (position + 1));
-        item.txtType.setText(p.getAlertType().getAlertTypeName());
+//        item.txtType.setText(p.getAlertType().getAlertTypeName());
+        item.txtType.setVisibility(View.GONE);
         item.txtDate.setText(sdfDate.format(p.getUpdated()));
         item.txtTime.setText(sdfTime.format(p.getUpdated()));
         item.txtDesc.setText(p.getDescription());
         item.position = position;
         switch (p.getAlertType().getColor()) {
             case AlertTypeDTO.GREEN:
-                item.txtColor.setBackground(ctx.getResources().getDrawable(R.drawable.xgreen_oval_small));
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx,R.drawable.xgreen_oval_small));
                 break;
             case AlertTypeDTO.AMBER:
-                item.txtColor.setBackground(ctx.getResources().getDrawable(R.drawable.xamber_oval_small));
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xamber_oval_small));
                 break;
             case AlertTypeDTO.RED:
-                item.txtColor.setBackground(ctx.getResources().getDrawable(R.drawable.xred_oval_small));
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xred_oval_small));
                 break;
         }
 
@@ -115,15 +116,21 @@ public class AlertListAdapter extends ArrayAdapter<AlertDTO> {
                 listener.onAlertClicked(position);
             }
         });
-        Statics.setRomanFontLight(ctx, item.txtDesc);
+//        Statics.setRomanFontLight(ctx, item.txtDesc);
         //get first image if available ...
         if (p.getAlertImageList() != null && !p.getAlertImageList().isEmpty()) {
             item.image.setVisibility(View.VISIBLE);
             String url = Util.getAlertImageURL(p.getAlertImageList().get(0));
             setImage(url, item.image);
         } else {
-            item.image.setVisibility(View.GONE);
+//            if (p.getThumbnailURL() != null) {
+//                item.image.setVisibility(View.VISIBLE);
+//                setImage(p.getThumbnailURL(), item.image);
+//            } else {
+                item.image.setVisibility(View.GONE);
+//            }
         }
+        Util.scaleDownAndUp(convertView,300);
         return (convertView);
     }
 

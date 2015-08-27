@@ -1,6 +1,7 @@
 package com.boha.library.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,6 @@ import android.widget.TextView;
 import com.boha.library.R;
 import com.boha.library.dto.AlertTypeDTO;
 import com.boha.library.dto.NewsArticleDTO;
-import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -41,9 +41,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsArticleDTO> {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-
     View view;
-
 
     static class ViewHolderItem {
         protected ImageView image;
@@ -83,20 +81,21 @@ public class NewsListAdapter extends ArrayAdapter<NewsArticleDTO> {
 
         final NewsArticleDTO p = mList.get(position);
         item.txtColor.setText("" + (position + 1));
-        item.txtType.setText(p.getNewsArticleType().getNewsArticleTypeName());
+//        item.txtType.setText(p.getNewsArticleType().getNewsArticleTypeName());
+        item.txtType.setVisibility(View.GONE);
         item.txtDate.setText(sdfDate.format(p.getNewsDate()));
         item.txtTime.setText(sdfTime.format(p.getNewsDate()));
         item.txtDesc.setText(p.getNewsText());
         item.position = position;
         switch (p.getNewsArticleType().getColor()) {
             case AlertTypeDTO.GREEN:
-                item.txtColor.setBackground(ctx.getResources().getDrawable(R.drawable.xgreen_oval_small));
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xgreen_oval_small));
                 break;
             case AlertTypeDTO.AMBER:
-                item.txtColor.setBackground(ctx.getResources().getDrawable(R.drawable.xamber_oval_small));
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xamber_oval_small));
                 break;
             case AlertTypeDTO.RED:
-                item.txtColor.setBackground(ctx.getResources().getDrawable(R.drawable.xred_oval_small));
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xred_oval_small));
                 break;
         }
 
@@ -112,7 +111,7 @@ public class NewsListAdapter extends ArrayAdapter<NewsArticleDTO> {
                 listener.onNewsClicked(position);
             }
         });
-        Statics.setRomanFontLight(ctx,item.txtDesc);
+//        Statics.setRomanFontLight(ctx,item.txtDesc);
         //get random image if available ...
         if (p.getNewsArticleImageList() != null && !p.getNewsArticleImageList().isEmpty()) {
             item.image.setVisibility(View.VISIBLE);
@@ -126,7 +125,11 @@ public class NewsListAdapter extends ArrayAdapter<NewsArticleDTO> {
             }
 
         } else {
-            item.image.setVisibility(View.GONE);
+//            if (p.getThumbnailURL() != null) {
+//                ImageLoader.getInstance().displayImage(p.getThumbnailURL(), item.image);
+//            } else {
+                item.image.setVisibility(View.GONE);
+//            }
         }
         Util.scaleDownAndUp(convertView,300);
         return (convertView);

@@ -409,6 +409,11 @@ public class MainDrawerActivity extends ActionBarActivity
     }
 
     @Override
+    public void setBusy(boolean busy) {
+
+    }
+
+    @Override
     public void onNewsClicked(NewsArticleDTO news) {
 
     }
@@ -458,6 +463,7 @@ public class MainDrawerActivity extends ActionBarActivity
     public void onAlertClicked(AlertDTO alert) {
         Intent intent = new Intent(ctx, AlertMapActivity.class);
         intent.putExtra("alert", alert);
+        intent.putExtra("primaryColorDark", themeDarkColor);
         startActivity(intent);
 
     }

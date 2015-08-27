@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.dto.ComplaintImageDTO;
-import com.boha.library.util.Util;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -53,7 +52,7 @@ public class ComplaintPictureAdapter extends RecyclerView.Adapter<ComplaintPictu
         holder.date.setText(sdf.format(p.getDateTaken()));
         holder.position = position;
 
-        String url = Util.getComplaintImageURL(p);
+        String url = p.getUrl();
         ImageLoader.getInstance().displayImage(url, holder.image, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String s, View view) {

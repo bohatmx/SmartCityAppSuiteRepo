@@ -7,7 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +32,7 @@ import com.google.android.gms.analytics.Tracker;
  * Hosts the Fragment that manages the user's accounts.
  * Allows for payment process to be kicked off.
  */
-public class AccountActivity extends ActionBarActivity
+public class AccountActivity extends AppCompatActivity
         implements AccountFragment.AccountFragmentListener,
         NavigationDrawerFragment.NavigationDrawerListener {
 

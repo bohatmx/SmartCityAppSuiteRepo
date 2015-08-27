@@ -1,6 +1,7 @@
 package com.boha.library.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
 
 import org.joda.time.DateTime;
@@ -65,7 +65,6 @@ public class StatementAdapter extends ArrayAdapter<String> {
             item.txtNumber = (TextView) convertView.findViewById(R.id.SI_number);
             item.txtDate = (TextView) convertView.findViewById(R.id.SI_date);
 
-
             convertView.setTag(item);
         } else {
             item = (ViewHolderItem) convertView.getTag();
@@ -84,53 +83,13 @@ public class StatementAdapter extends ArrayAdapter<String> {
             i = name.lastIndexOf("_");
             String ms = name.substring(i + 1);
             DateTime dateTime = new DateTime(Integer.parseInt(ys),Integer.parseInt(ms),1,0,0);
-            item.txtDate.setText(sdf.format(dateTime.toDate()));
+            item.txtDate.setText(sdf.format(dateTime.toDate()) + " Statement");
         } catch (Exception e) {
             item.txtDate.setText("Unavailable date");
         }
 
-        int rand = random.nextInt(11);
-        switch (rand) {
-            case 0:
-                item.txtNumber.setBackground(ctx.getResources().getDrawable(R.drawable.xgreen_oval_small));
-                break;
-            case 1:
-                item.txtNumber.setBackground(ctx.getResources().getDrawable(R.drawable.xamber_oval_small));
-                break;
-            case 2:
-                item.txtNumber.setBackground(ctx.getResources().getDrawable(R.drawable.xred_oval_small));
-                break;
-            case 3:
-                item.txtNumber.setBackground(ctx.getResources().getDrawable(R.drawable.xblack_oval_small));
-                break;
-            case 4:
-                item.txtNumber.setBackground(ctx.getResources().getDrawable(R.drawable.xblue_oval_small));
-                break;
-            case 5:
-                item.txtNumber.setBackground(ctx.getResources().getDrawable(R.drawable.xgrey_oval_small));
-                break;
-            case 6:
-                item.txtNumber.setBackground(ctx.getResources().getDrawable(R.drawable.xgreen_oval_small));
-                break;
-            case 7:
-                item.txtNumber.setBackground(ctx.getResources().getDrawable(R.drawable.xblack_oval_small));
-                break;
-            case 8:
-                item.txtNumber.setBackground(ctx.getResources().getDrawable(R.drawable.xred_oval_small));
-                break;
-            case 9:
-                item.txtNumber.setBackground(ctx.getResources().getDrawable(R.drawable.xblue_oval_small));
-                break;
-            case 10:
-                item.txtNumber.setBackground(ctx.getResources().getDrawable(R.drawable.xamber_oval_small));
-                break;
-            case 11:
-                item.txtNumber.setBackground(ctx.getResources().getDrawable(R.drawable.xred_oval_small));
-                break;
-        }
-
-
-        Statics.setRobotoFontLight(ctx, item.txtFileName);
+        item.txtNumber.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xblue_oval_small));
+//        Statics.setRobotoFontLight(ctx, item.txtFileName);
         Util.scaleDownAndUp(convertView,200);
         return (convertView);
     }

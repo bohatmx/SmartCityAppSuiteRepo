@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:padding="@dimen/mon_padding"
+        android:layout_marginTop="@dimen/mon_margin"
+        android:background="?attr/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/title"
+            android:text="Select Statement Month"
+            style="@style/TextStyle"
+            android:textColor="@color/white"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/topLayout"
+        android:layout_below="@id/header"
+        android:orientation="horizontal"
+        android:padding="@dimen/mon_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Spinner
+            android:id="@+id/spinnerMonth"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Spinner
+            android:id="@+id/spinnerYear"
+            android:layout_weight="3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_below="@id/topLayout"
+        android:padding="@dimen/mon_margin"
+        android:layout_marginBottom="@dimen/mon_wide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/iconCancel"
+            android:src="@drawable/ic_action_cancel"
+            android:layout_centerVertical="true"
+            android:tint="@color/red_600"
+            android:layout_marginLeft="@dimen/mon_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/iconSearch"
+            android:src="@drawable/ic_action_search"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/mon_wide"
+            android:layout_width="56dp"
+            android:layout_height="56dp" />
+    </RelativeLayout>
+
+</RelativeLayout>

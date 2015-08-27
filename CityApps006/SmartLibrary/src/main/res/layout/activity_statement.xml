@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        android:name="com.boha.library.fragments.StatementFragment"
+        android:name="com.boha.library.fragments.StatementListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

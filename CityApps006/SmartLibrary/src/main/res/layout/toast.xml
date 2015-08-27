@@ -1,46 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/grey"
-    android:padding="0.5dp"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
+
     <RelativeLayout
         android:id="@+id/MONTOAST_top"
-        android:background="@color/medium_sea_green"
+        android:padding="@dimen/mon_margin"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mon_wider">
+        android:layout_height="wrap_content"
+        android:background="@color/teal_300">
+
         <TextView
             style="@style/Title3TextStyleWhite"
-            android:text="Information"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:text="Information" />
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_below="@id/MONTOAST_top"
-        android:padding="@dimen/mon_divider"
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mon_widest"/>
-    <TextView
-        android:id="@+id/MONTOAST_text"
-        style="@style/TextStyle"
-        android:text="General message text happens here and things could be long in the tooth."
-        android:layout_marginTop="@dimen/mon_wider"
-        android:padding="@dimen/mon_margin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/beige_pale"
+        android:layout_below="@id/MONTOAST_top"
+        android:padding="@dimen/mon_margin">
 
-    <TextView
-        android:id="@+id/MONTOAST_indicator"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="8dp"
-        style="@style/BlackCircleSmall"
-        android:text="M"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/MONTOAST_indicator"
+            style="@style/BlackCircleSmall"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="M" />
+        <TextView
+            android:id="@+id/MONTOAST_text"
+            style="@style/TextStyle"
+            android:layout_toRightOf="@id/MONTOAST_indicator"
+            android:layout_marginLeft="@dimen/mon_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="General message" />
+    </RelativeLayout>
 
 </RelativeLayout>

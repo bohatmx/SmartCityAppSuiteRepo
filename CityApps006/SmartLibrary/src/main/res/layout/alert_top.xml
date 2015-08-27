@@ -17,7 +17,7 @@
                     android:src="@drawable/under_construction"
                     android:scaleType="centerCrop"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/mon_hero_height_medium" />
+                    android:layout_height="@dimen/mon_hero_height_small" />
 
                 <RelativeLayout
                     android:id="@+id/ALERT_LIST_titleLayout"
@@ -29,7 +29,9 @@
                         android:id="@+id/ALERT_LIST_title"
                         style="@style/Title1TextStyleWhite"
                         android:text="@string/active_alerts"
+                        android:visibility="gone"
                         android:padding="@dimen/mon_padding"
+                        android:background="@color/transparent_black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
@@ -37,6 +39,7 @@
                         android:id="@+id/ALERT_LIST_subTitle"
                         android:layout_below="@id/ALERT_LIST_title"
                         style="@style/TextStyle"
+                        android:visibility="gone"
                         android:textColor="@color/white"
                         android:text="Some Sub Title when required"
                         android:layout_marginLeft="@dimen/mon_padding"
@@ -47,6 +50,7 @@
                         android:id="@+id/ALERT_LIST_icon"
                         android:src="@drawable/ic_action_new"
                         android:tint="@color/white"
+                        android:visibility="gone"
                         android:layout_alignParentRight="true"
                         android:layout_margin="@dimen/mon_margin"
                         android:layout_width="wrap_content"

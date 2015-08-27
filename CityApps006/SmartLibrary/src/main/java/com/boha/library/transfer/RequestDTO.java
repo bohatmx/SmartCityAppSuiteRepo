@@ -6,10 +6,12 @@
 package com.boha.library.transfer;
 
 import com.boha.library.dto.AlertDTO;
+import com.boha.library.dto.AlertImageDTO;
 import com.boha.library.dto.AlertTypeDTO;
 import com.boha.library.dto.CityDTO;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintFollowerDTO;
+import com.boha.library.dto.ComplaintImageDTO;
 import com.boha.library.dto.ComplaintTypeDTO;
 import com.boha.library.dto.CountryDTO;
 import com.boha.library.dto.CustomerStatusDTO;
@@ -17,13 +19,17 @@ import com.boha.library.dto.CustomerTypeDTO;
 import com.boha.library.dto.FaqDTO;
 import com.boha.library.dto.GcmDeviceDTO;
 import com.boha.library.dto.MunicipalityDTO;
+import com.boha.library.dto.MunicipalityImageDTO;
 import com.boha.library.dto.MunicipalityStaffDTO;
 import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.dto.NewsArticleTypeDTO;
+import com.boha.library.dto.ProfileImageDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.ProvinceDTO;
+import com.boha.library.dto.StaffImageDTO;
 import com.boha.library.dto.StaffTypeDTO;
 import com.boha.library.dto.UserDTO;
+import com.boha.library.util.RequestList;
 
 import java.util.List;
 
@@ -44,17 +50,18 @@ public class RequestDTO {
         this.requestType = requestType;
     }
 
-    private Integer requestType, radius = 20,
+    private Integer requestType, radius,
             municipalityID;
     private Integer year, month;
     private String userName, password, referenceNumber,
-            gcmRegistrationID, email,municipalityName, accountNumber;
-    private Double latitude = 0.0, longitude = 0.0;
+            gcmRegistrationID, email,municipalityName, accountNumber, dataURL;
+    private Double latitude, longitude;
 
     //select network protocol, FALSE = http, TRUE = websocket
-    private Boolean rideWebSocket = Boolean.TRUE;
+    private Boolean rideWebSocket = Boolean.FALSE;
     //response from server, format TRUE = zipped, compressed JSON, FALSE = normal JSON
     private Boolean zipResponse = Boolean.TRUE;
+    private Long lastSyncAttemptDate;
     //
     private AlertDTO alert;
     private UserDTO user;
@@ -77,6 +84,46 @@ public class RequestDTO {
     private List<StaffTypeDTO> staffTypeList;
     private List<CustomerStatusDTO> customerStatusList;
     private List<FaqDTO> faqList;
+
+    private AlertImageDTO alertImage;
+    private ComplaintImageDTO complaintImage;
+    private MunicipalityImageDTO municipalityImage;
+    private StaffImageDTO staffImage;
+    private ProfileImageDTO profileImage;
+    private PhotoUploadDTO photoUpload;
+    private RequestList requestList;
+
+    public Long getLastSyncAttemptDate() {
+        return lastSyncAttemptDate;
+    }
+
+    public void setLastSyncAttemptDate(Long lastSyncAttemptDate) {
+        this.lastSyncAttemptDate = lastSyncAttemptDate;
+    }
+
+    public RequestList getRequestList() {
+        return requestList;
+    }
+
+    public void setRequestList(RequestList requestList) {
+        this.requestList = requestList;
+    }
+
+    public String getDataURL() {
+        return dataURL;
+    }
+
+    public void setDataURL(String dataURL) {
+        this.dataURL = dataURL;
+    }
+
+    public PhotoUploadDTO getPhotoUpload() {
+        return photoUpload;
+    }
+
+    public void setPhotoUpload(PhotoUploadDTO photoUpload) {
+        this.photoUpload = photoUpload;
+    }
 
     /**
      * the following static integers represent the operations that the
@@ -118,7 +165,9 @@ public class RequestDTO {
             ADD_COMPLAINT_STATUS_UPDATE = 114,
             ADD_FREQUENTLY_ASKED_QUESTION = 115,
             ADD_GCM_DEVICE = 116,
-            ADD_COMPLAINT_FOLLOWER = 117;
+            ADD_COMPLAINT_FOLLOWER = 117,
+            ADD_PHOTO = 118,
+            PROCESS_CACHED_REQUESTS = 119;
 
     //Update data
     public static final int 
@@ -154,7 +203,9 @@ public class RequestDTO {
             GET_MUNICIPALITY_BY_NAME = 211,
             GET_COMPLAINT_FOLLOWERS = 212,
             GET_COMPLAINT_STATUS = 213,
-            GET_PDF_STATEMENT = 214;
+            GET_PDF_STATEMENT = 214,
+            GET_NEWS_DETAIL = 215,
+            GET_ALERT_DETAIL = 216;
 
     //get data
     public static final int 
@@ -177,6 +228,46 @@ public class RequestDTO {
             CLEAN_UP_ERROR_STORES = 999;
 
     int numberOfDays;
+
+    public AlertImageDTO getAlertImage() {
+        return alertImage;
+    }
+
+    public void setAlertImage(AlertImageDTO alertImage) {
+        this.alertImage = alertImage;
+    }
+
+    public ComplaintImageDTO getComplaintImage() {
+        return complaintImage;
+    }
+
+    public void setComplaintImage(ComplaintImageDTO complaintImage) {
+        this.complaintImage = complaintImage;
+    }
+
+    public MunicipalityImageDTO getMunicipalityImage() {
+        return municipalityImage;
+    }
+
+    public void setMunicipalityImage(MunicipalityImageDTO municipalityImage) {
+        this.municipalityImage = municipalityImage;
+    }
+
+    public StaffImageDTO getStaffImage() {
+        return staffImage;
+    }
+
+    public void setStaffImage(StaffImageDTO staffImage) {
+        this.staffImage = staffImage;
+    }
+
+    public ProfileImageDTO getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(ProfileImageDTO profileImage) {
+        this.profileImage = profileImage;
+    }
 
     public int getNumberOfDays() {
         return numberOfDays;

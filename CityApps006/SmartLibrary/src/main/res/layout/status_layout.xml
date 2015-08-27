@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="@dimen/mon_margin"
+    android:background="@color/beige_pale"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/title"
+        android:text="Complaint Status"
+        style="@style/Title2TextStyleBlack"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:id="@+id/dateLayout"
+        android:layout_below="@id/title"
+        android:layout_marginTop="@dimen/mon_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/SL_statusDate"
+            android:text="Tuesday 23 December 2099 10:30"
+            style="@style/TextStyleGreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/stLayout"
+        android:layout_below="@id/dateLayout"
+        android:padding="@dimen/mon_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="Acknowledgement"
+            android:id="@+id/SL_ack"
+            style="@style/Title3TextStyleRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/SL_statusText"
+            android:text="The municipality ....."
+            android:layout_marginTop="@dimen/mon_margin"
+            android:layout_below="@id/SL_ack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -33,11 +34,8 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
-import com.boha.library.util.event.BusProvider;
-import com.boha.library.util.event.UserSignedInEvent;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.squareup.otto.Subscribe;
 
 import java.util.Random;
 import java.util.Timer;
@@ -55,7 +53,7 @@ public class SplashActivity extends AppCompatActivity {
     UserDTO user;
     MunicipalityDTO municipality;
     static final Random RANDOM = new Random(System.currentTimeMillis());
-    static final int ONE_SECOND = 1000, QUICK = 200, FIVE_SECONDS = ONE_SECOND * 5;
+    static final int ONE_SECOND = 1000, QUICK = 200, THIRTY_SECONDS = ONE_SECOND * 30;
     static final String LOG = SplashActivity.class.getSimpleName();
     //TODO - customize the app for each Municipality
     /**
@@ -83,7 +81,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
         //eThekwini logo - will be different for each municipality
-        logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.logo));
+        logo.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.logo));
         setTitle(MUNICIPALITY_NAME + " SmartCity");
         startTimer();
         ActionBar actionBar = getSupportActionBar();
@@ -117,6 +115,8 @@ public class SplashActivity extends AppCompatActivity {
         btnRegister = (Button) findViewById(R.id.SPLASH_btnRegister);
         btnSignIn = (Button) findViewById(R.id.SPLASH_btnSignin);
         progressBar.setVisibility(View.GONE);
+
+        btnRegister.setVisibility(View.GONE);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,6 +154,11 @@ public class SplashActivity extends AppCompatActivity {
         });
 
         if (SharedUtil.getProfile(ctx) != null) {
+            btnSignIn.setVisibility(View.GONE);
+            btnRegister.setVisibility(View.GONE);
+        }
+
+        if (SharedUtil.getUser(ctx) != null) {
             btnSignIn.setVisibility(View.GONE);
             btnRegister.setVisibility(View.GONE);
         }
@@ -209,7 +214,7 @@ public class SplashActivity extends AppCompatActivity {
                                                     if (profile == null) {
                                                         Util.expand(actionsView, ONE_SECOND, null);
                                                     } else {
-                                                        Intent intent = new Intent(getApplicationContext(), MainDrawerActivity.class);
+                                                        Intent intent = new Intent(getApplicationContext(), CitizenDrawerActivity.class);
                                                         startActivity(intent);
                                                     }
                                                 }
@@ -261,7 +266,7 @@ public class SplashActivity extends AppCompatActivity {
             }
 
             if (goToMain) {
-                Intent intent = new Intent(ctx, MainDrawerActivity.class);
+                Intent intent = new Intent(ctx, CitizenDrawerActivity.class);
                 startActivity(intent);
             }
         }
@@ -269,6 +274,10 @@ public class SplashActivity extends AppCompatActivity {
 
 
     private void startTimer() {
+        if (cityImages == null) {
+            getLocalCityImages();
+        }
+        index = 0;
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -276,18 +285,21 @@ public class SplashActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        index = RANDOM.nextInt(32);
-                        if (index == lastIndex) {
-                            index = RANDOM.nextInt(32);
+
+                        heroImage.setImageDrawable(getImage(index));
+                        index++;
+                        if (index == cityImages.getImageResourceIDs().length) {
+                            index = 0;
                         }
-                        heroImage.setImageDrawable(getImage());
                         timer.cancel();
+
 
                     }
                 });
 
             }
-        }, ONE_SECOND / 2, FIVE_SECONDS * 2);
+        }, ONE_SECOND , THIRTY_SECONDS);
+
     }
 
     @Override
@@ -300,6 +312,10 @@ public class SplashActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        if (id == R.id.action_logoff) {
+            finish();
+            return true;
+        }
         if (id == R.id.action_help) {
             Util.showToast(ctx, ctx.getString(R.string.under_cons));
             return true;
@@ -310,49 +326,46 @@ public class SplashActivity extends AppCompatActivity {
             startActivityForResult(w,REQUEST_THEME_CHANGE);
             return true;
         }
-        if (id == R.id.action_afrikaans) {
-            return true;
-        }
-        if (id == R.id.action_zulu) {
-            return true;
-        }
-        if (id == R.id.action_english) {
-            return true;
-        }
-        if (id == R.id.action_french) {
-            return true;
-        }
-        if (id == R.id.action_german) {
-            return true;
-        }
-        if (id == R.id.action_portuguese) {
-            return true;
-        }
+//        if (id == R.id.action_afrikaans) {
+//            return true;
+//        }
+//        if (id == R.id.action_zulu) {
+//            return true;
+//        }
+//        if (id == R.id.action_english) {
+//            return true;
+//        }
+//        if (id == R.id.action_french) {
+//            return true;
+//        }
+//        if (id == R.id.action_german) {
+//            return true;
+//        }
+//        if (id == R.id.action_portuguese) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
 
 
 
-    static int index, imageCount;
-    static int lastIndex;
+    int index;
     static final int REQUEST_SIGN_IN = 9033,
             REQUEST_THEME_CHANGE = 1782,
-            NUMBER_OF_IMAGES = 30;
+            NUMBER_OF_IMAGES = 5;
 
 
-    @Subscribe
-    public void onUserSignedIn(UserSignedInEvent e) {
-        Log.e("SplashActivity","+++++ Yay! Boooyah! event bus is humming!");
-        btnSignIn.setVisibility(View.GONE);
-        btnRegister.setVisibility(View.GONE);
-    }
+
     @Override
     public void onResume() {
         super.onResume();
         Log.e("SplashActivity", "### onResume");
-        BusProvider.getInstance().register(this);
         if (SharedUtil.getProfile(ctx) != null) {
+            btnSignIn.setVisibility(View.GONE);
+            btnRegister.setVisibility(View.GONE);
+        }
+        if (SharedUtil.getUser(ctx) != null) {
             btnSignIn.setVisibility(View.GONE);
             btnRegister.setVisibility(View.GONE);
         }
@@ -360,17 +373,16 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-        BusProvider.getInstance().unregister(this);
         super.onPause();
     }
 
     static CityImages cityImages;
 
-    public  static Drawable getImage() {
+    public  static Drawable getImage(int index) {
         if (cityImages == null) {
             getLocalCityImages();
         }
-        return cityImages.getImage(ctx);
+        return cityImages.getImage(ctx, index);
     }
     //todo - download new, improved images in background if available.
     private static void getLocalCityImages() {
@@ -382,37 +394,11 @@ public class SplashActivity extends AppCompatActivity {
 
         cityImages = new CityImages();
         int[]imageResourceIDs = new int[NUMBER_OF_IMAGES];
-        imageResourceIDs[0] = R.drawable.acity1;
-        imageResourceIDs[1] = R.drawable.acity2;
-        imageResourceIDs[2] = R.drawable.acity3;
-        imageResourceIDs[3] = R.drawable.acity4;
-        imageResourceIDs[4] = R.drawable.acity5;
-        imageResourceIDs[5] = R.drawable.acity6;
-        imageResourceIDs[6] = R.drawable.acity7;
-        imageResourceIDs[7] = R.drawable.acity8;
-        imageResourceIDs[8] = R.drawable.acity9;
-        imageResourceIDs[9] = R.drawable.acity10;
-        imageResourceIDs[10] = R.drawable.acity11;
-        imageResourceIDs[11] = R.drawable.acity12;
-        imageResourceIDs[12] = R.drawable.acity13;
-        imageResourceIDs[13] = R.drawable.acity14;
-        imageResourceIDs[14] = R.drawable.acity15;
-        imageResourceIDs[15] = R.drawable.acity16;
-        imageResourceIDs[16] = R.drawable.acity17;
-        imageResourceIDs[17] = R.drawable.acity18;
-        imageResourceIDs[18] = R.drawable.acity19;
-        imageResourceIDs[19] = R.drawable.acity20;
-        imageResourceIDs[20] = R.drawable.acity21;
-        imageResourceIDs[21] = R.drawable.acity22;
-        imageResourceIDs[22] = R.drawable.acity23;
-        imageResourceIDs[23] = R.drawable.acity24;
-        imageResourceIDs[24] = R.drawable.acity25;
-        imageResourceIDs[25] = R.drawable.acity26;
-        imageResourceIDs[26] = R.drawable.acity27;
-        imageResourceIDs[27] = R.drawable.acity28;
-        imageResourceIDs[28] = R.drawable.acity29;
-        imageResourceIDs[29] = R.drawable.acity30;
-
+        imageResourceIDs[0] = R.drawable.c1;
+        imageResourceIDs[1] = R.drawable.c2;
+        imageResourceIDs[2] = R.drawable.c3;
+        imageResourceIDs[3] = R.drawable.c4;
+        imageResourceIDs[4] = R.drawable.c5;
         cityImages.setImageResourceIDs(imageResourceIDs);
         SharedUtil.setCityImages(ctx,cityImages);
 

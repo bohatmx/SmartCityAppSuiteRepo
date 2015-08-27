@@ -20,7 +20,7 @@
             android:id="@+id/TOP_title"
             android:text="My Title Here"
             style="@style/Title1TextStyleWhite"
-            android:layout_marginTop="@dimen/mon_wider"
+            android:layout_marginTop="@dimen/mon_widest"
             android:layout_marginLeft="@dimen/mon_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -28,8 +28,7 @@
         <TextView
             android:id="@+id/TOP_subTitle"
             android:text="My sub title will occupy pride of place here"
-            style="@style/TextStyle"
-            android:layout_marginTop="@dimen/mon_padding"
+            style="@style/TextStyleSmall"
             android:layout_alignLeft="@id/TOP_title"
             android:textColor="@color/white"
             android:layout_below="@id/TOP_title"
@@ -49,6 +48,17 @@
                 android:src="@drawable/ic_my_library_books_black_36dp"
                 android:elevation="@dimen/mon_padding"
                 android:tint="@color/yellow"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/TOP_label"
+                android:text="Statements"
+                style="@style/TextStyleSmall"
+                android:padding="@dimen/mon_divider_small"
+                android:background="@color/transparent_black"
+                android:textColor="@color/white"
+                android:layout_below="@id/TOP_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </RelativeLayout>

@@ -10,21 +10,45 @@ import java.util.List;
  */
 public class ComplaintTypeDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Integer complaintTypeID, municipalityID, color;
-    private String complaintTypeName;
+    private Integer complaintTypeID, municipalityID, color, id;
+    private String complaintTypeName,categoryName;
     private Boolean locationIsRequired = Boolean.TRUE;
     private Boolean pictureRequired = Boolean.TRUE;
     private List<ComplaintDTO> complaintList;
-    private ComplaintCategoryDTO complaintCategory;
+    private Integer complaintCategoryID;
 
     public static final int RED = 1, AMBER = 2, GREEN = 3;
 
-    public ComplaintCategoryDTO getComplaintCategory() {
-        return complaintCategory;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setComplaintCategory(ComplaintCategoryDTO complaintCategory) {
-        this.complaintCategory = complaintCategory;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Boolean getLocationIsRequired() {
+        return locationIsRequired;
+    }
+
+    public Boolean getPictureRequired() {
+        return pictureRequired;
+    }
+
+    public Integer getComplaintCategoryID() {
+        return complaintCategoryID;
+    }
+
+    public void setComplaintCategoryID(Integer complaintCategoryID) {
+        this.complaintCategoryID = complaintCategoryID;
     }
 
     public Boolean isLocationIsRequired() {

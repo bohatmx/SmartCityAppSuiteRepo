@@ -30,8 +30,18 @@
         android:layout_height="@dimen/mon_hero_height_large">
 
         <TextView
+            android:id="@+id/MAP_distanceTitle"
+            android:text="Title"
+            android:layout_marginTop="@dimen/mon_wide"
+            android:padding="@dimen/mon_padding"
+            style="@style/Title3TextStyleBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
             android:id="@+id/MAP_addressFrom"
             android:text="From Address"
+            android:layout_below="@id/MAP_distanceTitle"
             android:padding="@dimen/mon_padding"
             style="@style/TextStyleSmall"
             android:layout_marginLeft="@dimen/mon_hero_height_medium"
@@ -134,11 +144,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <ProgressBar
-        android:id="@+id/MAP_progressBar"
-        android:layout_margin="@dimen/mon_wider"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
 
 
 </RelativeLayout>

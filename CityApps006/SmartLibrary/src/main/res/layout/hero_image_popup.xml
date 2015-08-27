@@ -9,7 +9,7 @@
         android:src="@drawable/back9"
         android:scaleType="centerCrop"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mon_hero_height_small"/>
+        android:layout_height="@dimen/mon_widest"/>
 
     <TextView
         android:id="@+id/HERO_caption"
@@ -17,7 +17,7 @@
         android:padding="@dimen/mon_padding"
         style="@style/TextStyleSmall"
         android:textStyle="bold"
-        android:layout_marginTop="@dimen/mon_wider"
+        android:layout_marginTop="@dimen/mon_wide"
         android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

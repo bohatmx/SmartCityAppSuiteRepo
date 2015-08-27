@@ -12,7 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -27,6 +27,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.boha.library.R;
+import com.boha.library.activities.CityApplication;
 import com.boha.library.adapters.DrawerListAdapter;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.MunicipalityStaffDTO;
@@ -34,6 +35,7 @@ import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.UserDTO;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +79,7 @@ public class NavigationDrawerFragment extends Fragment {
     View view;
     List<String> destinationList = new ArrayList<>();
     DrawerListAdapter drawerListAdapter;
-    TextView  txtSubTitle;
+    TextView txtSubTitle;
     ImageView drawerImage;
     Context ctx;
     MunicipalityDTO municipality;
@@ -93,7 +95,7 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(LOG,"## onCreate");
+        Log.d(LOG, "## onCreate");
         ctx = getActivity();
 
         Resources.Theme theme = getActivity().getTheme();
@@ -156,7 +158,7 @@ public class NavigationDrawerFragment extends Fragment {
      * @param fragmentId   The android:id of this fragment in its activity's layout.
      * @param drawerLayout The DrawerLayout containing this fragment's UI.
      */
-    public void setUp(int fragmentId, DrawerLayout drawerLayout, int type) {
+    public void setUp(int fragmentId, DrawerLayout drawerLayout, int origin) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
 
@@ -202,13 +204,14 @@ public class NavigationDrawerFragment extends Fragment {
         // If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,
         // per the navigation drawer design guidelines.
 
-        if (type == FROM_MAIN) {
+        if (origin == ORIGIN_MAIN_DRAWER) {
             if (SharedUtil.getSlidingMenuCount(ctx) < SharedUtil.MAX_SLIDING_TAB_VIEWS) {
                 if (!mFromSavedInstanceState) {
                     mDrawerLayout.openDrawer(mFragmentContainerView);
                 }
             }
         }
+
 
         // Defer code dependent on restoration of previous instance state.
         mDrawerLayout.post(new Runnable() {
@@ -223,9 +226,11 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.closeDrawers();
     }
 
+    public static final int ORIGIN_MAIN_DRAWER = 0, ORIGIN_ACCOUNT = 1;
+
     private void setFields() {
         mDrawerListView = (ListView) view.findViewById(R.id.NAV_list);
-        drawerImage = (ImageView)view.findViewById(R.id.NAV_image);
+        drawerImage = (ImageView) view.findViewById(R.id.NAV_image);
         drawerImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
         txtSubTitle = (TextView) view.findViewById(R.id.NAV_subtitle);
         if (staff != null) {
@@ -273,6 +278,13 @@ public class NavigationDrawerFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mCallbacks = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 
     @Override
@@ -325,7 +337,7 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     private ActionBar getActionBar() {
-        return ((ActionBarActivity) getActivity()).getSupportActionBar();
+        return ((AppCompatActivity) getActivity()).getSupportActionBar();
     }
 
     /**

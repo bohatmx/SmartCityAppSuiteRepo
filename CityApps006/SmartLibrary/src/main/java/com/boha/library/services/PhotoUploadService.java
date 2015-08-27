@@ -6,11 +6,16 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.boha.library.dto.AlertImageDTO;
+import com.boha.library.dto.ComplaintImageDTO;
+import com.boha.library.dto.ImageInterface;
 import com.boha.library.transfer.PhotoUploadDTO;
 import com.boha.library.transfer.ResponseDTO;
+import com.boha.library.util.CDNUploader;
 import com.boha.library.util.PhotoCacheUtil;
-import com.boha.library.util.PictureUtil;
 import com.boha.library.util.Util;
+import com.boha.library.util.WebCheck;
+import com.boha.library.util.WebCheckResult;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,31 +51,7 @@ public class PhotoUploadService extends IntentService {
     public void uploadCachedPhotos(UploadListener listener) {
         uploadListener = listener;
         Log.d(LOG, "#### uploadCachedPhotos, getting cached photos - will start uploads");
-        PhotoCacheUtil.getCachedPhotos(getApplicationContext(), new PhotoCacheUtil.PhotoCacheListener() {
-            @Override
-            public void onFileDataDeserialized(ResponseDTO response) {
-                Log.d(LOG, "##### cached photo list returned: " + response.getPhotoUploadList().size());
-                list = response.getPhotoUploadList();
-                if (list.isEmpty()) {
-                    Log.w(LOG, "--- no cached photos for upload");
-                    if (uploadListener != null)
-                        uploadListener.onUploadsComplete(0);
-                    return;
-                }
-                getLog(response);
-                onHandleIntent(null);
-            }
-
-            @Override
-            public void onDataCached() {
-
-            }
-
-            @Override
-            public void onError() {
-                Log.e(LOG, "### getCachedPhotos onError ");
-            }
-        });
+        onHandleIntent(null);
     }
 
     private static void getLog(ResponseDTO cache) {
@@ -109,71 +90,117 @@ public class PhotoUploadService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.w(LOG, "## onHandleIntent .... starting service");
-        if (list == null) {
-            uploadCachedPhotos(uploadListener);
+        WebCheckResult wcr = WebCheck.checkNetworkAvailability(getApplicationContext());
+        if (wcr.isNetworkUnavailable()) {
+            Log.d(LOG,"--- no network available, photoService quittin");
             return;
         }
-        retryCount = 0;
-        controlImageUploads();
+        Log.w(LOG, "## onHandleIntent .... starting service");
+        PhotoCacheUtil.getCachedPhotos(getApplicationContext(), new PhotoCacheUtil.PhotoCacheListener() {
+            @Override
+            public void onFileDataDeserialized(ResponseDTO response) {
+                Log.d(LOG, "##### cached photo list returned: " + response.getPhotoUploadList().size());
+                list = response.getPhotoUploadList();
+                if (list.isEmpty()) {
+                    Log.w(LOG, "--- no cached photos for upload");
+                    if (uploadListener != null)
+                        uploadListener.onUploadsComplete(0);
+                    return;
+                }
+                getLog(response);
+                executeUpload(list);
+            }
+
+            @Override
+            public void onDataCached() {
+
+            }
+
+            @Override
+            public void onError() {
+                Log.e(LOG, "### getCachedPhotos onError ");
+            }
+        });
+
+
 
     }
 
     static List<PhotoUploadDTO> list;
-    int index;
-
-    private void controlImageUploads() {
-        if (index < list.size()) {
-            executeUpload(list.get(index));
-        } else {
-            Log.i(LOG, "*** image uploads complete: " + uploadedList.size() + ", checking for failed uploads");
-            if (uploadListener != null) {
-                uploadListener.onUploadsComplete(uploadedList.size());
-                if (!failedUploads.isEmpty()) {
-                    Log.e(LOG, "###### we have failedUploads: " + failedUploads.size());
-                    retryCount++;
-                    if (retryCount < MAX_RETRIES) {
-                        Log.w(LOG, "***** retrying failed upload, retryCount: " + retryCount);
-                        list = failedUploads;
-                        uploadedList.clear();
-                        failedUploads.clear();
-                        index = 0;
-                        controlImageUploads();
-                    }
-                }
-            }
-        }
-
-    }
-
     static final int MAX_RETRIES = 3;
     int retryCount;
 
-
-    private void executeUpload(final PhotoUploadDTO dto) {
+    private void executeUpload(final List<PhotoUploadDTO> dtoList) {
+        Log.d(LOG, "###### executeUpload ....list: " + dtoList.size());
         final long start = System.currentTimeMillis();
-        PictureUtil.uploadImage(dto, getApplicationContext(), new PhotoUploadDTO.PhotoUploadedListener() {
+
+        final List<ImageInterface> list = new ArrayList<>();
+        for (PhotoUploadDTO dto: dtoList) {
+            ImageInterface image = null;
+            if (dto.getAlertImage() != null) {
+                image = dto.getAlertImage();
+            }
+            if (dto.getComplaintImage() != null) {
+                image = dto.getComplaintImage();
+            }
+            if (dto.getMunicipalityImage() != null) {
+                image = dto.getMunicipalityImage();
+            }
+            if (dto.getProfileImage() != null) {
+                image = dto.getProfileImage();
+            }
+            if (dto.getStaffImage() != null) {
+                image = dto.getStaffImage();
+            }
+            if (dto.getNewsArticleImage() != null) {
+                image = dto.getNewsArticleImage();
+            }
+            list.add(image);
+        }
+
+        CDNUploader.uploadImages(getApplicationContext(), list, true, new CDNUploader.CDNUploaderListener() {
             @Override
-            public void onPhotoUploaded() {
+            public void onFilesUploaded(List<ImageInterface> okList,List<ImageInterface> badList) {
                 long end = System.currentTimeMillis();
-                Log.i(LOG, "---- photo uploaded, elapsed: " + Util.getElapsed(start, end) + " seconds");
-                dto.setDateUploaded(new Date().getTime());
-                uploadedList.add(dto);
-                PhotoCacheUtil.removeUploadedPhoto(getApplicationContext(), dto);
-                index++;
-                controlImageUploads();
+                Log.i(LOG, "---- photos uploaded: " + okList.size()
+                        + " failed: " + badList.size() +
+                        ", elapsed: "
+                        + Util.getElapsed(start, end) + " seconds");
+                if (okList.size() == list.size()) {
+                    PhotoCacheUtil.clearCache(getApplicationContext());
+                } else {
+                    clearCache(okList);
+                }
+
             }
 
             @Override
-            public void onPhotoUploadFailed() {
-                Log.e(LOG, "------<< onPhotoUploadFailed - check and tell someone");
-                failedUploads.add(dto);
-                index++;
-                controlImageUploads();
+            public void onError(String message) {
+                Log.w(LOG, "--- onPhotoUploadFailed -  " + message);
             }
         });
+
     }
 
+    private  void clearCache(List<ImageInterface> list) {
+        for (ImageInterface i: list) {
+            if (i instanceof ComplaintImageDTO) {
+                ComplaintImageDTO x = (ComplaintImageDTO)i;
+                PhotoUploadDTO photoUpload  = new PhotoUploadDTO();
+                photoUpload.setComplaintImage(x);
+                photoUpload.setDateUploaded(new Date().getTime());
+                PhotoCacheUtil.removeUploadedPhoto(getApplicationContext(), photoUpload);
+            }
+            if (i instanceof AlertImageDTO) {
+                AlertImageDTO x = (AlertImageDTO)i;
+                PhotoUploadDTO photoUpload  = new PhotoUploadDTO();
+                photoUpload.setAlertImage(x);
+                photoUpload.setDateUploaded(new Date().getTime());
+                PhotoCacheUtil.removeUploadedPhoto(getApplicationContext(), photoUpload);
+            }
+        }
+    }
+    private static
     List<PhotoUploadDTO> failedUploads = new ArrayList<>();
     static final String LOG = PhotoUploadService.class.getSimpleName();
 

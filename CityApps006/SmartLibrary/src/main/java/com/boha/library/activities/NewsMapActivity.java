@@ -11,7 +11,8 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
 import com.boha.library.R;
@@ -57,7 +58,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class NewsMapActivity extends ActionBarActivity {
+public class NewsMapActivity extends AppCompatActivity {
 
     GoogleMap googleMap;
     GoogleApiClient mGoogleApiClient;
@@ -78,14 +79,13 @@ public class NewsMapActivity extends ActionBarActivity {
     TextView text, txtCount;
     ImageView iconCollapse;
     View topLayout, mapInfo;
-    TextView addr1, addr2, dist, dur, txtTitle;
-    ProgressBar progressBar;
+    TextView addr1, addr2, dist, dur, txtTitle, txtTitle2;
     LayoutInflater inflater;
     static final Locale loc = Locale.getDefault();
     static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
     List<NewsArticleDTO> newsArticleList;
     Activity activity;
-    int logo;
+    int logo, primaryColorDark;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +102,7 @@ public class NewsMapActivity extends ActionBarActivity {
         inflater = getLayoutInflater();
         setFields();
         ResponseDTO r = (ResponseDTO) getIntent().getSerializableExtra("newsArticleList");
+        primaryColorDark = getIntent().getIntExtra("primaryColorDark", R.color.blue_gray_800);
         if (r != null) {
             newsArticleList = r.getNewsArticleList();
             if (newsArticleList == null) newsArticleList = new ArrayList<>();
@@ -133,7 +134,7 @@ public class NewsMapActivity extends ActionBarActivity {
         MunicipalityDTO municipality = SharedUtil.getMunicipality(ctx);
         logo = getIntent().getIntExtra("logo", 0);
         if (logo != 0) {
-            Drawable d = ctx.getResources().getDrawable(logo);
+            Drawable d = ContextCompat.getDrawable(ctx, logo);
             Util.setCustomActionBar(ctx,
                     getSupportActionBar(),
                     municipality.getMunicipalityName(), d, logo);
@@ -167,11 +168,12 @@ public class NewsMapActivity extends ActionBarActivity {
                     for (NewsArticleDTO x : newsArticleList) {
                         if (x.getNewsArticleID().intValue() == id.intValue()) {
                             newsArticle = x;
+                            txtTitle2.setText(newsArticle.getNewsText());
                             break;
                         }
                     }
                 }
-                showPopup(latLng.latitude, latLng.longitude, marker.getTitle());
+                showPopup(latLng.latitude, latLng.longitude, marker.getSnippet());
 
                 return true;
             }
@@ -319,9 +321,8 @@ public class NewsMapActivity extends ActionBarActivity {
         dist = (TextView) mapInfo.findViewById(R.id.MAP_distance);
         dur = (TextView) mapInfo.findViewById(R.id.MAP_duration);
         txtTitle = (TextView) findViewById(R.id.MAP_text);
+        txtTitle2 = (TextView) findViewById(R.id.MAP_distanceTitle);
         txtTitle.setText(getString(R.string.news_map));
-        progressBar = (ProgressBar) findViewById(R.id.MAP_progressBar);
-        progressBar.setVisibility(View.GONE);
         Statics.setRobotoFontBold(ctx, text);
         iconCollapse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -358,40 +359,42 @@ public class NewsMapActivity extends ActionBarActivity {
 
                     @Override
                     public void onLoadingFailed(String s, View view, FailReason failReason) {
-                        Util.showPopupBasicWithHeroImage(ctx, activity, list, topLayout, "Actions", new Util.UtilPopupListener() {
-                            @Override
-                            public void onItemSelected(int index) {
-                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {
-                                    startDirectionsMap(lat, lng);
-                                }
-                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.pictures))) {
-                                    isGallery = true;
-                                    startGallery(newsArticle);
-                                }
-                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.get_distance))) {
-                                    getDistance(lat, lng);
-                                }
-                            }
-                        });
+                        Util.showPopupList(ctx, activity, list, topLayout, "Actions",
+                                primaryColorDark, new Util.UtilPopupListener() {
+                                    @Override
+                                    public void onItemSelected(int index, ListPopupWindow window) {
+                                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {
+                                            startDirectionsMap(lat, lng);
+                                        }
+                                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.pictures))) {
+                                            isGallery = true;
+                                            startGallery(newsArticle);
+                                        }
+                                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.get_distance))) {
+                                            getDistance(lat, lng);
+                                        }
+                                    }
+                                });
                     }
 
                     @Override
                     public void onLoadingComplete(String s, View view, Bitmap bm) {
-                        Util.showPopupBasicWithHeroImage(ctx, activity, list, topLayout, "Actions", new Util.UtilPopupListener() {
-                            @Override
-                            public void onItemSelected(int index) {
-                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {
-                                    startDirectionsMap(lat, lng);
-                                }
-                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.pictures))) {
-                                    isGallery = true;
-                                    startGallery(newsArticle);
-                                }
-                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.get_distance))) {
-                                    getDistance(lat, lng);
-                                }
-                            }
-                        });
+                        Util.showPopupList(ctx, activity, list, topLayout, "Actions",
+                                primaryColorDark, new Util.UtilPopupListener() {
+                                    @Override
+                                    public void onItemSelected(int index, ListPopupWindow window) {
+                                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {
+                                            startDirectionsMap(lat, lng);
+                                        }
+                                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.pictures))) {
+                                            isGallery = true;
+                                            startGallery(newsArticle);
+                                        }
+                                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.get_distance))) {
+                                            getDistance(lat, lng);
+                                        }
+                                    }
+                                });
                     }
 
                     @Override
@@ -402,17 +405,19 @@ public class NewsMapActivity extends ActionBarActivity {
                 });
             } else {
                 list.remove(1);
-                Util.showPopupBasicWithHeroImage(ctx, activity, list, topLayout, newsArticle.getNewsArticleType().getNewsArticleTypeName(), new Util.UtilPopupListener() {
-                    @Override
-                    public void onItemSelected(int index) {
-                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {
-                            startDirectionsMap(lat, lng);
-                        }
-                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.get_distance))) {
-                            getDistance(lat, lng);
-                        }
-                    }
-                });
+                Util.showPopupList(ctx, activity, list, topLayout,
+                        newsArticle.getNewsArticleType().getNewsArticleTypeName(), primaryColorDark,
+                        new Util.UtilPopupListener() {
+                            @Override
+                            public void onItemSelected(int index, ListPopupWindow window) {
+                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {
+                                    startDirectionsMap(lat, lng);
+                                }
+                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.get_distance))) {
+                                    getDistance(lat, lng);
+                                }
+                            }
+                        });
             }
         }
 
@@ -424,7 +429,7 @@ public class NewsMapActivity extends ActionBarActivity {
     private void startGallery(NewsArticleDTO alert) {
 
         Intent i = new Intent(ctx, AlertPictureGridActivity.class);
-        i.putExtra("newsArticle", alert);
+        i.putExtra("alert", alert);
         i.putExtra("logo", logo);
         startActivity(i);
     }

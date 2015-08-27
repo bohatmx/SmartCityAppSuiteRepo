@@ -243,18 +243,19 @@ public class SplashActivity extends ActionBarActivity {
 
     private void startTimer() {
         timer = new Timer();
+        index = 0;
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        index = RANDOM.nextInt(9);
-                        if (index == lastIndex) {
-                            index = RANDOM.nextInt(9);
+
+                        heroImage.setImageDrawable(getImage(index));
+                        index++;
+                        if (index == cityImages.getImageResourceIDs().length) {
+                            index = 0;
                         }
-                        heroImage.setImageDrawable(getImage());
-                        timer.cancel();
                     }
                 });
 
@@ -283,24 +284,24 @@ public class SplashActivity extends ActionBarActivity {
             startActivityForResult(w, REQUEST_THEME_CHANGE);
             return true;
         }
-        if (id == R.id.action_afrikaans) {
-            return true;
-        }
-        if (id == R.id.action_zulu) {
-            return true;
-        }
-        if (id == R.id.action_english) {
-            return true;
-        }
-        if (id == R.id.action_french) {
-            return true;
-        }
-        if (id == R.id.action_german) {
-            return true;
-        }
-        if (id == R.id.action_portuguese) {
-            return true;
-        }
+//        if (id == R.id.action_afrikaans) {
+//            return true;
+//        }
+//        if (id == R.id.action_zulu) {
+//            return true;
+//        }
+//        if (id == R.id.action_english) {
+//            return true;
+//        }
+//        if (id == R.id.action_french) {
+//            return true;
+//        }
+//        if (id == R.id.action_german) {
+//            return true;
+//        }
+//        if (id == R.id.action_portuguese) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -318,11 +319,11 @@ public class SplashActivity extends ActionBarActivity {
     }
     static CityImages cityImages;
 
-    public  static Drawable getImage() {
+    public  static Drawable getImage(int index) {
         if (cityImages == null) {
             getLocalCityImages();
         }
-        return cityImages.getImage(ctx);
+        return cityImages.getImage(ctx,index);
     }
     //todo - download new, improved images in background if available.
     private static void getLocalCityImages() {

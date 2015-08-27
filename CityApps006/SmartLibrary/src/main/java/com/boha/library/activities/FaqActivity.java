@@ -5,7 +5,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +21,7 @@ import com.boha.library.util.Util;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
-public class FaqActivity extends ActionBarActivity {
+public class FaqActivity extends AppCompatActivity implements FaqFragment.FaqListener {
 
     FaqFragment faqFragment;
     Context ctx;
@@ -38,6 +38,7 @@ public class FaqActivity extends ActionBarActivity {
         int themeDarkColor = typedValue.data;
 
         faqFragment = (FaqFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+        faqFragment.setThemeColors(0,themeDarkColor);
 
         MunicipalityDTO municipality = SharedUtil.getMunicipality(ctx);
         int logo = getIntent().getIntExtra("logo", R.drawable.ic_action_globe);
@@ -65,23 +66,42 @@ public class FaqActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_faq, menu);
+        mMenu = menu;
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_refresh) {
+            faqFragment.getRemoteFAQs();
+            return true;
+        }
+        if (id == R.id.action_help) {
+            Util.showToast(ctx,getString(R.string.under_cons));
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    Menu mMenu;
+    public void setRefreshActionButtonState(final boolean busy) {
+        if (mMenu != null) {
+            final MenuItem refreshItem = mMenu.findItem(R.id.action_refresh);
+            if (refreshItem != null) {
+                if (busy) {
+                    refreshItem.setActionView(R.layout.action_bar_progess);
+                } else {
+                    refreshItem.setActionView(null);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void setBusy(boolean busy) {
+        setRefreshActionButtonState(busy);
     }
 }

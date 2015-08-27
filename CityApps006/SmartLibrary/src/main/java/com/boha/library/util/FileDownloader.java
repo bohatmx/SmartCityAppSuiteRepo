@@ -61,7 +61,7 @@ public class FileDownloader {
                                             String accountNumber,
                                             String fileName,
                                             FileDownloaderListener mFileDownloaderListener){
-        Log.w("FileDownloader","### downloading " + fileName);
+
         ctx = c;
         listener = mFileDownloaderListener;
         File directory = Environment.getExternalStorageDirectory();
@@ -75,6 +75,7 @@ public class FileDownloader {
         sb.append(fileName);
         try {
             url = new URL(sb.toString());
+            Log.w("+++++ FileDownloader","### downloading " + url);
             new DownTask().execute();
         } catch (MalformedURLException e) {
             listener.onError();

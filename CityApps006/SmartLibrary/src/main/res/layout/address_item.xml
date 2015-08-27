@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="@dimen/mon_padding"
+    android:background="@color/beige_pale"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/ADDR_number"
+        style="@style/BlueCircleSmall"
+        android:text="0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/ADDR_address"
+        android:text="A long StreetName Here\nSuburb Name Here\nCity/Town"
+        android:layout_toRightOf="@id/ADDR_number"
+        android:layout_marginLeft="@dimen/mon_margin"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

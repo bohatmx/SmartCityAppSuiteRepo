@@ -15,6 +15,7 @@
 
     <RelativeLayout
         android:id="@+id/ERR_layout1"
+        android:padding="@dimen/mon_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -27,7 +28,6 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:text="Servlet Origin"
-            android:textColor="@color/blue"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -37,7 +37,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@id/ERR_origin"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="@dimen/mon_padding"
+            android:layout_marginTop="@dimen/mon_padding"
             android:text="Wed 32 Decemeber 2014 10:33:24"
             android:textColor="@color/black"
             android:textStyle="bold" />
@@ -45,14 +46,13 @@
 
     <TextView
         android:id="@+id/ERR_message"
+        android:layout_marginTop="@dimen/mon_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/ERR_layout1"
         android:layout_below="@id/ERR_layout1"
         android:layout_centerHorizontal="true"
         android:text="Error message here"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        android:textStyle="normal" />
+        android:textAppearance="@style/TextStyleSmall" />
 
 </RelativeLayout>

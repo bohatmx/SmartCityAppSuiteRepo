@@ -12,20 +12,31 @@
         <RelativeLayout
             android:id="@+id/SIGNIN_heroLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/white">
 
             <RelativeLayout
                 android:id="@+id/SIGNIN_handle"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"></RelativeLayout>
+                android:layout_height="1dp" />
+
+            <TextView
+                android:id="@+id/REG_label0"
+                style="@style/Title2TextStyleBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/mon_margin"
+                android:text="Sign In" />
 
             <ImageView
                 android:id="@+id/SIGNIN_heroImage"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/mon_hero_height_medium"
+                android:layout_height="@dimen/mon_hero_height_small"
                 android:layout_below="@id/SIGNIN_handle"
                 android:scaleType="centerCrop"
-                android:src="@drawable/under_construction" />
+                android:src="@drawable/under_construction"
+                android:visibility="gone" />
 
 
         </RelativeLayout>
@@ -53,38 +64,44 @@
                 android:layout_below="@id/REG_labelx"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/mon_margin"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <RadioButton
                     android:id="@+id/SIGNIN_radioYes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Yes" />
+                    android:text="I have a Municipality Account" />
 
                 <RadioButton
                     android:id="@+id/SIGNIN_radioNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/mon_wider"
-                    android:checked="true"
-                    android:text="No" />
+                    android:layout_marginTop="@dimen/mon_margin"
+                    android:text="I do not have an Account" />
+
+                <RadioButton
+                    android:id="@+id/SIGNIN_radioTourist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mon_margin"
+                    android:text="I am a Tourist/Visitor" />
             </RadioGroup>
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/mon_padding"
             android:layout_below="@id/SIGNIN_choiceLayout"
             android:layout_marginBottom="@dimen/mon_margin"
+            android:layout_marginTop="@dimen/mon_padding"
             android:background="@color/white">
 
             <RelativeLayout
                 android:id="@+id/SIGNIN_editLayout"
                 android:layout_width="match_parent"
-                android:padding="@dimen/mon_wide"
                 android:layout_height="wrap_content"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:padding="@dimen/mon_wide">
 
 
                 <EditText
@@ -93,35 +110,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/mon_wide"
-                    android:hint="@string/enter_id"
-                    android:inputType="number" />
+                    android:hint="ID"
+                    android:inputType="textNoSuggestions" />
+
+                <Spinner
+                    android:id="@+id/SIGNIN_emailSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/SIGNIN_editUserID"
+                    android:layout_marginTop="@dimen/mon_padding" />
+
 
                 <EditText
                     android:id="@+id/SIGNIN_editPIN"
                     style="@style/Title3TextStyleRed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/SIGNIN_editUserID"
+                    android:layout_below="@id/SIGNIN_emailSpinner"
                     android:layout_marginTop="@dimen/mon_margin"
                     android:hint="@string/enter_pswd"
                     android:inputType="textPassword" />
 
             </RelativeLayout>
 
-            <Spinner
-                android:id="@+id/SIGNIN_emailSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/mon_padding"
-                android:layout_below="@id/SIGNIN_editLayout"
-                android:layout_marginTop="@dimen/mon_padding" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/mon_margin"
-                android:layout_below="@id/SIGNIN_emailSpinner"
-                android:layout_marginTop="@dimen/mon_padding">
+                android:layout_below="@id/SIGNIN_editLayout"
+                android:layout_margin="@dimen/mon_margin">
 
                 <com.dd.ShadowLayout
                     android:layout_width="match_parent"
@@ -140,7 +157,7 @@
                         android:layout_gravity="center"
                         android:background="@color/red_800"
                         android:padding="@dimen/mon_margin"
-                        android:text="Send SignIn"
+                        android:text="Sign In"
                         android:textColor="@color/white" />
                 </com.dd.ShadowLayout>
 
@@ -150,11 +167,11 @@
 
         <ProgressBar
             android:id="@+id/SIGNIN_progress"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_margin="16dp" />
+            android:layout_margin="16dp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/SIGNIN_welcome"
@@ -164,7 +181,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/mon_hero_height_small"
             android:text="@string/welcome"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:visibility="gone" />
 
     </RelativeLayout>
 </ScrollView>

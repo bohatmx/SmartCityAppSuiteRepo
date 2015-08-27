@@ -1,1 +1,1 @@
-include ':SmartLibrary', ':StaffApp-eThekwini', ':CitizenApp-eThekwini'
+include ':SmartLibrary', ':StaffApp-eThekwini', ':CitizenApp-eThekwini', ':CitizenApp-Msunduzi'

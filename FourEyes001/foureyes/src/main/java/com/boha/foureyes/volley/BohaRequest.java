@@ -12,7 +12,13 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.Gson;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
+import khandroid.ext.apache.http.util.ByteArrayBuffer;
 
 
 public class BohaRequest extends Request<String> {
@@ -44,21 +50,21 @@ public class BohaRequest extends Request<String> {
             dto = new String(response.data);
             Log.i(LOG, "response string length returned: " + dto.length());
 
-//            InputStream is = new ByteArrayInputStream(response.data);
-//            ZipInputStream zis = new ZipInputStream(is);
-//            @SuppressWarnings("unused")
-//            ZipEntry entry;
-//            ByteArrayBuffer bab = new ByteArrayBuffer(2048);
-//
-//            while ((entry = zis.getNextEntry()) != null) {
-//                int size = 0;
-//                byte[] buffer = new byte[2048];
-//                while ((size = zis.read(buffer, 0, buffer.length)) != -1) {
-//                    bab.append(buffer, 0, size);
-//                }
-//                resp = new String(bab.toByteArray());
-//                dto = gson.fromJson(resp, String.class);
-//            }
+            InputStream is = new ByteArrayInputStream(response.data);
+            ZipInputStream zis = new ZipInputStream(is);
+            @SuppressWarnings("unused")
+            ZipEntry entry;
+            ByteArrayBuffer bab = new ByteArrayBuffer(2048);
+
+            while ((entry = zis.getNextEntry()) != null) {
+                int size = 0;
+                byte[] buffer = new byte[2048];
+                while ((size = zis.read(buffer, 0, buffer.length)) != -1) {
+                    bab.append(buffer, 0, size);
+                }
+                String resp = new String(bab.toByteArray());
+                dto = resp;
+            }
         } catch (Exception e) {
             VolleyError ve = new VolleyError("Exception parsing server data", e);
             errorListener.onErrorResponse(ve);

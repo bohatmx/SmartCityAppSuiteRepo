@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,8 +38,6 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
-import com.boha.library.util.event.BusProvider;
-import com.boha.library.util.event.UserSignedInEvent;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.gson.Gson;
@@ -49,13 +47,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class SigninActivity extends ActionBarActivity {
+public class SigninActivity extends AppCompatActivity {
 
     ImageView heroImage;
     Timer timer;
     TextView txtWelcome;
     View handle, editView;
-    RadioButton radioYes, radioNo;
+    RadioButton radioYes, radioNo, radioTourist;
     Context ctx;
     ProgressBar progressBar;
     Activity activity;
@@ -102,16 +100,15 @@ public class SigninActivity extends ActionBarActivity {
     @Override
     public void onResume() {
         Log.w(LOG, "##### onResume");
-        BusProvider.getInstance().register(this);
         super.onResume();
     }
 
 
     private void setFields() {
         editView = findViewById(R.id.SIGNIN_editLayout);
-        editView.setVisibility(View.GONE);
         radioNo = (RadioButton)findViewById(R.id.SIGNIN_radioNo);
         radioYes = (RadioButton)findViewById(R.id.SIGNIN_radioYes);
+        radioTourist = (RadioButton)findViewById(R.id.SIGNIN_radioTourist);
         btnSend = (Button) findViewById(R.id.SIGNIN_btnSignin);
         editID = (EditText) findViewById(R.id.SIGNIN_editUserID);
         spinner = (Spinner)findViewById(R.id.SIGNIN_emailSpinner);
@@ -120,15 +117,13 @@ public class SigninActivity extends ActionBarActivity {
         progressBar = (ProgressBar) findViewById(R.id.SIGNIN_progress);
         heroImage = (ImageView) findViewById(R.id.SIGNIN_heroImage);
         txtWelcome = (TextView) findViewById(R.id.SIGNIN_welcome);
-        //logo = (ImageView) findViewById(R.id.SIGNIN_dome);
-
-        //logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.logo));
         handle = findViewById(R.id.SIGNIN_handle);
         progressBar.setVisibility(View.GONE);
 
-        int h = Util.getWindowHeight(this);
-        Log.w(LOG, "## window height: " + h);
-        heroImage.getLayoutParams().height = h / 2;
+        editID.setVisibility(View.GONE);
+        spinner.setVisibility(View.GONE);
+        editPassword.setVisibility(View.GONE);
+        btnSend.setEnabled(false);
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,7 +148,7 @@ public class SigninActivity extends ActionBarActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        heroImage.setImageDrawable(SplashActivity.getImage());
+                        heroImage.setImageDrawable(SplashActivity.getImage(0));
                     }
                 });
 
@@ -164,7 +159,11 @@ public class SigninActivity extends ActionBarActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    setFieldsUser();
+                    userType = SharedUtil.CITIZEN_NO_ACCOUNT;
+                    editID.setVisibility(View.GONE);
+                    spinner.setVisibility(View.VISIBLE);
+                    editPassword.setVisibility(View.VISIBLE);
+                    btnSend.setEnabled(true);
                 }
             }
         });
@@ -172,33 +171,33 @@ public class SigninActivity extends ActionBarActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    setFieldsCitizen();
+                    userType = SharedUtil.CITIZEN_WITH_ACCOUNT;
+                    editID.setVisibility(View.VISIBLE);
+                    editID.setHint("ID Number");
+                    spinner.setVisibility(View.GONE);
+                    editPassword.setVisibility(View.VISIBLE);
+                    btnSend.setEnabled(true);
+                }
+            }
+        });
+        radioTourist.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    userType = SharedUtil.TOURIST_VISITOR;
+                    editID.setVisibility(View.GONE);
+                    spinner.setVisibility(View.VISIBLE);
+                    editPassword.setVisibility(View.VISIBLE);
+                    btnSend.setEnabled(true);
                 }
             }
         });
 
-    }
 
-    private void setFieldsCitizen() {
-        Util.expand(editView, 500, new Util.UtilAnimationListener() {
-            @Override
-            public void onAnimationEnded() {
-                spinner.setVisibility(View.GONE);
-                //todo - remove after testing
-                editID.setText("3301045068086");
-                editPassword.setText("mavis1");
-            }
-        });
     }
-    private void setFieldsUser() {
-        Util.collapse(editView, 500, new Util.UtilAnimationListener() {
-            @Override
-            public void onAnimationEnded() {
-                spinner.setVisibility(View.VISIBLE);
-            }
-        });
-    }
-    private void sendSignInCitizen() {
+    private int userType;
+
+    public void sendSignInCitizen() {
 
         if (editID.getText().toString().isEmpty()) {
             Util.showErrorToast(ctx, getString(R.string.enter_id));
@@ -220,20 +219,25 @@ public class SigninActivity extends ActionBarActivity {
         w.setPassword(editPassword.getText().toString());
         w.setEmail(email);
         w.setGcmDevice(gcmDevice);
+        w.setLatitude(0.0);
+        w.setLongitude(0.0);
         w.setMunicipalityID(municipality.getMunicipalityID());
 
-        progressBar.setVisibility(View.VISIBLE);
+        setRefreshActionButtonState(true);
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO resp) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        progressBar.setVisibility(View.GONE);
+                        setRefreshActionButtonState(false);
                         if (resp.isMunicipalityAccessFailed()) {
-                            Util.showErrorToast(ctx,ctx.getString(com.boha.library.R.string.unable_connect_muni));
                             if (resp.getProfileInfoList() == null || resp.getProfileInfoList().isEmpty()) {
+                                Util.showErrorToast(ctx,getString(R.string.services_not_available));
+//                                finish();
                                 return;
+                            } else {
+                                Util.showErrorToast(ctx,getString(com.boha.library.R.string.unable_connect_muni));
                             }
                         }
                         response = resp;
@@ -248,10 +252,10 @@ public class SigninActivity extends ActionBarActivity {
                             sp.setPassword(profileInfo.getPassword());
 
                             SharedUtil.saveProfile(ctx, sp);
+                            SharedUtil.setUserType(ctx,userType);
                             CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
                                 @Override
                                 public void onDataCached() {
-                                    BusProvider.getInstance().post(new UserSignedInEvent());
                                     onBackPressed();
                                 }
 
@@ -274,7 +278,7 @@ public class SigninActivity extends ActionBarActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        progressBar.setVisibility(View.GONE);
+                        setRefreshActionButtonState(false);
                         Util.showErrorToast(ctx, message);
                     }
                 });
@@ -286,7 +290,7 @@ public class SigninActivity extends ActionBarActivity {
             }
         });
     }
-    private void sendSignInUser() {
+    public void sendSignInUser() {
 
         if (email == null) {
             if (tarList.size() > 1) {
@@ -302,14 +306,14 @@ public class SigninActivity extends ActionBarActivity {
         w.setUser(u);
         w.setMunicipalityID(municipality.getMunicipalityID());
 
-        progressBar.setVisibility(View.VISIBLE);
+        setRefreshActionButtonState(true);
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO resp) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        progressBar.setVisibility(View.GONE);
+                        setRefreshActionButtonState(false);
                         if (resp.isMunicipalityAccessFailed()) {
                             Util.showErrorToast(ctx,ctx.getString(com.boha.library.R.string.unable_connect_muni));
                             if (response.getUserList() == null || response.getUserList().isEmpty()) {
@@ -319,10 +323,10 @@ public class SigninActivity extends ActionBarActivity {
                         response = resp;
 
                         SharedUtil.saveUser(ctx, response.getUserList().get(0));
+                        SharedUtil.setUserType(ctx,userType);
                         CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
                             @Override
                             public void onDataCached() {
-                                BusProvider.getInstance().post(new UserSignedInEvent());
                                 onBackPressed();
                             }
 
@@ -341,7 +345,7 @@ public class SigninActivity extends ActionBarActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        progressBar.setVisibility(View.GONE);
+                        setRefreshActionButtonState(false);
                         Util.showErrorToast(ctx, message);
                     }
                 });
@@ -362,7 +366,7 @@ public class SigninActivity extends ActionBarActivity {
         if (profileInfo != null || user != null) {
             setResult(RESULT_OK);
             finish();
-            Intent i = new Intent(ctx, MainDrawerActivity.class);
+            Intent i = new Intent(ctx, CitizenDrawerActivity.class);
             startActivity(i);
         } else {
             setResult(RESULT_CANCELED);
@@ -396,6 +400,7 @@ public class SigninActivity extends ActionBarActivity {
 
     ArrayList<String> tarList = new ArrayList<String>();
     String email;
+    Menu mMenu;
 
     private void setSpinner() {
 
@@ -425,14 +430,19 @@ public class SigninActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.menu_signin, menu);
+        getMenuInflater().inflate(R.menu.menu_main_pager, menu);
+        menu.getItem(0).setVisible(false);
+        mMenu = menu;
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+
+        if (id == R.id.action_help) {
+            Util.showToast(ctx,getString(R.string.under_cons));
             return true;
         }
 
@@ -442,7 +452,6 @@ public class SigninActivity extends ActionBarActivity {
     @Override
     public void onPause() {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-        BusProvider.getInstance().unregister(this);
         super.onPause();
     }
 
@@ -469,6 +478,19 @@ public class SigninActivity extends ActionBarActivity {
             }
         });
 
+    }
+
+    public void setRefreshActionButtonState(final boolean refreshing) {
+        if (mMenu != null) {
+            final MenuItem refreshItem = mMenu.findItem(com.boha.library.R.id.action_help);
+            if (refreshItem != null) {
+                if (refreshing) {
+                    refreshItem.setActionView(com.boha.library.R.layout.action_bar_progess);
+                } else {
+                    refreshItem.setActionView(null);
+                }
+            }
+        }
     }
 }
 //static final String url = "http://41.160.126.146/esbapi/V2/userlogin?username=7406190168080&password=vatawa"

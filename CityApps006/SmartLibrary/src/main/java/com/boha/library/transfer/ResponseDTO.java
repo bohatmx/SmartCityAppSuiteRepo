@@ -4,6 +4,7 @@ import com.boha.library.dto.AccountDTO;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.AlertTypeDTO;
 import com.boha.library.dto.CityDTO;
+import com.boha.library.dto.ComplaintCategoryDTO;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintTypeDTO;
 import com.boha.library.dto.ComplaintUpdateStatusDTO;
@@ -14,6 +15,7 @@ import com.boha.library.dto.ErrorStoreAndroidDTO;
 import com.boha.library.dto.ErrorStoreDTO;
 import com.boha.library.dto.FaqDTO;
 import com.boha.library.dto.FreqQuestionTypeDTO;
+import com.boha.library.dto.GISAddressDTO;
 import com.boha.library.dto.GcmDeviceDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.MunicipalityStaffDTO;
@@ -43,17 +45,20 @@ public class ResponseDTO implements Serializable {
 
     //response status
     private int statusCode = 0;
-    private String message, sessionID, gcmRegistrationID, log;
+    private String message, sessionID, gcmRegistrationID, log, data;
     private Double requestResponseTimeSeconds;
     private Boolean municipalityAccessFailed = Boolean.FALSE;
     private List<String> pdfFileNameList;
+    private Integer goodResponses = 0, badResponses = 0;
 
     //response lists
+    private List<GISAddressDTO> addressList;
     private List<PhotoUploadDTO> photoUploadList;
     private List<AlertDTO> alertList;
     private List<AccountDTO> accountList;
     private List<ProfileInfoDTO> profileInfoList;
     private List<ComplaintTypeDTO> complaintTypeList;
+    private List<ComplaintCategoryDTO> complaintCategoryList;
     private List<ComplaintDTO> complaintList;
     private List<AlertTypeDTO> alertTypeList;
     private List<CityDTO> cityList;
@@ -73,6 +78,50 @@ public class ResponseDTO implements Serializable {
     private List<FaqDTO> faqList;
     private List<FreqQuestionTypeDTO> faqTypeList;
     private List<UserDTO> userList;
+
+    public List<ComplaintCategoryDTO> getComplaintCategoryList() {
+        return complaintCategoryList;
+    }
+
+    public void setComplaintCategoryList(List<ComplaintCategoryDTO> complaintCategoryList) {
+        this.complaintCategoryList = complaintCategoryList;
+    }
+
+    public List<GISAddressDTO> getAddressList() {
+        return addressList;
+    }
+
+    public void setAddressList(List<GISAddressDTO> addressList) {
+        this.addressList = addressList;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public Boolean getMunicipalityAccessFailed() {
+        return municipalityAccessFailed;
+    }
+
+    public Integer getGoodResponses() {
+        return goodResponses;
+    }
+
+    public void setGoodResponses(Integer goodResponses) {
+        this.goodResponses = goodResponses;
+    }
+
+    public Integer getBadResponses() {
+        return badResponses;
+    }
+
+    public void setBadResponses(Integer badResponses) {
+        this.badResponses = badResponses;
+    }
 
     public Boolean isMunicipalityAccessFailed() {
         return municipalityAccessFailed;

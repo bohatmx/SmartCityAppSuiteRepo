@@ -1,6 +1,7 @@
 
 package com.boha.library.dto;
 
+import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -17,7 +18,75 @@ public class MunicipalityImageDTO implements Serializable, ImageInterface {
     private Double longitude;
     private Integer municipalityID;
     private Boolean activeFlag;
+    private String url;
+    private String secureUrl;
+    private String signature;
+    private String eTag;
+    private Integer height;
+    private Integer width;
+    private Integer bytes;
 
+    public String getUrl() {
+        return url;
+    }
+    @Override
+    public File getFile() {
+        if (localFilepath != null) {
+            return new File(localFilepath);
+        }
+        return null;
+    }
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getSecureUrl() {
+        return secureUrl;
+    }
+
+    public void setSecureUrl(String secureUrl) {
+        this.secureUrl = secureUrl;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    public String geteTag() {
+        return eTag;
+    }
+
+    public void seteTag(String eTag) {
+        this.eTag = eTag;
+    }
+
+    public Integer getHeight() {
+        return height;
+    }
+
+    public void setHeight(Integer height) {
+        this.height = height;
+    }
+
+    public Integer getWidth() {
+        return width;
+    }
+
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
+
+    public Integer getBytes() {
+        return bytes;
+    }
+
+    public void setBytes(Integer bytes) {
+        this.bytes = bytes;
+    }
     public String getLocalFilepath() {
         return localFilepath;
     }

@@ -17,7 +17,7 @@
                 android:text="Current Balance"
                 android:gravity="right"
                 android:padding="@dimen/mon_padding"
-                style="@style/TextStyleGrey" />
+                style="@style/TextStyle" />
 
             <TextView
                 android:id="@+id/DASH_currBal"
@@ -34,7 +34,7 @@
                 android:text="Current Arrears"
                 android:padding="@dimen/mon_padding"
                 android:gravity="right"
-                style="@style/TextStyleGrey" />
+                style="@style/TextStyle" />
 
             <TextView
                 android:id="@+id/DASH_arrears"
@@ -50,7 +50,7 @@
                 android:text="@string/my_complaints"
                 android:padding="@dimen/mon_padding"
                 android:gravity="right"
-                style="@style/TextStyleGrey" />
+                style="@style/TextStyle" />
 
             <TextView
                 android:id="@+id/DASH_complaintCount"
@@ -67,7 +67,7 @@
                 android:text="Resolved"
                 android:gravity="right"
                 android:padding="@dimen/mon_padding"
-                style="@style/TextStyleGrey"/>
+                style="@style/TextStyle"/>
 
             <TextView
                 android:id="@+id/DASH_resolvedCount"
@@ -86,7 +86,7 @@
                 android:text="Next Bill Date"
                 android:gravity="right"
                 android:padding="@dimen/mon_padding"
-                style="@style/TextStyleGrey" />
+                style="@style/TextStyle" />
 
             <TextView
                 android:text="23 December 2099"

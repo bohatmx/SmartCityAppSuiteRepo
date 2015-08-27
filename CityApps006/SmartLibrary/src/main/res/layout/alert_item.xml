@@ -38,10 +38,10 @@
 
         <TextView
             android:id="@+id/AI_type"
-            style="@style/Title3TextStyleBlue"
+            style="@style/TextStyleSmall"
             android:text="AlertType"
             android:layout_below="@id/AI_top"
-            android:layout_marginLeft="44dp"
+            android:layout_marginLeft="80dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

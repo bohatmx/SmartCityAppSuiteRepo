@@ -14,12 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListPopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.CityApplication;
-import com.boha.library.activities.PaymentStartActivity;
 import com.boha.library.activities.StatementActivity;
 import com.boha.library.adapters.AccountAdapter;
 import com.boha.library.dto.AccountDTO;
@@ -28,6 +28,7 @@ import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -44,7 +45,7 @@ public class AccountFragment extends Fragment implements PageFragment{
     private View view, detailView, topView, handle;
     private TextView
             txtName, txtAcctNumber, txtSubtitle,
-             txtArrears, txtFAB,
+             txtArrears, txtFAB, txtClickToPay,
             txtLastUpdate, txtNextBill,
             txtAddress, txtLastBillAmount;
     View fab, topLayout;
@@ -137,11 +138,13 @@ public class AccountFragment extends Fragment implements PageFragment{
     }
 
     private void startPayment() {
-        Intent intent = new Intent(ctx, PaymentStartActivity.class);
-        intent.putExtra("account", account);
-        intent.putExtra("index", selectedIndex);
-        intent.putExtra("logo", logo);
-        startActivity(intent);
+        Util.showToast(ctx, ctx.getString(R.string.payment_not_available));
+
+//        Intent intent = new Intent(ctx, PaymentStartActivity.class);
+//        intent.putExtra("account", account);
+//        intent.putExtra("index", selectedIndex);
+//        intent.putExtra("logo", logo);
+//        startActivity(intent);
 
     }
 
@@ -155,6 +158,7 @@ public class AccountFragment extends Fragment implements PageFragment{
         scrollView = (ScrollView) view.findViewById(R.id.ACCT_scroll);
         detailView = view.findViewById(R.id.ACCT_detailLayout);
         txtName = (TextView) topView.findViewById(R.id.TOP_title);
+        txtClickToPay = (TextView) topView.findViewById(R.id.ACCT_clickToPay);
         Statics.setRobotoFontLight(ctx,txtName);
         txtSubtitle = (TextView) topView.findViewById(R.id.TOP_subTitle);
         icon = (ImageView) topView.findViewById(R.id.TOP_icon);
@@ -174,6 +178,17 @@ public class AccountFragment extends Fragment implements PageFragment{
         hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
         setFont();
         btnCurrBal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.flashOnce(btnCurrBal, 300, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        startPayment();
+                    }
+                });
+            }
+        });
+        txtClickToPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Util.flashOnce(btnCurrBal, 300, new Util.UtilAnimationListener() {
@@ -223,16 +238,17 @@ public class AccountFragment extends Fragment implements PageFragment{
                             for (AccountDTO a : profileInfo.getAccountList()) {
                                 list.add("" + a.getAccountNumber() + " - " + a.getCustomerAccountName());
                             }
-                            Util.showPopupBasicWithHeroImage(ctx, activity, list, handle, "Accounts", new Util.UtilPopupListener() {
-                                @Override
-                                public void onItemSelected(int index) {
-                                    account = profileInfo.getAccountList().get(index);
-                                    setAccountFields(account);
-                                    txtFAB.setText("" + (index + 1));
-                                    selectedIndex = index;
-                                    Util.expand(detailView, 1000, null);
-                                }
-                            });
+                            Util.showPopupList(ctx, activity, list, handle, "Accounts", primaryDarkColor,
+                                    new Util.UtilPopupListener() {
+                                        @Override
+                                        public void onItemSelected(int index, ListPopupWindow window) {
+                                            account = profileInfo.getAccountList().get(index);
+                                            setAccountFields(account);
+                                            txtFAB.setText("" + (index + 1));
+                                            selectedIndex = index;
+                                            Util.expand(detailView, 1000, null);
+                                        }
+                                    });
                         }
                     }
                 });
@@ -269,7 +285,7 @@ public class AccountFragment extends Fragment implements PageFragment{
         txtLastUpdate.setText(sd.format(account.getDateLastUpdated()));
         txtName.setText(account.getCustomerAccountName());
         txtNextBill.setText(sd.format(account.getNextBillDate()));
-        txtSubtitle.setText("Date Last Update : " + sd.format(account.getDateLastUpdated()));
+        txtSubtitle.setText(ctx.getString(R.string.last_update) + sd.format(account.getDateLastUpdated()));
 
 
         Util.expand(detailView, 1000, null);
@@ -291,6 +307,11 @@ public class AccountFragment extends Fragment implements PageFragment{
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+    @Override public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 
     /**

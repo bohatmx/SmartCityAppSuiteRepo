@@ -55,6 +55,7 @@
                 android:layout_height="wrap_content" />
         </RelativeLayout>
 
+
         <ListView
             android:id="@+id/ST_list"
             android:layout_below="@id/ST_top"
@@ -75,7 +76,7 @@
 
         <TextView
             android:id="@+id/ST_count"
-            style="@style/BlackCircleSmall"
+            style="@style/BlackCountBox"
             android:text="99"
             android:layout_alignParentRight="true"
             android:layout_marginTop="@dimen/mon_margin"

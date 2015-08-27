@@ -2,9 +2,9 @@ package com.boha.library.activities;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -16,7 +16,7 @@ import com.boha.library.util.Util;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
-public class MuniContactsActivity extends ActionBarActivity {
+public class MuniContactsActivity extends AppCompatActivity {
 
     int logo,  primaryColor, darkColor;
     MunicipalityDTO municipality;

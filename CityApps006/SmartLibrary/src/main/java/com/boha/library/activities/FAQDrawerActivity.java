@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -14,7 +14,7 @@ import com.boha.library.fragments.NavigationDrawerFragment;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 
-public class FAQDrawerActivity extends ActionBarActivity
+public class FAQDrawerActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerListener {
 
     /**

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.boha.library.activities.FaqActivity">
+        <item
+            android:id="@+id/PM_catWater"
+            android:title="Water">
+            <menu>
+                <item
+                    android:id="@+id/PM_leakingPipe"
+                    android:icon="@drawable/ic_action_globe"
+                    android:title="Leaking Pipe"
+                    app:showAsAction="always" />
+                <item
+                    android:id="@+id/PM_burst"
+                    android:icon="@drawable/ic_action_help"
+                    android:title="Burst"
+                    app:showAsAction="always" />
+                <item
+                    android:id="@+id/PM_pressure"
+                    android:icon="@drawable/ic_action_globe"
+                    android:title="Water Pressure Problem"
+                    app:showAsAction="always" />
+                <item
+                    android:id="@+id/PM_noWater"
+                    android:icon="@drawable/ic_action_help"
+                    android:title="No Water"
+                    app:showAsAction="always" />
+            </menu>
+        </item>
+        <item
+            android:id="@+id/PM_pollution"
+            android:title="Pollution">
+            <menu>
+                <item
+                    android:id="@+id/PM_pol_air"
+                    android:icon="@drawable/zpotholes"
+                    android:title="Air" />
+                <item
+                    android:id="@+id/PM_pol_land"
+                    android:icon="@drawable/zmanhole_covers"
+                    android:title="Land" />
+                <item
+                    android:id="@+id/PM_pol_beach"
+                    android:icon="@drawable/zpotholes"
+                    android:title="Beach" />
+                <item
+                    android:id="@+id/PM_pol_water"
+                    android:icon="@drawable/zmanhole_covers"
+                    android:title="Water" />
+            </menu>
+        </item>
+        <item
+            android:id="@+id/PM_roads"
+            android:title="Roads">
+            <menu>
+                <item
+                    android:id="@+id/PM_pothole"
+                    android:icon="@drawable/zpotholes"
+                    android:title="Pothole" />
+                <item
+                    android:id="@+id/PM_sinkhole"
+                    android:icon="@drawable/zmanhole_covers"
+                    android:title="Sinkhole" />
+                <item
+                    android:id="@+id/PM_Overflowing"
+                    android:icon="@drawable/zpotholes"
+                    android:title="Overflowing" />
+                <item
+                    android:id="@+id/PM_missingManhole"
+                    android:icon="@drawable/zmanhole_covers"
+                    android:title="Missing Manhole Cover" />
+            </menu>
+        </item>
+
+        <item
+            android:id="@+id/PM_traffic"
+            android:title="Traffic">
+            <menu>
+                <item
+                    android:id="@+id/PM_allLights"
+                    android:icon="@drawable/zpotholes"
+                    android:title="All Lights Out of Order" />
+                <item
+                    android:id="@+id/PM_flashing"
+                    android:icon="@drawable/zmanhole_covers"
+                    android:title="Flashing" />
+
+            </menu>
+        </item>
+        <item
+            android:id="@+id/PM_wasteWater"
+            android:title="Waste Water">
+            <menu>
+                <item
+                    android:id="@+id/PM_wwOverflow"
+                    android:icon="@drawable/zpotholes"
+                    android:title="Overflow" />
+                <item
+                    android:id="@+id/PM_wwManhole"
+                    android:icon="@drawable/zmanhole_covers"
+                    android:title="Manhole Cover" />
+
+            </menu>
+        </item>
+
+</menu>

@@ -2,7 +2,6 @@ package com.boha.library.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,13 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.activities.MyComplaintsActivity;
+import com.boha.library.activities.CityApplication;
 import com.boha.library.dto.AccountDTO;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
+import com.squareup.leakcanary.RefWatcher;
 
 import org.acra.ACRA;
 
@@ -44,6 +44,7 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
         return fragment;
     }
 
+    ResponseDTO response;
     public ProfileInfoFragment() {
         // Required empty public constructor
     }
@@ -51,6 +52,11 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            response = (ResponseDTO) getArguments().getSerializable("response");
+            profileInfo = response.getProfileInfoList().get(0);
+            complaintList = response.getComplaintList();
+        }
 
     }
 
@@ -62,7 +68,6 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
     ProfileInfoDTO profileInfo;
     double totBalance, totArrears;
     Context ctx;
-    String title;
     int logo;
     List<ComplaintDTO> complaintList;
 
@@ -74,13 +79,8 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
         view = inflater.inflate(R.layout.fragment_citizen, container, false);
         ctx = getActivity();
         setFields();
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            ResponseDTO dto = (ResponseDTO)bundle.getSerializable("response");
-            profileInfo = dto.getProfileInfoList().get(0);
-            complaintList = dto.getComplaintList();
-            getTotals();
-        }
+        txtName.setText(profileInfo.getFirstName() + " " + profileInfo.getLastName());
+        getTotals();
 
         return view;
     }
@@ -92,12 +92,6 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
         btnAccountDetails = (Button) view.findViewById(R.id.button);
     }
 
-
-    private void setProfileInfo(ProfileInfoDTO profileInfo) {
-        this.profileInfo = profileInfo;
-        Log.d(LOG,"******* setProfileInfo ....");
-        getTotals();
-    }
 
     private void getTotals() {
         totArrears = 0;
@@ -185,38 +179,27 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
                 });
             }
         });
-        txtComplaints.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Util.flashOnce(txtComplaints, 300, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        startMyComplaintsActivity();
-                    }
-                });
-            }
-        });
+//        txtComplaints.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Util.flashOnce(txtComplaints, 300, new Util.UtilAnimationListener() {
+//                    @Override
+//                    public void onAnimationEnded() {
+//                        startMyComplaintsActivity();
+//                    }
+//                });
+//            }
+//        });
 
 
 
     }
 
     private void startAccountActivity() {
+
         profileInfoListener.onAccountDetailRequested(profileInfo);
-//        Intent intent = new Intent(ctx, FakeMainActivity.class);
-//        intent.putExtra("profileInfo", profileInfo);
-//        intent.putExtra("logo", logo);
-//        intent.putExtra("darkColor",primaryDarkColor);
-//        intent.putExtra("primaryColor",primaryColor);
-//        startActivity(intent);
     }
-    private void startMyComplaintsActivity() {
-        Intent intent = new Intent(ctx, MyComplaintsActivity.class);
-        intent.putExtra("darkColor", primaryDarkColor);
-        intent.putExtra("primaryColor", primaryColor);
-        intent.putExtra("logo",logo);
-        startActivity(intent);
-    }
+
     @Override
     public void onAttach(Activity a) {
         super.onAttach(a);
@@ -237,7 +220,11 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
         super.onDetach();
     }
 
-
+    @Override public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
+    }
     static final String LOG = ProfileInfoFragment.class.getSimpleName();
 
 
@@ -254,12 +241,7 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
                         @Override
                         public void run() {
                             heroImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-                            Util.expand(heroImage, 1000, new Util.UtilAnimationListener() {
-                                @Override
-                                public void onAnimationEnded() {
-                                    timer.cancel();
-                                }
-                            });
+                            timer.cancel();
                         }
                     });
 
@@ -267,7 +249,7 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
                     timer.cancel();
                 }
             }
-        }, 1000);
+        }, 50);
 
     }
 

@@ -42,7 +42,7 @@
             style="@style/TextStyleSmall"
             android:text="News Type"
             android:layout_below="@id/NEWS_top"
-            android:layout_marginLeft="64dp"
+            android:layout_marginLeft="80dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

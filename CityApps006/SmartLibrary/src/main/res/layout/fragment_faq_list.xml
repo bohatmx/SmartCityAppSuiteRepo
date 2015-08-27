@@ -1,71 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/grey"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/grey">
 
     <RelativeLayout
         android:id="@+id/FAQ_top"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mon_hero_height_medium">
+        android:layout_height="@dimen/mon_hero_height_small">
+
         <RelativeLayout
             android:id="@+id/FAQ_handle"
             android:layout_width="match_parent"
-            android:layout_height="1dp"/>
+            android:layout_height="1dp" />
 
         <ImageView
             android:id="@+id/FAQ_hero"
-            android:src="@drawable/back8"
-            android:layout_below="@id/FAQ_handle"
-            android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/back8" />
 
         <TextView
             android:id="@+id/FAQ_title"
-            style="@style/Title2TextStyleGrey"
-            android:text="@string/faq"
+            style="@style/TextStyleGrey"
+            android:alpha="0.7"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/mon_wide"
+            android:layout_marginTop="@dimen/mon_margin"
+            android:text="@string/faq" />
+
+        <RelativeLayout
+            android:layout_below="@id/FAQ_title"
             android:layout_marginTop="@dimen/mon_wide"
-            android:layout_marginLeft="@dimen/mon_wide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:padding="@dimen/mon_padding"
 
-        <TextView
-            android:id="@+id/FAQ_faqType"
-            style="@style/Title2TextStyleWhite"
-            android:text="FAQ Type here"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/mon_wide"
-            android:layout_marginBottom="@dimen/mon_margin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/FAQ_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tint="@color/white"
+                android:src="@drawable/ic_action_bell" />
+            <TextView
+                android:id="@+id/FAQ_faqType"
+                style="@style/Title3TextStyleWhite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/FAQ_icon"
+                android:layout_marginLeft="@dimen/mon_margin"
+                android:text="FAQ Type here" />
+        </RelativeLayout>
     </RelativeLayout>
-<RelativeLayout
-    android:layout_below="@id/FAQ_top"
-    android:padding="@dimen/mon_margin"
-    android:background="@color/white"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <WebView
-        android:id="@+id/FAQ_webView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-</RelativeLayout>
     <RelativeLayout
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="@dimen/mon_hero_height_medium_lite"
-        android:layout_marginRight="@dimen/mon_wide"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/FAQ_top"
+        android:background="@color/grey"
+        android:padding="@dimen/mon_divider">
+
+        <WebView
+            android:id="@+id/FAQ_webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/mon_wide"
+        android:layout_marginTop="@dimen/mon_widest">
+
         <include layout="@layout/fab_search" />
     </RelativeLayout>
+
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/mon_margin"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/mon_margin" />
 
 
 </RelativeLayout>

@@ -10,6 +10,7 @@ import com.boha.library.dto.AlertImageDTO;
 import com.boha.library.dto.ComplaintImageDTO;
 import com.boha.library.dto.MunicipalityImageDTO;
 import com.boha.library.dto.NewsArticleImageDTO;
+import com.boha.library.dto.ProfileImageDTO;
 import com.boha.library.dto.StaffImageDTO;
 
 /**
@@ -24,10 +25,19 @@ public class PhotoUploadDTO {
     private MunicipalityImageDTO municipalityImage;
     private AlertImageDTO alertImage;
     private ComplaintImageDTO complaintImage;
+    private ProfileImageDTO profileImage;
     private StaffImageDTO staffImage;
     private NewsArticleImageDTO newsArticleImage;
     private Long dateUploaded;
     private Integer municipalityID;
+
+    public ProfileImageDTO getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(ProfileImageDTO profileImage) {
+        this.profileImage = profileImage;
+    }
 
     public Long getDateUploaded() {
         return dateUploaded;

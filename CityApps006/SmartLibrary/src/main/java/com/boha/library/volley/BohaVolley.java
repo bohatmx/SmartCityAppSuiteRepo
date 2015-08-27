@@ -17,7 +17,6 @@ import com.android.volley.toolbox.Volley;
  */
 public class BohaVolley {
     private static RequestQueue mRequestQueue;
-    private static RequestQueue mStatsRequestQueue;
     private static ImageLoader mImageLoader;
     private static ImageLoader mStatsImageLoader;
     private BohaVolley() {
@@ -30,15 +29,13 @@ public class BohaVolley {
      */
     public static RequestQueue initialize(Context context) {
     	Log.e(LOG, "initializing Volley Networking ...");
-        mRequestQueue = Volley.newRequestQueue(context);
-        mStatsRequestQueue = Volley.newRequestQueue(context);
+        mRequestQueue = Volley.newRequestQueue(context, new OkHttpStack());
         int memClass = ((ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE))
                 .getMemoryClass();
         
         // Use 1/8th of the available memory for this memory cache.
         int cacheSize = 1024 * 1024 * memClass / 4;
         mImageLoader = new ImageLoader(mRequestQueue, new BitmapLruCache(cacheSize));
-        mStatsImageLoader = new ImageLoader(mStatsRequestQueue, new BitmapLruCache(cacheSize));
         Log.i(LOG, "********** Yebo! Volley Networking has been initialized, cache size: " + (cacheSize / 1024) + " KB");
         return mRequestQueue;
     }

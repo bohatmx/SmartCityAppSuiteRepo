@@ -1,6 +1,7 @@
 package com.boha.foureyes.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,29 +56,18 @@ public class ErrorStoreAdapter extends ArrayAdapter<ErrorStoreDTO> {
 
         final ErrorStoreDTO p = mList.get(position);
 
-        if (p.getStatusCode() > 0) {
-            logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.back1));
-            origin.setTextColor(ctx.getResources().getColor(R.color.translucent_red));
+        origin.setTextColor(ctx.getResources().getColor(R.color.black));
+        if (p.getStatusCode() > 99) {
+            logo.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.ic_action_cancel));
+            message.setTextColor(ctx.getResources().getColor(R.color.red_800));
+            date.setTextColor(ctx.getResources().getColor(R.color.orange_600));
         } else {
-            logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.back11));
-            origin.setTextColor(ctx.getResources().getColor(R.color.black));
+            logo.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.ic_action_tick));
+            message.setTextColor(ctx.getResources().getColor(R.color.black));
+            date.setTextColor(ctx.getResources().getColor(R.color.blue_400));
         }
 
-        if (p.getOrigin().contains("HouseKeeper")) {
-            logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.back2));
-            origin.setTextColor(ctx.getResources().getColor(R.color.blue));
-            view.setBackgroundColor(getContext().getResources().getColor(
-                    R.color.blue_pale));
-        } else {
-            view.setBackgroundColor(getContext().getResources().getColor(
-                    R.color.white));
-        }
 
-        if (p.getOrigin().equalsIgnoreCase("NewGolfGroupUtil") || p.getOrigin().equalsIgnoreCase("DataUtil")) {
-            view.setBackgroundColor(getContext().getResources().getColor(
-                    R.color.beige_pale));
-            logo.setImageDrawable(ctx.getResources().getDrawable(R.drawable.back14));
-        }
         origin.setText(p.getOrigin());
         message.setText(p.getMessage());
         date.setText(sdf.format(p.getDateOccured()));

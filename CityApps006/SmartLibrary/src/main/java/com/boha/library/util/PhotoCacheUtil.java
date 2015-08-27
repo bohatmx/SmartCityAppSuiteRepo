@@ -73,47 +73,15 @@ public class PhotoCacheUtil {
         new CacheRetrieveTask().execute();
     }
 
-    public static void clearCache(Context context, final List<PhotoUploadDTO> uploadedList) {
+    public static void clearCache(Context context) {
         ctx = context;
-        getCachedPhotos(context,new PhotoCacheListener() {
-            @Override
-            public void onFileDataDeserialized(ResponseDTO r) {
-                List<PhotoUploadDTO> pending = new ArrayList<>();
-//                for (PhotoUploadDTO p: r.getPhotoUploadList()) {
-//                    for (PhotoUploadDTO ps: uploadedList) {
-//                        if (ps.getThumbFilePath().equalsIgnoreCase(p.getThumbFilePath())) {
-//                            p.setDateUploaded(new Date());
-//                            File f = new File(ps.getThumbFilePath());
-//                            if (f.exists()) {
-//                                boolean del = f.delete();
-//                                Log.w(LOG, "### deleted image file: " + ps.getThumbFilePath() + " - " + del);
-//                            }
-//                        }
-//                    }
-//                }
-//                for (PhotoUploadDTO p: r.getPhotoUploadList()) {
-//                    if (p.getDateUploaded() == null) {
-//                        pending.add(p);
-//                    }
-//                }
-//                r.setPhotoUploadList(pending);
-//                response = r;
-//                Log.i(LOG,"## after clearing cache, pending photos: " + pending.size() + " - writing new cache");
-//                new CacheTask().execute();
+        ResponseDTO w = new ResponseDTO();
+        w.setPhotoUploadList(new ArrayList<PhotoUploadDTO>());
+        response = w;
+        new CacheTask().execute();
 
-            }
-
-            @Override
-            public void onDataCached() {
-
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
     }
+
     public static void removeUploadedPhoto(Context context, final PhotoUploadDTO photo) {
         ctx = context;
         getCachedPhotos(context,new PhotoCacheListener() {
@@ -146,8 +114,7 @@ public class PhotoCacheUtil {
                 }
                 r.setPhotoUploadList(pending);
                 response = r;
-                Log.e(LOG, "## after removing uploaded file, pending photos: " + pending.size()
-                        + " - updating photo cache");
+
                 new CacheTask().execute();
 
             }

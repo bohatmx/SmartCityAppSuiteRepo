@@ -4,6 +4,8 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
+import android.view.View;
 import android.widget.DatePicker;
 
 import org.joda.time.DateTime;
@@ -24,15 +26,38 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
+
+
         // Create a new instance of DatePickerDialog and return it
         datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
-//        ((ViewGroup) datePickerDialog.getDatePicker()).findViewById(Resources.getSystem()
-//                .getIdentifier("day", "id", "android")).setVisibility(View.GONE);
-        datePickerDialog.getDatePicker().setCalendarViewShown(false);
         DateTime now = new DateTime();
-        DateTime then = now.minusYears(5);
+        now = now.minusMonths(minusMonths);
+        DateTime then = now.minusYears(minusYears);
         datePickerDialog.getDatePicker().setMaxDate(now.getMillis());
         datePickerDialog.getDatePicker().setMinDate(then.getMillis());
+        datePickerDialog.getDatePicker().setCalendarViewShown(true);
+        try {
+            java.lang.reflect.Field[] datePickerDialogFields = datePickerDialog.getClass().getDeclaredFields();
+            for (java.lang.reflect.Field datePickerDialogField : datePickerDialogFields) {
+                Log.d(LOG, "datePickerDialogField: " + datePickerDialogField.getName());
+                String name = datePickerDialogField.getName();
+                if (datePickerDialogField.getName().equals("mDatePicker")) {
+                    datePickerDialogField.setAccessible(true);
+                    DatePicker dpx = (DatePicker) datePickerDialogField.get(datePickerDialog);
+                    java.lang.reflect.Field[] datePickerFields = datePickerDialogField.getType().getDeclaredFields();
+                    for (java.lang.reflect.Field datePickerField : datePickerFields) {
+                        String xname = datePickerField.getName();
+                        if ("mDaySpinner".equals(datePickerField.getName())) {
+                            datePickerField.setAccessible(true);
+                            Object dayPicker = datePickerField.get(dpx);
+                            ((View) dayPicker).setVisibility(View.GONE);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex) {
+        }
         return datePickerDialog;
     }
 
@@ -43,6 +68,15 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         }
     }
     DatePickerListener datePickerListener;
+    int minusMonths, minusYears;
+
+    public void setMinusYears(int minusYears) {
+        this.minusYears = minusYears;
+    }
+
+    public void setMinusMonths(int minusMonths) {
+        this.minusMonths = minusMonths;
+    }
 
     public void setDatePickerListener(DatePickerListener datePickerListener) {
         this.datePickerListener = datePickerListener;
@@ -51,4 +85,5 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public interface DatePickerListener {
         void onYearMonthPicked(int year, int month);
     }
+    static final String LOG = DatePickerDialog.class.getSimpleName();
 }

@@ -12,12 +12,19 @@ import android.widget.TextView;
 public class Statics {
 
     /*
-     * REMOTE APP_URL - bohamaker back end - production
+     * REMOTE APP_URL - nairobi back end - production
      */
 
-    public static final String WEBSOCKET_URL = "ws://bohamaker.com:3030/sc/";
-    public static final String URL = "http://bohamaker.com:3030/sc/";
-    public static final String IMAGE_URL = "http://bohamaker.com:3030/";
+
+    //http://munimobileapp.oneconnectgroup.com/
+    /**
+     * SmartCity Production Server
+     */
+    public static final String WEBSOCKET_URL = "ws://195.154.47.229:7070/sc/";
+    public static final String URL = "http://195.154.47.229:7070/sc/";
+    public static final String IMAGE_URL = "http://195.154.47.229:7070/";
+//
+
 
     /*
         LOCAL DEV - PECANWOOD
@@ -28,6 +35,8 @@ public class Statics {
 
     public static final String GATEWAY_SERVLET = "smart?";
     public static final String GATEWAY_SOCKET = "wssmart";
+    public static final String CACHED_REQUESTS_SOCKET = "wsrequests";
+    public static final String CACHED_REQUESTS_SERVLET = "cachedRequests?";
 
     public static final String INVITE_DESTINATION = "https://play.google.com/store/apps/details?id=";
     public static final String INVITE_EXEC = INVITE_DESTINATION + "com.boha.monitor.exec";
@@ -81,5 +90,9 @@ public class Statics {
                 "fonts/Roboto-Regular.ttf");
         txt.setTypeface(font);
     }
-
+    public static void setNeutonExtraBold(Context ctx, TextView txt) {
+        Typeface font = Typeface.createFromAsset(ctx.getAssets(),
+                "fonts/Neuton-SC-Extrabold.ttf");
+        txt.setTypeface(font);
+    }
 }

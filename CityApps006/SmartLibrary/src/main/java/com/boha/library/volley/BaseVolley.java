@@ -12,6 +12,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.boha.library.transfer.RequestDTO;
+import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.Statics;
 import com.google.gson.Gson;
 
@@ -32,7 +33,7 @@ public class BaseVolley {
      * Informs whoever implements this interface when a communications request is concluded
      */
     public interface BohaVolleyListener {
-        public void onResponseReceived(String response);
+        public void onResponseReceived(ResponseDTO response);
 
         public void onVolleyError(VolleyError error);
     }
@@ -72,7 +73,8 @@ public class BaseVolley {
         }
         retries = 0;
         String x = Statics.URL + suffix + "JSON=" + json;
-        Log.w(LOG, "...sending remote request: ....size: " + x.length() + "...>\n" + Statics.URL + suffix + "JSON="+ jj);
+        Log.w(LOG, "...sending remote http request: ....size: " + x.length()
+                + "...>\n" + Statics.URL + suffix + "JSON="+ jj);
         bohaRequest = new BohaRequest(Method.POST, x,
                 onSuccessListener(), onErrorListener());
         bohaRequest.setRetryPolicy(new DefaultRetryPolicy((int) TimeUnit.SECONDS.toMillis(120),
@@ -110,13 +112,12 @@ public class BaseVolley {
         requestQueue.add(bohaRequest);
     }
 
-    private static Response.Listener<String> onSuccessListener() {
-        return new Response.Listener<String>() {
+    private static Response.Listener<ResponseDTO> onSuccessListener() {
+        return new Response.Listener<ResponseDTO>() {
             @Override
-            public void onResponse(String r) {
-                response = r;
-                Log.e(LOG, "Yup! ...response string received");
-                bohaVolleyListener.onResponseReceived(response);
+            public void onResponse(ResponseDTO r) {
+                Log.e(LOG, "Yup! ...http response received, status code: " + r.getStatusCode());
+                bohaVolleyListener.onResponseReceived(r);
 
             }
         };
@@ -175,8 +176,8 @@ public class BaseVolley {
     protected ImageLoader imageLoader;
     protected static String suff;
     static final String LOG = "BaseVolley";
-    static final int MAX_RETRIES = 10;
-    static final long SLEEP_TIME = 3000;
+    static final int MAX_RETRIES = 5;
+    static final long SLEEP_TIME = 5000;
 
 
     static int retries;

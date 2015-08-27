@@ -2,7 +2,12 @@ package com.boha.library.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.boha.library.dto.MunicipalityDTO;
@@ -11,11 +16,37 @@ import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.UserDTO;
 import com.google.gson.Gson;
 
+import java.util.Random;
+
 /**
  * Created by aubreyM on 15/01/13.
  */
 public class SharedUtil {
 
+
+    public static final int
+            CITIZEN_WITH_ACCOUNT = 1,
+            CITIZEN_NO_ACCOUNT = 2,
+            TOURIST_VISITOR = 3;
+    public static void setUserType(Context ctx, int userType) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putInt("userType",userType);
+        ed.commit();
+
+        Log.w(LOG, "#### userType saved: " + userType);
+
+    }
+    public static int getUserType(Context ctx) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+
+        int j = sp.getInt("userType", CITIZEN_WITH_ACCOUNT);
+        Log.i(LOG, "#### userType retrieved: " + j);
+        return j;
+    }
     public static void setCityImages(Context ctx, CityImages images) {
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(ctx);
@@ -37,10 +68,43 @@ public class SharedUtil {
             return null;
         }
         CityImages cityImages = gson.fromJson(json, CityImages.class);
-        Log.i(LOG, "#### cityImages retrieved: " + json);
+//        Log.i(LOG, "#### cityImages retrieved: " + cityImages.getImageResourceIDs().length);
         return cityImages;
     }
 
+    static int lastIndex;
+    public static Bitmap getRandomCityImage(Context ctx) {
+        CityImages cityImages = getCityImages(ctx);
+        int index = random.nextInt(cityImages.getImageResourceIDs().length - 1);
+//        Log.w(LOG,"getRandomCityImage index: " + index + " lastIndex: " + lastIndex);
+        if (lastIndex != 0) {
+            while (index != lastIndex) {
+                index = random.nextInt(cityImages.getImageResourceIDs().length - 1);
+            }
+        }
+        int id = cityImages.getImageResourceIDs() [index];
+        Drawable drawable = ContextCompat.getDrawable(ctx, id);
+        BitmapDrawable bd = (BitmapDrawable)drawable;
+        Bitmap k = getResizedBitmap(bd.getBitmap(), 560, 380);
+        return k;
+    }
+    public static Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
+
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+
+// recreate the new Bitmap
+        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+
+        return resizedBitmap;
+    }
+    static Random random = new Random(System.currentTimeMillis());
     public static void setThemeSelection(Context ctx, int theme) {
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(ctx);
@@ -150,7 +214,7 @@ public class SharedUtil {
             Log.e(LOG, "#### profile NOT retrieved");
             return null;
         }
-//        Log.i(LOG, "#### profile retrieved: " + json);
+        Log.d(LOG, "#### profile retrieved");
         return gson.fromJson(json, ProfileInfoDTO.class);
     }
     static Gson gson = new Gson();
@@ -251,6 +315,6 @@ public class SharedUtil {
         }
         return gson.fromJson(json, UserDTO.class);
     }
-    public static final int MAX_SLIDING_TAB_VIEWS = 36;
+    public static final int MAX_SLIDING_TAB_VIEWS = 200;
     static final String LOG = SharedUtil.class.getSimpleName();
 }

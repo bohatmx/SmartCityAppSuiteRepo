@@ -73,7 +73,7 @@
     <string name="loc_services_not">Location Services Not Active</string>
     <string name="enable_gps">Please enable Location Services. This allows the app to use GPS for Complaints, Alerts and News</string>
     <string name="complaints_around_me">Complaints Around Me</string>
-    <string name="enter_detail">Enter Details or Comment</string>
+    <string name="enter_detail">Enter Details or Comment (Optional)</string>
     <string name="enter_complaint_address">Enter Complaint Address</string>
     <string name="sel_complaint_type">Select Complaint Type</string>
     <string name="make_complaint">Make a Complaint</string>
@@ -96,5 +96,25 @@
     <string name="title_activity_fake_main">FakeMainActivity</string>
     <string name="title_activity_theme_selector">ThemeSelectorActivity</string>
     <string name="unable_download_faq">Unable to download Frequently Asked Questions</string>
+    <string name="services_unavailable">Municipality Services are unavailable at this time</string>
+    <string name="services_not_available">Municipality services are not available. Try later.</string>
+    <string name="title_activity_news_detail">NewsDetailActivity</string>
+    <string name="calc_complaint_address">Calculating complaint address ...</string>
+    <string name="stmt_exists">Statement is already in your list</string>
+    <string name="last_update">"Last Update: "</string>
+    <string name="not_available">Not available</string>
+    <string name="news_detail">Do you want to get more information on this News article?</string>
+    <string name="more_detail">More Details</string>
+    <string name="view_loc">View Location</string>
+    <string name="faq_types">Frequent Question Types</string>
+    <string name="help">Help</string>
+    <string name="refresh">Refresh</string>
+    <string name="select_complaint_type">Select ComplaintType</string>
+    <string name="start_complaint">Start Complaint</string>
+    <string name="history">A history of my complaints to the City</string>
+    <string name="no_news">No Current News</string>
+    <string name="nonews_map">No news to display on map</string>
+    <string name="noalerts_map">No alerts to display on map</string>
+    <string name="payment_not_available">The payment facility is not available yet. The facility will be made available in the next version of the app.</string>
 
 </resources>

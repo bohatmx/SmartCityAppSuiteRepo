@@ -9,6 +9,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/CitizenApp-Msunduzi" />
             <option value="$PROJECT_DIR$/CitizenApp-eThekwini" />
             <option value="$PROJECT_DIR$/SmartLibrary" />
             <option value="$PROJECT_DIR$/StaffApp-eThekwini" />

@@ -8,12 +8,14 @@ import java.util.List;
  *
  * @author aubreyM
  */
-public class ComplaintDTO implements Serializable {
+public class ComplaintDTO implements Serializable, Comparable<ComplaintDTO> {
     private static final long serialVersionUID = 1L;
-    private Integer complaintID, municipalityID;
+    private Integer complaintID, municipalityID,
+            subCategoryID;
     private Integer id, numberOfFollowers;
-    private String referenceNumber;
-    private String remarks, address;
+    private String referenceNumber, href;
+    private String remarks, address,number, street,
+            suburb, city, category, subCategory;
     private Long complaintDate;
     private Double latitude, distance;
     private Double longitude;
@@ -26,12 +28,76 @@ public class ComplaintDTO implements Serializable {
     private List<ComplaintImageDTO> complaintImageList;
     private List<ComplaintUpdateStatusDTO> complaintUpdateStatusList;
 
+    public Integer getSubCategoryID() {
+        return subCategoryID;
+    }
+
+    public void setSubCategoryID(Integer subCategoryID) {
+        this.subCategoryID = subCategoryID;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getSubCategory() {
+        return subCategory;
+    }
+
+    public void setSubCategory(String subCategory) {
+        this.subCategory = subCategory;
+    }
+
     public Integer getNumberOfFollowers() {
         return numberOfFollowers;
     }
 
     public void setNumberOfFollowers(Integer numberOfFollowers) {
         this.numberOfFollowers = numberOfFollowers;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public String getHref() {
+        return href;
+    }
+
+    public void setHref(String href) {
+        this.href = href;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getSuburb() {
+        return suburb;
+    }
+
+    public void setSuburb(String suburb) {
+        this.suburb = suburb;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public UserDTO getUser() {
@@ -203,5 +269,27 @@ public class ComplaintDTO implements Serializable {
     public String toString() {
         return "com.boha.smartcity.data.Complaint[ complaintID=" + complaintID + " ]";
     }
-    
+
+    /**
+     * Compares this object to the specified object to determine their relative
+     * order.
+     *
+     * @param another the object to compare to this instance.
+     * @return a negative integer if this instance is less than {@code another};
+     * a positive integer if this instance is greater than
+     * {@code another}; 0 if this instance has the same order as
+     * {@code another}.
+     * @throws ClassCastException if {@code another} cannot be converted into something
+     *                            comparable to {@code this} instance.
+     */
+    @Override
+    public int compareTo(ComplaintDTO another) {
+        if (this.complaintDate.longValue() < another.complaintDate.longValue()) {
+            return 1;
+        }
+        if (this.complaintDate.longValue() > another.complaintDate.longValue()) {
+            return -1;
+        }
+        return 0;
+    }
 }

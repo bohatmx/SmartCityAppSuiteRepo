@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -29,9 +30,14 @@ import android.widget.Toast;
 
 import com.boha.library.R;
 import com.boha.library.activities.MuniContactsActivity;
+import com.boha.library.adapters.ComplaintCategoryPopupListAdapter;
+import com.boha.library.adapters.ComplaintTypePopupListAdapter;
+import com.boha.library.adapters.FAQPopupListAdapter;
 import com.boha.library.adapters.PopupListAdapter;
 import com.boha.library.dto.AlertImageDTO;
+import com.boha.library.dto.ComplaintCategoryDTO;
 import com.boha.library.dto.ComplaintImageDTO;
+import com.boha.library.dto.ComplaintTypeDTO;
 import com.boha.library.dto.NewsArticleImageDTO;
 
 import java.io.File;
@@ -86,10 +92,11 @@ public class Util {
             }
         });
 
-        animatorSet.playSequentially(scaleDown,scaleUp);
+        animatorSet.playSequentially(scaleDown, scaleUp);
         animatorSet.start();
 
     }
+
     public static void scaleUp(View view, int duration) {
 
 
@@ -101,8 +108,8 @@ public class Util {
         scaleUp.start();
 
 
-
     }
+
     public static Bitmap createBitmapFromView(Context context, View view, DisplayMetrics displayMetrics) {
         view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
         view.layout(0, 0, displayMetrics.widthPixels,
@@ -116,7 +123,7 @@ public class Util {
     }
 
     public static void setCustomActionBarNoAction(final Context ctx,
-                                          ActionBar actionBar, String text, Drawable image) {
+                                                  ActionBar actionBar, String text, Drawable image) {
         actionBar.setDisplayShowCustomEnabled(true);
 
         LayoutInflater inflator = (LayoutInflater)
@@ -168,7 +175,7 @@ public class Util {
                     @Override
                     public void onAnimationEnded() {
                         Intent w = new Intent(ctx, MuniContactsActivity.class);
-                        w.putExtra("logo",logoInt);
+                        w.putExtra("logo", logoInt);
                         w.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         ctx.startActivity(w);
                     }
@@ -186,7 +193,7 @@ public class Util {
                 .append(accountNumber).append("/")
                 .append(accountNumber).append("_")
                 .append(year).append("_").append(month).append(".pdf");
-        Log.d("Util","Statement URL: " + sb.toString());
+        Log.d("Util", "Statement URL: " + sb.toString());
         return sb.toString();
     }
 
@@ -198,6 +205,7 @@ public class Util {
         Log.i("Util", "Loading alert image: " + sb.toString());
         return sb.toString();
     }
+
     public static String getNewsImageURL(NewsArticleImageDTO p) {
         StringBuilder sb = getStartURL(p.getMunicipalityID());
         sb.append("/news/");
@@ -336,7 +344,8 @@ public class Util {
         mAnimator.start();
 
     }
-    public static void expand(View view, int duration, int height,final UtilAnimationListener listener) {
+
+    public static void expand(View view, int duration, int height, final UtilAnimationListener listener) {
         view.setVisibility(View.VISIBLE);
 
         final int widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
@@ -388,9 +397,10 @@ public class Util {
         return animator;
     }
 
-    public static void showPopupBasicWithHeroImage(Context ctx, Activity act,
-                                                   List<String> list,
-                                                   View anchorView, String caption, final UtilPopupListener listener) {
+    public static void showPopupList(Context ctx, Activity act,
+                                     List<String> list,
+                                     View anchorView, String caption, int primaryColorDark,
+                                     final UtilPopupListener listener) {
         final ListPopupWindow pop = new ListPopupWindow(act);
         LayoutInflater inf = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inf.inflate(R.layout.hero_image_popup, null);
@@ -406,7 +416,7 @@ public class Util {
         pop.setPromptView(v);
         pop.setPromptPosition(ListPopupWindow.POSITION_PROMPT_ABOVE);
         pop.setAdapter(new PopupListAdapter(ctx, R.layout.xspinner_item,
-                list, false));
+                list, primaryColorDark));
         pop.setAnchorView(anchorView);
         pop.setHorizontalOffset(getPopupHorizontalOffset(act));
         pop.setModal(true);
@@ -416,7 +426,113 @@ public class Util {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 pop.dismiss();
                 if (listener != null) {
-                    listener.onItemSelected(position);
+                    listener.onItemSelected(position, pop);
+                }
+            }
+        });
+        pop.show();
+    }
+
+    public static void showComplaintCategoryPopup(Context ctx, Activity act,
+                                           List<ComplaintCategoryDTO> list,
+                                           View anchorView, String caption, int primaryColorDark,
+                                           final UtilPopupListener listener) {
+        final ListPopupWindow pop = new ListPopupWindow(act);
+        LayoutInflater inf = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inf.inflate(R.layout.hero_image_popup, null);
+        TextView txt = (TextView) v.findViewById(R.id.HERO_caption);
+        if (caption != null) {
+            txt.setText(caption);
+        } else {
+            txt.setVisibility(View.GONE);
+        }
+        ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
+        img.setImageDrawable(getRandomBackgroundImage(ctx));
+
+        pop.setPromptView(v);
+        pop.setPromptPosition(ListPopupWindow.POSITION_PROMPT_ABOVE);
+        pop.setAdapter(new ComplaintCategoryPopupListAdapter(ctx, R.layout.xspinner_item,
+                list, primaryColorDark));
+        pop.setAnchorView(anchorView);
+        pop.setHorizontalOffset(getPopupHorizontalOffset(act));
+        pop.setModal(true);
+        pop.setWidth(getPopupWidth(act));
+        pop.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                pop.dismiss();
+                if (listener != null) {
+                    listener.onItemSelected(position,pop);
+                }
+            }
+        });
+        pop.show();
+    }
+    public static void showComplaintTypePopup(Context ctx, Activity act,
+                                                  List<ComplaintTypeDTO> list,
+                                                  View anchorView, String caption, int primaryColorDark,
+                                                  final UtilPopupListener listener) {
+        final ListPopupWindow pop = new ListPopupWindow(act);
+        LayoutInflater inf = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inf.inflate(R.layout.hero_image_popup, null);
+        TextView txt = (TextView) v.findViewById(R.id.HERO_caption);
+        if (caption != null) {
+            txt.setText(caption);
+        } else {
+            txt.setVisibility(View.GONE);
+        }
+        ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
+        img.setImageDrawable(getRandomBackgroundImage(ctx));
+
+        pop.setPromptView(v);
+        pop.setPromptPosition(ListPopupWindow.POSITION_PROMPT_ABOVE);
+        pop.setAdapter(new ComplaintTypePopupListAdapter(ctx,
+                R.layout.xspinner_item, list, primaryColorDark));
+        pop.setAnchorView(anchorView);
+        pop.setHorizontalOffset(getPopupHorizontalOffset(act));
+        pop.setModal(true);
+        pop.setWidth(getPopupWidth(act));
+        pop.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                pop.dismiss();
+                if (listener != null) {
+                    listener.onItemSelected(position, pop);
+                }
+            }
+        });
+        pop.show();
+    }
+
+    public static void showFAQPopup(Context ctx, Activity act,
+                                    List<String> list,
+                                    View anchorView, String caption, int primaryColorDark,
+                                    final UtilPopupListener listener) {
+        final ListPopupWindow pop = new ListPopupWindow(act);
+        LayoutInflater inf = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inf.inflate(R.layout.hero_image_popup, null);
+        TextView txt = (TextView) v.findViewById(R.id.HERO_caption);
+        if (caption != null) {
+            txt.setText(caption);
+        } else {
+            txt.setVisibility(View.GONE);
+        }
+        ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
+        img.setImageDrawable(getRandomBackgroundImage(ctx));
+
+        pop.setPromptView(v);
+        pop.setPromptPosition(ListPopupWindow.POSITION_PROMPT_ABOVE);
+        pop.setAdapter(new FAQPopupListAdapter(ctx, R.layout.xspinner_item, list, primaryColorDark));
+        pop.setAnchorView(anchorView);
+        pop.setHorizontalOffset(getPopupHorizontalOffset(act));
+        pop.setModal(true);
+        pop.setWidth(getPopupWidth(act));
+        pop.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                pop.dismiss();
+                if (listener != null) {
+                    listener.onItemSelected(position, pop);
                 }
             }
         });
@@ -424,7 +540,8 @@ public class Util {
     }
 
     public interface UtilPopupListener {
-        public void onItemSelected(int index);
+         void onItemSelected(int index,ListPopupWindow window);
+
     }
 
     public static int getPopupWidth(Activity activity) {
@@ -433,7 +550,7 @@ public class Util {
         int height = displaymetrics.heightPixels;
         int width = displaymetrics.widthPixels;
         Double d = Double.valueOf("" + width);
-        Double e = d / 1.5;
+        Double e = d / 1.4;
         return e.intValue();
     }
 
@@ -483,6 +600,7 @@ public class Util {
     }
 
     static int index;
+
     public static int getWindowHeight(Activity activity) {
         DisplayMetrics displaymetrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -520,7 +638,7 @@ public class Util {
 
         customtoast.setView(view);
         customtoast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-        customtoast.setDuration(Toast.LENGTH_SHORT);
+        customtoast.setDuration(Toast.LENGTH_LONG);
         customtoast.show();
     }
 
@@ -570,10 +688,11 @@ public class Util {
 
     }
 
-    public static void preen(View view, final long duration,
-                             final UtilAnimationListener listener) {
+
+    public static void fadeIn(View view, final long duration,
+                              final UtilAnimationListener listener) {
         try {
-            final ObjectAnimator an = ObjectAnimator.ofFloat(view, "alpha", 1, 1);
+            final ObjectAnimator an = ObjectAnimator.ofFloat(view, "alpha", 0, 1);
             an.setDuration(duration);
             an.setInterpolator(new AccelerateDecelerateInterpolator());
             an.addListener(new Animator.AnimatorListener() {
@@ -584,7 +703,8 @@ public class Util {
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    listener.onAnimationEnded();
+                    if (listener != null)
+                        listener.onAnimationEnded();
                 }
 
                 @Override
@@ -606,57 +726,180 @@ public class Util {
 
     }
 
+    public static void fadeOut(View view, final long duration,
+                               final UtilAnimationListener listener) {
+        try {
+            final ObjectAnimator an = ObjectAnimator.ofFloat(view, "alpha", 1, 0);
+            an.setDuration(duration);
+            an.setInterpolator(new AccelerateDecelerateInterpolator());
+            an.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (listener != null)
+                        listener.onAnimationEnded();
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+            an.start();
+        } catch (Exception e) {
+            if (listener != null) {
+                listener.onAnimationEnded();
+            }
+        }
+
+    }
+
+    public static void setComplaintCategoryIcon(String p, ImageView image, Context ctx) {
+        if (p.equalsIgnoreCase("Water")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zwater));
+        }
+        if (p.equalsIgnoreCase("Pollution")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zpollution));
+        }
+        if (p.equalsIgnoreCase("Traffic")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.ztraffic));
+        }
+        if (p.equalsIgnoreCase("Road")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zroad));
+        }
+        if (p.equalsIgnoreCase("Waste Water")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zwaste_water));
+        }
+
+    }
+    public static void setComplaintTypeIcon(String p, ImageView image, Context ctx) {
+        if (p.equalsIgnoreCase("Leaking Pipe")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zleaking_pipe));
+        }
+        if (p.equalsIgnoreCase("Burst")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zburst_pipe));
+        }
+        if (p.equalsIgnoreCase("No Water")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zno_water));
+        }
+        if (p.equalsIgnoreCase("Water Pressure Problem")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zwater_pressure));
+        }
+
+
+        if (p.equalsIgnoreCase("Air")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zair_polluttion));
+        }
+        if (p.equalsIgnoreCase("Water")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zwater_pollution));
+        }
+        if (p.equalsIgnoreCase("Land")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zland_pollution));
+        }
+        if (p.equalsIgnoreCase("Beach")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zbeach_pollution));
+        }
+
+
+
+        if (p.equalsIgnoreCase("All Lights Out of Order")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zall_lights));
+        }
+        if (p.equalsIgnoreCase("Flashing")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zflashing));
+        }
+
+        if (p.equalsIgnoreCase("Pot Hole")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zpothole));
+        }
+        if (p.equalsIgnoreCase("Sink Hole")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zsinkhole));
+        }
+        if (p.equalsIgnoreCase("Over flowing")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zoverflow));
+        }
+        if (p.equalsIgnoreCase("Missing ManHole cover")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zmanhole_cover));
+        }
+        if (p.equalsIgnoreCase("Manhole Cover")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zmanhole_cover));
+        }
+        if (p.equalsIgnoreCase("Over Flaw")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zoverflow));
+        }
+
+    }
+
     static int count, bIndex;
+
     public static Drawable getRandomBackgroundImage(Context ctx) {
         bIndex = random.nextInt(14);
         switch (bIndex) {
             case 0:
-                return ctx.getResources().getDrawable(R.drawable.back1);
+                return ContextCompat.getDrawable(ctx, R.drawable.back1);
             case 1:
-                return ctx.getResources().getDrawable(R.drawable.back2);
+                return ContextCompat.getDrawable(ctx, R.drawable.back2);
             case 2:
-                return ctx.getResources().getDrawable(R.drawable.back3);
+                return ContextCompat.getDrawable(ctx, R.drawable.back3);
             case 3:
-                return ctx.getResources().getDrawable(R.drawable.back4);
+                return ContextCompat.getDrawable(ctx, R.drawable.back4);
             case 4:
-                return ctx.getResources().getDrawable(R.drawable.back5);
+                return ContextCompat.getDrawable(ctx, R.drawable.back5);
             case 5:
-                return ctx.getResources().getDrawable(R.drawable.back6);
+                return ContextCompat.getDrawable(ctx, R.drawable.back6);
             case 6:
-                return ctx.getResources().getDrawable(R.drawable.back7);
+                return ContextCompat.getDrawable(ctx, R.drawable.back7);
             case 7:
-                return ctx.getResources().getDrawable(R.drawable.back8);
+                return ContextCompat.getDrawable(ctx, R.drawable.back8);
             case 8:
-                return ctx.getResources().getDrawable(R.drawable.back9);
+                return ContextCompat.getDrawable(ctx, R.drawable.back9);
             case 9:
-                return ctx.getResources().getDrawable(R.drawable.back10);
+                return ContextCompat.getDrawable(ctx, R.drawable.back10);
             case 10:
-                return ctx.getResources().getDrawable(R.drawable.back11);
+                return ContextCompat.getDrawable(ctx, R.drawable.back11);
             case 11:
-                return ctx.getResources().getDrawable(R.drawable.back12);
+                return ContextCompat.getDrawable(ctx, R.drawable.back12);
             case 12:
-                return ctx.getResources().getDrawable(R.drawable.back13);
+                return ContextCompat.getDrawable(ctx, R.drawable.back13);
             case 13:
-                return ctx.getResources().getDrawable(R.drawable.back14);
+                return ContextCompat.getDrawable(ctx, R.drawable.back14);
             case 14:
-                return ctx.getResources().getDrawable(R.drawable.back15);
+                return ContextCompat.getDrawable(ctx, R.drawable.back15);
 
         }
-        return ctx.getResources().getDrawable(R.drawable.back11);
+        return ContextCompat.getDrawable(ctx, R.drawable.back11);
+    }
+
+    public static Drawable getCityImage(final Context ctx, int index) {
+        CityImages images = SharedUtil.getCityImages(ctx);
+        if (images != null) {
+            return images.getImage(ctx, index);
+        }
+        return ContextCompat.getDrawable(ctx, R.drawable.under_construction);
     }
 
     public static Drawable getRandomCityImage(final Context ctx) {
         CityImages images = SharedUtil.getCityImages(ctx);
+        int index = random.nextInt(images.getImageResourceIDs().length - 1);
         if (images != null) {
-            return images.getImage(ctx);
+            return images.getImage(ctx, index);
         }
-        return ctx.getResources().getDrawable(R.drawable.under_construction);
+        return ContextCompat.getDrawable(ctx, R.drawable.under_construction);
     }
 
 
-    public static File writeToFile(String data, String fileName)  throws Exception{
+    public static File writeToFile(String data, String fileName) throws Exception {
 
-        File file  = new File(fileName);
+        File file = new File(fileName);
         FileOutputStream stream = null;
         try {
             stream = new FileOutputStream(file);
@@ -664,7 +907,7 @@ public class Util {
         } finally {
             stream.close();
         }
-        Log.e("Util","## pdf file: " + file.getAbsolutePath() + " length: " + file.length());
+        Log.e("Util", "## pdf file: " + file.getAbsolutePath() + " length: " + file.length());
         return file;
     }
 }

@@ -8,10 +8,18 @@ import java.util.List;
  */
 public class ComplaintCategoryDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Integer complaintCategoryID;
+    private Integer complaintCategoryID, id;
     private String complaintCategoryName;
     private List<ComplaintTypeDTO> complaintTypeList;
     private Integer municipalityID;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getComplaintCategoryID() {
         return complaintCategoryID;

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListPopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ import com.boha.library.util.TrafficLightUtil;
 import com.boha.library.util.Util;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -175,49 +177,50 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
                             list.add(t.getAlertTypeName());
                         }
                         try {
-                            Util.showPopupBasicWithHeroImage(ctx, getActivity(), list, handle, "Alert Types", new Util.UtilPopupListener() {
-                                @Override
-                                public void onItemSelected(int index) {
-                                    alertType = response.getAlertTypeList().get(index);
-                                    btnGetType.setText(alertType.getAlertTypeName());
+                            Util.showPopupList(ctx, getActivity(), list, handle, "Alert Types",
+                                    primaryDarkColor, new Util.UtilPopupListener() {
+                                        @Override
+                                        public void onItemSelected(int index, ListPopupWindow window) {
+                                            alertType = response.getAlertTypeList().get(index);
+                                            btnGetType.setText(alertType.getAlertTypeName());
 
-                                    switch (alertType.getColor()) {
-                                        case AlertTypeDTO.GREEN:
-                                            TrafficLightUtil.setGreen(ctx, trafficLights);
-                                            green.setText("Send");
-                                            Util.flashOnce(green, 300, new Util.UtilAnimationListener() {
-                                                @Override
-                                                public void onAnimationEnded() {
-                                                    green.setEnabled(true);
-                                                    Util.flashOnce(green, 200, null);
-                                                }
-                                            });
-                                            break;
-                                        case AlertTypeDTO.AMBER:
-                                            TrafficLightUtil.setAmber(ctx, trafficLights);
-                                            amber.setText("Send");
-                                            Util.flashOnce(amber, 300, new Util.UtilAnimationListener() {
-                                                @Override
-                                                public void onAnimationEnded() {
-                                                    amber.setEnabled(true);
-                                                    Util.flashOnce(amber, 200, null);
-                                                }
-                                            });
-                                            break;
-                                        case AlertTypeDTO.RED:
-                                            TrafficLightUtil.setRed(ctx, trafficLights);
-                                            red.setText("Send");
-                                            Util.flashOnce(red, 300, new Util.UtilAnimationListener() {
-                                                @Override
-                                                public void onAnimationEnded() {
-                                                    red.setEnabled(true);
-                                                    Util.flashOnce(red, 200, null);
-                                                }
-                                            });
-                                            break;
-                                    }
-                                }
-                            });
+                                            switch (alertType.getColor()) {
+                                                case AlertTypeDTO.GREEN:
+                                                    TrafficLightUtil.setGreen(ctx, trafficLights);
+                                                    green.setText("Send");
+                                                    Util.flashOnce(green, 300, new Util.UtilAnimationListener() {
+                                                        @Override
+                                                        public void onAnimationEnded() {
+                                                            green.setEnabled(true);
+                                                            Util.flashOnce(green, 200, null);
+                                                        }
+                                                    });
+                                                    break;
+                                                case AlertTypeDTO.AMBER:
+                                                    TrafficLightUtil.setAmber(ctx, trafficLights);
+                                                    amber.setText("Send");
+                                                    Util.flashOnce(amber, 300, new Util.UtilAnimationListener() {
+                                                        @Override
+                                                        public void onAnimationEnded() {
+                                                            amber.setEnabled(true);
+                                                            Util.flashOnce(amber, 200, null);
+                                                        }
+                                                    });
+                                                    break;
+                                                case AlertTypeDTO.RED:
+                                                    TrafficLightUtil.setRed(ctx, trafficLights);
+                                                    red.setText("Send");
+                                                    Util.flashOnce(red, 300, new Util.UtilAnimationListener() {
+                                                        @Override
+                                                        public void onAnimationEnded() {
+                                                            red.setEnabled(true);
+                                                            Util.flashOnce(red, 200, null);
+                                                        }
+                                                    });
+                                                    break;
+                                            }
+                                        }
+                                    });
                         } catch (Exception e) {
                             Log.e(LOG, "Failed", e);
                         }
@@ -330,6 +333,11 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+    @Override public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 
     String title;

@@ -19,13 +19,13 @@
             android:src="@drawable/back1"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/mon_hero_height_medium_lite" />
+            android:layout_height="@dimen/mon_widest" />
 
         <TextView
             android:id="@+id/NAV_subtitle"
             android:text="SubTitleHere"
             android:layout_marginLeft="@dimen/mon_margin"
-            android:layout_marginTop="@dimen/mon_hero_height_small"
+            android:layout_marginTop="@dimen/mon_wider"
             style="@style/TextStyleSmall"
             android:textColor="@color/white"
             android:layout_width="wrap_content"

@@ -43,10 +43,7 @@ public class SeverEventListFragment extends Fragment implements PageFragment {
             throw new UnsupportedOperationException("Host activity " + a.getLocalClassName() +
             " must implemet EventListListener");
         }
-//        Log.i(LOG,
-//                "onAttach ---- Fragment called and hosted by "
-//                        + a.getLocalClassName()
-//        );
+
         super.onAttach(a);
     }
 

@@ -126,7 +126,7 @@ public class SigninActivity extends ActionBarActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        heroImage.setImageDrawable(SplashActivity.getImage());
+                        heroImage.setImageDrawable(SplashActivity.getImage(0));
                     }
                 });
 

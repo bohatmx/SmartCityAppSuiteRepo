@@ -11,7 +11,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import com.boha.citizenapp.ethekwini.R;
-import com.boha.citizenapp.ethekwini.activities.MainDrawerActivity;
+import com.boha.citizenapp.ethekwini.activities.CitizenDrawerActivity;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.util.GCMUtil;
 import com.boha.library.util.SharedUtil;
@@ -76,13 +76,13 @@ public class GcmIntentService extends GCMBaseIntentService {
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		String message = msgIntent.getExtras().getString("message");
 
-		Intent resultIntent = new Intent(this, MainDrawerActivity.class);
+		Intent resultIntent = new Intent(this, CitizenDrawerActivity.class);
 		resultIntent.putExtra("message", message);
 		
 
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(MainDrawerActivity.class);
+        stackBuilder.addParentStack(CitizenDrawerActivity.class);
         stackBuilder.addNextIntent(resultIntent);
 
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -93,15 +93,18 @@ public class GcmIntentService extends GCMBaseIntentService {
 		} catch (Exception e) {}
 
 
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-                .setContentIntent(resultPendingIntent)
-//                .addAction(R.drawable.logo, SharedUtil.getMunicipality(getApplicationContext()).getMunicipalityName(), resultPendingIntent)
-                .setSmallIcon(R.drawable.logo)
-				.setContentTitle(SharedUtil.getMunicipality(getApplicationContext()).getMunicipalityName())
-				.setContentText(message);
+		try {
+			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+					.setContentIntent(resultPendingIntent)
+					.setSmallIcon(R.drawable.logo)
+					.setContentTitle(SharedUtil.getMunicipality(getApplicationContext()).getMunicipalityName())
+					.setContentText(message);
 
-		mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
-		Log.e(TAG,"Notification sent: " + message);
+			mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+			Log.i(TAG, "Notification sent: " + message);
+		} catch (Exception e) {
+			Log.e(TAG,"Notification failed", e);
+		}
 	}
 	
 	static final String TAG = GcmIntentService.class.getSimpleName();

@@ -2,6 +2,7 @@ package com.boha.library.adapters;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,31 +76,40 @@ public class DrawerListAdapter extends ArrayAdapter<String> {
         final String p = mList.get(position);
         item.txtString.setText(p);
         if (p.equalsIgnoreCase(ctx.getString(R.string.payments))) {
-            item.image.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_popup_reminder));
+            item.image.setImageDrawable(ContextCompat.getDrawable(
+                    ctx,android.R.drawable.ic_popup_reminder));
         }
         if (p.equalsIgnoreCase(ctx.getString(R.string.city_alerts))) {
-            item.image.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_dialog_alert));
+            item.image.setImageDrawable(ContextCompat.getDrawable(
+                    ctx,android.R.drawable.ic_dialog_alert));
         }
         if (p.equalsIgnoreCase(ctx.getString(R.string.my_complaints))) {
-            item.image.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_btn_speak_now));
+            item.image.setImageDrawable(ContextCompat.getDrawable(
+                    ctx,android.R.drawable.ic_btn_speak_now));
         }
         if (p.equalsIgnoreCase(ctx.getString(R.string.my_accounts))) {
-            item.image.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_dialog_info));
+            item.image.setImageDrawable(ContextCompat.getDrawable(
+                    ctx,android.R.drawable.ic_dialog_info));
         }
         if (p.equalsIgnoreCase(ctx.getString(R.string.city_gallery))) {
-            item.image.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_menu_gallery));
+            item.image.setImageDrawable(ContextCompat.getDrawable(
+                    ctx,android.R.drawable.ic_menu_gallery));
         }
         if (p.equalsIgnoreCase(ctx.getString(R.string.complaints_around_me))) {
-            item.image.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_dialog_map));
+            item.image.setImageDrawable(ContextCompat.getDrawable(
+                    ctx,android.R.drawable.ic_dialog_map));
         }
         if (p.equalsIgnoreCase(ctx.getString(R.string.faq))) {
-            item.image.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_menu_help));
+            item.image.setImageDrawable(ContextCompat.getDrawable(
+                    ctx,android.R.drawable.ic_menu_help));
         }
         if (p.equalsIgnoreCase(ctx.getString(R.string.city_news))) {
-            item.image.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_menu_info_details));
+            item.image.setImageDrawable(ContextCompat.getDrawable(
+                    ctx,android.R.drawable.ic_menu_info_details));
         }
         if (p.equalsIgnoreCase(ctx.getString(R.string.make_complaint))) {
-            item.image.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_menu_edit));
+            item.image.setImageDrawable(ContextCompat.getDrawable(
+                    ctx,android.R.drawable.ic_menu_edit));
         }
 
         if (primaryColorDark != 0) {

@@ -1,178 +1,258 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="@dimen/mon_divider"
-    android:background="@color/grey"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/grey"
+    android:padding="@dimen/mon_divider">
 
     <LinearLayout
         android:id="@+id/CI_topTop"
-        android:padding="@dimen/mon_padding"
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center"
+        android:padding="@dimen/mon_padding">
 
-        <ImageView
-            android:id="@+id/CI_iconFollow"
-            android:src="@android:drawable/btn_star_big_on"
-            android:tint="@color/grey"
-            android:layout_weight="1"
+        <RelativeLayout
+            android:id="@+id/iconBoxFollow"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <ImageView
-            android:id="@+id/CI_iconDetail"
-            android:src="@drawable/ic_action_search"
-            android:tint="@color/grey"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/CI_iconFollow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@android:drawable/btn_star_big_on"
+                android:tint="@color/grey" />
+
+            <TextView
+                style="@style/TextStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/CI_iconFollow"
+                android:layout_centerHorizontal="true"
+                android:text="Follow" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/iconBoxStatus"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <ImageView
-            android:id="@+id/CI_iconCamera"
-            android:src="@drawable/ic_camera_alt_black_36dp"
-            android:tint="@color/grey"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/CI_iconDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_action_search"
+                android:tint="@color/grey" />
+
+            <TextView
+                style="@style/TextStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/CI_iconDetail"
+                android:layout_centerHorizontal="true"
+                android:text="Latest Status" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/iconBoxCamera"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <ImageView
-            android:id="@+id/CI_iconRoll"
-            android:src="@drawable/ic_camera_roll_black_36dp"
-            android:tint="@color/grey"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/CI_iconCamera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_camera_alt_black_36dp"
+                android:tint="@color/grey" />
+
+            <TextView
+                style="@style/TextStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/CI_iconCamera"
+                android:layout_centerHorizontal="true"
+                android:text="@string/take_pics" />
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/CI_iconRoll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+
+                android:src="@drawable/ic_camera_roll_black_36dp"
+                android:tint="@color/grey" />
+
+            <TextView
+                style="@style/TextStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/CI_iconRoll"
+                android:layout_centerHorizontal="true"
+                android:text="View Pictures" />
+        </RelativeLayout>
     </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/CI_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/CI_topTop"
         android:background="@color/white"
-        android:padding="@dimen/mon_margin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:padding="@dimen/mon_margin">
 
         <TextView
             android:id="@+id/CI_color"
-            android:background="@drawable/xamber_oval_small"
-            android:text="1"
-            android:textColor="@color/white"
-            android:gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/xamber_oval_small"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/CI_complaintType"
             style="@style/Title3TextStyleBlack"
-            android:text="ComplaintType"
-            android:layout_toRightOf="@id/CI_color"
-            android:layout_marginLeft="@dimen/mon_margin"
-            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/mon_margin"
+            android:layout_toRightOf="@id/CI_color"
+            android:text="ComplaintType" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/CI_middle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/CI_top"
         android:background="@color/white"
-        android:padding="@dimen/mon_padding"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:padding="@dimen/mon_padding">
 
         <TextView
             android:id="@+id/CI_date"
-            style="@style/Title2TextStyleBlue"
-            android:text="Tuesday, 09 December 2099"
-            android:layout_marginLeft="@dimen/mon_margin"
+            style="@style/Title3TextStyleBlue"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/mon_margin"
+            android:text="Tuesday, 09 December 2099" />
 
         <RelativeLayout
             android:id="@+id/CI_refLayout"
-            android:layout_below="@id/CI_date"
-            android:layout_marginTop="@dimen/mon_margin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@id/CI_date"
+            android:layout_marginTop="@dimen/mon_margin">
 
             <TextView
                 android:id="@+id/CI_referenceLabel"
                 style="@style/TextStyle"
-                android:text="REF: "
-
-                android:layout_marginLeft="@dimen/mon_margin"
-                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/mon_margin"
+                android:text="Reference: " />
 
             <TextView
                 android:id="@+id/CI_reference"
                 style="@style/Title3TextStyleRed"
-                android:text="6568586865876"
-                android:layout_toRightOf="@id/CI_referenceLabel"
-                android:layout_marginLeft="@dimen/mon_margin"
-                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_toRightOf="@id/CI_referenceLabel"
+                android:text="6568586865876" />
         </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/CI_statusLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/mon_margin"
+            android:layout_below="@id/CI_refLayout"
+            android:orientation="vertical">
+
+            <include layout="@layout/status_layout" />
+        </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/CI_detailsView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/CI_middle"
         android:background="@color/beige_pale"
         android:padding="@dimen/mon_margin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/CI_address"
             style="TextStyle"
-            android:text="30 Kingfisher Drive, Pecanwood Estate, Hartbeestpoort, 2016, North West, South Africa"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="30 Kingfisher Drive, Pecanwood Estate, Hartbeestpoort, 2016, North West, South Africa" />
 
         <TextView
             android:id="@+id/CI_comment"
             style="@style/Title3TextStyleGreen"
-            android:text="The municipality response text"
-            android:layout_below="@id/CI_address"
-            android:layout_marginTop="@dimen/mon_margin"
-            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_below="@id/CI_address"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/mon_margin"
+            android:text="The municipality response text" />
 
     </RelativeLayout>
 
     <ImageView
         android:id="@+id/CI_image"
-        android:src="@drawable/back4"
-        android:scaleType="centerCrop"
-        android:layout_below="@id/CI_detailsView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mon_picture_large" />
+        android:layout_height="@dimen/mon_picture_large"
+        android:layout_below="@id/CI_detailsView"
+        android:scaleType="centerCrop"
+        android:src="@drawable/back4" />
+
     <RelativeLayout
         android:id="@+id/CI_followLayout"
-        android:layout_below="@id/CI_image"
-        android:padding="@dimen/mon_margin"
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/CI_image"
+        android:background="@color/white"
+        android:padding="@dimen/mon_margin">
+
         <TextView
             android:id="@+id/CI_followers"
-            android:text="0"
             style="@style/Title2TextStyleRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/mon_middle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:text="0" />
+
         <TextView
             android:id="@+id/CI_label"
-            android:text="Followed By"
-            android:layout_toLeftOf="@id/CI_followers"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/mon_margin"
             style="@style/TextStyleBoldBlueSmall"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/mon_margin"
+            android:layout_toLeftOf="@id/CI_followers"
+            android:text="Followed By" />
     </RelativeLayout>
 
 

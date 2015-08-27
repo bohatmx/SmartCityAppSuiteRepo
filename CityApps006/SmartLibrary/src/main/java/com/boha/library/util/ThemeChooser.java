@@ -19,7 +19,7 @@ public class ThemeChooser {
         switch (theme) {
 
             case CityApplication.THEME_BLUE:
-                activity.setTheme(R.style.BlueTheme);
+                activity.setTheme(R.style.BlueThemeOne);
                 break;
             case CityApplication.THEME_INDIGO:
                 activity.setTheme(R.style.IndigoTheme);

@@ -8,7 +8,7 @@ import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -39,7 +39,7 @@ import java.util.Locale;
 /**
  * Displays horizontal grid of alert images
  */
-public class AlertPictureGridActivity extends ActionBarActivity {
+public class AlertPictureGridActivity extends AppCompatActivity {
 
     Context ctx;
     AlertPictureAdapter adapter;
@@ -155,7 +155,7 @@ public class AlertPictureGridActivity extends ActionBarActivity {
 //                    @Override
 //                    public void onAnimationEnded() {
 //                        Intent intent = new Intent(ctx, AlertMapActivity.class);
-//                        intent.putExtra("complaint", newsArticle);
+//                        intent.putExtra("complaint", alert);
 //                        startActivity(intent);
 //                    }
 //                });
@@ -181,7 +181,7 @@ public class AlertPictureGridActivity extends ActionBarActivity {
                 Log.e(LOG, "Picture clicked..., position = " + position);
                 lastIndex = position;
                 Intent i = new Intent(getApplicationContext(), FullPhotoActivity.class);
-                i.putExtra("newsArticle", alert);
+                i.putExtra("alert", alert);
                 i.putExtra("index", position);
                 i.putExtra("type", 1);
 //                startActivity(i);

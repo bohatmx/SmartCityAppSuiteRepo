@@ -38,7 +38,7 @@
 
                 <EditText
                     android:id="@+id/PAY_amount"
-                    android:text="70000600.87"
+                    android:text="0.00"
                     android:inputType="numberDecimal"
                     android:layout_marginTop="@dimen/mon_padding"
                     android:layout_below="@id/PAY_label1"

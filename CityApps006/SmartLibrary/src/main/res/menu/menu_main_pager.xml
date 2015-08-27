@@ -11,7 +11,14 @@
     <item
         android:id="@+id/action_help"
         android:title="Help"
-        android:icon="@drawable/ic_action_refresh"
+        android:icon="@drawable/ic_action_help"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_logoff"
+        android:title="Log Off"
+        android:icon="@drawable/ic_action_event"
         android:orderInCategory="100"
         app:showAsAction="never" />
+
 </menu>

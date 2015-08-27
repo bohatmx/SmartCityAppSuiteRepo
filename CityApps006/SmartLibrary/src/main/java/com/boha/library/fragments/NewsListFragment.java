@@ -5,23 +5,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.boha.library.R;
+import com.boha.library.activities.CityApplication;
+import com.boha.library.activities.NewsDetailActivity;
 import com.boha.library.activities.NewsMapActivity;
 import com.boha.library.adapters.NewsListAdapter;
 import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
+import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +43,7 @@ public class NewsListFragment extends Fragment implements PageFragment {
     public static NewsListFragment newInstance(ResponseDTO response) {
         NewsListFragment fragment = new NewsListFragment();
         Bundle args = new Bundle();
-        args.putSerializable("response",response);
+        args.putSerializable("response", response);
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,29 +58,24 @@ public class NewsListFragment extends Fragment implements PageFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            ResponseDTO r = (ResponseDTO)getArguments().getSerializable("response");
+            ResponseDTO r = (ResponseDTO) getArguments().getSerializable("response");
             newsList = r.getNewsArticleList();
         }
     }
 
-    View view, topView, border;
+    View view, topView, emptyLayout;
     ListView listView;
-    Button btnCount;
-    TextView  txtTitle, txtSubTitle;
-    View fab;
+    FloatingActionButton fab;
+    TextView txtTitle, txtEmpty;
     Context ctx;
     List<NewsArticleDTO> newsList;
     Location location;
 
-    ImageView imgSearch;
-    
-    ImageView icon, heroImage;
+    ImageView heroImage;
     int logo;
 
     public void setLocation(Location location) {
         this.location = location;
-
-
     }
 
     @Override
@@ -83,6 +83,7 @@ public class NewsListFragment extends Fragment implements PageFragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_news_list, container, false);
         topView = inflater.inflate(R.layout.news_top, null);
+        txtEmpty = (TextView)view.findViewById(R.id.NEWS_LIST_text);
         ctx = getActivity();
         setFields();
         if (newsList != null) {
@@ -97,33 +98,15 @@ public class NewsListFragment extends Fragment implements PageFragment {
     }
 
     private void setFields() {
-        border = topView.findViewById(R.id.NEWS_LIST_top);
-        border.setBackgroundColor(primaryColor);
 
-        btnCount = (Button) view.findViewById(R.id.button);
+        fab = (FloatingActionButton) view.findViewById(R.id.fab);
         listView = (ListView) view.findViewById(R.id.NEWS_LIST_listView);
-        icon = (ImageView)topView.findViewById(R.id.NEWS_LIST_icon);
-        heroImage = (ImageView)topView.findViewById(R.id.NEWS_LIST_heroImage);
+        heroImage = (ImageView) topView.findViewById(R.id.NEWS_LIST_heroImage);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
         txtTitle = (TextView) topView.findViewById(R.id.NEWS_LIST_title);
-        txtSubTitle = (TextView) topView.findViewById(R.id.NEWS_LIST_subTitle);
-        imgSearch = (ImageView) topView.findViewById(R.id.NEWS_LIST_refresh);
-       
         txtTitle.setText(ctx.getResources().getText(R.string.city_news));
-        txtSubTitle.setVisibility(View.INVISIBLE);
 
-        icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               
-            }
-        });
-        imgSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
         topView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,19 +115,20 @@ public class NewsListFragment extends Fragment implements PageFragment {
         });
 
         ctx = getActivity();
-        btnCount.setOnClickListener(new View.OnClickListener() {
+
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.flashOnce(btnCount, 300, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        Intent i = new Intent(ctx, NewsMapActivity.class);
-                        ResponseDTO r = new ResponseDTO();
-                        r.setNewsArticleList(newsList);
-                        i.putExtra("newsArticleList", r);
-                        startActivity(i);
-                    }
-                });
+                if (newsList == null || newsList.isEmpty()) {
+                    Snackbar.make(listView,ctx.getString(R.string.nonews_map),
+                            Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+                Intent i = new Intent(ctx, NewsMapActivity.class);
+                ResponseDTO r = new ResponseDTO();
+                r.setNewsArticleList(newsList);
+                i.putExtra("newsArticleList", r);
+                startActivity(i);
 
             }
         });
@@ -174,7 +158,6 @@ public class NewsListFragment extends Fragment implements PageFragment {
         newsList.add(0, newsArticle);
         if (newsListAdapter != null) {
             newsListAdapter.notifyDataSetChanged();
-            btnCount.setText("" + newsList.size());
         }
 
         ResponseDTO r = new ResponseDTO();
@@ -182,26 +165,31 @@ public class NewsListFragment extends Fragment implements PageFragment {
         CacheUtil.cacheNewsData(ctx, r, null);
 
     }
-   
+
 
     NewsListAdapter newsListAdapter;
-    private void setList() {
-        if (newsList == null) return;
 
-        btnCount.setText("" + newsList.size());
+    private void setList() {
+        if (newsList == null) {
+           newsList = new ArrayList<>();
+        }
         newsListAdapter = new NewsListAdapter(ctx, R.layout.news_item, newsList, new NewsListAdapter.NewsListListener() {
             @Override
-            public void onNewsClicked(int position) {
-//                mListener.onNewsClicked(newsList.get(position));
-                Intent i = new Intent(ctx, NewsMapActivity.class);
-                ResponseDTO r = new ResponseDTO();
-                r.setNewsArticleList(newsList);
-                i.putExtra("newsArticle", newsList.get(position));
-                startActivity(i);
+            public void onNewsClicked(final int position) {
+                Intent w = new Intent(getActivity(), NewsDetailActivity.class);
+                w.putExtra("newsArticle", newsList.get(position));
+                startActivity(w);
+
             }
         });
-
+        if (newsList.isEmpty()) {
+            txtEmpty.setVisibility(View.VISIBLE);
+        } else {
+            txtEmpty.setVisibility(View.GONE);
+        }
+        Statics.setRobotoFontLight(ctx,txtEmpty);
         if (listView.getHeaderViewsCount() == 0) {
+            heroImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
             listView.addHeaderView(topView);
         }
         listView.setAdapter(newsListAdapter);
@@ -224,6 +212,12 @@ public class NewsListFragment extends Fragment implements PageFragment {
         mListener = null;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
+    }
 
     @Override
     public void animateSomething() {
@@ -235,26 +229,23 @@ public class NewsListFragment extends Fragment implements PageFragment {
                     @Override
                     public void run() {
                         timer.cancel();
-                        heroImage.setImageDrawable(Util.getRandomCityImage(ctx));
-                        Util.expand(heroImage, 1000, new Util.UtilAnimationListener() {
-                            @Override
-                            public void onAnimationEnded() {
-                                Util.flashOnce(btnCount, 300, null);
-                            }
-                        });
+                        heroImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+
                     }
                 });
             }
-        }, 500);
+        }, 50);
 
     }
 
-    int primaryColor,  primaryDarkColor;
+    int primaryColor, primaryDarkColor;
+
     @Override
     public void setThemeColors(int primaryColor, int primaryDarkColor) {
         this.primaryColor = primaryColor;
         this.primaryDarkColor = primaryDarkColor;
     }
+
     String pageTitle;
 
     @Override
@@ -268,8 +259,11 @@ public class NewsListFragment extends Fragment implements PageFragment {
     }
 
     public interface NewsListFragmentListener {
-        public void onNewsClicked(NewsArticleDTO news);
-        public void onCreateNewsArticleRequested();
+        void onNewsClicked(NewsArticleDTO news);
+
+        void onCreateNewsArticleRequested();
+
+        void setBusy(boolean busy);
     }
 
     static final String LOG = NewsListFragment.class.getSimpleName();

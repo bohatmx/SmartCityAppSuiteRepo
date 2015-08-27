@@ -1,7 +1,7 @@
 package com.boha.library.activities;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -14,7 +14,7 @@ import com.boha.library.dto.AlertDTO;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-public class FullPhotoActivity extends ActionBarActivity {
+public class FullPhotoActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     int index;

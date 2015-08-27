@@ -9,7 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +19,7 @@ import android.view.WindowManager;
 import com.boha.library.R;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.ProfileInfoDTO;
-import com.boha.library.fragments.StatementFragment;
+import com.boha.library.fragments.StatementListFragment;
 import com.boha.library.services.StatementService;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
@@ -31,11 +31,13 @@ import com.google.android.gms.analytics.Tracker;
 
 import java.util.List;
 
-public class StatementActivity extends ActionBarActivity implements StatementFragment.StatementFragmentListener{
+public class StatementActivity extends AppCompatActivity
+        implements StatementListFragment.StatementFragmentListener{
 
-    StatementFragment statementFragment;
+    StatementListFragment statementListFragment;
     Context ctx;
     int primaryColor, darkColor, logo;
+    Menu mMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +48,8 @@ public class StatementActivity extends ActionBarActivity implements StatementFra
         primaryColor = getIntent().getIntExtra("primaryColor", ctx.getResources().getColor(R.color.teal_500));
         darkColor = getIntent().getIntExtra("darkColor", ctx.getResources().getColor(R.color.teal_700));
         logo = getIntent().getIntExtra("logo", R.drawable.ic_action_globe);
-        statementFragment = (StatementFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
-        statementFragment.setThemeColors(primaryColor,darkColor);
+        statementListFragment = (StatementListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+        statementListFragment.setThemeColors(primaryColor,darkColor);
         getAccounts();
 
         MunicipalityDTO municipality = SharedUtil.getMunicipality(ctx);
@@ -78,7 +80,12 @@ public class StatementActivity extends ActionBarActivity implements StatementFra
             public void onCacheRetrieved(ResponseDTO response) {
                 if (response.getProfileInfoList() != null && !response.getProfileInfoList().isEmpty()) {
                     ProfileInfoDTO profileInfo = response.getProfileInfoList().get(0);
-                    statementFragment.setAccountList(profileInfo.getAccountList());
+                    if (profileInfo.getAccountList().isEmpty()) {
+                        Log.e(LOG,"## Profile has no accounts");
+                        finish();
+                    } else {
+                        statementListFragment.setAccountList(profileInfo.getAccountList());
+                    }
                 }
             }
 
@@ -91,20 +98,22 @@ public class StatementActivity extends ActionBarActivity implements StatementFra
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_statement, menu);
+        getMenuInflater().inflate(R.menu.menu_main_pager, menu);
+        menu.getItem(0).setVisible(false);
+        mMenu = menu;
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_refresh) {
+            return true;
+        }
+        if (id == R.id.action_help) {
+            Util.showToast(ctx,getString(R.string.under_cons));
             return true;
         }
 
@@ -165,9 +174,32 @@ public class StatementActivity extends ActionBarActivity implements StatementFra
                 @Override
                 public void onDownloadsComplete(int count) {
                     Log.e(LOG,"+++ Statements downloaded: " + count);
-                    statementFragment.downloadsCompleted();
+                    statementListFragment.downloadsCompleted();
                 }
             });
+        }
+    }
+
+    @Override
+    public void setBusy(boolean busy) {
+        setRefreshActionButtonState(busy);
+    }
+
+    @Override
+    public void onPause() {
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        super.onPause();
+    }
+    public void setRefreshActionButtonState(final boolean refreshing) {
+        if (mMenu != null) {
+            final MenuItem refreshItem = mMenu.findItem(R.id.action_help);
+            if (refreshItem != null) {
+                if (refreshing) {
+                    refreshItem.setActionView(R.layout.action_bar_progess);
+                } else {
+                    refreshItem.setActionView(null);
+                }
+            }
         }
     }
 }

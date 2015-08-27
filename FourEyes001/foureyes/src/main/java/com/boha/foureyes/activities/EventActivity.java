@@ -5,14 +5,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import com.boha.foureyes.R;
 import com.boha.foureyes.dto.ErrorStoreAndroidDTO;
@@ -36,19 +35,18 @@ public class EventActivity extends ActionBarActivity
         SeverEventListFragment.EventListListener,
         LogListener, DashboardListFragment.DashboardListListener{
 
-    ProgressBar progressBar;
-    int currentPage;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_pager);
         ctx = getApplicationContext();
-        progressBar = (ProgressBar)findViewById(R.id.progressBar);
         mPager = (ViewPager) findViewById(R.id.pager);
         getServerData();
 
         ActionBar actionBar = getSupportActionBar();
-        Util.setCustomActionBar(ctx,actionBar,"SmartCity FourEyes", ctx.getResources().getDrawable(R.drawable.glasses32));
+        Util.setCustomActionBar(ctx,actionBar,"SmartCity FourEyes",
+                ContextCompat.getDrawable(ctx,R.drawable.glasses32));
     }
 
 
@@ -56,7 +54,7 @@ public class EventActivity extends ActionBarActivity
         Log.w(LOG, "### getServerData and events...");
         RequestDTO w = new RequestDTO(RequestDTO.GET_ERROR_REPORTS);
 
-        progressBar.setVisibility(View.VISIBLE);
+        setRefreshActionButtonState(true);
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO r) {
@@ -64,10 +62,9 @@ public class EventActivity extends ActionBarActivity
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        progressBar.setVisibility(View.GONE);
+                        setRefreshActionButtonState(false);
                         response = r;
                         buildPages();
-                        Log.e(LOG,"Booyah!!!");
                     }
                 });
             }
@@ -77,6 +74,7 @@ public class EventActivity extends ActionBarActivity
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            setRefreshActionButtonState(false);
                             Util.showErrorToast(ctx,message);
                         }
                     });
@@ -87,7 +85,8 @@ public class EventActivity extends ActionBarActivity
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Util.showErrorToast(ctx,"Comms broken, will try again");
+                        setRefreshActionButtonState(false);
+                        Util.showErrorToast(ctx,"Comms broken, please try again");
                     }
                 });
             }
@@ -238,6 +237,20 @@ public class EventActivity extends ActionBarActivity
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    public void setRefreshActionButtonState(final boolean refreshing) {
+        if (mMenu != null) {
+            final MenuItem refreshItem = mMenu.findItem(R.id.action_refresh);
+            if (refreshItem != null) {
+                if (refreshing) {
+                    refreshItem.setActionView(R.layout.action_bar_progess);
+                } else {
+                    refreshItem.setActionView(null);
+                }
+            }
+        }
+    }
+
 
     Context ctx;
     ViewPager mPager;

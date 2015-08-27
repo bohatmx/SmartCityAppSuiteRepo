@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.boha.library.R;
+import com.boha.library.activities.CityApplication;
 import com.boha.library.adapters.ComplaintListAdapter;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintUpdateStatusDTO;
@@ -20,10 +23,10 @@ import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.UserDTO;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
-import com.boha.library.util.CacheUtil;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +40,10 @@ import java.util.TimerTask;
 public class MyComplaintsFragment extends Fragment implements PageFragment {
 
 
-    public static MyComplaintsFragment newInstance() {
+    public static MyComplaintsFragment newInstance(ResponseDTO r) {
         MyComplaintsFragment fragment = new MyComplaintsFragment();
         Bundle args = new Bundle();
+        args.putSerializable("complaints", r);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,12 +51,8 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     public MyComplaintsFragment() {
     }
 
-    public interface MyComplaintsListener {
-        public void onNewComplaintRequested();
-    }
-    MyComplaintsListener mListener;
     ResponseDTO response;
-    View view, fab;
+    View view;
     Context ctx;
     View handle;
     ListView listView;
@@ -70,7 +70,8 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            response = (ResponseDTO) getArguments().getSerializable("complaintList");
+            response = (ResponseDTO) getArguments().getSerializable("complaints");
+            complaintList = response.getComplaintList();
         }
     }
 
@@ -83,46 +84,51 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
         activity = getActivity();
         setFields();
 
-        getCachedComplaints();
+        if (savedInstanceState != null) {
+            ResponseDTO w = (ResponseDTO)savedInstanceState.getSerializable("response");
+            if (w != null) {
+                response = w;
+                complaintList = response.getComplaintList();
+            }
+        }
+
+        setList();
         return view;
     }
 
-    private void getCachedComplaints() {
-        CacheUtil.getCacheLoginData(ctx, new CacheUtil.CacheRetrievalListener() {
-            @Override
-            public void onCacheRetrieved(ResponseDTO response) {
-                if (response.getComplaintList() != null) {
-                    complaintList = response.getComplaintList();
-                }
-                setList();
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
+    @Override
+    public void onSaveInstanceState(Bundle b) {
+        b.putSerializable("response",response);
+        super.onSaveInstanceState(b);
     }
+
+    ComplaintListAdapter adapter;
 
     private void setList() {
         if (complaintList == null) {
             complaintList = new ArrayList<>();
         }
-        if (complaintList.size() > 0) {
+        if (!complaintList.isEmpty()) {
             noCompImage.setVisibility(View.GONE);
             txtNoComp.setVisibility(View.GONE);
         }
         txtCount.setText("" + complaintList.size());
 
-        ComplaintListAdapter adapter = new ComplaintListAdapter(ctx, R.layout.complaint_item, complaintList, new ComplaintListAdapter.ComplaintListListener() {
+        adapter = new ComplaintListAdapter(ctx, R.layout.complaint_item, primaryDarkColor,
+                ComplaintListAdapter.MY_COMPLAINTS,
+                complaintList, new ComplaintListAdapter.ComplaintListListener() {
             @Override
             public void onComplaintFollowRequested(ComplaintDTO complaint) {
                 underConstruction();
             }
 
             @Override
-            public void onComplaintStatusRequested(ComplaintDTO complaint) {
-                getCaseDetails(complaint.getReferenceNumber());
+            public void onComplaintStatusRequested(ComplaintDTO complaint, int position) {
+                if (complaint.getHref() == null) {
+                    listener.onRefreshRequested(complaint);
+                } else {
+                    getCaseDetails(complaint.getHref(), position);
+                }
             }
 
             @Override
@@ -140,15 +146,22 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     }
 
     private void underConstruction() {
-        Util.showToast(ctx,getString(R.string.under_cons));
+        Util.showToast(ctx, getString(R.string.under_cons));
     }
+
     List<ComplaintUpdateStatusDTO> complaintUpdateStatusList;
-    private void getCaseDetails(final String refe) {
+
+    public void setComplaintList(List<ComplaintDTO> list) {
+        complaintList = list;
+        setList();
+    }
+    private void getCaseDetails(final String href, final int position) {
+        Log.e(LOG, "##getCaseDetails, href: " + href);
         RequestDTO w = new RequestDTO(RequestDTO.GET_COMPLAINT_STATUS);
-        w.setReferenceNumber(refe);
+        w.setReferenceNumber(href);
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
 
-        progressBar.setVisibility(View.VISIBLE);
+        listener.setBusy(true);
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO response) {
@@ -156,10 +169,13 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            progressBar.setVisibility(View.GONE);
+                            listener.setBusy(false);
                             if (response.getStatusCode() == 0) {
                                 complaintUpdateStatusList = response.getComplaintUpdateStatusList();
+                                complaintList.get(position).setComplaintUpdateStatusList(complaintUpdateStatusList);
+                                adapter.notifyDataSetChanged();
                             }
+
                         }
                     });
                 }
@@ -171,8 +187,8 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            progressBar.setVisibility(View.GONE);
-                            Util.showErrorToast(ctx, message);
+                            listener.setBusy(false);
+                            Util.showToast(ctx, message);
                         }
                     });
                 }
@@ -180,15 +196,11 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
 
             @Override
             public void onWebSocketClose() {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        getCaseDetails(refe);
-                    }
-                });
+
             }
         });
     }
+
     private void setFields() {
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
@@ -199,7 +211,6 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
         txtUserName = (TextView) view.findViewById(R.id.FLC_userName);
         txtTitle = (TextView) view.findViewById(R.id.FLC_title);
         txtSubTitle = (TextView) view.findViewById(R.id.FLC_subTitle);
-        fab = view.findViewById(R.id.FAB);
 
         txtCount = (TextView) view.findViewById(R.id.FLC_count);
         txtNoComp = (TextView) view.findViewById(R.id.FLC_noComplaints);
@@ -208,18 +219,7 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
 
 
         txtTitle.setText(ctx.getString(R.string.my_complaints));
-        txtSubTitle.setText("A history of my complaints to the City");
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Util.flashOnce(fab, 300, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        mListener.onNewComplaintRequested();
-                    }
-                });
-            }
-        });
+        txtSubTitle.setText(getString(R.string.history));
 
         ProfileInfoDTO x = SharedUtil.getProfile(ctx);
         UserDTO z = SharedUtil.getUser(ctx);
@@ -234,56 +234,67 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     }
 
     Random random = new Random(System.currentTimeMillis());
+
     private void setNoCompImage() {
-        int index = random.nextInt(9);
-        switch (index) {
-            case 0:
-                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy1));
-                return;
-            case 1:
-                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy2));
-                return;
-            case 2:
-                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy3));
-                return;
-            case 3:
-                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy4));
-                return;
-            case 4:
-                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy5));
-                return;
-            case 5:
-                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy6));
-                return;
-            case 6:
-                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy7));
-                return;
-            case 7:
-                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy8));
-                return;
-            case 8:
-                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy9));
-                return;
-            case 9:
-                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy10));
-                return;
-        }
+        noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.happy3));
+//        int index = random.nextInt(9);
+//        switch (index) {
+//            case 0:
+//                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy1));
+//                return;
+//            case 1:
+//                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy2));
+//                return;
+//            case 2:
+//                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy3));
+//                return;
+//            case 3:
+//                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy4));
+//                return;
+//            case 4:
+//                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy5));
+//                return;
+//            case 5:
+//                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy6));
+//                return;
+//            case 6:
+//                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy7));
+//                return;
+//            case 7:
+//                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy8));
+//                return;
+//            case 8:
+//                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy9));
+//                return;
+//            case 9:
+//                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy10));
+//                return;
+//        }
     }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (MyComplaintsListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.getLocalClassName()
+        if (activity instanceof MyComplaintsListener) {
+            listener = (MyComplaintsListener) activity;
+        } else {
+            throw new ClassCastException("Host " + activity.getLocalClassName()
                     + " must implement MyComplaintsListener");
         }
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
 //        mListener = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 
     @Override
@@ -297,15 +308,11 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
                     public void run() {
                         timer.cancel();
                         hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-                        Util.expand(hero, 600, new Util.UtilAnimationListener() {
-                            @Override
-                            public void onAnimationEnded() {
-                            }
-                        });
+
                     }
                 });
             }
-        }, 500);
+        }, 50);
     }
 
     int primaryColor, primaryDarkColor;
@@ -329,4 +336,11 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
         this.pageTitle = pageTitle;
     }
 
+    private MyComplaintsListener listener;
+
+    public interface MyComplaintsListener {
+        void setBusy(boolean busy);
+
+        void onRefreshRequested(ComplaintDTO complaint);
+    }
 }

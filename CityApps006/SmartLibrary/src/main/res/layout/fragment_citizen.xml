@@ -30,7 +30,7 @@
                 <ImageView
                     android:id="@+id/CITIZEN_image"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/mon_hero_height_medium"
+                    android:layout_height="@dimen/mon_hero_height_small"
                     android:scaleType="centerCrop"
                     android:src="@drawable/back8" />
 
@@ -39,18 +39,20 @@
                     style="@style/Title1TextStyleWhite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_marginLeft="@dimen/mon_margin"
                     android:layout_marginTop="@dimen/mon_margin"
                     android:text="@string/my_accounts" />
 
                 <TextView
                     android:id="@+id/CITIZEN_name"
-                    style="@style/Title3TextStyleGrey"
+                    style="@style/TextStyle"
+                    android:textColor="@color/grey"
+                    android:background="@color/transparent_black"
+                    android:padding="@dimen/mon_margin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/CITIZEN_title"
-                    android:layout_below="@id/CITIZEN_title"
-                    android:layout_marginTop="@dimen/mon_margin"
+                    android:layout_alignParentBottom="true"
                     android:text="Citizen Name" />
 
 

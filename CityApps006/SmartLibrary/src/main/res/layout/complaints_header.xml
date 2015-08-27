@@ -9,19 +9,22 @@
         android:background="@color/grey"
         android:visibility="visible"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mon_hero_height_medium">
+        android:layout_height="@dimen/mon_hero_height_small">
 
         <ImageView
             android:id="@+id/CAR_hero"
             android:src="@drawable/back6"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/mon_hero_height_medium" />
+            android:layout_height="@dimen/mon_hero_height_small" />
 
         <TextView
             android:id="@+id/CAR_title"
             android:text="My Title Here"
             style="@style/Title2TextStyleWhite"
+            android:background="@color/transparent_black"
+            android:padding="@dimen/mon_margin"
+            android:visibility="gone"
             android:layout_margin="@dimen/mon_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -30,6 +33,7 @@
             android:id="@+id/CAR_subTitle"
             android:text="My sub title will occupy pride of place here"
             style="@style/TextStyleSmall"
+            android:visibility="gone"
             android:textColor="@color/white"
             android:layout_below="@id/CAR_title"
             android:layout_alignLeft="@id/CAR_title"
@@ -52,6 +56,7 @@
             android:id="@+id/CAR_seekLayout"
             android:background="@color/white"
             android:padding="@dimen/mon_padding"
+            android:layout_marginTop="@dimen/mon_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
@@ -72,14 +77,19 @@
         </RelativeLayout>
     </com.dd.ShadowLayout>
 
-    <RelativeLayout
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="130dp"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_search"
+        android:layout_marginTop="64dp"
         android:layout_marginRight="@dimen/mon_wide"
-        android:layout_height="wrap_content">
+        android:layout_alignParentRight="true"
 
-        <include layout="@layout/fab_search" />
-    </RelativeLayout>
+        app:borderWidth="0dp"
+        app:rippleColor="@color/blue_200"
+        app:backgroundTint="@color/blue_800"
+        app:elevation="@dimen/mon_margin"
+        app:pressedTranslationZ="@dimen/mon_wide"/>
 
 </RelativeLayout>

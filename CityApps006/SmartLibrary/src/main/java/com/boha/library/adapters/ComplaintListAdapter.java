@@ -1,16 +1,20 @@
 package com.boha.library.adapters;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintTypeDTO;
+import com.boha.library.dto.ComplaintUpdateStatusDTO;
 import com.boha.library.util.Util;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -28,14 +32,19 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
     private final int mLayoutRes;
     private List<ComplaintDTO> mList;
     private Context ctx;
+    private int darkColor, type;
+    public static final int MY_COMPLAINTS = 1, AROUND_ME = 2;
     static final String LOG = ComplaintListAdapter.class.getSimpleName();
 
     public ComplaintListAdapter(Context context, int textViewResourceId,
+                                int darkColor, int type,
                                 List<ComplaintDTO> list, ComplaintListListener listener) {
         super(context, textViewResourceId, list);
         this.mLayoutRes = textViewResourceId;
         this.listener = listener;
+        this.darkColor = darkColor;
         mList = list;
+        this.type = type;
         ctx = context;
         this.mInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -47,9 +56,12 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
 
     static class ViewHolderItem {
         protected ImageView image, iconDetails, iconFollow, iconCamera, iconRoll;
-        protected TextView txtComplaintType, txtColor, txtDate, txtComment, txtAddress, txtRef;
-        protected View detailsView;
+        protected TextView txtComplaintType, txtColor, txtDate,
+                txtComment, txtAddress, txtRef, txtStatusDate, txtRemarks, txtAck;
+        protected View detailsView, followBox, cameraBox, statusBox;
+        protected LinearLayout statusLayout;
         protected int position;
+
     }
 
     @Override
@@ -73,6 +85,7 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
             item.txtDate = (TextView) convertView.findViewById(R.id.CI_date);
             item.txtAddress = (TextView) convertView.findViewById(R.id.CI_address);
             item.txtRef = (TextView) convertView.findViewById(R.id.CI_reference);
+            item.statusLayout = (LinearLayout) convertView.findViewById(R.id.CI_statusLayout);
 
             item.detailsView = convertView.findViewById(R.id.CI_detailsView);
             item.iconDetails = (ImageView)convertView.findViewById(R.id.CI_iconDetail);
@@ -80,6 +93,15 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
             item.iconCamera = (ImageView)convertView.findViewById(R.id.CI_iconCamera);
             item.iconRoll = (ImageView)convertView.findViewById(R.id.CI_iconRoll);
             item.image = (ImageView)convertView.findViewById(R.id.CI_image);
+
+            item.txtStatusDate = (TextView) convertView.findViewById(R.id.SL_statusDate);
+            item.txtAck = (TextView) convertView.findViewById(R.id.SL_ack);
+            item.txtRemarks = (TextView) convertView.findViewById(R.id.SL_statusText);
+
+            item.followBox = convertView.findViewById(R.id.iconBoxFollow);
+            item.cameraBox = convertView.findViewById(R.id.iconBoxCamera);
+            item.statusBox = convertView.findViewById(R.id.iconBoxStatus);
+
 
 
             convertView.setTag(item);
@@ -92,7 +114,9 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
         if (p.getComplaintType() == null) {
             item.txtComplaintType.setText("Type unavailable");
         } else {
-            item.txtComplaintType.setText(p.getComplaintType().getComplaintTypeName());
+            item.txtComplaintType.setText(
+                    p.getComplaintType().getCategoryName() + " - " +
+                    p.getComplaintType().getComplaintTypeName());
         }
         item.txtDate.setText(sdfDate.format(new Date(p.getComplaintDate())));
         item.txtComment.setText(p.getRemarks());
@@ -106,21 +130,28 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
 
 
         if (p.getComplaintType() != null) {
-            switch (p.getComplaintType().getColor()) {
-                case ComplaintTypeDTO.GREEN:
-                    item.txtColor.setBackground(ctx.getResources().getDrawable(R.drawable.xgreen_oval_small));
-                    break;
-                case ComplaintTypeDTO.AMBER:
-                    item.txtColor.setBackground(ctx.getResources().getDrawable(R.drawable.xamber_oval_small));
-                    break;
-                case ComplaintTypeDTO.RED:
-                    item.txtColor.setBackground(ctx.getResources().getDrawable(R.drawable.xred_oval_small));
-                    break;
+            if (p.getComplaintType().getColor() != null) {
+                switch (p.getComplaintType().getColor()) {
+                    case ComplaintTypeDTO.GREEN:
+                        item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xgreen_oval_small));
+                        break;
+                    case ComplaintTypeDTO.AMBER:
+                        item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xamber_oval_small));
+                        break;
+                    case ComplaintTypeDTO.RED:
+                        item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xred_oval_small));
+                        break;
+                    default:
+                        item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xred_oval_small));
+                        break;
+                }
+            } else {
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xred_oval_small));
             }
         }
         if (p.getComplaintImageList() != null && !p.getComplaintImageList().isEmpty()) {
             item.image.setVisibility(View.VISIBLE);
-            String url = Util.getComplaintImageURL(p.getComplaintImageList().get(0));
+            String url = p.getComplaintImageList().get(0).getUrl();
             ImageLoader.getInstance().displayImage(url,item.image);
         } else {
             item.image.setVisibility(View.GONE);
@@ -143,7 +174,8 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
                 Util.flashOnce(item.iconDetails, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        listener.onComplaintStatusRequested(p);
+
+                        listener.onComplaintStatusRequested(p, position);
                     }
                 });
             }
@@ -171,19 +203,47 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
             }
         });
 
-        Util.scaleUp(convertView,500);
+        if (p.getComplaintUpdateStatusList() != null && !p.getComplaintUpdateStatusList().isEmpty()) {
+            item.statusLayout.setVisibility(View.VISIBLE);
+
+            ComplaintUpdateStatusDTO y = p.getComplaintUpdateStatusList().get(0);
+            item.txtStatusDate.setText(sdfDate.format(new Date(y.getDateUpdated())));
+            item.txtRemarks.setText(y.getRemarks());
+            item.txtAck.setText(y.getStatus());
+
+        } else {
+            item.statusLayout.setVisibility(View.GONE);
+        }
+
+        item.iconCamera.setColorFilter(darkColor, PorterDuff.Mode.SRC_IN);
+        item.iconDetails.setColorFilter(darkColor, PorterDuff.Mode.SRC_IN);
+        item.iconFollow.setColorFilter(darkColor, PorterDuff.Mode.SRC_IN);
+        item.iconRoll.setColorFilter(darkColor, PorterDuff.Mode.SRC_IN);
+        item.iconRoll.setVisibility(View.GONE);
+        switch (type) {
+            case MY_COMPLAINTS:
+                 item.followBox.setVisibility(View.GONE);
+                 item.cameraBox.setVisibility(View.VISIBLE);
+                break;
+            case AROUND_ME:
+                item.followBox.setVisibility(View.VISIBLE);
+                item.cameraBox.setVisibility(View.GONE);
+                break;
+
+        }
+        Util.scaleDownAndUp(convertView, 300);
         return (convertView);
     }
 
 
     public interface ComplaintListListener {
         void onComplaintFollowRequested(ComplaintDTO complaint);
-        void onComplaintStatusRequested(ComplaintDTO complaint);
+        void onComplaintStatusRequested(ComplaintDTO complaint, int position);
         void onComplaintCameraRequested(ComplaintDTO complaint);
         void onComplaintImagesRequested(ComplaintDTO complaint);
     }
     static final Random random = new Random(System.currentTimeMillis());
     static final Locale loc = Locale.getDefault();
-    static final SimpleDateFormat sdfDate = new SimpleDateFormat("EEEE dd MMMM yyyy", loc);
+    static final SimpleDateFormat sdfDate = new SimpleDateFormat("EEEE dd MMMM yyyy HH:mm", loc);
     static final SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm", loc);
 }

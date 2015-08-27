@@ -16,33 +16,40 @@
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_zulu"
-        android:title="isiZulu"
+        android:id="@+id/action_logoff"
+        android:title="Log Off"
+        android:icon="@drawable/ic_action_event"
         android:orderInCategory="100"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/action_afrikaans"
-        android:title="Afrikaans"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_french"
-        android:title="French"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_german"
-        android:title="German"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_portuguese"
-        android:title="Portuguese"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_english"
-        android:title="English"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
+
+    <!--<item-->
+        <!--android:id="@+id/action_zulu"-->
+        <!--android:title="isiZulu"-->
+        <!--android:orderInCategory="100"-->
+        <!--app:showAsAction="never" />-->
+    <!--<item-->
+        <!--android:id="@+id/action_afrikaans"-->
+        <!--android:title="Afrikaans"-->
+        <!--android:orderInCategory="100"-->
+        <!--app:showAsAction="never" />-->
+    <!--<item-->
+        <!--android:id="@+id/action_french"-->
+        <!--android:title="French"-->
+        <!--android:orderInCategory="100"-->
+        <!--app:showAsAction="never" />-->
+    <!--<item-->
+        <!--android:id="@+id/action_german"-->
+        <!--android:title="German"-->
+        <!--android:orderInCategory="100"-->
+        <!--app:showAsAction="never" />-->
+    <!--<item-->
+        <!--android:id="@+id/action_portuguese"-->
+        <!--android:title="Portuguese"-->
+        <!--android:orderInCategory="100"-->
+        <!--app:showAsAction="never" />-->
+    <!--<item-->
+        <!--android:id="@+id/action_english"-->
+        <!--android:title="English"-->
+        <!--android:orderInCategory="100"-->
+        <!--app:showAsAction="never" />-->
 </menu>

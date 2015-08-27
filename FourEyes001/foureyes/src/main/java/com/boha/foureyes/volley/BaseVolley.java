@@ -71,8 +71,12 @@ public class BaseVolley {
             e.printStackTrace();
         }
         retries = 0;
-        String x = Statics.URL + suffix + json;
-        Log.i(LOG, "...sending remote request: ....size: " + x.length() + "...>\n" + Statics.URL + suffix + jj);
+        StringBuilder sb = new StringBuilder();
+        sb.append(Statics.URL).append(suffix).append("JSON=");
+        sb.append(json);
+        String x = sb.toString();
+        Log.i(LOG, "...sending remote request: ....size: " + x.length() + "...>\n" + Statics.URL + suffix + "JSON=" + jj);
+
         bohaRequest = new BohaRequest(Method.POST, x,
                 onSuccessListener(), onErrorListener());
         bohaRequest.setRetryPolicy(new DefaultRetryPolicy((int) TimeUnit.SECONDS.toMillis(120),

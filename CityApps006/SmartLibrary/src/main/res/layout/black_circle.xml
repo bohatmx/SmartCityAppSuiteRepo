@@ -8,15 +8,7 @@
 
 
 
-        <Button
-            android:id="@+id/button"
-            android:text="33"
-            android:padding="@dimen/mon_margin"
-            android:elevation="@dimen/mon_margin"
-            android:background="@drawable/xblack_oval_large"
-            android:textColor="@color/white"
-            android:layout_width="64dp"
-            android:layout_height="64dp" />
+
 
 
 </RelativeLayout>

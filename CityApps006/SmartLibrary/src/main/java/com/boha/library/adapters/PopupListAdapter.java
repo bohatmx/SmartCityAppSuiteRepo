@@ -1,6 +1,7 @@
 package com.boha.library.adapters;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,16 +22,16 @@ public class PopupListAdapter extends ArrayAdapter<String> {
     private final int mLayoutRes;
     private List<String> mList;
     private Context ctx;
-    private String title;
-    private boolean showAlternateIcon;
+    private int primaryColorDark;
     static final String LOG = PopupListAdapter.class.getSimpleName();
+    public static final int TYPE_COMPLAINTS = 0, TYPE_OTHERS = 1;
 
     public PopupListAdapter(Context context, int textViewResourceId,
-                            List<String> list, boolean showAlternateIcon) {
+                            List<String> list, int primaryColorDark) {
         super(context, textViewResourceId, list);
         this.mLayoutRes = textViewResourceId;
         mList = list;
-        this.showAlternateIcon = showAlternateIcon;
+        this.primaryColorDark = primaryColorDark;
         ctx = context;
         this.mInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -70,13 +71,12 @@ public class PopupListAdapter extends ArrayAdapter<String> {
         } else {
             item = (ViewHolderItem) convertView.getTag();
         }
-        if (showAlternateIcon) {
-            item.image.setImageDrawable(ctx.getResources().getDrawable(R.drawable.xblue_oval_smaller));
-        } else {
-            item.image.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.ic_input_add));
-        }
+
+
         final String p = mList.get(position);
         item.txtString.setText(p);
+        item.image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.ic_action_bell));
+        item.image.setColorFilter(primaryColorDark, PorterDuff.Mode.SRC_IN);
         Statics.setRobotoFontLight(ctx, item.txtString);
         return (convertView);
     }

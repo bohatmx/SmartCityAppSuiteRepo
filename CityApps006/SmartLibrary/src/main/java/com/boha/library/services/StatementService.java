@@ -80,22 +80,23 @@ public class StatementService extends IntentService {
     }
 
     private void performDownload(final String fileName) {
-        FileDownloader.downloadStatementPDF(getApplicationContext(), accountNumber, fileName,
-                new FileDownloader.FileDownloaderListener() {
-                    @Override
-                    public void onFileDownloaded(File file) {
-                        index++;
-                        count++;
-                        controlDownloads();
-                    }
+        Log.i(LOG, "++++ performDownload: " + fileName);
+                 FileDownloader.downloadStatementPDF(getApplicationContext(), accountNumber, fileName,
+                         new FileDownloader.FileDownloaderListener() {
+                             @Override
+                             public void onFileDownloaded(File file) {
+                                 index++;
+                                 count++;
+                                 controlDownloads();
+                             }
 
-                    @Override
-                    public void onError() {
-                        Log.e(LOG, "--- failed. statement download: " + fileName);
-                        index++;
-                        controlDownloads();
-                    }
-                });
+                             @Override
+                             public void onError() {
+                                 Log.e(LOG, "--- failed. statement download: " + fileName);
+                                 index++;
+                                 controlDownloads();
+                             }
+                         });
 
 
     }

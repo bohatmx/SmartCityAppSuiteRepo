@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,23 +14,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.boha.library.R;
+import com.boha.library.activities.CityApplication;
 import com.boha.library.activities.ComplaintMapActivity;
 import com.boha.library.adapters.ComplaintListAdapter;
 import com.boha.library.dto.ComplaintDTO;
-import com.boha.library.dto.ComplaintFollowerDTO;
 import com.boha.library.dto.ComplaintUpdateStatusDTO;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
+import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -43,7 +46,6 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
     public static ComplaintsAroundMeFragment newInstance() {
         ComplaintsAroundMeFragment fragment = new ComplaintsAroundMeFragment();
         Bundle args = new Bundle();
-        //args.putSerializable("complaintList", response);
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,19 +55,16 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
     }
 
     ResponseDTO response;
-    View view, fab;
+    View view, emptyLayout;
+    FloatingActionButton fab;
     Context ctx;
-    String title;
-    View handle, noComplaintsLayout;
+    View handle;
     ListView listView;
     TextView txtCount, txtTitle, txtSubTitle, txtRadius;
     SeekBar seekBar;
     List<ComplaintDTO> complaintList = new ArrayList<>();
-    List<String> stringList;
     Activity activity;
-    View topView;
     ImageView hero;
-    ProgressBar progressBar;
     List<ComplaintUpdateStatusDTO> complaintUpdateStatusList;
 
     int logo = R.drawable.ic_action_globe;
@@ -86,9 +85,13 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_complaints_around, container, false);
+        txtEmpty = (TextView)view.findViewById(R.id.CAR_text);
+
         ctx = getActivity();
+        Statics.setRobotoFontLight(ctx, txtEmpty);
         activity = getActivity();
         setFields();
+
         if (savedInstanceState != null) {
             Log.e(LOG,"##onCreateView, savedInstanceState not null");
             location = new Location(LocationManager.GPS_PROVIDER);
@@ -125,6 +128,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
 
         disableFAB();
+        mListener.setBusy(true);
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO response) {
@@ -133,10 +137,9 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
                         @Override
                         public void run() {
                             enableFAB();
-                            if (response.getComplaintList() != null) {
-                                complaintList = response.getComplaintList();
-                                setList();
-                            }
+                            mListener.setBusy(false);
+                            complaintList = response.getComplaintList();
+                            setList();
                         }
                     });
                 }
@@ -148,7 +151,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        progressBar.setVisibility(View.GONE);
+                        mListener.setBusy(false);
                         enableFAB();
                         Util.showErrorToast(ctx, message);
                     }
@@ -164,14 +167,12 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
     }
 
     private void enableFAB() {
-        progressBar.setVisibility(View.GONE);
         fab.setAlpha(1.0f);
         fab.setEnabled(true);
         txtCount.setAlpha(1.0f);
         txtCount.setEnabled(true);
     }
     private void disableFAB() {
-        progressBar.setVisibility(View.VISIBLE);
         fab.setAlpha(0.4f);
         fab.setEnabled(false);
         txtCount.setAlpha(0.4f);
@@ -179,6 +180,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
     }
 
     View header;
+    TextView txtEmpty;
     private void setHeader() {
         header = getActivity().getLayoutInflater().inflate(R.layout.complaints_header,null);
         handle = header.findViewById(R.id.CAR_handle);
@@ -188,7 +190,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         txtRadius = (TextView) header.findViewById(R.id.CAR_labelKM);
         txtTitle = (TextView) header.findViewById(R.id.CAR_title);
         txtSubTitle = (TextView) header.findViewById(R.id.CAR_subTitle);
-        fab = header.findViewById(R.id.FAB);
+        fab = (FloatingActionButton)header.findViewById(R.id.fab);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -210,21 +212,23 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                Util.flashOnce(fab, 300, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        disableFAB();
-                        mListener.onLocationForComplaintsAroundMe();
-                    }
-                });
+                mListener.setBusy(true);
+                disableFAB();
+                mListener.onLocationForComplaintsAroundMe();
             }
         });
 
     }
+    ComplaintListAdapter adapter;
     public void setList() {
 
+        if(complaintList == null) {
+            complaintList = new ArrayList<>();
+        }
+        Collections.sort(complaintList);
         txtCount.setText("" + complaintList.size());
-        ComplaintListAdapter adapter = new ComplaintListAdapter(ctx, R.layout.complaint_item,
+         adapter = new ComplaintListAdapter(ctx, R.layout.complaint_item, primaryDarkColor,
+                 ComplaintListAdapter.AROUND_ME,
                 complaintList, new ComplaintListAdapter.ComplaintListListener() {
             @Override
             public void onComplaintFollowRequested(ComplaintDTO complaint) {
@@ -232,8 +236,8 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
             }
 
             @Override
-            public void onComplaintStatusRequested(ComplaintDTO complaint) {
-                getCaseDetails(complaint.getReferenceNumber());
+            public void onComplaintStatusRequested(ComplaintDTO complaint,int position) {
+                getCaseDetails(complaint.getHref(),position);
             }
 
             @Override
@@ -248,59 +252,64 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         });
 
 
-
         if (listView.getHeaderViewsCount() == 0) {
             listView.addHeaderView(header);
+        }
+        if (complaintList.isEmpty()) {
+            txtEmpty.setVisibility(View.VISIBLE);
+        } else {
+            txtEmpty.setVisibility(View.GONE);
         }
         listView.setAdapter(adapter);
 
     }
 
     private void addFollower(ComplaintDTO complaint) {
-        RequestDTO w = new RequestDTO(RequestDTO.ADD_COMPLAINT_FOLLOWER);
-        ComplaintFollowerDTO x = new ComplaintFollowerDTO();
-        x.setComment("No comment, just started following");
-        x.setComplaintID(complaint.getComplaintID());
-        x.setProfileInfoID(SharedUtil.getProfile(ctx).getProfileInfoID());
-
-        w.setComplaintFollower(x);
-
-        progressBar.setVisibility(View.VISIBLE);
-        NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
-            @Override
-            public void onResponse(ResponseDTO response) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressBar.setVisibility(View.GONE);
-                        Util.showToast(ctx, "You have been added as interested in this complaint");
-                    }
-                });
-            }
-
-            @Override
-            public void onError(final String message) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressBar.setVisibility(View.GONE);
-                        Util.showErrorToast(ctx, message);
-                    }
-                });
-            }
-
-            @Override
-            public void onWebSocketClose() {
-
-            }
-        });
+        Util.showToast(ctx,getString(R.string.under_cons));
+//        RequestDTO w = new RequestDTO(RequestDTO.ADD_COMPLAINT_FOLLOWER);
+//        ComplaintFollowerDTO x = new ComplaintFollowerDTO();
+//        x.setComment("No comment, just started following");
+//        x.setComplaintID(complaint.getComplaintID());
+//        x.setProfileInfoID(SharedUtil.getProfile(ctx).getProfileInfoID());
+//
+//        w.setComplaintFollower(x);
+//
+//        progressBar.setVisibility(View.VISIBLE);
+//        NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
+//            @Override
+//            public void onResponse(ResponseDTO response) {
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        progressBar.setVisibility(View.GONE);
+//                        Util.showToast(ctx, "You have been added as interested in this complaint");
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onError(final String message) {
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        progressBar.setVisibility(View.GONE);
+//                        Util.showErrorToast(ctx, message);
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onWebSocketClose() {
+//
+//            }
+//        });
     }
-    private void getCaseDetails(final String refe) {
+    private void getCaseDetails(final String href, final int position) {
         RequestDTO w = new RequestDTO(RequestDTO.GET_COMPLAINT_STATUS);
-        w.setReferenceNumber(refe);
+        w.setReferenceNumber(href);
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
 
-        progressBar.setVisibility(View.VISIBLE);
+        mListener.setBusy(true);
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO response) {
@@ -308,9 +317,12 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            progressBar.setVisibility(View.GONE);
+                            mListener.setBusy(false);
                             if (response.getStatusCode() == 0) {
                                 complaintUpdateStatusList = response.getComplaintUpdateStatusList();
+                                complaintList.get(position).setComplaintUpdateStatusList(complaintUpdateStatusList);
+                                adapter.notifyDataSetChanged();
+
                             }
                         }
                     });
@@ -323,8 +335,8 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            progressBar.setVisibility(View.GONE);
-                            Util.showErrorToast(ctx, message);
+                            mListener.setBusy(false);
+                            Util.showToast(ctx, message);
                         }
                     });
                 }
@@ -332,12 +344,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
 
             @Override
             public void onWebSocketClose() {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        getCaseDetails(refe);
-                    }
-                });
+
             }
         });
     }
@@ -346,8 +353,6 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
     }
     private void setFields() {
         setHeader();
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.GONE);
         txtCount = (TextView) view.findViewById(R.id.CAR_count);
         listView = (ListView) view.findViewById(R.id.CAR_listView);
 
@@ -409,6 +414,11 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         super.onDetach();
         mListener = null;
     }
+    @Override public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
+    }
 
     @Override
     public void animateSomething() {
@@ -422,16 +432,11 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
                     public void run() {
                         timer.cancel();
                         hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-                        Util.expand(hero, 1000, new Util.UtilAnimationListener() {
-                            @Override
-                            public void onAnimationEnded() {
-                                Util.flashSeveralTimes(fab,100,3,null);
-                            }
-                        });
+                        Util.flashSeveralTimes(fab, 100, 2, null);
                     }
                 });
             }
-        }, 500);
+        }, 50);
     }
 
     int primaryColor, primaryDarkColor;
@@ -444,6 +449,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
 
     public interface ComplaintAroundMeListener {
          void onLocationForComplaintsAroundMe();
+        void setBusy(boolean busy);
     }
 
     Location location;

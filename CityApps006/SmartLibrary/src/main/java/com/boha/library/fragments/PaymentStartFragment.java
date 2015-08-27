@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +17,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.library.R;
+import com.boha.library.activities.CityApplication;
 import com.boha.library.activities.StatementActivity;
 import com.boha.library.dto.AccountDTO;
 import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.text.DecimalFormat;
 import java.util.Timer;
@@ -36,7 +40,7 @@ public class PaymentStartFragment extends Fragment implements PageFragment{
 
     private PaymentStartListener mListener;
     private AccountDTO account;
-    private View view, topView;
+    private View view, topView, iconLayout;
     private int index, logo;
     private TextView txtTitle, txtSubTitle, txtFAB;
     private EditText editAmount;
@@ -95,6 +99,7 @@ public class PaymentStartFragment extends Fragment implements PageFragment{
         Log.w(LOG, "### setFields");
         txtTitle = (TextView)view.findViewById(R.id.TOP_title);
         topView = view.findViewById(R.id.TOP_titleLayout);
+        iconLayout = view.findViewById(R.id.TOP_iconLayout);
         btnPay = (Button)view.findViewById(R.id.button);
         txtSubTitle = (TextView)view.findViewById(R.id.TOP_subTitle);
         txtFAB = (TextView)view.findViewById(R.id.FAB_text);
@@ -104,12 +109,12 @@ public class PaymentStartFragment extends Fragment implements PageFragment{
         icon = (ImageView) topView.findViewById(R.id.TOP_icon);
         txtFAB.setVisibility(View.GONE);
         txtFAB.setText(getActivity().getString(R.string.pay));
-        fabIcon.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_action_secure));
+        fabIcon.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.ic_action_secure));
         fabIcon.setVisibility(View.VISIBLE);
-        icon.setOnClickListener(new View.OnClickListener() {
+        iconLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.flashOnce(icon, 300, new Util.UtilAnimationListener() {
+                Util.flashOnce(iconLayout, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
                         Intent w = new Intent(ctx, StatementActivity.class);
@@ -121,6 +126,12 @@ public class PaymentStartFragment extends Fragment implements PageFragment{
                     }
                 });
 
+            }
+        });
+        txtFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(txtFAB,getString(R.string.under_cons), Snackbar.LENGTH_LONG).show();
             }
         });
         Statics.setRobotoFontLight(getActivity(),editAmount);
@@ -142,6 +153,11 @@ public class PaymentStartFragment extends Fragment implements PageFragment{
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+    @Override public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 
     /**

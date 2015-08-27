@@ -1,6 +1,9 @@
 package com.boha.library.activities;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.os.StrictMode;
 import android.util.Log;
 
 import com.boha.library.R;
@@ -17,6 +20,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.utils.L;
 import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import org.acra.ACRA;
 import org.acra.ReportField;
@@ -66,6 +71,13 @@ public class CityApplication extends Application {
         return mTrackers.get(trackerId);
     }
 
+    public static RefWatcher getRefWatcher(Context context) {
+        CityApplication application = (CityApplication) context.getApplicationContext();
+        return application.refWatcher;
+    }
+
+    private RefWatcher refWatcher;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -78,14 +90,21 @@ public class CityApplication extends Application {
         sb.append("#######################################\n\n");
 
         Log.d(LOG, sb.toString());
-
-
-        ACRA.init(this);
+        refWatcher = LeakCanary.install(this);
         MunicipalityDTO m = SharedUtil.getMunicipality(getApplicationContext());
-        if (m != null) {
-            ACRA.getErrorReporter().putCustomData("municipalityID", "" + m.getMunicipalityID());
+        boolean isDebuggable = 0 != (getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE);
+        if (!isDebuggable) {
+            StrictMode.enableDefaults();
+            Log.e(LOG, "###### StrictMode defaults enabled");
+            ACRA.init(this);
+            if (m != null) {
+                ACRA.getErrorReporter().putCustomData("municipalityID", "" + m.getMunicipalityID());
+            }
+            Log.e(LOG, "###### ACRA initialised. Exceptions will be grabbed and sent.");
+        } else {
+            Log.d(LOG, "###### ACRA not initialised. Running in release mode");
         }
-        Log.e(LOG, "###### ACRA initialised. Exceptions will be grabbed and sent.");
+
 
         DisplayImageOptions defaultOptions =
                 new DisplayImageOptions.Builder()
@@ -114,7 +133,6 @@ public class CityApplication extends Application {
 
         int index = SharedUtil.getLanguageIndex(getApplicationContext());
         setLocale(index);
-        int theme = SharedUtil.getThemeSelection(getApplicationContext());
 
     }
 

@@ -11,7 +11,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,12 +19,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListPopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.AlertTypeDTO;
+import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintTypeDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.transfer.ResponseDTO;
@@ -58,7 +59,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class ComplaintMapActivity extends ActionBarActivity {
+public class ComplaintMapActivity extends AppCompatActivity {
 
     GoogleMap googleMap;
     GoogleApiClient mGoogleApiClient;
@@ -80,14 +81,13 @@ public class ComplaintMapActivity extends ActionBarActivity {
     ImageView iconCollapse;
     View topLayout, mapInfo;
     TextView addr1, addr2, dist, dur, txtTitle;
-    ProgressBar progressBar;
     LayoutInflater inflater;
     static final Locale loc = Locale.getDefault();
     static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
     List<ComplaintDTO> complaintList;
     ComplaintDTO complaint;
     Activity activity;
-    int logo;
+    int logo, primaryColorDark;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +104,7 @@ public class ComplaintMapActivity extends ActionBarActivity {
         inflater = getLayoutInflater();
         setFields();
         ResponseDTO r = (ResponseDTO) getIntent().getSerializableExtra("complaintList");
+        primaryColorDark = getIntent().getIntExtra("primaryColorDark",R.color.blue_gray_800);
         if (r != null) {
             complaintList = r.getComplaintList();
             txtCount.setText("" + complaintList.size());
@@ -318,8 +319,6 @@ public class ComplaintMapActivity extends ActionBarActivity {
         dur = (TextView) mapInfo.findViewById(R.id.MAP_duration);
         txtTitle = (TextView) findViewById(R.id.MAP_text);
         txtTitle.setText(getString(R.string.map_complaints));
-        progressBar = (ProgressBar) findViewById(R.id.MAP_progressBar);
-        progressBar.setVisibility(View.GONE);
         Statics.setRobotoFontBold(ctx, text);
         iconCollapse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -347,7 +346,7 @@ public class ComplaintMapActivity extends ActionBarActivity {
         ImageView dummy = new ImageView(ctx);
         if (complaint != null) {
             if (complaint.getComplaintImageList() != null && !complaint.getComplaintImageList().isEmpty()) {
-                String url = Util.getComplaintImageURL(complaint.getComplaintImageList().get(0));
+                String url = complaint.getComplaintImageList().get(0).getUrl();
                 ImageLoader.getInstance().displayImage(url, dummy, new ImageLoadingListener() {
                     @Override
                     public void onLoadingStarted(String s, View view) {
@@ -356,40 +355,42 @@ public class ComplaintMapActivity extends ActionBarActivity {
 
                     @Override
                     public void onLoadingFailed(String s, View view, FailReason failReason) {
-                        Util.showPopupBasicWithHeroImage(ctx, activity, list, topLayout, "Actions", new Util.UtilPopupListener() {
-                            @Override
-                            public void onItemSelected(int index) {
-                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {
-                                    startDirectionsMap(lat, lng);
-                                }
-                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.pictures))) {
-                                    isGallery = true;
-                                    startGallery(complaint);
-                                }
-                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.get_distance))) {
-                                    getDistance(lat, lng);
-                                }
-                            }
-                        });
+                        Util.showPopupList(ctx, activity, list, topLayout, "Actions",
+                                primaryColorDark, new Util.UtilPopupListener() {
+                                    @Override
+                                    public void onItemSelected(int index, ListPopupWindow window) {
+                                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {
+                                            startDirectionsMap(lat, lng);
+                                        }
+                                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.pictures))) {
+                                            isGallery = true;
+                                            startGallery(complaint);
+                                        }
+                                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.get_distance))) {
+                                            getDistance(lat, lng);
+                                        }
+                                    }
+                                });
                     }
 
                     @Override
                     public void onLoadingComplete(String s, View view, Bitmap bm) {
-                        Util.showPopupBasicWithHeroImage(ctx, activity, list, topLayout, "Actions", new Util.UtilPopupListener() {
-                            @Override
-                            public void onItemSelected(int index) {
-                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {
-                                    startDirectionsMap(lat, lng);
-                                }
-                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.pictures))) {
-                                    isGallery = true;
-                                    startGallery(complaint);
-                                }
-                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.get_distance))) {
-                                    getDistance(lat, lng);
-                                }
-                            }
-                        });
+                        Util.showPopupList(ctx, activity, list, topLayout, "Actions", primaryColorDark,
+                                new Util.UtilPopupListener() {
+                                    @Override
+                                    public void onItemSelected(int index, ListPopupWindow window) {
+                                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {
+                                            startDirectionsMap(lat, lng);
+                                        }
+                                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.pictures))) {
+                                            isGallery = true;
+                                            startGallery(complaint);
+                                        }
+                                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.get_distance))) {
+                                            getDistance(lat, lng);
+                                        }
+                                    }
+                                });
                     }
 
                     @Override
@@ -400,17 +401,18 @@ public class ComplaintMapActivity extends ActionBarActivity {
                 });
             } else {
                 list.remove(1);
-                Util.showPopupBasicWithHeroImage(ctx, activity, list, topLayout, complaint.getComplaintType().getComplaintTypeName(), new Util.UtilPopupListener() {
-                    @Override
-                    public void onItemSelected(int index) {
-                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {
-                            startDirectionsMap(lat, lng);
-                        }
-                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.get_distance))) {
-                            getDistance(lat, lng);
-                        }
-                    }
-                });
+                Util.showPopupList(ctx, activity, list, topLayout, complaint.getComplaintType().getComplaintTypeName(),
+                        primaryColorDark, new Util.UtilPopupListener() {
+                            @Override
+                            public void onItemSelected(int index, ListPopupWindow window) {
+                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {
+                                    startDirectionsMap(lat, lng);
+                                }
+                                if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.get_distance))) {
+                                    getDistance(lat, lng);
+                                }
+                            }
+                        });
             }
         }
 
