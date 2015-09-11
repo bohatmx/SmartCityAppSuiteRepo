@@ -116,5 +116,6 @@
     <string name="nonews_map">No news to display on map</string>
     <string name="noalerts_map">No alerts to display on map</string>
     <string name="payment_not_available">The payment facility is not available yet. The facility will be made available in the next version of the app.</string>
+    <string name="idnumber">ID Number</string>
 
 </resources>

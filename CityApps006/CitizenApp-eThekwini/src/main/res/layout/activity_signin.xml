@@ -68,12 +68,14 @@
 
                 <RadioButton
                     android:id="@+id/SIGNIN_radioYes"
+                    android:checked="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="I have a Municipality Account" />
 
                 <RadioButton
                     android:id="@+id/SIGNIN_radioNo"
+                    android:enabled="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/mon_margin"
@@ -84,6 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/mon_margin"
+                    android:enabled="false"
                     android:text="I am a Tourist/Visitor" />
             </RadioGroup>
         </RelativeLayout>
@@ -92,7 +95,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/SIGNIN_choiceLayout"
-            android:layout_marginBottom="@dimen/mon_margin"
             android:layout_marginTop="@dimen/mon_padding"
             android:background="@color/white">
 
@@ -103,6 +105,10 @@
                 android:background="@color/white"
                 android:padding="@dimen/mon_wide">
 
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/SI_emailLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                 <EditText
                     android:id="@+id/SIGNIN_editUserID"
@@ -110,16 +116,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/mon_wide"
-                    android:hint="ID"
-                    android:inputType="textNoSuggestions" />
+                    android:hint="ID Number"
+                    android:inputType="number" />
+                </android.support.design.widget.TextInputLayout>
 
                 <Spinner
                     android:id="@+id/SIGNIN_emailSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/SIGNIN_editUserID"
+                    android:layout_below="@id/SI_emailLayout"
                     android:layout_marginTop="@dimen/mon_padding" />
-
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/SI_pinLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/SIGNIN_emailSpinner">
 
                 <EditText
                     android:id="@+id/SIGNIN_editPIN"
@@ -127,9 +138,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/SIGNIN_emailSpinner"
-                    android:layout_marginTop="@dimen/mon_margin"
                     android:hint="@string/enter_pswd"
                     android:inputType="textPassword" />
+                </android.support.design.widget.TextInputLayout>
 
             </RelativeLayout>
 

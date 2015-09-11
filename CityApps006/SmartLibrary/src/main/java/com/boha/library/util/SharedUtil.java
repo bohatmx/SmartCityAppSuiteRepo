@@ -219,10 +219,31 @@ public class SharedUtil {
     }
     static Gson gson = new Gson();
     static final String LANGUAGE_INDEX = "langIndex",
-            THEME = "theme", CITY_IMAGES = "cityImages",
+            THEME = "theme", CITY_IMAGES = "cityImages", ADDRESS = "address",
             ID = "id", MUNICIPALITY = "muni", MUNI_STAFF = "muniStaff",
             USER = "user", PROFILE = "profile", GCM = "gcm", SLIDING_TAB_COUNT = "slidingTabs";
 
+    public static void saveAddress(Context ctx, ResidentialAddress m) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+
+        SharedPreferences.Editor ed = sp.edit();
+        String s = gson.toJson(m);
+        ed.putString(ADDRESS, s);
+        ed.commit();
+
+        Log.w(LOG, "#### address  saved: " + s);
+
+    }
+    public static ResidentialAddress getAddress(Context ctx) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+        String j = sp.getString(ADDRESS, null);
+        if (j == null) {
+            return null;
+        }
+        return gson.fromJson(j, ResidentialAddress.class);
+    }
     public static void saveMunicipality(Context ctx, MunicipalityDTO m) {
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(ctx);

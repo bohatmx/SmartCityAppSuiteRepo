@@ -137,6 +137,10 @@
             android:exported="false" >
         </service>
 
+        <activity
+            android:name=".activities.AddressActivity"
+            android:label="@string/title_activity_address" >
+        </activity>
     </application>
 
 </manifest>

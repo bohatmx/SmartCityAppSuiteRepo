@@ -104,6 +104,12 @@ public class AlertListFragment extends Fragment implements PageFragment {
         return view;
     }
 
+
+    public void setAlertList(List<AlertDTO> alertList) {
+        this.alertList = alertList;
+        setList();
+    }
+
     private void setFields() {
         txtEmpty = (TextView)view.findViewById(R.id.ALERT_LIST_text);
         Statics.setRobotoFontLight(ctx, txtEmpty);

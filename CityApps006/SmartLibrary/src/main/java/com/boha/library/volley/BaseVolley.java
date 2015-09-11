@@ -74,7 +74,7 @@ public class BaseVolley {
         retries = 0;
         String x = Statics.URL + suffix + "JSON=" + json;
         Log.w(LOG, "...sending remote http request: ....size: " + x.length()
-                + "...>\n" + Statics.URL + suffix + "JSON="+ jj);
+                + "...>\n" + Statics.URL + suffix + "JSON=" + jj);
         bohaRequest = new BohaRequest(Method.POST, x,
                 onSuccessListener(), onErrorListener());
         bohaRequest.setRetryPolicy(new DefaultRetryPolicy((int) TimeUnit.SECONDS.toMillis(120),
@@ -117,6 +117,9 @@ public class BaseVolley {
             @Override
             public void onResponse(ResponseDTO r) {
                 Log.e(LOG, "Yup! ...http response received, status code: " + r.getStatusCode());
+                if (r.getStatusCode() > 0) {
+                    Log.d(LOG,"Error status message from server:" + r.getMessage());
+                }
                 bohaVolleyListener.onResponseReceived(r);
 
             }
@@ -132,8 +135,11 @@ public class BaseVolley {
                     retries++;
                     if (retries < MAX_RETRIES) {
                         waitABit();
-                        Log.e(LOG, "onErrorResponse: Retrying after timeout error ...retries = " + retries);
+                        Log.e(LOG, "onErrorResponse: TimeoutError. Retrying... retry = " + retries);
                         requestQueue.add(bohaRequest);
+                        return;
+                    } else {
+                        bohaVolleyListener.onVolleyError(error);
                         return;
                     }
                 }
@@ -147,16 +153,19 @@ public class BaseVolley {
                     retries++;
                     if (retries < MAX_RETRIES) {
                         waitABit();
-                        Log.e(LOG, "onErrorResponse: Retrying after NetworkError ...retries = " + retries);
+                        Log.e(LOG, "onErrorResponse: NetworkError. Retrying... retry = " + retries);
                         requestQueue.add(bohaRequest);
                         return;
+                    } else {
+                        bohaVolleyListener.onVolleyError(error);
+                        return;
                     }
-                    Log.e(LOG, "Network Error" + "\n" + error.toString());
 
                 } else {
                     Log.e(LOG, "Server Error" + error.toString());
+                    bohaVolleyListener.onVolleyError(error);
+                    return;
                 }
-                bohaVolleyListener.onVolleyError(error);
             }
         };
     }
@@ -176,7 +185,7 @@ public class BaseVolley {
     protected ImageLoader imageLoader;
     protected static String suff;
     static final String LOG = "BaseVolley";
-    static final int MAX_RETRIES = 5;
+    static final int MAX_RETRIES = 2;
     static final long SLEEP_TIME = 5000;
 
 

@@ -12,11 +12,15 @@ import android.widget.TextView;
 public class Statics {
 
     /*
-     * REMOTE APP_URL - nairobi back end - production
+     * REMOTE APP_URL - Zebula back end - local laptop
      */
 
+//    public static final String WEBSOCKET_URL = "ws://192.168.2.45:8080/sc/";
+//    public static final String URL = "http://192.168.2.45:8080/sc/";
+//    public static final String IMAGE_URL = "http://192.168.2.45:8080/";
 
-    //http://munimobileapp.oneconnectgroup.com/
+    //http://munimobileapp.oneconnectgroup.com:7070/
+    //http://195.154.47.229:7070
     /**
      * SmartCity Production Server
      */
@@ -46,7 +50,6 @@ public class Statics {
 
     public static final String CRASH_REPORTS_URL = URL + "crash?";
     public static final String GOOGLE_DISTANCE_MATRIX_URL = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=";
-
 
 
     public static void setRomanFontLight(Context ctx, TextView txt) {
@@ -90,6 +93,7 @@ public class Statics {
                 "fonts/Roboto-Regular.ttf");
         txt.setTypeface(font);
     }
+
     public static void setNeutonExtraBold(Context ctx, TextView txt) {
         Typeface font = Typeface.createFromAsset(ctx.getAssets(),
                 "fonts/Neuton-SC-Extrabold.ttf");

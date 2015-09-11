@@ -16,6 +16,7 @@
         <RelativeLayout
             android:id="@+id/iconBoxFollow"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
@@ -79,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/CI_iconCamera"
                 android:layout_centerHorizontal="true"
-                android:text="@string/take_pics" />
+                android:text="Add Photo to Complaint" />
         </RelativeLayout>
 
         <RelativeLayout

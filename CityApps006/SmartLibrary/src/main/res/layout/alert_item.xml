@@ -4,7 +4,7 @@
     android:id="@+id/AI_main"
     android:background="@color/grey"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/AI_toptop"
@@ -71,11 +71,16 @@
                 android:layout_height="wrap_content" />
         </RelativeLayout>
     </RelativeLayout>
+    <WebView
+        android:id="@+id/AI_webView"
+        android:layout_below="@id/AI_toptop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
     <ImageView
         android:id="@+id/AI_image"
         android:src="@drawable/under_construction2"
         android:scaleType="centerCrop"
-        android:layout_below="@id/AI_toptop"
+        android:layout_below="@id/AI_webView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/mon_picture_large" />
 

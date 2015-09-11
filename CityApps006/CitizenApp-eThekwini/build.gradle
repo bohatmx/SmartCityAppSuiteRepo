@@ -14,7 +14,7 @@ android {
         applicationId "com.boha.citizenapp.ethekwini"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 28
+        versionCode 30
         versionName "1.0"
         multiDexEnabled true
     }

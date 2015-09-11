@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -304,6 +305,7 @@ public class StatementListFragment extends Fragment implements PageFragment {
         if (busyDownloading) {
             return;
         }
+        Snackbar.make(fab, "Statement download may take a few minutes", Snackbar.LENGTH_LONG).show();
         if (year == 0 || month == 0) {
             DateTime dateTime = new DateTime();
             year = dateTime.getYear();
@@ -333,7 +335,7 @@ public class StatementListFragment extends Fragment implements PageFragment {
 
 
                                 if (response.getPdfFileNameList() != null && !response.getPdfFileNameList().isEmpty()) {
-                                    Log.i(LOG, "Statements found: " + response.getPdfFileNameList().size());
+                                    Log.i(LOG, "Statements found on server: " + response.getPdfFileNameList().size());
                                     for (String x: response.getPdfFileNameList()) {
                                         Log.d(LOG,"file: " + x);
                                     }
@@ -377,7 +379,6 @@ public class StatementListFragment extends Fragment implements PageFragment {
     }
 
     public void downloadsCompleted() {
-        progressBar.setVisibility(View.GONE);
         busyDownloading = false;
         enableFab();
         getCachedStatements();
@@ -447,7 +448,8 @@ public class StatementListFragment extends Fragment implements PageFragment {
                 i = filename.lastIndexOf("_");
                 int j = filename.lastIndexOf(".");
                 String ms = filename.substring(i + 1, j);
-                DateTime dateTime = new DateTime(Integer.parseInt(ys), Integer.parseInt(ms), 1, 0, 0);
+                DateTime dateTime = new DateTime(Integer.parseInt(ys),
+                        Integer.parseInt(ms), 1, 0, 0);
                 date = dateTime.toDate();
             } catch (Exception e) {
                 Log.e("FileContainer", "problem", e);

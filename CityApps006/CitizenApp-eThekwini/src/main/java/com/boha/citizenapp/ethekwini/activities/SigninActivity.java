@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -65,7 +66,7 @@ public class SigninActivity extends AppCompatActivity {
     Spinner spinner;
     GcmDeviceDTO gcmDevice;
     MunicipalityDTO municipality;
-//3301045068086 mavis1
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,99 +107,129 @@ public class SigninActivity extends AppCompatActivity {
 
     private void setFields() {
         editView = findViewById(R.id.SIGNIN_editLayout);
-        radioNo = (RadioButton)findViewById(R.id.SIGNIN_radioNo);
-        radioYes = (RadioButton)findViewById(R.id.SIGNIN_radioYes);
-        radioTourist = (RadioButton)findViewById(R.id.SIGNIN_radioTourist);
+        radioNo = (RadioButton) findViewById(R.id.SIGNIN_radioNo);
+        radioYes = (RadioButton) findViewById(R.id.SIGNIN_radioYes);
+        radioTourist = (RadioButton) findViewById(R.id.SIGNIN_radioTourist);
         btnSend = (Button) findViewById(R.id.SIGNIN_btnSignin);
         editID = (EditText) findViewById(R.id.SIGNIN_editUserID);
-        spinner = (Spinner)findViewById(R.id.SIGNIN_emailSpinner);
+        spinner = (Spinner) findViewById(R.id.SIGNIN_emailSpinner);
 
         editPassword = (EditText) findViewById(R.id.SIGNIN_editPIN);
-        progressBar = (ProgressBar) findViewById(R.id.SIGNIN_progress);
         heroImage = (ImageView) findViewById(R.id.SIGNIN_heroImage);
         txtWelcome = (TextView) findViewById(R.id.SIGNIN_welcome);
         handle = findViewById(R.id.SIGNIN_handle);
-        progressBar.setVisibility(View.GONE);
 
-        editID.setVisibility(View.GONE);
-        spinner.setVisibility(View.GONE);
-        editPassword.setVisibility(View.GONE);
-        btnSend.setEnabled(false);
+        editID.setHint(getString(R.string.idnumber));
+
+//        editID.setVisibility(View.GONE);
+//        spinner.setVisibility(View.GONE);
+//        editPassword.setVisibility(View.GONE);
+//        btnSend.setEnabled(false);
+//        btnSend.setAlpha(0.3f);
 
         btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Util.flashOnce(btnSend, 200, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        if (radioNo.isChecked()) {
-                            sendSignInUser();
-                        } else {
-                            sendSignInCitizen();
-                        }
-                    }
-                });
-            }
-        });
+                                       @Override
+                                       public void onClick(View v) {
+                                           Util.flashOnce(btnSend, 200, new Util.UtilAnimationListener() {
+                                                       @Override
+                                                       public void onAnimationEnded() {
+                                                           btnSend.setEnabled(false);
+                                                           if (radioNo.isChecked()) {
+                                                               sendSignInUser();
+                                                           }
+                                                           if (radioYes.isChecked()) {
+                                                               sendSignInCitizen();
+                                                           }
 
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        heroImage.setImageDrawable(SplashActivity.getImage(0));
-                    }
-                });
+                                                       }
+                                                   }
 
-            }
-        }, 1000, 5000);
+                                           );
+                                       }
+                                   }
 
-        radioNo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    userType = SharedUtil.CITIZEN_NO_ACCOUNT;
-                    editID.setVisibility(View.GONE);
-                    spinner.setVisibility(View.VISIBLE);
-                    editPassword.setVisibility(View.VISIBLE);
-                    btnSend.setEnabled(true);
-                }
-            }
-        });
-        radioYes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    userType = SharedUtil.CITIZEN_WITH_ACCOUNT;
-                    editID.setVisibility(View.VISIBLE);
-                    editID.setHint("ID Number");
-                    spinner.setVisibility(View.GONE);
-                    editPassword.setVisibility(View.VISIBLE);
-                    btnSend.setEnabled(true);
-                }
-            }
-        });
-        radioTourist.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    userType = SharedUtil.TOURIST_VISITOR;
-                    editID.setVisibility(View.GONE);
-                    spinner.setVisibility(View.VISIBLE);
-                    editPassword.setVisibility(View.VISIBLE);
-                    btnSend.setEnabled(true);
-                }
-            }
-        });
+        );
+
+        timer = new
+
+                Timer();
+
+        timer.scheduleAtFixedRate(new
+
+                                          TimerTask() {
+                                              @Override
+                                              public void run() {
+                                                  runOnUiThread(new Runnable() {
+                                                      @Override
+                                                      public void run() {
+                                                          heroImage.setImageDrawable(SplashActivity.getImage(0));
+                                                      }
+                                                  });
+
+                                              }
+                                          }
+
+                , 1000, 5000);
+
+        radioNo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+
+                                           {
+                                               @Override
+                                               public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                   if (isChecked) {
+                                                       userType = SharedUtil.CITIZEN_NO_ACCOUNT;
+                                                       editID.setVisibility(View.GONE);
+                                                       spinner.setVisibility(View.VISIBLE);
+                                                       editPassword.setVisibility(View.VISIBLE);
+                                                       btnSend.setEnabled(true);
+                                                   }
+                                               }
+                                           }
+
+        );
+        radioYes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+
+                                            {
+                                                @Override
+                                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                    if (isChecked) {
+                                                        userType = SharedUtil.CITIZEN_WITH_ACCOUNT;
+                                                        editID.setVisibility(View.VISIBLE);
+                                                        editID.setHint("ID Number");
+                                                        spinner.setVisibility(View.GONE);
+                                                        editPassword.setVisibility(View.VISIBLE);
+                                                        btnSend.setEnabled(true);
+                                                    }
+                                                }
+                                            }
+
+        );
+        radioTourist.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+
+                                                {
+                                                    @Override
+                                                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                        if (isChecked) {
+                                                            userType = SharedUtil.TOURIST_VISITOR;
+                                                            editID.setVisibility(View.GONE);
+                                                            spinner.setVisibility(View.VISIBLE);
+                                                            editPassword.setVisibility(View.VISIBLE);
+                                                            btnSend.setEnabled(true);
+                                                        }
+                                                    }
+                                                }
+
+        );
 
 
     }
+
     private int userType;
 
     public void sendSignInCitizen() {
 
+        Snackbar.make(editPassword, "Downloading information; may take a minute or two",
+                Snackbar.LENGTH_LONG).show();
         if (editID.getText().toString().isEmpty()) {
             Util.showErrorToast(ctx, getString(R.string.enter_id));
             return;
@@ -224,6 +255,7 @@ public class SigninActivity extends AppCompatActivity {
         w.setMunicipalityID(municipality.getMunicipalityID());
 
         setRefreshActionButtonState(true);
+        btnSend.setEnabled(false);
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO resp) {
@@ -231,13 +263,14 @@ public class SigninActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         setRefreshActionButtonState(false);
+                        btnSend.setEnabled(true);
                         if (resp.isMunicipalityAccessFailed()) {
                             if (resp.getProfileInfoList() == null || resp.getProfileInfoList().isEmpty()) {
-                                Util.showErrorToast(ctx,getString(R.string.services_not_available));
+                                Util.showErrorToast(ctx, getString(R.string.services_not_available));
 //                                finish();
                                 return;
                             } else {
-                                Util.showErrorToast(ctx,getString(com.boha.library.R.string.unable_connect_muni));
+                                Util.showErrorToast(ctx, getString(com.boha.library.R.string.unable_connect_muni));
                             }
                         }
                         response = resp;
@@ -252,7 +285,7 @@ public class SigninActivity extends AppCompatActivity {
                             sp.setPassword(profileInfo.getPassword());
 
                             SharedUtil.saveProfile(ctx, sp);
-                            SharedUtil.setUserType(ctx,userType);
+                            SharedUtil.setUserType(ctx, userType);
                             CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
                                 @Override
                                 public void onDataCached() {
@@ -266,7 +299,7 @@ public class SigninActivity extends AppCompatActivity {
                             });
                         } else {
                             Gson gson = new Gson();
-                            Log.e(LOG,"-- sendSignInCitizen - some kind of error, json from server: " + gson.toJson(resp));
+                            Log.e(LOG, "-- sendSignInCitizen - some kind of error, json from server: " + gson.toJson(resp));
                         }
 
                     }
@@ -279,6 +312,7 @@ public class SigninActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         setRefreshActionButtonState(false);
+                        btnSend.setEnabled(true);
                         Util.showErrorToast(ctx, message);
                     }
                 });
@@ -290,6 +324,7 @@ public class SigninActivity extends AppCompatActivity {
             }
         });
     }
+
     public void sendSignInUser() {
 
         if (email == null) {
@@ -315,7 +350,7 @@ public class SigninActivity extends AppCompatActivity {
                     public void run() {
                         setRefreshActionButtonState(false);
                         if (resp.isMunicipalityAccessFailed()) {
-                            Util.showErrorToast(ctx,ctx.getString(com.boha.library.R.string.unable_connect_muni));
+                            Util.showErrorToast(ctx, ctx.getString(com.boha.library.R.string.unable_connect_muni));
                             if (response.getUserList() == null || response.getUserList().isEmpty()) {
                                 return;
                             }
@@ -323,7 +358,7 @@ public class SigninActivity extends AppCompatActivity {
                         response = resp;
 
                         SharedUtil.saveUser(ctx, response.getUserList().get(0));
-                        SharedUtil.setUserType(ctx,userType);
+                        SharedUtil.setUserType(ctx, userType);
                         CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
                             @Override
                             public void onDataCached() {
@@ -346,6 +381,7 @@ public class SigninActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         setRefreshActionButtonState(false);
+                        btnSend.setEnabled(true);
                         Util.showErrorToast(ctx, message);
                     }
                 });
@@ -367,6 +403,7 @@ public class SigninActivity extends AppCompatActivity {
             setResult(RESULT_OK);
             finish();
             Intent i = new Intent(ctx, CitizenDrawerActivity.class);
+            i.putExtra("justSignedIn", true);
             startActivity(i);
         } else {
             setResult(RESULT_CANCELED);
@@ -374,6 +411,7 @@ public class SigninActivity extends AppCompatActivity {
         }
 
     }
+
     public void getEmail() {
         AccountManager am = AccountManager.get(getApplicationContext());
         Account[] accts = am.getAccounts();
@@ -425,7 +463,6 @@ public class SigninActivity extends AppCompatActivity {
         });
 
 
-
     }
 
     @Override
@@ -442,7 +479,7 @@ public class SigninActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_help) {
-            Util.showToast(ctx,getString(R.string.under_cons));
+            Util.showToast(ctx, getString(R.string.under_cons));
             return true;
         }
 

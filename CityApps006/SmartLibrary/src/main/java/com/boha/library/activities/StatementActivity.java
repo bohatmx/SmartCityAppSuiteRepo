@@ -32,7 +32,7 @@ import com.google.android.gms.analytics.Tracker;
 import java.util.List;
 
 public class StatementActivity extends AppCompatActivity
-        implements StatementListFragment.StatementFragmentListener{
+        implements StatementListFragment.StatementFragmentListener {
 
     StatementListFragment statementListFragment;
     Context ctx;
@@ -49,7 +49,7 @@ public class StatementActivity extends AppCompatActivity
         darkColor = getIntent().getIntExtra("darkColor", ctx.getResources().getColor(R.color.teal_700));
         logo = getIntent().getIntExtra("logo", R.drawable.ic_action_globe);
         statementListFragment = (StatementListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
-        statementListFragment.setThemeColors(primaryColor,darkColor);
+        statementListFragment.setThemeColors(primaryColor, darkColor);
         getAccounts();
 
         MunicipalityDTO municipality = SharedUtil.getMunicipality(ctx);
@@ -57,7 +57,7 @@ public class StatementActivity extends AppCompatActivity
         Drawable d = ctx.getResources().getDrawable(logo);
         Util.setCustomActionBar(ctx,
                 actionBar,
-                municipality.getMunicipalityName(), d,logo);
+                municipality.getMunicipalityName(), d, logo);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -81,7 +81,7 @@ public class StatementActivity extends AppCompatActivity
                 if (response.getProfileInfoList() != null && !response.getProfileInfoList().isEmpty()) {
                     ProfileInfoDTO profileInfo = response.getProfileInfoList().get(0);
                     if (profileInfo.getAccountList().isEmpty()) {
-                        Log.e(LOG,"## Profile has no accounts");
+                        Log.e(LOG, "## Profile has no accounts");
                         finish();
                     } else {
                         statementListFragment.setAccountList(profileInfo.getAccountList());
@@ -113,7 +113,7 @@ public class StatementActivity extends AppCompatActivity
             return true;
         }
         if (id == R.id.action_help) {
-            Util.showToast(ctx,getString(R.string.under_cons));
+            Util.showToast(ctx, getString(R.string.under_cons));
             return true;
         }
 
@@ -154,6 +154,17 @@ public class StatementActivity extends AppCompatActivity
             StatementService.LocalBinder binder = (StatementService.LocalBinder) service;
             mService = binder.getService();
             mBound = true;
+            if (accountNumber != null && fileNameList != null) {
+                mService.downloadPDFs(accountNumber, fileNameList, new StatementService.StatementListener() {
+                    @Override
+                    public void onDownloadsComplete(int count) {
+                        Log.e(LOG, "Statements downloaded: " + count);
+                        statementListFragment.downloadsCompleted();
+                        accountNumber = null;
+                        fileNameList = null;
+                    }
+                });
+            }
 
         }
 
@@ -169,16 +180,26 @@ public class StatementActivity extends AppCompatActivity
 
     @Override
     public void onPDFDownloadRequested(String accountNumber, List<String> fileNameList) {
+        this.accountNumber = accountNumber;
+        this.fileNameList = fileNameList;
         if (mBound) {
             mService.downloadPDFs(accountNumber, fileNameList, new StatementService.StatementListener() {
                 @Override
                 public void onDownloadsComplete(int count) {
-                    Log.e(LOG,"+++ Statements downloaded: " + count);
+                    Log.e(LOG, "+++ Statements downloaded: " + count);
                     statementListFragment.downloadsCompleted();
+
                 }
             });
+        } else {
+            Log.w(LOG, "## onStart Bind to StatementService");
+            Intent intent = new Intent(this, StatementService.class);
+            bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
         }
     }
+
+    String accountNumber;
+    List<String> fileNameList;
 
     @Override
     public void setBusy(boolean busy) {
@@ -190,6 +211,7 @@ public class StatementActivity extends AppCompatActivity
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         super.onPause();
     }
+
     public void setRefreshActionButtonState(final boolean refreshing) {
         if (mMenu != null) {
             final MenuItem refreshItem = mMenu.findItem(R.id.action_help);

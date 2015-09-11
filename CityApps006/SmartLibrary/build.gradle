@@ -50,9 +50,11 @@ dependencies {
     compile 'com.mcxiaoke.volley:library-aar:1.0.1'
     compile 'ch.acra:acra:4.5.0'
     compile 'com.google.code.gson:gson:2.3'
-    compile files('libs/universal-image-loader-1.9.3.jar')
+    compile 'joda-time:joda-time:2.8.2'
 
-    compile 'joda-time:joda-time:2.3'
+    compile files('libs/universal-image-loader-1.9.4.jar')
+
+
     compile 'com.github.dmytrodanylyk.shadow-layout:library:1.0.1'
 
 

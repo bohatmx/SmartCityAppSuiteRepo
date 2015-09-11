@@ -10,7 +10,9 @@ import android.content.res.Resources;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -38,6 +40,7 @@ import com.boha.citizenapp.ethekwini.R;
 import com.boha.library.activities.AccountDetailActivity;
 import com.boha.library.activities.AlertDetailActivity;
 import com.boha.library.activities.PictureActivity;
+import com.boha.library.activities.ThemeSelectorActivity;
 import com.boha.library.adapters.AddressListAdapter;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.ComplaintCategoryDTO;
@@ -64,8 +67,10 @@ import com.boha.library.services.RequestService;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
+import com.boha.library.util.CommsUtil;
 import com.boha.library.util.DepthPageTransformer;
 import com.boha.library.util.NetUtil;
+import com.boha.library.util.ResidentialAddress;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
@@ -121,6 +126,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
 
+        checkAddress();
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -142,7 +148,6 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             }
         });
 
-//        tabLayout = (TabLayout) findViewById(R.id.tabs);
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -150,6 +155,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                 .build();
         municipality = SharedUtil.getMunicipality(ctx);
         profileInfo = SharedUtil.getProfile(ctx);
+
         if (profileInfo != null) {
             navText.setText(profileInfo.getFirstName() + " " + profileInfo.getLastName());
         }
@@ -174,6 +180,14 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         mDrawerLayout.openDrawer(GravityCompat.START);
     }
 
+    private void checkAddress() {
+        ResidentialAddress address = SharedUtil.getAddress(ctx);
+        if (address == null) {
+            Intent w = new Intent(ctx, AddressActivity.class);
+            startActivity(w);
+            finish();
+        }
+    }
     private void getCachedLoginData() {
 
         CacheUtil.getCacheLoginData(ctx, new CacheUtil.CacheRetrievalListener() {
@@ -186,8 +200,10 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                 if (response.getUserList() != null && !response.getUserList().isEmpty()) {
                     setupViewPager();
                 }
-
-                getLoginData();
+                boolean justSignedIn = getIntent().getBooleanExtra("justSignedIn", false);
+                if (!justSignedIn) {
+                    getLoginData();
+                }
             }
 
             @Override
@@ -250,30 +266,15 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                             SharedUtil.saveUser(ctx, response.getUserList().get(0));
                         }
 
-                        for (ComplaintCategoryDTO x: response.getComplaintCategoryList()) {
-                            for (ComplaintTypeDTO y: x.getComplaintTypeList()) {
+                        for (ComplaintCategoryDTO x : response.getComplaintCategoryList()) {
+                            for (ComplaintTypeDTO y : x.getComplaintTypeList()) {
                                 y.setCategoryName(x.getComplaintCategoryName());
                             }
                         }
-                        CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
-                            @Override
-                            public void onDataCached() {
-                                if (response.isMunicipalityAccessFailed()) {
-                                    Util.showToast(ctx, getString(R.string.unable_connect_muni));
+                        setupViewPager();
+//                        complaintList = response.getComplaintList();
+//                        getAllCaseDetails();
 
-                                }
-                                setupViewPager();
-                                complaintList = response.getComplaintList();
-                                getAllCaseDetails();
-
-
-                            }
-
-                            @Override
-                            public void onError() {
-
-                            }
-                        });
 
                     }
                 });
@@ -310,6 +311,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         return true;
     }
 
+    static final int THEME_REQUESTED = 8075;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -324,6 +326,12 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         if (id == com.boha.library.R.id.action_refresh) {
             index = 0;
             getLoginData();
+            return true;
+        }
+        if (id == com.boha.library.R.id.action_theme) {
+            Intent w = new Intent(this, ThemeSelectorActivity.class);
+            w.putExtra("darkColor", themeDarkColor);
+            startActivityForResult(w, THEME_REQUESTED);
             return true;
         }
         if (id == com.boha.library.R.id.action_help) {
@@ -496,18 +504,6 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
     }
 
-    private void setupDrawerContentx(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        menuItem.setChecked(true);
-                        mDrawerLayout.closeDrawers();
-                        return true;
-                    }
-                });
-    }
-
 
     /**
      * Adapter to manage fragments in view pager
@@ -568,21 +564,16 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             public void run() {
                 currentPageIndex = 1;
                 response.setComplaintList(complaintList);
-                CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
-                    @Override
-                    public void onDataCached() {
-                        setupViewPager();
-                    }
 
-                    @Override
-                    public void onError() {
+                Snackbar.make(mDrawerLayout,"Refreshing list of complaints, will take a minute",
+                        Snackbar.LENGTH_LONG).show();
+                index = 0;
+                getLoginData();
 
-                    }
-                });
                 String ref = "Reference Number: " + complaintList.get(0).getReferenceNumber();
                 AlertDialog.Builder d = new AlertDialog.Builder(activity);
                 d.setTitle("Complaint Pictures")
-                        .setMessage(ref + "\n\nDo you want to take pictures for the complaint?")
+                        .setMessage(ref + "\n\nPictures may give the Municipality more information about your complaint.\n\nDo you want to take pictures for the complaint?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -769,6 +760,13 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         Log.e(LOG, "### onActivityResult reqCode: " + reqCode + " result: " + result);
         switch (reqCode) {
 
+            case THEME_REQUESTED:
+                if (result == RESULT_OK) {
+                    finish();
+                    Intent w = new Intent(this, CitizenDrawerActivity.class);
+                    startActivity(w);
+                }
+                break;
             case REQUEST_LOCATION_ENABLE:
                 Log.e(LOG, "### sneaky, sneaky. check gps again!");
 //                checkGPS();
@@ -891,8 +889,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     public void onAlertClicked(final AlertDTO alert) {
 
 
-            showAlertDetail(alert);
-
+        showAlertDetail(alert);
 
 
     }
@@ -978,7 +975,8 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             }
         } else {
             myComplaintsFragment.setComplaintList(complaintList);
-            CacheUtil.cacheLoginData(ctx,response,null);
+            index = 0;
+            getAlertDetails();
         }
     }
 
@@ -999,8 +997,8 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                         if (response.getStatusCode() == 0) {
                             complaintList.get(position).setComplaintUpdateStatusList(response.getComplaintUpdateStatusList());
                         }
-                            index++;
-                            getAllCaseDetails();
+                        index++;
+                        getAllCaseDetails();
 
                     }
                 });
@@ -1010,12 +1008,12 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             @Override
             public void onError(final String message) {
                 runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            setBusy(false);
-                            Util.showToast(ctx, message);
-                        }
-                    });
+                    @Override
+                    public void run() {
+                        setBusy(false);
+                        Util.showToast(ctx, message);
+                    }
+                });
 
             }
 
@@ -1026,4 +1024,104 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         });
     }
 
+    private void getAlertDetails() {
+        if (index < response.getAlertList().size()) {
+            if (response.getAlertList().get(index).getHref() != null) {
+                getDetailData(response.getAlertList().get(index));
+            }
+        } else {
+            setupViewPager();
+            CacheUtil.cacheLoginData(ctx, response, null);
+        }
+    }
+
+    private void getDetailData(final AlertDTO alert) {
+        setBusy(true);
+        CommsUtil.getData(this, alert.getHref(),
+                RequestDTO.GET_ALERT_DETAIL, new CommsUtil.CommsListener() {
+                    @Override
+                    public void onDataOK(final String data) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                setBusy(false);
+                                alert.setAlertData(data);
+                                index++;
+                                getAlertDetails();
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void noDataFound() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                setBusy(false);
+                                index++;
+                                getAlertDetails();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(final String message) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                setRefreshActionButtonState(false);
+                                Util.showToast(getApplicationContext(), message);
+                            }
+                        });
+                    }
+                });
+    }
+
+    @Override
+    public void onBackPressed() {
+        final Handler h = new Handler(Looper.getMainLooper());
+        final Runnable r = new Runnable() {
+            public void run() {
+                int index = 0;
+                switch (currentPageIndex) {
+                    case 0:
+                        finish();
+                        return;
+                    case 1:
+                        index = 0;
+                        break;
+                    case 2:
+                        index = 1;
+                        break;
+                    case 3:
+                        index = 2;
+                        break;
+                    case 4:
+                        index = 3;
+                        break;
+                    case 5:
+                        index = 4;
+                        break;
+                    case 6:
+                        index = 5;
+                        break;
+                    case 7:
+                        index = 6;
+                        break;
+                    case 8:
+                        index = 7;
+                        break;
+                    case 9:
+                        index = 8;
+                        break;
+                }
+                mPager.setCurrentItem(index, true);
+                //h.postDelayed(this, 1000);
+
+            }
+        };
+        r.run();
+
+    }
 }

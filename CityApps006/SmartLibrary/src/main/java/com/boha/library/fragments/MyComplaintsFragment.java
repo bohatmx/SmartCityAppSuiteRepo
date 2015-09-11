@@ -114,7 +114,7 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
         }
         txtCount.setText("" + complaintList.size());
 
-        adapter = new ComplaintListAdapter(ctx, R.layout.complaint_item, primaryDarkColor,
+        adapter = new ComplaintListAdapter(ctx, R.layout.my_complaint_item, primaryDarkColor,
                 ComplaintListAdapter.MY_COMPLAINTS,
                 complaintList, new ComplaintListAdapter.ComplaintListListener() {
             @Override

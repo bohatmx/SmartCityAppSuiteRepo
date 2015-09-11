@@ -24,7 +24,7 @@ public class AlertDTO implements Serializable {
     private Double latitude, distance;
     private Double longitude;
     private String thumbnailURL;
-    private String href;
+    private String href, alertData;
     private Boolean activeFlag;
     private AlertTypeDTO alertType;
     private MunicipalityStaffDTO staff;
@@ -40,6 +40,14 @@ public class AlertDTO implements Serializable {
     }
 
     public AlertDTO() {
+    }
+
+    public String getAlertData() {
+        return alertData;
+    }
+
+    public void setAlertData(String alertData) {
+        this.alertData = alertData;
     }
 
     public String getMunicipalityName() {

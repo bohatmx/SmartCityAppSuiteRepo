@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.boha.library.R;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.AlertTypeDTO;
+import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -31,6 +33,7 @@ public class AlertListAdapter extends ArrayAdapter<AlertDTO> {
     private final int mLayoutRes;
     private List<AlertDTO> mList;
     private Context ctx;
+    private static final String TEXT = "text/html", UTF = "UTF-8";
     static final String LOG = AlertListAdapter.class.getSimpleName();
 
     public AlertListAdapter(Context context, int textViewResourceId,
@@ -53,6 +56,7 @@ public class AlertListAdapter extends ArrayAdapter<AlertDTO> {
         protected TextView txtType, txtColor, txtDate, txtDesc, txtTime;
         protected int position;
         protected View mainView;
+        protected WebView webView;
     }
 
     @Override
@@ -76,6 +80,7 @@ public class AlertListAdapter extends ArrayAdapter<AlertDTO> {
             item.txtDate = (TextView) convertView.findViewById(R.id.AI_date);
             item.txtTime = (TextView) convertView.findViewById(R.id.AI_time);
             item.image = (ImageView) convertView.findViewById(R.id.AI_image);
+            item.webView = (WebView) convertView.findViewById(R.id.AI_webView);
             item.mainView = convertView.findViewById(R.id.AI_main);
 
 
@@ -86,7 +91,6 @@ public class AlertListAdapter extends ArrayAdapter<AlertDTO> {
 
         final AlertDTO p = mList.get(position);
         item.txtColor.setText("" + (position + 1));
-//        item.txtType.setText(p.getAlertType().getAlertTypeName());
         item.txtType.setVisibility(View.GONE);
         item.txtDate.setText(sdfDate.format(p.getUpdated()));
         item.txtTime.setText(sdfTime.format(p.getUpdated()));
@@ -104,32 +108,21 @@ public class AlertListAdapter extends ArrayAdapter<AlertDTO> {
                 break;
         }
 
-        item.txtColor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onAlertClicked(position);
-            }
-        });
-        item.mainView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onAlertClicked(position);
-            }
-        });
-//        Statics.setRomanFontLight(ctx, item.txtDesc);
+        if (p.getAlertData() != null) {
+            item.webView.setVisibility(View.VISIBLE);
+            item.webView.loadData(p.getAlertData(), TEXT, UTF);
+        } else {
+            item.webView.setVisibility(View.GONE);
+        }
         //get first image if available ...
         if (p.getAlertImageList() != null && !p.getAlertImageList().isEmpty()) {
             item.image.setVisibility(View.VISIBLE);
-            String url = Util.getAlertImageURL(p.getAlertImageList().get(0));
+            String url = p.getAlertImageList().get(0).getUrl();
             setImage(url, item.image);
         } else {
-//            if (p.getThumbnailURL() != null) {
-//                item.image.setVisibility(View.VISIBLE);
-//                setImage(p.getThumbnailURL(), item.image);
-//            } else {
                 item.image.setVisibility(View.GONE);
-//            }
         }
+        Statics.setRobotoFontLight(ctx,item.txtDesc);
         Util.scaleDownAndUp(convertView,300);
         return (convertView);
     }

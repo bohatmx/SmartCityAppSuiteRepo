@@ -15,6 +15,12 @@
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/action_theme"
+        android:title="Set Appearance Colours"
+        android:icon="@drawable/ic_action_slideshow"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_logoff"
         android:title="Log Off"
         android:icon="@drawable/ic_action_event"

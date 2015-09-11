@@ -12,7 +12,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListPopupWindow;
-import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.boha.library.R;
@@ -39,8 +38,7 @@ import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.NetUtil;
-import com.boha.library.util.RequestCache;
-import com.boha.library.util.RequestList;
+import com.boha.library.util.ResidentialAddress;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 import com.boha.library.util.WebCheck;
@@ -72,19 +70,19 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
     ResponseDTO response;
     View view, addressLayout;
+    ScrollView scroll;
     Context ctx;
     View handle, tapLayout;
     EditText editNumber, editStreet, editSuburb, editCity, editComment;
     Button btnSend;
     TextView txtTitle, txtSubTitle,
-            txtGetAddress, txtComplaintType;
+            txtGetAddress, txtComplaintType, txtComplaintType2;
     List<ComplaintTypeDTO> complaintTypeList;
     List<String> stringList;
     List<ComplaintCategoryDTO> complaintCategoryList;
     Activity activity;
     View topView;
     ImageView hero, icon;
-    ProgressBar progressBar;
     int logo;
 
 
@@ -143,13 +141,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             Util.showToast(ctx, "Please start complaint");
             return;
         }
-        if (complaintType.isLocationIsRequired()) {
-            if (location == null) {
-                mListener.onComplaintLocationRequested();
-                return;
-            }
 
-        }
         if (editStreet.getText().toString().isEmpty()) {
             Util.showToast(ctx, "Please enter street name");
             return;
@@ -220,6 +212,8 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
                                 }
                                 if (response.getComplaintList() != null && !response.getComplaintList().isEmpty()) {
+                                    Snackbar.make(btnSend, "Your complaint has been received", Snackbar.LENGTH_LONG).show();
+                                    cancel();
                                     mListener.onComplaintAdded(response.getComplaintList());
                                 } else {
                                     Util.showErrorToast(ctx, "Unable to process the complaint at this time. Please try later");
@@ -227,8 +221,6 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                                 }
                             }
 
-                            Snackbar.make(btnSend, "Your complaint has been received", Snackbar.LENGTH_LONG).show();
-                            cancel();
 
                         }
                     });
@@ -258,65 +250,6 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
     }
 
-    private void showErrorDialog(final RequestDTO w, String message) {
-
-        AlertDialog.Builder z = new AlertDialog.Builder(getActivity());
-        z.setTitle("Complaint Submission Error")
-                .setMessage(message + "\n\n" + "Do you want to save the complaint for sending later?")
-                .setPositiveButton("Save Complaint", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        RequestCache.addRequest(ctx, w, new RequestCache.RequestCacheListener() {
-                            @Override
-                            public void onRequestAdded() {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-
-
-                                        editNumber.setText("");
-                                        editStreet.setText("");
-                                        editSuburb.setText("");
-                                        editCity.setText("");
-                                        editComment.setText("");
-                                        btnSend.setVisibility(View.GONE);
-                                        editComment.setVisibility(View.GONE);
-                                        txtComplaintType.setText(R.string.start_complaint);
-                                        icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.ic_action_bell));
-                                        Snackbar.make(hero, "Complaint will be sent later", Snackbar.LENGTH_LONG).show();
-
-
-                                    }
-                                });
-
-
-                            }
-
-                            @Override
-                            public void onRequestsFound(RequestList list) {
-
-                            }
-
-                            @Override
-                            public void onError() {
-
-                            }
-
-                            @Override
-                            public void onRequestsRemoved() {
-
-                            }
-                        });
-                    }
-                })
-                .setNegativeButton("Try Again", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        sendComplaint();
-                    }
-                })
-                .show();
-    }
 
     GISAddressDTO selectedAddress;
 
@@ -343,6 +276,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         editCity.setText("");
         editSuburb.setText("");
         txtComplaintType.setText(R.string.start_complaint);
+        txtComplaintType2.setText(R.string.start_complaint);
         Util.flashSeveralTimes(txtComplaintType, 300, 4, null);
     }
 
@@ -350,6 +284,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
         addressLayout = view.findViewById(R.id.CC_addressLayout);
         addressLayout.setEnabled(false);
+        scroll = (ScrollView)view.findViewById(R.id.CC_scroll);
         handle = view.findViewById(R.id.CC_handle);
         tapLayout = view.findViewById(R.id.CC_tapLayout);
         topView = view.findViewById(R.id.CC_titleLayout);
@@ -364,6 +299,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
         editComment = (EditText) view.findViewById(R.id.CC_comment);
         txtComplaintType = (TextView) view.findViewById(R.id.CC_complaintType);
+        txtComplaintType2 = (TextView) view.findViewById(R.id.CC_complaintType2);
         txtTitle = (TextView) view.findViewById(R.id.CC_title);
         txtSubTitle = (TextView) view.findViewById(R.id.CC_subTitle);
         txtGetAddress = (TextView) view.findViewById(R.id.CC_getGeoAddress);
@@ -376,6 +312,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         txtSubTitle.setVisibility(View.GONE);
         txtGetAddress.setVisibility(View.GONE);
         txtComplaintType.setText(R.string.start_complaint);
+        txtComplaintType2.setText(R.string.start_complaint);
 
 
         btnSend.setOnClickListener(new View.OnClickListener() {
@@ -390,29 +327,13 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             }
         });
 
-        txtGetAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Util.flashOnce(txtGetAddress, 300, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        mListener.setBusy(true);
-                        txtGetAddress.setEnabled(false);
-                        txtGetAddress.setAlpha(0.5f);
-                        mListener.onComplaintLocationRequested();
-                    }
-                });
-            }
-        });
-
-
         tapLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                Util.flashOnce(txtComplaintType, 300, new Util.UtilAnimationListener() {
+                Util.flashOnce(txtComplaintType, 200, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        mListener.onComplaintLocationRequested();
+
                         showComplaintCategoryPopup();
                     }
                 });
@@ -421,10 +342,20 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         txtComplaintType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                Util.flashOnce(txtComplaintType, 300, new Util.UtilAnimationListener() {
+                Util.flashOnce(txtComplaintType, 200, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        mListener.onComplaintLocationRequested();
+                        showComplaintCategoryPopup();
+                    }
+                });
+            }
+        });
+        txtComplaintType2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                Util.flashOnce(txtComplaintType2, 200, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
                         showComplaintCategoryPopup();
                     }
                 });
@@ -452,6 +383,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         editSuburb.setEnabled(true);
         editCity.setEnabled(true);
     }
+
     private void disableAddress() {
         editNumber.setEnabled(false);
         editStreet.setEnabled(false);
@@ -523,15 +455,61 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                 icon.setColorFilter(primaryDarkColor, PorterDuff.Mode.SRC_IN);
                 txtComplaintType.setText(complaintCategory.getComplaintCategoryName()
                         + " - " + complaintType.getComplaintTypeName());
-                hideButtons();
-                Snackbar.make(txtComplaintType, ctx.getString(R.string.calc_complaint_address), Snackbar.LENGTH_LONG).show();
-                if (mListener != null) {
-                    mListener.setBusy(true);
-                    mListener.onComplaintLocationRequested();
-                }
+                txtComplaintType2.setText(complaintCategory.getComplaintCategoryName()
+                        + " - " + complaintType.getComplaintTypeName());
+                selectComplaintLocationDialog();
+
             }
         });
         complaintPopup.show();
+    }
+
+    private void selectComplaintLocationDialog() {
+        AlertDialog.Builder d = new AlertDialog.Builder(activity);
+        d.setTitle("Choose Complaint Address")
+                .setMessage("Is the complaint for your residential address?\n\nIf YES, the app will use the address you saved, " +
+                        "\n\nif NO, the app will use GPS to find the location of the complaint.")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ResidentialAddress x = SharedUtil.getAddress(activity);
+                        if (x != null) {
+                            editNumber.setText(x.getNumber());
+                            editStreet.setText(x.getStreet());
+                            editSuburb.setText(x.getSuburb());
+                            editCity.setText(x.getCity());
+                            showButtons();
+                            editNumber.setEnabled(true);
+                            editStreet.setEnabled(true);
+                            editSuburb.setEnabled(true);
+                            editCity.setEnabled(true);
+                            addressLayout.setEnabled(true);
+                            scroll.post(new Runnable() {
+                                @Override
+
+                                public void run() {
+
+                                    scroll.scrollTo(0, scroll.getBottom());
+
+                                }
+                            });
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        hideButtons();
+                        Snackbar.make(txtComplaintType, ctx.getString(R.string.calc_complaint_address), Snackbar.LENGTH_LONG).show();
+                        mListener.setBusy(true);
+                        editNumber.setText("");
+                        editStreet.setText("");
+                        editSuburb.setText("");
+                        editCity.setText("");
+                        mListener.onComplaintLocationRequested();
+                    }
+                })
+                .show();
     }
 
     ComplaintCategoryDTO complaintCategory;
@@ -547,35 +525,6 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         editComment.setVisibility(View.GONE);
     }
 
-    private void showAddressDialog() {
-
-        AlertDialog.Builder dg = new AlertDialog.Builder(getActivity());
-        dg.setTitle("Complaint Location")
-                .setMessage("Is the complaint at your residence?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        addressLayout.setEnabled(true);
-                        showButtons();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Util.expand(addressLayout, 500, null);
-                        addressLayout.setEnabled(true);
-                        hideButtons();
-                        Snackbar.make(txtComplaintType, ctx.getString(R.string.calc_complaint_address), Snackbar.LENGTH_LONG).show();
-                        mListener.setBusy(true);
-                        mListener.onComplaintLocationRequested();
-                    }
-                })
-                .show();
-    }
-
-    private void parseAddress() {
-
-    }
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -728,10 +677,23 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                 if (address.getLocality() != null) {
                     editCity.setText(address.getLocality());
                 }
-                Util.expand(addressLayout, 500, null);
+                Util.expand(addressLayout, 500, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        scroll.post(new Runnable() {
+                            @Override
+
+                            public void run() {
+
+                                scroll.scrollTo(0, scroll.getBottom());
+
+                            }
+                        });
+                    }
+                });
 
             } else {
-                Util.showErrorToast(ctx, "Unable to calculate address");
+                Snackbar.make(addressLayout, "Unable to calculate address at this location", Snackbar.LENGTH_SHORT).show();
             }
 
         }

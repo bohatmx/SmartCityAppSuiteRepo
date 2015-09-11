@@ -112,7 +112,7 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
         final ComplaintDTO p = mList.get(position);
         item.txtColor.setText("" + (position + 1));
         if (p.getComplaintType() == null) {
-            item.txtComplaintType.setText("Type unavailable");
+            item.txtComplaintType.setText("Complaint name unavailable");
         } else {
             item.txtComplaintType.setText(
                     p.getComplaintType().getCategoryName() + " - " +

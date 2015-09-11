@@ -13,7 +13,7 @@ import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Statics;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
-import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -119,7 +119,7 @@ public class CityApplication extends Application {
         //
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
                 .denyCacheImageMultipleSizesInMemory()
-                .diskCache(new UnlimitedDiscCache(cacheDir))
+                .diskCache(new UnlimitedDiskCache(cacheDir))
                 .memoryCache(new LruMemoryCache(12 * 1024 * 1024))
                 .defaultDisplayImageOptions(defaultOptions)
                 .build();

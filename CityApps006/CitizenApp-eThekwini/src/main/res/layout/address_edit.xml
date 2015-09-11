@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/AE_topLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mon_hero_height_small">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/back13" />
+
+            <TextView
+                android:id="@+id/AE_title"
+                style="@style/Title2TextStyleWhite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="Residential Address" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/AE_topLayout"
+            android:layout_margin="@dimen/mon_margin">
+
+            <TextView
+                android:id="@+id/AE_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Please enter or update your residential address. This is necessary to have your complaints serviced properly." />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/AE_snLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/AE_label"
+                app:errorEnabled="true"
+                android:layout_marginTop="@dimen/mon_padding">
+
+                <EditText
+                    android:id="@+id/AE_streetNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Street Number" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/AE_streetLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/AE_snLayout"
+                android:layout_marginTop="@dimen/mon_padding">
+
+                <EditText
+                    android:id="@+id/AE_street"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:hint="Street Name" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/AE_suburbLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/AE_streetLayout"
+                android:layout_marginTop="@dimen/mon_padding">
+
+                <EditText
+                    android:id="@+id/AE_suburb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:hint="Suburb Name" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/AE_cityLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/AE_suburbLayout"
+                android:layout_marginTop="@dimen/mon_padding">
+
+                <EditText
+                    android:id="@+id/AE_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:hint="City Name" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/AE_submit"
+                style="@style/ButtonRed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/AE_cityLayout"
+                android:layout_margin="@dimen/mon_margin"
+                android:text="Save Address" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>
