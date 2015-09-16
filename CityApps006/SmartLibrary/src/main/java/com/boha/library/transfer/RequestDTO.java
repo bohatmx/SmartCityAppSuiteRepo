@@ -17,6 +17,7 @@ import com.boha.library.dto.CountryDTO;
 import com.boha.library.dto.CustomerStatusDTO;
 import com.boha.library.dto.CustomerTypeDTO;
 import com.boha.library.dto.FaqDTO;
+import com.boha.library.dto.GISAddressDTO;
 import com.boha.library.dto.GcmDeviceDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.MunicipalityImageDTO;
@@ -92,6 +93,15 @@ public class RequestDTO {
     private ProfileImageDTO profileImage;
     private PhotoUploadDTO photoUpload;
     private RequestList requestList;
+    private GISAddressDTO address;
+
+    public GISAddressDTO getAddress() {
+        return address;
+    }
+
+    public void setAddress(GISAddressDTO address) {
+        this.address = address;
+    }
 
     public Long getLastSyncAttemptDate() {
         return lastSyncAttemptDate;

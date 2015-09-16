@@ -78,6 +78,7 @@ public class CityApplication extends Application {
 
     private RefWatcher refWatcher;
 
+
     @Override
     public void onCreate() {
         super.onCreate();

@@ -184,6 +184,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         ResidentialAddress address = SharedUtil.getAddress(ctx);
         if (address == null) {
             Intent w = new Intent(ctx, AddressActivity.class);
+            w.putExtra("type", AddressActivity.CALLED_FROM_DRAWER_ACTIVITY);
             startActivity(w);
             finish();
         }
@@ -196,14 +197,13 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                 response = r;
                 if (response.getProfileInfoList() != null && !response.getProfileInfoList().isEmpty()) {
                     setupViewPager();
+                    return;
                 }
                 if (response.getUserList() != null && !response.getUserList().isEmpty()) {
                     setupViewPager();
+                    return;
                 }
-                boolean justSignedIn = getIntent().getBooleanExtra("justSignedIn", false);
-                if (!justSignedIn) {
-                    getLoginData();
-                }
+                getLoginData();
             }
 
             @Override

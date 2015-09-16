@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,11 +18,19 @@ import com.boha.library.util.Util;
 public class AddressActivity extends AppCompatActivity implements AddressFragment.AddressFragmentListener{
 
     AddressFragment addressFragment;
+    int type;
+    public static final int CALLED_FROM_DRAWER_ACTIVITY = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(LOG, "onCreate");
         setContentView(R.layout.activity_address);
 
+        if (SharedUtil.getAddress(getApplicationContext()) != null) {
+            finish();
+            return;
+        }
         addressFragment = (AddressFragment)getSupportFragmentManager().findFragmentById(R.id.fragment);
 
         Drawable x = ContextCompat.getDrawable(getBaseContext(), R.drawable.logo);
@@ -31,6 +40,14 @@ public class AddressActivity extends AppCompatActivity implements AddressFragmen
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(LOG, "onResume");
+        if (SharedUtil.getAddress(getApplicationContext()) != null) {
+            finish();
+        }
+    }
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 //        getMenuInflater().inflate(R.menu.menu_address, menu);
         return true;
@@ -38,12 +55,8 @@ public class AddressActivity extends AppCompatActivity implements AddressFragmen
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -55,6 +68,7 @@ public class AddressActivity extends AppCompatActivity implements AddressFragmen
     public void onAddressUpdated() {
         Intent w = new Intent(getApplicationContext(), CitizenDrawerActivity.class);
         startActivity(w);
+        finish();
     }
 
     @Override
@@ -65,4 +79,5 @@ public class AddressActivity extends AppCompatActivity implements AddressFragmen
     public void onBackPressed() {
 
     }
+    static final String LOG = AddressActivity.class.getSimpleName();
 }
