@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/scrollView"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
@@ -34,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/AE_topLayout"
-            android:layout_margin="@dimen/mon_margin">
+            android:layout_margin="@dimen/mon_wide">
 
             <TextView
                 android:id="@+id/AE_label"
@@ -43,13 +44,25 @@
                 android:layout_centerHorizontal="true"
                 android:text="Please enter or update your residential address. This is necessary to have your complaints serviced properly." />
 
+            <ImageView
+                android:id="@+id/AE_search"
+                android:src="@android:drawable/ic_menu_search"
+                android:layout_below="@id/AE_label"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/mon_margin"
+                android:tint="@color/teal_600"
+                android:layout_width="36dp"
+                android:layout_height="36dp" />
+
+
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/AE_snLayout"
-                android:layout_width="match_parent"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/AE_label"
                 app:errorEnabled="true"
-                android:layout_marginTop="@dimen/mon_padding">
+                android:visibility="visible"
+                android:layout_marginTop="@dimen/mon_wider">
 
                 <EditText
                     android:id="@+id/AE_streetNumber"
@@ -62,14 +75,14 @@
                 android:id="@+id/AE_streetLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/AE_snLayout"
-                android:layout_marginTop="@dimen/mon_padding">
+                android:layout_below="@id/AE_snLayout">
 
                 <EditText
                     android:id="@+id/AE_street"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
+                    android:enabled="true"
                     android:hint="Street Name" />
             </android.support.design.widget.TextInputLayout>
 
@@ -78,14 +91,15 @@
                 android:id="@+id/AE_suburbLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/AE_streetLayout"
-                android:layout_marginTop="@dimen/mon_padding">
+                android:visibility="visible"
+                android:layout_below="@id/AE_streetLayout">
 
                 <EditText
                     android:id="@+id/AE_suburb"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
+                    android:enabled="false"
                     android:hint="Suburb Name" />
             </android.support.design.widget.TextInputLayout>
 
@@ -93,24 +107,28 @@
                 android:id="@+id/AE_cityLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/AE_suburbLayout"
-                android:layout_marginTop="@dimen/mon_padding">
+                android:visibility="visible"
+                android:layout_below="@id/AE_suburbLayout">
 
                 <EditText
                     android:id="@+id/AE_city"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
-                    android:hint="City Name" />
+                    android:enabled="false"
+                    android:hint="City/Town Name" />
             </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/AE_submit"
                 style="@style/ButtonRed"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/AE_cityLayout"
-                android:layout_margin="@dimen/mon_margin"
+                android:layout_marginLeft="@dimen/mon_wide"
+                android:layout_marginRight="@dimen/mon_wide"
+                android:layout_marginTop="@dimen/mon_wider"
                 android:text="Save Address" />
 
         </RelativeLayout>

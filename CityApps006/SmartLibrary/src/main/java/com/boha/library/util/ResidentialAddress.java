@@ -9,10 +9,10 @@ public class ResidentialAddress implements Serializable{
     private String number, street, suburb, city;
 
     public ResidentialAddress(String number, String street, String suburb, String city) {
-        this.number = number;
-        this.street = street;
-        this.suburb = suburb;
-        this.city = city;
+        this.number = number.trim();
+        this.street = street.trim();
+        this.suburb = suburb.trim();
+        this.city = city.trim();
     }
 
     public String getNumber() {

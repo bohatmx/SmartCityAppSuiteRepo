@@ -24,6 +24,7 @@ import com.boha.library.dto.MunicipalityImageDTO;
 import com.boha.library.dto.MunicipalityStaffDTO;
 import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.dto.NewsArticleTypeDTO;
+import com.boha.library.dto.PaymentSurveyDTO;
 import com.boha.library.dto.ProfileImageDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.ProvinceDTO;
@@ -94,6 +95,15 @@ public class RequestDTO {
     private PhotoUploadDTO photoUpload;
     private RequestList requestList;
     private GISAddressDTO address;
+    private PaymentSurveyDTO paymentSurvey;
+
+    public PaymentSurveyDTO getPaymentSurvey() {
+        return paymentSurvey;
+    }
+
+    public void setPaymentSurvey(PaymentSurveyDTO paymentSurvey) {
+        this.paymentSurvey = paymentSurvey;
+    }
 
     public GISAddressDTO getAddress() {
         return address;
@@ -154,7 +164,9 @@ public class RequestDTO {
     public static final int
             SIGN_IN_MUNICIPALITY_STAFF = 6,
             SIGN_IN_CITIZEN = 7,
-            SIGN_IN_USER = 8;
+            SIGN_IN_USER = 8,
+            VERIFY_ADDRESS = 9,
+            ADD_SURVEY = 10;
 
     //Create new data
     public static final int 

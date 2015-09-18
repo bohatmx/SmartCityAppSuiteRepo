@@ -83,11 +83,7 @@
             android:parentActivityName=".activities.SplashActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name="com.boha.library.activities.MyComplaintsActivity"
-            android:parentActivityName=".activities.CitizenDrawerActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+
         <activity
             android:name="com.boha.library.activities.AlertPictureGridActivity"
             android:screenOrientation="portrait" />
@@ -139,7 +135,8 @@
 
         <activity
             android:name=".activities.AddressActivity"
-            android:label="@string/title_activity_address" >
+            android:windowSoftInputMode="stateAlwaysHidden"
+            >
         </activity>
     </application>
 

@@ -553,7 +553,7 @@ public class MainDrawerActivity extends ActionBarActivity
             }
         });
 
-        addressDialog.show(getFragmentManager(),"");
+        addressDialog.show(getSupportFragmentManager(),"");
     }
     @Override
     public void onFindComplaintsLikeMine(ComplaintDTO complaint) {

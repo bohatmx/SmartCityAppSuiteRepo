@@ -11,10 +11,11 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_help"
-        android:title="@string/hello_world"
+        android:title="@string/help"
         android:icon="@drawable/ic_action_help"
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/action_logoff"
         android:title="Log Off"

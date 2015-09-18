@@ -16,9 +16,9 @@
         <RelativeLayout
             android:id="@+id/iconBoxFollow"
             android:layout_width="wrap_content"
-            android:visibility="gone"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/CI_iconFollow"
@@ -184,8 +184,8 @@
             android:id="@+id/CI_statusLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/mon_margin"
             android:layout_below="@id/CI_refLayout"
+            android:layout_marginTop="@dimen/mon_margin"
             android:orientation="vertical">
 
             <include layout="@layout/status_layout" />
@@ -220,19 +220,26 @@
 
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/CI_image"
+    <RelativeLayout
+        android:id="@+id/CI_imageLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mon_picture_large"
+        android:layout_height="wrap_content"
         android:layout_below="@id/CI_detailsView"
-        android:scaleType="centerCrop"
-        android:src="@drawable/back4" />
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/CI_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mon_picture_large"
+            android:scaleType="fitCenter"
+            android:src="@drawable/back4" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/CI_followLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/CI_image"
+        android:layout_below="@id/CI_imageLayout"
         android:background="@color/white"
         android:padding="@dimen/mon_margin">
 

@@ -116,8 +116,8 @@ public class AccountActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_account, menu);
+        getMenuInflater().inflate(R.menu.fake_main, menu);
+        mMenu = menu;
         return true;
     }
 
@@ -125,10 +125,10 @@ public class AccountActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+        if (id == R.id.action_refresh) {
+//            accountFragment.
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -143,6 +143,11 @@ public class AccountActivity extends AppCompatActivity
     public void onRefreshRequested() {
 
 
+    }
+
+    @Override
+    public void setBusy(boolean busy) {
+        setRefreshActionButtonState(busy);
     }
 
     @Override
@@ -179,5 +184,18 @@ public class AccountActivity extends AppCompatActivity
 
         finish();
 
+    }
+    Menu mMenu;
+    public void setRefreshActionButtonState(final boolean refreshing) {
+        if (mMenu != null) {
+            final MenuItem refreshItem = mMenu.findItem(R.id.action_refresh);
+            if (refreshItem != null) {
+                if (refreshing) {
+                    refreshItem.setActionView(R.layout.action_bar_progess);
+                } else {
+                    refreshItem.setActionView(null);
+                }
+            }
+        }
     }
 }

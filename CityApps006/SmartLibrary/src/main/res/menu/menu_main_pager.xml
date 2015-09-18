@@ -21,6 +21,12 @@
         android:orderInCategory="100"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_address"
+        android:title="@string/update_address"
+        android:icon="@drawable/ic_action_edit"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_logoff"
         android:title="Log Off"
         android:icon="@drawable/ic_action_event"

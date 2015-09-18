@@ -2,11 +2,13 @@ package com.boha.library.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -23,7 +25,12 @@ import com.boha.library.activities.CityApplication;
 import com.boha.library.activities.StatementActivity;
 import com.boha.library.adapters.AccountAdapter;
 import com.boha.library.dto.AccountDTO;
+import com.boha.library.dto.PaymentSurveyDTO;
 import com.boha.library.dto.ProfileInfoDTO;
+import com.boha.library.transfer.RequestDTO;
+import com.boha.library.transfer.ResponseDTO;
+import com.boha.library.util.NetUtil;
+import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
 import com.google.android.gms.analytics.HitBuilders;
@@ -38,14 +45,14 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class AccountFragment extends Fragment implements PageFragment{
+public class AccountFragment extends Fragment implements PageFragment {
 
     private AccountFragmentListener mListener;
     private ProfileInfoDTO profileInfo;
     private View view, detailView, topView, handle;
     private TextView
             txtName, txtAcctNumber, txtSubtitle,
-             txtArrears, txtFAB, txtClickToPay,
+            txtArrears, txtFAB, txtClickToPay,
             txtLastUpdate, txtNextBill,
             txtAddress, txtLastBillAmount;
     View fab, topLayout;
@@ -138,7 +145,26 @@ public class AccountFragment extends Fragment implements PageFragment{
     }
 
     private void startPayment() {
-        Util.showToast(ctx, ctx.getString(R.string.payment_not_available));
+        Log.e(LOG,"########## startPayment");
+
+        AlertDialog.Builder d = new AlertDialog.Builder(getActivity());
+        d.setTitle("Mobile Payment Survey")
+                .setMessage("The payment facility is not available yet. The municipality is conducting a survey to find the level of interest in paying your account on the app.\n\n" +
+                        "Do you want to be able to pay from the app?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sendSurvey(true);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sendSurvey(false);
+                    }
+                })
+                .show();
+
 
 //        Intent intent = new Intent(ctx, PaymentStartActivity.class);
 //        intent.putExtra("account", account);
@@ -148,10 +174,49 @@ public class AccountFragment extends Fragment implements PageFragment{
 
     }
 
+    private void sendSurvey(boolean response) {
+        PaymentSurveyDTO x = new PaymentSurveyDTO();
+        x.setMunicipalityID(SharedUtil.getMunicipality(getActivity()).getMunicipalityID());
+        x.setResponse(response);
+        x.setAccountNumber(account.getAccountNumber());
+
+        RequestDTO w = new RequestDTO(RequestDTO.ADD_SURVEY);
+        w.setPaymentSurvey(x);
+
+        mListener.setBusy(true);
+        NetUtil.sendRequest(getActivity(), w, new NetUtil.NetUtilListener() {
+            @Override
+            public void onResponse(ResponseDTO response) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mListener.setBusy(false);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(final String message) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mListener.setBusy(false);
+                        Util.showErrorToast(getActivity(), message);
+                    }
+                });
+            }
+
+            @Override
+            public void onWebSocketClose() {
+
+            }
+        });
+    }
+
     private void setFields() {
         topView = view.findViewById(R.id.template);
         fab = view.findViewById(R.id.FAB);
-        hero = (ImageView)view.findViewById(R.id.TOP_heroImage);
+        hero = (ImageView) view.findViewById(R.id.TOP_heroImage);
         topLayout = view.findViewById(R.id.TOP_titleLayout);
         topLayout.setBackgroundColor(primaryColor);
         handle = view.findViewById(R.id.ACCT_handle);
@@ -159,7 +224,7 @@ public class AccountFragment extends Fragment implements PageFragment{
         detailView = view.findViewById(R.id.ACCT_detailLayout);
         txtName = (TextView) topView.findViewById(R.id.TOP_title);
         txtClickToPay = (TextView) topView.findViewById(R.id.ACCT_clickToPay);
-        Statics.setRobotoFontLight(ctx,txtName);
+        Statics.setRobotoFontLight(ctx, txtName);
         txtSubtitle = (TextView) topView.findViewById(R.id.TOP_subTitle);
         icon = (ImageView) topView.findViewById(R.id.TOP_icon);
         txtFAB = (TextView) topView.findViewById(R.id.FAB_text);
@@ -217,9 +282,9 @@ public class AccountFragment extends Fragment implements PageFragment{
                     @Override
                     public void onAnimationEnded() {
                         Intent w = new Intent(ctx, StatementActivity.class);
-                        w.putExtra("primaryColor",primaryColor);
-                        w.putExtra("darkColor",primaryDarkColor);
-                        w.putExtra("logo",logo);
+                        w.putExtra("primaryColor", primaryColor);
+                        w.putExtra("darkColor", primaryDarkColor);
+                        w.putExtra("logo", logo);
                         startActivity(w);
 
                     }
@@ -259,12 +324,12 @@ public class AccountFragment extends Fragment implements PageFragment{
     }
 
     private void setFont() {
-        Statics.setRobotoFontLight(ctx,txtAcctNumber);
-        Statics.setRobotoFontLight(ctx,txtArrears);
-        Statics.setRobotoFontLight(ctx,btnCurrBal);
-        Statics.setRobotoFontLight(ctx,txtLastBillAmount);
-        Statics.setRobotoFontLight(ctx,txtNextBill);
-        Statics.setRobotoFontLight(ctx,txtLastUpdate);
+        Statics.setRobotoFontLight(ctx, txtAcctNumber);
+        Statics.setRobotoFontLight(ctx, txtArrears);
+        Statics.setRobotoFontLight(ctx, btnCurrBal);
+        Statics.setRobotoFontLight(ctx, txtLastBillAmount);
+        Statics.setRobotoFontLight(ctx, txtNextBill);
+        Statics.setRobotoFontLight(ctx, txtLastUpdate);
 
 
     }
@@ -308,7 +373,9 @@ public class AccountFragment extends Fragment implements PageFragment{
         super.onDetach();
         mListener = null;
     }
-    @Override public void onDestroy() {
+
+    @Override
+    public void onDestroy() {
         super.onDestroy();
         RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
         refWatcher.watch(this);
@@ -325,9 +392,11 @@ public class AccountFragment extends Fragment implements PageFragment{
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface AccountFragmentListener {
-        public void onAccountStatementRequested(AccountDTO account);
+        void onAccountStatementRequested(AccountDTO account);
 
-        public void onRefreshRequested();
+        void onRefreshRequested();
+
+        void setBusy(boolean busy);
     }
 
     @Override
@@ -356,12 +425,14 @@ public class AccountFragment extends Fragment implements PageFragment{
 
     }
 
-    int primaryColor,  primaryDarkColor;
+    int primaryColor, primaryDarkColor;
+
     @Override
     public void setThemeColors(int primaryColor, int primaryDarkColor) {
         this.primaryColor = primaryColor;
         this.primaryDarkColor = primaryDarkColor;
     }
+
     String pageTitle;
 
     @Override

@@ -19,18 +19,15 @@ public class AddressActivity extends AppCompatActivity implements AddressFragmen
 
     AddressFragment addressFragment;
     int type;
+    Menu mMenu;
     public static final int CALLED_FROM_DRAWER_ACTIVITY = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG, "onCreate");
         setContentView(R.layout.activity_address);
-
-        if (SharedUtil.getAddress(getApplicationContext()) != null) {
-            finish();
-            return;
-        }
         addressFragment = (AddressFragment)getSupportFragmentManager().findFragmentById(R.id.fragment);
 
         Drawable x = ContextCompat.getDrawable(getBaseContext(), R.drawable.logo);
@@ -43,13 +40,12 @@ public class AddressActivity extends AppCompatActivity implements AddressFragmen
     public void onResume() {
         super.onResume();
         Log.d(LOG, "onResume");
-        if (SharedUtil.getAddress(getApplicationContext()) != null) {
-            finish();
-        }
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_address, menu);
+        getMenuInflater().inflate(R.menu.menu_address, menu);
+        mMenu = menu;
         return true;
     }
 
@@ -57,7 +53,7 @@ public class AddressActivity extends AppCompatActivity implements AddressFragmen
     public boolean onOptionsItemSelected(MenuItem item) {
          int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_refresh) {
             return true;
         }
 
@@ -73,11 +69,23 @@ public class AddressActivity extends AppCompatActivity implements AddressFragmen
 
     @Override
     public void setBusy(boolean busy) {
-
+        setRefreshActionButtonState(busy);
     }
     @Override
     public void onBackPressed() {
 
     }
     static final String LOG = AddressActivity.class.getSimpleName();
+    public void setRefreshActionButtonState(final boolean refreshing) {
+        if (mMenu != null) {
+            final MenuItem refreshItem = mMenu.findItem(R.id.action_refresh);
+            if (refreshItem != null) {
+                if (refreshing) {
+                    refreshItem.setActionView(R.layout.action_bar_progess);
+                } else {
+                    refreshItem.setActionView(null);
+                }
+            }
+        }
+    }
 }

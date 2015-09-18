@@ -315,6 +315,11 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        if (id == R.id.action_address) {
+            Intent w = new Intent(this,AddressActivity.class);
+            startActivity(w);
+            return true;
+        }
         if (id == android.R.id.home) {
             mDrawerLayout.openDrawer(GravityCompat.START);
             return true;
@@ -472,9 +477,8 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                                     complaintCreateFragment.showComplaintCategoryPopup();
                                 }
                             });
-
                         }
-                    }, 500);
+                    }, 600);
                     return true;
                 }
                 if (menuItem.getItemId() == R.id.nav_alerts) {
@@ -882,7 +886,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             }
         });
 
-        addressDialog.show(getFragmentManager(), "");
+        addressDialog.show(getSupportFragmentManager(),"oiyoiu");
     }
 
     @Override

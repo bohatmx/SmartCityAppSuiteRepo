@@ -1,7 +1,9 @@
 package com.boha.library.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -23,6 +25,7 @@ import com.boha.library.R;
 import com.boha.library.adapters.AccountAdapter;
 import com.boha.library.dto.AccountDTO;
 import com.boha.library.dto.MunicipalityDTO;
+import com.boha.library.dto.PaymentSurveyDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
@@ -286,15 +289,72 @@ public class AccountDetailActivity extends AppCompatActivity {
 
 
     private void startPayment() {
-        Util.showToast(ctx, "Payment facility not available yet");
+        Log.e(LOG, "########## startPayment");
 
-//        Intent w = new Intent(this, PaymentStartActivity.class);
-//        w.putExtra("account", account);
-//        w.putExtra("logo",logo);
-//        w.putExtra("primaryColor",primaryColor);
-//        w.putExtra("darkColor",darkColor);
-//        startActivity(w);
+        AlertDialog.Builder d = new AlertDialog.Builder(this);
+        d.setTitle("Mobile Payment Survey")
+                .setMessage("The payment facility is not available yet. The municipality is conducting a survey to find the level of interest in paying your account on the app.\n\n" +
+                        "Do you want to be able to pay from the app?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sendSurvey(true);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sendSurvey(false);
+                    }
+                })
+                .show();
 
+
+//        Intent intent = new Intent(ctx, PaymentStartActivity.class);
+//        intent.putExtra("account", account);
+//        intent.putExtra("index", selectedIndex);
+//        intent.putExtra("logo", logo);
+//        startActivity(intent);
+
+    }
+
+    private void sendSurvey(boolean response) {
+        PaymentSurveyDTO x = new PaymentSurveyDTO();
+        x.setMunicipalityID(SharedUtil.getMunicipality(getApplicationContext()).getMunicipalityID());
+        x.setResponse(response);
+        x.setAccountNumber(account.getAccountNumber());
+
+        RequestDTO w = new RequestDTO(RequestDTO.ADD_SURVEY);
+        w.setPaymentSurvey(x);
+
+        setRefreshActionButtonState(true);
+        NetUtil.sendRequest(getApplicationContext(), w, new NetUtil.NetUtilListener() {
+            @Override
+            public void onResponse(ResponseDTO response) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setRefreshActionButtonState(false);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(final String message) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setRefreshActionButtonState(false);
+                        Util.showErrorToast(getApplicationContext(), message);
+                    }
+                });
+            }
+
+            @Override
+            public void onWebSocketClose() {
+
+            }
+        });
     }
 
 

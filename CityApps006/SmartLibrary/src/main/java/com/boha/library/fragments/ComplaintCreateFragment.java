@@ -474,10 +474,10 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         ResidentialAddress x = SharedUtil.getAddress(activity);
                         if (x != null) {
-                            editNumber.setText(x.getNumber());
-                            editStreet.setText(x.getStreet());
-                            editSuburb.setText(x.getSuburb());
-                            editCity.setText(x.getCity());
+                            editNumber.setText(x.getNumber().trim());
+                            editStreet.setText(x.getStreet().trim());
+                            editSuburb.setText(x.getSuburb().trim());
+                            editCity.setText(x.getCity().trim());
                             showButtons();
                             editNumber.setEnabled(true);
                             editStreet.setEnabled(true);

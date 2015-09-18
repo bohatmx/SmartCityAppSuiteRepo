@@ -1,7 +1,7 @@
 package com.boha.library.fragments;
 
-import android.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +38,7 @@ public class AddressDialog extends DialogFragment {
 
         view = inflater.inflate(R.layout.fragment_dialog, null, false);
         listView = (ListView)view.findViewById(R.id.FD_list);
-        getDialog().setTitle("Possible Addresses");
+        getDialog().setTitle(R.string.pos_addr);
 
         return view;
     }
