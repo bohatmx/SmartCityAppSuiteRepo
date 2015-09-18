@@ -83,6 +83,7 @@ import com.google.android.gms.location.LocationServices;
 import org.acra.ACRA;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -567,12 +568,14 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             @Override
             public void run() {
                 currentPageIndex = 1;
+                Collections.sort(complaintList);
                 response.setComplaintList(complaintList);
 
                 Snackbar.make(mDrawerLayout,"Refreshing list of complaints, will take a minute",
                         Snackbar.LENGTH_LONG).show();
                 index = 0;
                 getLoginData();
+
 
                 String ref = "Reference Number: " + complaintList.get(0).getReferenceNumber();
                 AlertDialog.Builder d = new AlertDialog.Builder(activity);
