@@ -16,7 +16,7 @@ import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintTypeDTO;
 import com.boha.library.dto.ComplaintUpdateStatusDTO;
 import com.boha.library.util.Util;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -152,7 +152,7 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
         if (p.getComplaintImageList() != null && !p.getComplaintImageList().isEmpty()) {
             item.image.setVisibility(View.VISIBLE);
             String url = p.getComplaintImageList().get(0).getUrl();
-            ImageLoader.getInstance().displayImage(url,item.image);
+            Picasso.with(ctx).load(url).into(item.image);
         } else {
             item.image.setVisibility(View.GONE);
         }

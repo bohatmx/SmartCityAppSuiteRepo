@@ -574,8 +574,8 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                 Snackbar.make(mDrawerLayout,"Refreshing list of complaints, will take a minute",
                         Snackbar.LENGTH_LONG).show();
                 index = 0;
-                getLoginData();
-
+                myComplaintsFragment.setComplaintList(complaintList);
+//                getLoginData();
 
                 String ref = "Reference Number: " + complaintList.get(0).getReferenceNumber();
                 AlertDialog.Builder d = new AlertDialog.Builder(activity);

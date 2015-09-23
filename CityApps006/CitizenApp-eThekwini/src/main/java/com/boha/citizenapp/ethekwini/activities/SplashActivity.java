@@ -88,7 +88,7 @@ public class SplashActivity extends AppCompatActivity {
         Util.setCustomActionBar(ctx,
                 actionBar,
                 MUNICIPALITY_NAME,
-                ctx.getResources().getDrawable(R.drawable.logo), R.drawable.logo);
+                ContextCompat.getDrawable(ctx,R.drawable.logo), R.drawable.logo);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();

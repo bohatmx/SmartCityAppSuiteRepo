@@ -13,15 +13,10 @@ import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Statics;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
-import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
-import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.utils.L;
-import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+import com.squareup.picasso.OkHttpDownloader;
+import com.squareup.picasso.Picasso;
 
 import org.acra.ACRA;
 import org.acra.ReportField;
@@ -55,6 +50,8 @@ public class CityApplication extends Application {
         ECOMMERCE_TRACKER, // Tracker used by all ecommerce transactions from a company.
     }
 
+    public static Picasso picasso;
+    static final long MAX_CACHE_SIZE = 1024 * 1024 * 1024; // 1 GB cache on device
     public static final String PROPERTY_ID = "UA-53661372-3";
     HashMap<TrackerName, Tracker> mTrackers = new HashMap<>();
 
@@ -94,6 +91,24 @@ public class CityApplication extends Application {
         refWatcher = LeakCanary.install(this);
         MunicipalityDTO m = SharedUtil.getMunicipality(getApplicationContext());
         boolean isDebuggable = 0 != (getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE);
+        // create Picasso.Builder object
+        File picassoCacheDir = getCacheDir();
+        Log.w(LOG, "####### images in picasso cache: " + picassoCacheDir.listFiles().length);
+        Picasso.Builder picassoBuilder = new Picasso.Builder(getApplicationContext());
+        picassoBuilder.downloader(new OkHttpDownloader(picassoCacheDir, MAX_CACHE_SIZE));
+        picasso = picassoBuilder.build();
+        try {
+            Picasso.setSingletonInstance(picasso);
+        } catch (IllegalStateException ignored) {
+            // Picasso instance was already set
+            // cannot set it after Picasso.with(Context) was already in use
+        }
+        if (isDebuggable) {
+            Picasso.with(getApplicationContext())
+                    .setIndicatorsEnabled(true);
+            Picasso.with(getApplicationContext())
+                    .setLoggingEnabled(true);
+        }
         if (!isDebuggable) {
             StrictMode.enableDefaults();
             Log.e(LOG, "###### StrictMode defaults enabled");
@@ -105,32 +120,6 @@ public class CityApplication extends Application {
         } else {
             Log.d(LOG, "###### ACRA not initialised. Running in release mode");
         }
-
-
-        DisplayImageOptions defaultOptions =
-                new DisplayImageOptions.Builder()
-                        .cacheInMemory(true)
-                        .cacheOnDisk(true)
-                        .showImageOnFail(getApplicationContext().getResources().getDrawable(R.drawable.under_construction))
-                        .showImageOnLoading(getApplicationContext().getResources().getDrawable(R.drawable.under_construction2))
-                        .build();
-
-        File cacheDir = StorageUtils.getCacheDirectory(this, true);
-        Log.e(LOG, "## onCreate, ImageLoader cacheDir, files: " + cacheDir.listFiles().length);
-        //
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
-                .denyCacheImageMultipleSizesInMemory()
-                .diskCache(new UnlimitedDiskCache(cacheDir))
-                .memoryCache(new LruMemoryCache(12 * 1024 * 1024))
-                .defaultDisplayImageOptions(defaultOptions)
-                .build();
-
-        ImageLoader.getInstance().init(config);
-        L.writeDebugLogs(false);
-        L.writeLogs(false);
-
-        Log.w(LOG, "###### ImageLoaderConfiguration has been initialised");
-
 
         int index = SharedUtil.getLanguageIndex(getApplicationContext());
         setLocale(index);

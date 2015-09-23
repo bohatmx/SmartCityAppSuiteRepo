@@ -1,7 +1,6 @@
 package com.boha.library.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +15,7 @@ import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.AlertTypeDTO;
 import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -118,38 +115,13 @@ public class AlertListAdapter extends ArrayAdapter<AlertDTO> {
         if (p.getAlertImageList() != null && !p.getAlertImageList().isEmpty()) {
             item.image.setVisibility(View.VISIBLE);
             String url = p.getAlertImageList().get(0).getUrl();
-            setImage(url, item.image);
+            Picasso.with(ctx).load(url).into(item.image);
         } else {
                 item.image.setVisibility(View.GONE);
         }
         Statics.setRobotoFontLight(ctx,item.txtDesc);
         Util.scaleDownAndUp(convertView,300);
         return (convertView);
-    }
-
-    private void setImage(String url, final ImageView image) {
-        ImageLoader.getInstance().displayImage(url, image, new ImageLoadingListener() {
-            @Override
-            public void onLoadingStarted(String s, View view) {
-
-            }
-
-            @Override
-            public void onLoadingFailed(String s, View view, FailReason failReason) {
-                image.setImageDrawable(ctx.getResources().getDrawable(R.drawable.under_construction));
-                image.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-
-            }
-
-            @Override
-            public void onLoadingCancelled(String s, View view) {
-
-            }
-        });
     }
 
     public interface AlertListListener {

@@ -55,7 +55,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -719,7 +719,7 @@ public class PictureActivity extends AppCompatActivity
         num.setText("" + currentSessionPhotos.size());
         Uri uri = Uri.fromFile(currentThumbFile);
 
-        ImageLoader.getInstance().displayImage(uri.toString(), img);
+        Picasso.with(ctx).load(uri).into(img);
         imageContainerLayout.addView(v, 0);
         txtMessage.setVisibility(View.VISIBLE);
         uploadPhotos();

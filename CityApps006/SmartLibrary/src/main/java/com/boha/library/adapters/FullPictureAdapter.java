@@ -61,29 +61,6 @@ public class FullPictureAdapter extends RecyclerView.Adapter<FullPictureAdapter.
         });
 
 
-//        String url = Util.getAlertImageURL(p);
-//        ImageLoader.getInstance().displayImage(url, holder.image, new ImageLoadingListener() {
-//            @Override
-//            public void onLoadingStarted(String s, View view) {
-//
-//            }
-//
-//            @Override
-//            public void onLoadingFailed(String s, View view, FailReason failReason) {
-//                holder.image.setImageDrawable(ctx.getResources().getDrawable(R.drawable.under_construction));
-//            }
-//
-//            @Override
-//            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-//
-//            }
-//
-//            @Override
-//            public void onLoadingCancelled(String s, View view) {
-//
-//            }
-//        });
-
     }
 
     @Override

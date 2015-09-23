@@ -13,7 +13,7 @@ import com.boha.library.R;
 import com.boha.library.dto.AlertTypeDTO;
 import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.util.Util;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -111,25 +111,20 @@ public class NewsListAdapter extends ArrayAdapter<NewsArticleDTO> {
                 listener.onNewsClicked(position);
             }
         });
-//        Statics.setRomanFontLight(ctx,item.txtDesc);
-        //get random image if available ...
         if (p.getNewsArticleImageList() != null && !p.getNewsArticleImageList().isEmpty()) {
             item.image.setVisibility(View.VISIBLE);
             if (p.getNewsArticleImageList().size() == 1) {
                 String url = Util.getNewsImageURL(p.getNewsArticleImageList().get(0));
-                ImageLoader.getInstance().displayImage(url, item.image);
+                Picasso.with(ctx).load(url).into(item.image);
             } else {
                 int index = random.nextInt(p.getNewsArticleImageList().size() - 1);
                 String url = Util.getNewsImageURL(p.getNewsArticleImageList().get(index));
-                ImageLoader.getInstance().displayImage(url, item.image);
+                Picasso.with(ctx).load(url).into(item.image);
             }
 
         } else {
-//            if (p.getThumbnailURL() != null) {
-//                ImageLoader.getInstance().displayImage(p.getThumbnailURL(), item.image);
-//            } else {
+
                 item.image.setVisibility(View.GONE);
-//            }
         }
         Util.scaleDownAndUp(convertView,300);
         return (convertView);

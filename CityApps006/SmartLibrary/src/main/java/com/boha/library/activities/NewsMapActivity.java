@@ -3,7 +3,6 @@ package com.boha.library.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -47,9 +46,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -351,58 +348,7 @@ public class NewsMapActivity extends AppCompatActivity {
         if (newsArticle != null) {
             if (newsArticle.getNewsArticleImageList() != null && !newsArticle.getNewsArticleImageList().isEmpty()) {
                 String url = Util.getNewsImageURL(newsArticle.getNewsArticleImageList().get(0));
-                ImageLoader.getInstance().displayImage(url, dummy, new ImageLoadingListener() {
-                    @Override
-                    public void onLoadingStarted(String s, View view) {
-
-                    }
-
-                    @Override
-                    public void onLoadingFailed(String s, View view, FailReason failReason) {
-                        Util.showPopupList(ctx, activity, list, topLayout, "Actions",
-                                primaryColorDark, new Util.UtilPopupListener() {
-                                    @Override
-                                    public void onItemSelected(int index, ListPopupWindow window) {
-                                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {
-                                            startDirectionsMap(lat, lng);
-                                        }
-                                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.pictures))) {
-                                            isGallery = true;
-                                            startGallery(newsArticle);
-                                        }
-                                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.get_distance))) {
-                                            getDistance(lat, lng);
-                                        }
-                                    }
-                                });
-                    }
-
-                    @Override
-                    public void onLoadingComplete(String s, View view, Bitmap bm) {
-                        Util.showPopupList(ctx, activity, list, topLayout, "Actions",
-                                primaryColorDark, new Util.UtilPopupListener() {
-                                    @Override
-                                    public void onItemSelected(int index, ListPopupWindow window) {
-                                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.directions))) {
-                                            startDirectionsMap(lat, lng);
-                                        }
-                                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.pictures))) {
-                                            isGallery = true;
-                                            startGallery(newsArticle);
-                                        }
-                                        if (list.get(index).equalsIgnoreCase(ctx.getString(R.string.get_distance))) {
-                                            getDistance(lat, lng);
-                                        }
-                                    }
-                                });
-                    }
-
-                    @Override
-                    public void onLoadingCancelled(String s, View view) {
-
-                    }
-
-                });
+                Picasso.with(ctx).load(url).into(dummy);
             } else {
                 list.remove(1);
                 Util.showPopupList(ctx, activity, list, topLayout,

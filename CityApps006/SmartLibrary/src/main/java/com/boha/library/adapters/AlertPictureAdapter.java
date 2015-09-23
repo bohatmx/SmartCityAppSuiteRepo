@@ -1,9 +1,7 @@
 package com.boha.library.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +11,7 @@ import android.widget.TextView;
 import com.boha.library.R;
 import com.boha.library.dto.AlertImageDTO;
 import com.boha.library.util.Util;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -69,28 +65,8 @@ public class AlertPictureAdapter extends RecyclerView.Adapter<AlertPictureAdapte
 
 
         String url = Util.getAlertImageURL(p);
-        ImageLoader.getInstance().displayImage(url, holder.image, new ImageLoadingListener() {
-            @Override
-            public void onLoadingStarted(String s, View view) {
+        Picasso.with(ctx).load(url).into(holder.image);
 
-            }
-
-            @Override
-            public void onLoadingFailed(String s, View view, FailReason failReason) {
-                holder.image.setImageDrawable(ctx.getResources().getDrawable(R.drawable.under_construction));
-                Log.e(LOG, "ImageLoader failed, alertID: " + p.getAlertID() + " - " + p.getFileName());
-            }
-
-            @Override
-            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-
-            }
-
-            @Override
-            public void onLoadingCancelled(String s, View view) {
-
-            }
-        });
 
     }
 

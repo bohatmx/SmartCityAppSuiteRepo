@@ -12,17 +12,20 @@ public class Statics {
     /**
      * SmartCity Production Server
      */
-    public static final String WEBSOCKET_URL = "ws://62.210.248.238:7070/sc/";
-    public static final String URL = "http://62.210.248.238:7070/sc/";
-    public static final String IMAGE_URL = "http://62.210.248.238:7070/";
+//    public static final String WEBSOCKET_URL = "ws://62.210.248.238:7070/sc/";
+//    public static final String URL = "http://62.210.248.238:7070/sc/";
+//    public static final String IMAGE_URL = "http://62.210.248.238:7070/";
 //
 
     /*
      * REMOTE APP_URL - bohamaker back end - production
      */
-
-//    public static final String WEBSOCKET_URL = "ws://bohamaker.com:3030/sc/";
-//    public static final String URL = "http://bohamaker.com:3030/sc/";
+    public
+    static final String WEBSOCKET_URL = "ws://195.154.47.229:7070/sc/";
+    public static final String URL = "http://195.154.47.229:7070/sc/";
+    public static final String IMAGE_URL = "http://195.154.47.229:7070/";
+//    public static final String WEBSOCKET_URL = "ws://bohamaker.com:3030/mp/";
+//    public static final String URL = "http://bohamaker.com:3030/mp/";
 //    public static final String IMAGE_URL = "http://bohamaker.com:3030/";
 
     /*

@@ -29,52 +29,9 @@ public class FullPhotoActivity extends AppCompatActivity {
 
         alert = (AlertDTO)getIntent().getSerializableExtra("complaint");
         setTitle("Alert Pictures");
-
-//        int index = 0;
-//        for (PhotoUploadDTO p: projectSite.getPhotoUploadList()) {
-//            p.setIndex(projectSite.getPhotoUploadList().size() - index );
-//            index++;
-//        }
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
-        //recyclerView.setItemAnimator(new DefaultItemAnimator());
-        //recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), RecyclerView.HORIZONTAL));
-//        adapter = new FullPictureAdapter(complaint.getPhotoUploadList(), 1, getApplicationContext(), new FullPictureAdapter.PictureListener() {
-//            @Override
-//            public void onPictureClicked(int position) {
-//
-//            }
-//        });
 
         recyclerView.setAdapter(adapter);
-
-
-//        int position = 0;
-//        imageLayout.removeAllViews();
-//        for (PhotoUploadDTO pu : resp.getPhotoUploadList()) {
-//            View v = getLayoutInflater().inflate(R.layout.full_photo, null);
-//            ImageView image = (ImageView) v.findViewById(R.id.FI_image);
-//            ImageLoader.getInstance().displayImage(Statics.IMAGE_URL + pu.getUri(), image);
-//            TextView num = (TextView) v.findViewById(R.id.FI_number);
-//            TextView date = (TextView) v.findViewById(R.id.FI_date);
-//            int x = resp.getPhotoUploadList().size() - (position);
-//            num.setText("" + x);
-//            date.setText(sdf.format(pu.getDateTaken()));
-//            imageLayout.addView(v);
-//            position++;
-//            if (position == 30) {
-//                break;
-//            }
-//        }
-//        horizontalScrollView.post(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                int scrollTo = 0;
-//                final View v = imageLayout.getChildAt(0);
-//                scrollTo = v.getWidth() * index;
-//                horizontalScrollView.scrollTo(scrollTo, 0);
-//            }
-//        });
     }
 
 
