@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.CityApplication;
+import com.boha.library.activities.PaymentStartActivity;
 import com.boha.library.activities.StatementActivity;
 import com.boha.library.adapters.AccountAdapter;
 import com.boha.library.dto.AccountDTO;
@@ -145,7 +147,8 @@ public class AccountFragment extends Fragment implements PageFragment {
     }
 
     private void startPayment() {
-        Log.e(LOG,"########## startPayment");
+        Log.d(LOG,"########## startPayment ....");
+
 
         AlertDialog.Builder d = new AlertDialog.Builder(getActivity());
         d.setTitle("Mobile Payment Survey")
@@ -155,22 +158,24 @@ public class AccountFragment extends Fragment implements PageFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         sendSurvey(true);
+                        Intent intent = new Intent(ctx, PaymentStartActivity.class);
+                        intent.putExtra("account", account);
+                        intent.putExtra("index", selectedIndex);
+                        intent.putExtra("logo", logo);
+                        startActivity(intent);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         sendSurvey(false);
+
                     }
                 })
                 .show();
 
 
-//        Intent intent = new Intent(ctx, PaymentStartActivity.class);
-//        intent.putExtra("account", account);
-//        intent.putExtra("index", selectedIndex);
-//        intent.putExtra("logo", logo);
-//        startActivity(intent);
+
 
     }
 

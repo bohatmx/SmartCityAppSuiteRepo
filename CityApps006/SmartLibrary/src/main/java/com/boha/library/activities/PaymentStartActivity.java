@@ -69,24 +69,21 @@ public class PaymentStartActivity extends AppCompatActivity
     }
 
 
+    Menu mMenu;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.menu_payment_start, menu);
+        getMenuInflater().inflate(R.menu.menu_payment_start, menu);
+        mMenu = menu;
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+        if (id == R.id.action_refresh) {
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -102,8 +99,31 @@ public class PaymentStartActivity extends AppCompatActivity
         super.onPause();
     }
 
-    @Override
-    public void onPaymentTypeSelected(int paymentType) {
 
+    @Override
+    public void onPaymentSuccess() {
+        finish();
+    }
+
+    @Override
+    public void setBusy(boolean busy) {
+        setRefreshActionButtonState(busy);
+    }
+
+    @Override
+    public void onPaymentFailed() {
+
+    }
+    public void setRefreshActionButtonState(final boolean refreshing) {
+        if (mMenu != null) {
+            final MenuItem refreshItem = mMenu.findItem(R.id.action_refresh);
+            if (refreshItem != null) {
+                if (refreshing) {
+                    refreshItem.setActionView(R.layout.action_bar_progess);
+                } else {
+                    refreshItem.setActionView(null);
+                }
+            }
+        }
     }
 }

@@ -24,18 +24,18 @@ public class Statics {
     /**
      * SmartCity Production Server
      */
-    public static final String WEBSOCKET_URL = "ws://195.154.47.229:7070/sc/";
-    public static final String URL = "http://195.154.47.229:7070/sc/";
-    public static final String IMAGE_URL = "http://195.154.47.229:7070/";
+//    public static final String WEBSOCKET_URL = "ws://195.154.47.229:7070/sc/";
+//    public static final String URL = "http://195.154.47.229:7070/sc/";
+//    public static final String IMAGE_URL = "http://195.154.47.229:7070/";
 //
 
 
     /*
         LOCAL DEV - PECANWOOD
      */
-//    public static final String WEBSOCKET_URL = "ws://192.168.1.33:8080/sc/";
-//    public static final String URL = "http://192.168.1.33:8080/sc/";
-//    public static final String IMAGE_URL = "http://192.168.1.33:8080/";
+    public static final String WEBSOCKET_URL = "ws://192.168.1.33:8080/sc/";
+    public static final String URL = "http://192.168.1.33:8080/sc/";
+    public static final String IMAGE_URL = "http://192.168.1.33:8080/";
 
     public static final String GATEWAY_SERVLET = "smart?";
     public static final String GATEWAY_SOCKET = "wssmart";

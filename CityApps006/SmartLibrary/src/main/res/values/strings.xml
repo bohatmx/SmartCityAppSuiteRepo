@@ -119,5 +119,9 @@
     <string name="idnumber">ID Number</string>
     <string name="update_address">Update Address</string>
     <string name="pos_addr">Possible Addresses</string>
+    <string name="visa">Visa</string>
+    <string name="mastercard">MasterCard</string>
+    <string name="ukash">Ukash</string>
+    <string name="instant_eft">Instant EFT</string>
 
 </resources>

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/FPR_handle"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <RelativeLayout
+        android:id="@+id/FPR_top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mon_hero_height_small">
+
+        <ImageView
+            android:id="@+id/FPR_hero"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/back13" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/mon_wide"
+            android:layout_alignParentBottom="true">
+
+            <TextView
+                android:id="@+id/FPR_title"
+                style="@style/Title2TextStyleWhite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/payments" />
+
+            <TextView
+                android:id="@+id/FPR_subtitle"
+                style="@style/TextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/FPR_title"
+                android:text="subtitle here"
+                android:textColor="@color/white" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/FPR_top">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/FPR_middle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/mon_margin">
+
+                <ImageView
+                    android:id="@+id/FPR_icon"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_action_bell" />
+
+                <TextView
+                    android:id="@+id/FPR_name"
+                    style="@style/Title2TextStyleBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/mon_margin"
+                    android:layout_toRightOf="@id/FPR_icon"
+                    android:text="Please select Card" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/FPR_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/FPR_middle"
+                android:layout_marginLeft="@dimen/mon_wide"
+                android:layout_marginRight="@dimen/mon_wide">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/FPR_textLayout0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/FPR_amout"
+                        style="@style/Title1TextStyleGreen"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Amount To Pay"
+                        android:inputType="numberDecimal"
+                        android:textStyle="bold" />
+
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/FPR_textLayout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/FPR_textLayout0">
+
+                    <EditText
+                        android:id="@+id/FPR_cardHolder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Cardholder Name"
+                        android:inputType="textCapWords" />
+
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/FPR_textLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/FPR_textLayout1">
+
+                    <EditText
+                        android:id="@+id/FPR_cardNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Card Number"
+                        android:inputType="number" />
+
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/FPR_textLayout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/FPR_textLayout2">
+
+                    <EditText
+                        android:id="@+id/FPR_ccv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="CCV Number"
+                        android:inputType="number" />
+
+
+                </android.support.design.widget.TextInputLayout>
+
+                <RelativeLayout
+                    android:id="@+id/FPR_expiryLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/FPR_textLayout3"
+                    android:layout_margin="@dimen/mon_margin">
+
+                    <TextView
+                        android:id="@+id/FPR_label1"
+                        style="@style/TextStyleBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="Card Expiry Date" />
+
+                    <LinearLayout
+                        android:id="@+id/FPR_layout1"
+                        android:layout_marginTop="@dimen/mon_margin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/FPR_label1"
+                        android:orientation="horizontal">
+
+                        <Spinner
+                            android:id="@+id/FPR_month"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <Space
+                            android:layout_width="@dimen/mon_wide"
+                            android:layout_height="wrap_content" />
+
+                        <Spinner
+                            android:id="@+id/FPR_year"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/FPR_btn"
+                        style="@style/ButtonRed"
+                        android:layout_marginTop="@dimen/mon_wide"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/FPR_layout1"
+                        android:text="Submit Payment" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

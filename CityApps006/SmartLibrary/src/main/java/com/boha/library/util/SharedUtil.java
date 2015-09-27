@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.boha.library.dto.CreditCard;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.MunicipalityStaffDTO;
 import com.boha.library.dto.ProfileInfoDTO;
@@ -218,7 +219,7 @@ public class SharedUtil {
         return gson.fromJson(json, ProfileInfoDTO.class);
     }
     static Gson gson = new Gson();
-    static final String LANGUAGE_INDEX = "langIndex",
+    static final String LANGUAGE_INDEX = "langIndex", CREDIT_CARD = "credCard",
             THEME = "theme", CITY_IMAGES = "cityImages", ADDRESS = "address",
             ID = "id", MUNICIPALITY = "muni", MUNI_STAFF = "muniStaff",
             USER = "user", PROFILE = "profile", GCM = "gcm", SLIDING_TAB_COUNT = "slidingTabs";
@@ -335,6 +336,31 @@ public class SharedUtil {
             return null;
         }
         return gson.fromJson(json, UserDTO.class);
+    }
+
+    public static void saveCreditCard(Context ctx, CreditCard creditCard) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+
+        String json = gson.toJson(creditCard);
+
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putString(CREDIT_CARD, json);
+        ed.commit();
+
+        Log.w(LOG, "#### creditCard  saved: " + json);
+
+    }
+    public static CreditCard getCreditCard(Context ctx) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+        String json = sp.getString(CREDIT_CARD, null);
+
+        if (json == null) {
+            Log.e(LOG, "#### creditCard NOT retrieved");
+            return null;
+        }
+        return gson.fromJson(json, CreditCard.class);
     }
     public static final int MAX_SLIDING_TAB_VIEWS = 200;
     static final String LOG = SharedUtil.class.getSimpleName();

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -291,6 +292,17 @@ public class AccountDetailActivity extends AppCompatActivity {
     private void startPayment() {
         Log.e(LOG, "########## startPayment");
 
+        boolean isDebuggable = 0 != (this.getApplicationInfo().flags
+                &= ApplicationInfo.FLAG_DEBUGGABLE);
+
+        if (isDebuggable) {
+            Intent intent = new Intent(ctx, PaymentStartActivity.class);
+            intent.putExtra("account", account);
+            intent.putExtra("index", selectedIndex);
+            intent.putExtra("logo", logo);
+            startActivity(intent);
+            return;
+        }
         AlertDialog.Builder d = new AlertDialog.Builder(this);
         d.setTitle("Mobile Payment Survey")
                 .setMessage("The payment facility is not available yet. The municipality is conducting a survey to find the level of interest in paying your account on the app.\n\n" +

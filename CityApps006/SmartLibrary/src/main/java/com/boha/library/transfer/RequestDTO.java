@@ -24,6 +24,7 @@ import com.boha.library.dto.MunicipalityImageDTO;
 import com.boha.library.dto.MunicipalityStaffDTO;
 import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.dto.NewsArticleTypeDTO;
+import com.boha.library.dto.PaymentRequestDTO;
 import com.boha.library.dto.PaymentSurveyDTO;
 import com.boha.library.dto.ProfileImageDTO;
 import com.boha.library.dto.ProfileInfoDTO;
@@ -65,6 +66,7 @@ public class RequestDTO {
     private Boolean zipResponse = Boolean.TRUE;
     private Long lastSyncAttemptDate;
     //
+    private PaymentRequestDTO paymentRequest;
     private AlertDTO alert;
     private UserDTO user;
     private ComplaintDTO complaint;
@@ -96,6 +98,14 @@ public class RequestDTO {
     private RequestList requestList;
     private GISAddressDTO address;
     private PaymentSurveyDTO paymentSurvey;
+
+    public PaymentRequestDTO getPaymentRequest() {
+        return paymentRequest;
+    }
+
+    public void setPaymentRequest(PaymentRequestDTO paymentRequest) {
+        this.paymentRequest = paymentRequest;
+    }
 
     public PaymentSurveyDTO getPaymentSurvey() {
         return paymentSurvey;
@@ -166,7 +176,8 @@ public class RequestDTO {
             SIGN_IN_CITIZEN = 7,
             SIGN_IN_USER = 8,
             VERIFY_ADDRESS = 9,
-            ADD_SURVEY = 10;
+            ADD_SURVEY = 10,
+            SEND_PAYMENT = 11;
 
     //Create new data
     public static final int 

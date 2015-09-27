@@ -13,6 +13,7 @@ import com.boha.library.dto.CustomerStatusDTO;
 import com.boha.library.dto.CustomerTypeDTO;
 import com.boha.library.dto.ErrorStoreAndroidDTO;
 import com.boha.library.dto.ErrorStoreDTO;
+import com.boha.library.dto.FNBandNedbankResponseDTO;
 import com.boha.library.dto.FaqDTO;
 import com.boha.library.dto.FreqQuestionTypeDTO;
 import com.boha.library.dto.GISAddressDTO;
@@ -52,6 +53,7 @@ public class ResponseDTO implements Serializable {
     private Integer goodResponses = 0, badResponses = 0;
 
     //response lists
+    private FNBandNedbankResponseDTO FNBandNedbankResponse;
     private List<GISAddressDTO> addressList;
     private List<PhotoUploadDTO> photoUploadList;
     private List<AlertDTO> alertList;
@@ -78,6 +80,14 @@ public class ResponseDTO implements Serializable {
     private List<FaqDTO> faqList;
     private List<FreqQuestionTypeDTO> faqTypeList;
     private List<UserDTO> userList;
+
+    public FNBandNedbankResponseDTO getFNBandNedbankResponse() {
+        return FNBandNedbankResponse;
+    }
+
+    public void setFNBandNedbankResponse(FNBandNedbankResponseDTO FNBandNedbankResponse) {
+        this.FNBandNedbankResponse = FNBandNedbankResponse;
+    }
 
     public List<ComplaintCategoryDTO> getComplaintCategoryList() {
         return complaintCategoryList;

@@ -838,7 +838,27 @@ public class Util {
         }
 
     }
+    public static void setCardTypeIcon(String p, ImageView image, Context ctx) {
+        if (p.equalsIgnoreCase(ctx.getString(R.string.mastercard))) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.mastercard));
+        }
+        if (p.equalsIgnoreCase(ctx.getString(R.string.visa))) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.visa));
+        }
+        if (p.equalsIgnoreCase(ctx.getString(R.string.ukash))) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.ukash));
+        }
+        if (p.equalsIgnoreCase(ctx.getString(R.string.instant_eft))) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.sid));
+        }
 
+    }
+/*
+cardTypeList.add(ctx.getString(R.string.visa));
+            cardTypeList.add(ctx.getString(R.string.mastercard));
+            cardTypeList.add(ctx.getString(R.string.ukash));
+            cardTypeList.add(ctx.getString(R.string.instant_eft));
+ */
     static int count, bIndex;
 
     public static Drawable getRandomBackgroundImage(Context ctx) {

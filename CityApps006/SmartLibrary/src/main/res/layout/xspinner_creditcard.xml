@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/mon_padding">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image1"
+            android:src="@drawable/zwaste_water"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+
+        <TextView
+            android:id="@+id/text1"
+            style="@style/TextStyleSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:layout_centerVertical="true"
+            android:text="Spinner item text here"
+            android:layout_toRightOf="@id/image1"
+            android:layout_marginLeft="@dimen/mon_padding"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+    </RelativeLayout>
+</RelativeLayout>
