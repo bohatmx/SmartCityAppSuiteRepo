@@ -286,6 +286,7 @@ public class SigninActivity extends AppCompatActivity {
 
                             SharedUtil.saveProfile(ctx, sp);
                             SharedUtil.setUserType(ctx, userType);
+                            SharedUtil.saveGCMDevice(ctx,gcmDevice);
                             CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
                                 @Override
                                 public void onDataCached() {

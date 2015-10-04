@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="@dimen/mon_margin"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/SIDR_logo"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:scaleType="fitCenter"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/sid" />
+    <ImageView
+        android:id="@+id/SIDR_bankIcon"
+        android:src="@drawable/absa_logo_red"
+        android:layout_alignParentRight="true"
+        android:layout_width="140dp"
+        android:layout_height="60dp" />
+
+    <TextView
+        android:id="@+id/SIDR_bank"
+        style="@style/Title1TextStyleBlack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/SIDR_logo"
+        android:layout_centerHorizontal="true"
+        android:text="BankName Here" />
+
+    <RelativeLayout
+        android:id="@+id/SIDR_detailLayout"
+        android:padding="@dimen/mon_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/SIDR_bank">
+
+        <RelativeLayout
+            android:id="@+id/SIDR_statusLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/mon_margin">
+
+            <TextView
+                android:id="@+id/SIDR_statusLabel"
+                android:layout_width="100dp"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content"
+                android:text="STATUS" />
+
+            <TextView
+                android:id="@+id/SIDR_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/SIDR_statusLabel"
+                android:text="APPROVED"
+                android:layout_centerVertical="true"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/red_500" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/SIDR_amountLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/SIDR_statusLayout"
+            android:padding="@dimen/mon_margin">
+
+            <TextView
+                android:id="@+id/SIDR_amountLabel"
+                android:layout_width="100dp"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content"
+                android:text="AMOUNT" />
+
+            <TextView
+                android:id="@+id/SIDR_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/SIDR_amountLabel"
+                android:text="135,879.65"
+                android:layout_centerVertical="true"
+                android:textColor="@color/blue_800"
+                android:textStyle="bold"
+                android:textSize="22sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/SIDR_dateLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/SIDR_amountLayout"
+            android:padding="@dimen/mon_margin">
+
+            <TextView
+                android:id="@+id/SIDR_dateLabel"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="DATE" />
+
+            <TextView
+                android:id="@+id/SIDR_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/SIDR_dateLabel"
+                android:text="2015/09/03 13:09"
+                android:textColor="@color/black" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/SIDR_receptLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/SIDR_dateLayout"
+            android:padding="@dimen/mon_margin">
+
+            <TextView
+                android:id="@+id/SIDR_receptLabel"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="RECEIPT NO." />
+
+            <TextView
+                android:id="@+id/SIDR_receipt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/SIDR_receptLabel"
+                android:text="REF 86758X"
+                android:textColor="@color/black" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/SIDR_refLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/SIDR_receptLayout"
+            android:padding="@dimen/mon_margin">
+
+            <TextView
+                android:id="@+id/SIDR_refLabel"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="REFERENCE." />
+
+            <TextView
+                android:id="@+id/SIDR_reference"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/SIDR_refLabel"
+                android:text="199"
+                android:textColor="@color/black" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/SIDR_bottomLayout"
+            android:padding="@dimen/mon_margin"
+            android:background="@color/beige_pale"
+            android:layout_below="@id/SIDR_refLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/SIDR_btnClose"
+                android:text="Done"
+                style="@style/ButtonNavyBlue"
+                android:visibility="gone"
+                android:layout_marginLeft="@dimen/mon_wide"
+                android:layout_centerVertical="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

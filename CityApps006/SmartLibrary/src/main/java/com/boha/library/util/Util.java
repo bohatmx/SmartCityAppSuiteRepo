@@ -838,7 +838,12 @@ public class Util {
         }
 
     }
+
     public static void setCardTypeIcon(String p, ImageView image, Context ctx) {
+        if (p == null) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.visa));
+            return;
+        }
         if (p.equalsIgnoreCase(ctx.getString(R.string.mastercard))) {
             image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.mastercard));
         }

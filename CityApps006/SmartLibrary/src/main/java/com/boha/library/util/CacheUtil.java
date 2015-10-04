@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.boha.library.dto.CardResponseDTO;
+import com.boha.library.dto.SIDResponseDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -16,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  * Created by aubreyM on 15/a01/31.
@@ -41,12 +44,86 @@ public class CacheUtil {
 
     static Context ctx;
     static int dataType;
-    public static final int CACHE_LOGIN = 1, CACHE_ALERTS = 2, CACHE_NEWS = 3, CACHE_FAQ = 4;
-    public static final String JSON_DATA = "file.json", JSON_ALERTS = "alerts.json",
+    public static final int CACHE_LOGIN = 1,
+            CACHE_ALERTS = 2, CACHE_NEWS = 3,
+            CACHE_FAQ = 4, CACHE_SID_PAYMENT = 5,
+            CACHE_CARD_PAYMENT = 6;
+    public static final String JSON_DATA = "file.json",
+            JSON_ALERTS = "alerts.json",
+            JSON_SID_PAYMENTS = "sidpayments.json",
+            JSON_CARD_PAYMENTS = "cardpayments.json",
             JSON_NEWS = "news.json", JSON_FAQ = "faq.json";
     static ResponseDTO response;
     static CacheListener cacheListener;
     static CacheRetrievalListener cacheRetrievalListener;
+
+    public static void addSIDResponse(final Context ctx, final SIDResponseDTO sidResponse, final CacheListener listener) {
+        getCachedSIDResponses(ctx, new CacheRetrievalListener() {
+            @Override
+            public void onCacheRetrieved(ResponseDTO response) {
+                if (response.getSidResponseList() == null) {
+                    response.setSidResponseList(new ArrayList<SIDResponseDTO>());
+                }
+                response.getSidResponseList().add(sidResponse);
+                cacheSIDResponses(ctx, response, listener);
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+    }
+    public static void cacheSIDResponses(Context context, ResponseDTO w, CacheListener listener) {
+        cacheListener = listener;
+        response = w;
+        ctx = context;
+        dataType = CACHE_SID_PAYMENT;
+        new CacheTask().execute();
+    }
+
+    public static void getCachedSIDResponses(Context context, CacheRetrievalListener listener) {
+        cacheRetrievalListener = listener;
+        ctx = context;
+        dataType = CACHE_SID_PAYMENT;
+        new CacheRetrieveTask().execute();
+    }
+
+    //////////////////////////////////////////
+    public static void addCardResponse(final Context ctx, final CardResponseDTO cardResponse, final CacheListener listener) {
+        getCachedCardResponses(ctx, new CacheRetrievalListener() {
+            @Override
+            public void onCacheRetrieved(ResponseDTO response) {
+                if (response.getCardResponseList() == null) {
+                    response.setCardResponseList(new ArrayList<CardResponseDTO>());
+                }
+                response.getCardResponseList().add(cardResponse);
+                cacheCardResponses(ctx, response, listener);
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+    }
+    public static void cacheCardResponses(Context context, ResponseDTO w, CacheListener listener) {
+        cacheListener = listener;
+        response = w;
+        ctx = context;
+        dataType = CACHE_CARD_PAYMENT;
+        new CacheTask().execute();
+    }
+
+    public static void getCachedCardResponses(Context context, CacheRetrievalListener listener) {
+        cacheRetrievalListener = listener;
+        ctx = context;
+        dataType = CACHE_CARD_PAYMENT;
+        new CacheRetrieveTask().execute();
+    }
+
+    /////////////////////////////////////////
+
 
     public static void cacheLoginData(Context context, ResponseDTO w, CacheListener listener) {
         cacheListener = listener;
@@ -114,6 +191,26 @@ public class CacheUtil {
             FileOutputStream outputStream;
             try {
                 switch (dataType) {
+                    case CACHE_CARD_PAYMENT:
+                        json = gson.toJson(response);
+                        outputStream = ctx.openFileOutput(JSON_CARD_PAYMENTS, Context.MODE_PRIVATE);
+                        write(outputStream, json);
+                        file = ctx.getFileStreamPath(JSON_CARD_PAYMENTS);
+                        if (file != null) {
+                            Log.e(LOG, "Card Payments cache written, path: " + file.getAbsolutePath() +
+                                    " - length: " + file.length());
+                        }
+                        break;
+                    case CACHE_SID_PAYMENT:
+                        json = gson.toJson(response);
+                        outputStream = ctx.openFileOutput(JSON_SID_PAYMENTS, Context.MODE_PRIVATE);
+                        write(outputStream, json);
+                        file = ctx.getFileStreamPath(JSON_SID_PAYMENTS);
+                        if (file != null) {
+                            Log.e(LOG, "SID Payments cache written, path: " + file.getAbsolutePath() +
+                                    " - length: " + file.length());
+                        }
+                        break;
                     case CACHE_LOGIN:
                         json = gson.toJson(response);
                         outputStream = ctx.openFileOutput(JSON_DATA, Context.MODE_PRIVATE);
@@ -207,6 +304,16 @@ public class CacheUtil {
             FileInputStream stream;
             try {
                 switch (dataType) {
+                    case CACHE_CARD_PAYMENT:
+                        stream = ctx.openFileInput(JSON_CARD_PAYMENTS);
+                        response = getData(stream);
+                        Log.i(LOG, "++ card payment cache retrieved");
+                        break;
+                    case CACHE_SID_PAYMENT:
+                        stream = ctx.openFileInput(JSON_SID_PAYMENTS);
+                        response = getData(stream);
+                        Log.i(LOG, "++ sid payment cache retrieved");
+                        break;
 
 
                     case CACHE_LOGIN:

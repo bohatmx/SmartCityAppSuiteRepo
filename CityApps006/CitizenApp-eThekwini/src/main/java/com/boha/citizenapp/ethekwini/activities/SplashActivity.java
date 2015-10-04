@@ -39,7 +39,6 @@ import com.google.android.gms.analytics.Tracker;
 
 import java.util.Random;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -277,28 +276,28 @@ public class SplashActivity extends AppCompatActivity {
         if (cityImages == null) {
             getLocalCityImages();
         }
-        index = 0;
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        heroImage.setImageDrawable(getImage(index));
-                        index++;
-                        if (index == cityImages.getImageResourceIDs().length) {
-                            index = 0;
-                        }
-                        timer.cancel();
-
-
-                    }
-                });
-
-            }
-        }, ONE_SECOND , THIRTY_SECONDS);
+//        index = 0;
+//        timer = new Timer();
+//        timer.scheduleAtFixedRate(new TimerTask() {
+//            @Override
+//            public void run() {
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        heroImage.setImageDrawable(getImage(index));
+//                        index++;
+//                        if (index == cityImages.getImageResourceIDs().length) {
+//                            index = 0;
+//                        }
+//                        timer.cancel();
+//
+//
+//                    }
+//                });
+//
+//            }
+//        }, ONE_SECOND , THIRTY_SECONDS);
 
     }
 

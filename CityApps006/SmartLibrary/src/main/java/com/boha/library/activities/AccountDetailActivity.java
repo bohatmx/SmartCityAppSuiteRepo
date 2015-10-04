@@ -1,6 +1,5 @@
 package com.boha.library.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,6 +8,7 @@ import android.content.pm.ApplicationInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -18,12 +18,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListPopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.adapters.AccountAdapter;
 import com.boha.library.dto.AccountDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.PaymentSurveyDTO;
@@ -39,8 +37,6 @@ import com.boha.library.util.Util;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class AccountDetailActivity extends AppCompatActivity {
@@ -49,17 +45,16 @@ public class AccountDetailActivity extends AppCompatActivity {
     private View view, detailView, topView, handle;
     private TextView
             txtName, txtAcctNumber, txtSubtitle,
-            txtArrears, txtFAB,
+            txtArrears,
             txtLastUpdate, txtNextBill,
             txtAddress, txtLastBillAmount;
-    View fab, topLayout;
+    View  topLayout;
     Button btnCurrBal;
-    ImageView fabIcon, hero;
+    ImageView  hero;
     ScrollView scrollView;
-    AccountAdapter adapter;
     ImageView icon;
+    FloatingActionButton fab;
 
-    Activity activity;
     AccountDTO account;
     int darkColor, primaryColor, logo;
     Context ctx;
@@ -94,7 +89,7 @@ public class AccountDetailActivity extends AppCompatActivity {
 
     private void setFields() {
         topView = findViewById(R.id.template);
-        fab = findViewById(R.id.FAB);
+        fab = (FloatingActionButton)findViewById(R.id.fab);
         hero = (ImageView) findViewById(R.id.TOP_heroImage);
         topLayout = findViewById(R.id.TOP_titleLayout);
         topLayout.setBackgroundColor(primaryColor);
@@ -105,8 +100,8 @@ public class AccountDetailActivity extends AppCompatActivity {
         Statics.setRobotoFontLight(ctx, txtName);
         txtSubtitle = (TextView) topView.findViewById(R.id.TOP_subTitle);
         icon = (ImageView) topView.findViewById(R.id.TOP_icon);
-        txtFAB = (TextView) topView.findViewById(R.id.FAB_text);
-        fabIcon = (ImageView) topView.findViewById(R.id.FAB_icon);
+//        txtFAB = (TextView) topView.findViewById(R.id.FAB_text);
+//        fabIcon = (ImageView) topView.findViewById(R.id.FAB_icon);
 
         txtAcctNumber = (TextView) findViewById(R.id.ACCT_number);
         txtAddress = (TextView) findViewById(R.id.ACCT_address);
@@ -116,8 +111,8 @@ public class AccountDetailActivity extends AppCompatActivity {
         txtNextBill = (TextView) findViewById(R.id.ACCT_nextBillDate);
         txtLastBillAmount = (TextView) findViewById(R.id.ACCT_lastBillAmount);
 
-        fabIcon.setVisibility(View.GONE);
-        txtFAB.setVisibility(View.VISIBLE);
+//        fabIcon.setVisibility(View.GONE);
+//        txtFAB.setVisibility(View.VISIBLE);
         hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
         setFont();
         btnCurrBal.setOnClickListener(new View.OnClickListener() {
@@ -162,28 +157,8 @@ public class AccountDetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.flashOnce(fab, 300, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        if (profileInfo.getAccountList().size() > 1) {
-                            List<String> list = new ArrayList<String>();
-                            for (AccountDTO a : profileInfo.getAccountList()) {
-                                list.add("" + a.getAccountNumber() + " - " + a.getCustomerAccountName());
-                            }
-                            Util.showPopupList(ctx, activity, list, handle, "Accounts", darkColor,
-                                    new Util.UtilPopupListener() {
-                                        @Override
-                                        public void onItemSelected(int index, ListPopupWindow window) {
-                                            account = profileInfo.getAccountList().get(index);
-                                            setAccountFields(account);
-                                            txtFAB.setText("" + (index + 1));
-                                            selectedIndex = index;
-                                            Util.expand(detailView, 1000, null);
-                                        }
-                                    });
-                        }
-                    }
-                });
+               showDialog();
+
             }
         });
 
@@ -192,11 +167,33 @@ public class AccountDetailActivity extends AppCompatActivity {
         animateSomething();
     }
 
+    private void showDialog() {
+        AlertDialog.Builder d = new AlertDialog.Builder(this);
+        d.setTitle("Payment Reports")
+                .setMessage("Please select the kind of payment report.")
+                .setPositiveButton("Instant EFT", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent w = new Intent(ctx, SIDPaymentsActivity.class);
+                        w.putExtra("primaryColor", primaryColor);
+                        w.putExtra("logo", logo);
+                        startActivity(w);
+                    }
+                })
+                .setNegativeButton("Card Payments", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent w = new Intent(ctx, CardPaymentsActivity.class);
+                        w.putExtra("primaryColor", primaryColor);
+                        w.putExtra("logo", logo);
+                        startActivity(w);
+                    }
+                })
+                .show();
+    }
     private void setProfileData() {
         if (profileInfo != null) {
             if (!profileInfo.getAccountList().isEmpty()) {
-                txtFAB.setText("" + profileInfo.getAccountList().size());
-
                 account = profileInfo.getAccountList().get(0);
                 setAccountFields(account);
             }
@@ -301,25 +298,25 @@ public class AccountDetailActivity extends AppCompatActivity {
             intent.putExtra("index", selectedIndex);
             intent.putExtra("logo", logo);
             startActivity(intent);
-            return;
+        } else {
+            AlertDialog.Builder d = new AlertDialog.Builder(this);
+            d.setTitle("Mobile Payment Survey")
+                    .setMessage("The payment facility is not available yet. The municipality is conducting a survey to find the level of interest in paying your account on the app.\n\n" +
+                            "Do you want to be able to pay from the app?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            sendSurvey(true);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            sendSurvey(false);
+                        }
+                    })
+                    .show();
         }
-        AlertDialog.Builder d = new AlertDialog.Builder(this);
-        d.setTitle("Mobile Payment Survey")
-                .setMessage("The payment facility is not available yet. The municipality is conducting a survey to find the level of interest in paying your account on the app.\n\n" +
-                        "Do you want to be able to pay from the app?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        sendSurvey(true);
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        sendSurvey(false);
-                    }
-                })
-                .show();
 
 
 //        Intent intent = new Intent(ctx, PaymentStartActivity.class);

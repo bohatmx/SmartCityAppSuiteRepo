@@ -13,7 +13,7 @@ import com.boha.library.dto.CustomerStatusDTO;
 import com.boha.library.dto.CustomerTypeDTO;
 import com.boha.library.dto.ErrorStoreAndroidDTO;
 import com.boha.library.dto.ErrorStoreDTO;
-import com.boha.library.dto.FNBandNedbankResponseDTO;
+import com.boha.library.dto.CardResponseDTO;
 import com.boha.library.dto.FaqDTO;
 import com.boha.library.dto.FreqQuestionTypeDTO;
 import com.boha.library.dto.GISAddressDTO;
@@ -24,6 +24,7 @@ import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.dto.NewsArticleTypeDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.ProvinceDTO;
+import com.boha.library.dto.SIDResponseDTO;
 import com.boha.library.dto.StaffTypeDTO;
 import com.boha.library.dto.UserDTO;
 
@@ -53,7 +54,7 @@ public class ResponseDTO implements Serializable {
     private Integer goodResponses = 0, badResponses = 0;
 
     //response lists
-    private FNBandNedbankResponseDTO FNBandNedbankResponse;
+    private CardResponseDTO cardResponse;
     private List<GISAddressDTO> addressList;
     private List<PhotoUploadDTO> photoUploadList;
     private List<AlertDTO> alertList;
@@ -80,13 +81,31 @@ public class ResponseDTO implements Serializable {
     private List<FaqDTO> faqList;
     private List<FreqQuestionTypeDTO> faqTypeList;
     private List<UserDTO> userList;
+    private List<SIDResponseDTO> sidResponseList;
+    private List<CardResponseDTO> cardResponseList;
 
-    public FNBandNedbankResponseDTO getFNBandNedbankResponse() {
-        return FNBandNedbankResponse;
+    public List<CardResponseDTO> getCardResponseList() {
+        return cardResponseList;
     }
 
-    public void setFNBandNedbankResponse(FNBandNedbankResponseDTO FNBandNedbankResponse) {
-        this.FNBandNedbankResponse = FNBandNedbankResponse;
+    public void setCardResponseList(List<CardResponseDTO> cardResponseList) {
+        this.cardResponseList = cardResponseList;
+    }
+
+    public List<SIDResponseDTO> getSidResponseList() {
+        return sidResponseList;
+    }
+
+    public void setSidResponseList(List<SIDResponseDTO> sidResponseList) {
+        this.sidResponseList = sidResponseList;
+    }
+
+    public CardResponseDTO getCardResponse() {
+        return cardResponse;
+    }
+
+    public void setCardResponse(CardResponseDTO cardResponse) {
+        this.cardResponse = cardResponse;
     }
 
     public List<ComplaintCategoryDTO> getComplaintCategoryList() {

@@ -6,13 +6,31 @@ package com.boha.library.dto;
 public class PaymentRequestDTO {
     private String companyID, outlet, reference,
             cardHolder, cardNumber, CCVV, email, cellphone, buyerID,
-            consistentKey, redirectURL;
+            consistentKey, redirectURL, cardType;
     private int expiryYear, expiryMonth;
     private double amount;
+    private Integer profileInfoID;
+
     public static final int  FNB = 1;
     public static final int  NEDBANK = 2;
     public static final int  ABSA = 3;
     public static final int  STANDARD = 4;
+
+    public String getCardType() {
+        return cardType;
+    }
+
+    public void setCardType(String cardType) {
+        this.cardType = cardType;
+    }
+
+    public Integer getProfileInfoID() {
+        return profileInfoID;
+    }
+
+    public void setProfileInfoID(Integer profileInfoID) {
+        this.profileInfoID = profileInfoID;
+    }
 
     public String getCompanyID() {
         return companyID;

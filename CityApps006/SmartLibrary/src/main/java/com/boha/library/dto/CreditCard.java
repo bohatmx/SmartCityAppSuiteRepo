@@ -10,6 +10,15 @@ public class CreditCard implements Serializable{
     int bank;
     String cardType;
     int expiryYear, expiryMonth;
+    boolean isSIDPayment;
+
+    public boolean isSIDPayment() {
+        return isSIDPayment;
+    }
+
+    public void setSIDPayment(boolean isSIDPayment) {
+        this.isSIDPayment = isSIDPayment;
+    }
 
     public String getCardHolder() {
         return cardHolder;

@@ -117,21 +117,44 @@
         </activity>
 
         <!-- RECEIVERS and SERVICES -->
-        <receiver
-            android:name=".services.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
 
-                <category android:name="com.boha.citizenapp.ethekwini" />
-            </intent-filter>
-        </receiver>
-
-        <service android:name=".services.GcmIntentService" />
         <service
             android:name="com.boha.library.services.GCMDeviceService"
             android:exported="false" >
         </service>
+
+        <!-- SERVICES -->
+        <service android:name="com.boha.library.services.RegistrationIntentService" />
+
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="com.boha.citizenapp.ethekwini" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name=".services.CitizenGCMListenerService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.boha.library.services.MonInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID"/>
+            </intent-filter>
+        </service>
+
+        <activity android:name="com.boha.library.activities.CardPaymentsActivity"
+            android:parentActivityName="com.boha.library.activities.AccountDetailActivity"/>
+
+        <activity android:name="com.boha.library.activities.SIDPaymentsActivity"
+            android:parentActivityName="com.boha.library.activities.AccountDetailActivity"/>
 
         <activity
             android:name=".activities.AddressActivity"

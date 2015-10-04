@@ -29,6 +29,7 @@ import com.boha.library.dto.PaymentSurveyDTO;
 import com.boha.library.dto.ProfileImageDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.ProvinceDTO;
+import com.boha.library.dto.SIDPaymentRequestDTO;
 import com.boha.library.dto.StaffImageDTO;
 import com.boha.library.dto.StaffTypeDTO;
 import com.boha.library.dto.UserDTO;
@@ -67,6 +68,7 @@ public class RequestDTO {
     private Long lastSyncAttemptDate;
     //
     private PaymentRequestDTO paymentRequest;
+    private SIDPaymentRequestDTO sidPaymentRequest;
     private AlertDTO alert;
     private UserDTO user;
     private ComplaintDTO complaint;
@@ -98,6 +100,14 @@ public class RequestDTO {
     private RequestList requestList;
     private GISAddressDTO address;
     private PaymentSurveyDTO paymentSurvey;
+
+    public SIDPaymentRequestDTO getSidPaymentRequest() {
+        return sidPaymentRequest;
+    }
+
+    public void setSidPaymentRequest(SIDPaymentRequestDTO sidPaymentRequest) {
+        this.sidPaymentRequest = sidPaymentRequest;
+    }
 
     public PaymentRequestDTO getPaymentRequest() {
         return paymentRequest;
@@ -177,7 +187,10 @@ public class RequestDTO {
             SIGN_IN_USER = 8,
             VERIFY_ADDRESS = 9,
             ADD_SURVEY = 10,
-            SEND_PAYMENT = 11;
+            SEND_PAYMENT = 11,
+            SEND_SID_PAYMENT = 12,
+            GET_SID_PAYMENT_RESPONSES = 14,
+            GET_CARD_PAYMENT_RESPONSES = 15;
 
     //Create new data
     public static final int 

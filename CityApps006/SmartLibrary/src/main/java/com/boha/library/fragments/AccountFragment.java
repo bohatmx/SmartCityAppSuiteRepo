@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -17,13 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListPopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.CityApplication;
 import com.boha.library.activities.PaymentStartActivity;
+import com.boha.library.activities.SIDPaymentsActivity;
 import com.boha.library.activities.StatementActivity;
 import com.boha.library.adapters.AccountAdapter;
 import com.boha.library.dto.AccountDTO;
@@ -41,8 +41,6 @@ import com.squareup.leakcanary.RefWatcher;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -57,7 +55,8 @@ public class AccountFragment extends Fragment implements PageFragment {
             txtArrears, txtFAB, txtClickToPay,
             txtLastUpdate, txtNextBill,
             txtAddress, txtLastBillAmount;
-    View fab, topLayout;
+    View topLayout;
+    FloatingActionButton fab;
     Button btnCurrBal;
     ImageView fabIcon, hero;
     ScrollView scrollView;
@@ -68,6 +67,7 @@ public class AccountFragment extends Fragment implements PageFragment {
     Activity activity;
     AccountDTO account;
     int selectedIndex;
+
     FragmentManager fragmentManager;
     static final DecimalFormat df = new DecimalFormat("###,###,###,###,###,###,##0.00");
     static final String LOG = AccountFragment.class.getSimpleName();
@@ -220,7 +220,7 @@ public class AccountFragment extends Fragment implements PageFragment {
 
     private void setFields() {
         topView = view.findViewById(R.id.template);
-        fab = view.findViewById(R.id.FAB);
+        fab = (FloatingActionButton)view.findViewById(R.id.fab);
         hero = (ImageView) view.findViewById(R.id.TOP_heroImage);
         topLayout = view.findViewById(R.id.TOP_titleLayout);
         topLayout.setBackgroundColor(primaryColor);
@@ -232,8 +232,8 @@ public class AccountFragment extends Fragment implements PageFragment {
         Statics.setRobotoFontLight(ctx, txtName);
         txtSubtitle = (TextView) topView.findViewById(R.id.TOP_subTitle);
         icon = (ImageView) topView.findViewById(R.id.TOP_icon);
-        txtFAB = (TextView) topView.findViewById(R.id.FAB_text);
-        fabIcon = (ImageView) topView.findViewById(R.id.FAB_icon);
+//        txtFAB = (TextView) topView.findViewById(R.id.FAB_text);
+//        fabIcon = (ImageView) topView.findViewById(R.id.FAB_icon);
 
         txtAcctNumber = (TextView) view.findViewById(R.id.ACCT_number);
         txtAddress = (TextView) view.findViewById(R.id.ACCT_address);
@@ -243,8 +243,8 @@ public class AccountFragment extends Fragment implements PageFragment {
         txtNextBill = (TextView) view.findViewById(R.id.ACCT_nextBillDate);
         txtLastBillAmount = (TextView) view.findViewById(R.id.ACCT_lastBillAmount);
 
-        fabIcon.setVisibility(View.GONE);
-        txtFAB.setVisibility(View.VISIBLE);
+//        fabIcon.setVisibility(View.GONE);
+//        txtFAB.setVisibility(View.VISIBLE);
         hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
         setFont();
         btnCurrBal.setOnClickListener(new View.OnClickListener() {
@@ -300,28 +300,11 @@ public class AccountFragment extends Fragment implements PageFragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.flashOnce(fab, 300, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        if (profileInfo.getAccountList().size() > 1) {
-                            List<String> list = new ArrayList<String>();
-                            for (AccountDTO a : profileInfo.getAccountList()) {
-                                list.add("" + a.getAccountNumber() + " - " + a.getCustomerAccountName());
-                            }
-                            Util.showPopupList(ctx, activity, list, handle, "Accounts", primaryDarkColor,
-                                    new Util.UtilPopupListener() {
-                                        @Override
-                                        public void onItemSelected(int index, ListPopupWindow window) {
-                                            account = profileInfo.getAccountList().get(index);
-                                            setAccountFields(account);
-                                            txtFAB.setText("" + (index + 1));
-                                            selectedIndex = index;
-                                            Util.expand(detailView, 1000, null);
-                                        }
-                                    });
-                        }
-                    }
-                });
+                Intent w = new Intent(ctx, SIDPaymentsActivity.class);
+                w.putExtra("primaryColor", primaryColor);
+                w.putExtra("darkColor", primaryDarkColor);
+                w.putExtra("logo", logo);
+                startActivity(w);
             }
         });
 

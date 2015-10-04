@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="@dimen/mon_margin"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/SIDROW_icon"
+        android:src="@drawable/visa"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/SIDROW_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="bottom|center"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:text="STATUS" />
+    <TextView
+        android:id="@+id/SIDROW_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:text="AMOUNT" />
+    <TextView
+        android:id="@+id/SIDROW_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:gravity="right"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:text="DATE" />
+    <TextView
+        android:id="@+id/SIDROW_ref"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:visibility="gone"
+        android:text="REFERENCE" />
+
+
+</TableRow>

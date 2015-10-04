@@ -3,7 +3,6 @@ package com.boha.library.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -24,9 +23,10 @@ import com.boha.library.R;
 import com.boha.library.activities.CityApplication;
 import com.boha.library.adapters.CardTypePopupListAdapter;
 import com.boha.library.dto.AccountDTO;
+import com.boha.library.dto.CardResponseDTO;
 import com.boha.library.dto.CreditCard;
-import com.boha.library.dto.FNBandNedbankResponseDTO;
 import com.boha.library.dto.PaymentRequestDTO;
+import com.boha.library.dto.SIDPaymentRequestDTO;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CreditCardValidator;
@@ -42,31 +42,24 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Pattern;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link com.boha.library.fragments.PaymentStartFragment.PaymentStartListener} interface
- * to handle interaction events.
- * Use the {@link PaymentStartFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class PaymentStartFragment extends Fragment implements PageFragment {
 
     private PaymentStartListener mListener;
     private AccountDTO account;
-    private View view, handle;
-    private int index, logo;
+    private View view, handle, cardDetailLayout, sidLayout;
+    private int index, logo, darkColor;
     private TextView txtTitle, txtSubTitle, txtSelect;
-    private EditText editAmount, editCardholder, editNumber, editCCV;
+    private EditText editCardAmount, editSIDamount, editCardholder, editNumber, editCCV;
     Spinner monthSpinner, yearSpinner;
     private ImageView hero, icon;
-    private Button btnPay;
+    private Button btnCardPay, btnSIDPay;
 
     private String selectedCard;
-    private FNBandNedbankResponseDTO FNBandNedbankResponse;
+    private CardResponseDTO cardResponse;
     private Context ctx;
-    private ListPopupWindow popupWindow;
     private LayoutInflater inflater;
 
     static final String LOG = PaymentStartFragment.class.getSimpleName();
@@ -103,7 +96,8 @@ public class PaymentStartFragment extends Fragment implements PageFragment {
         setFields();
         if (account != null) {
             txtSubTitle.setText("Account No - " + account.getAccountNumber());
-            editAmount.setText(df.format(account.getCurrentBalance()));
+            editCardAmount.setText(df.format(account.getCurrentBalance()));
+            editSIDamount.setText(df.format(account.getCurrentBalance()));
         }
         return view;
     }
@@ -115,33 +109,46 @@ public class PaymentStartFragment extends Fragment implements PageFragment {
 
         if (txtSubTitle != null) {
             txtSubTitle.setText("Account No - " + account.getAccountNumber());
-            editAmount.setText(df.format(account.getCurrentBalance()));
+            editCardAmount.setText(df.format(account.getCurrentBalance()));
         }
 
 
     }
 
     boolean isDebuggable;
+
     private void setFields() {
         Log.w(LOG, "### setFields");
+        cardDetailLayout = view.findViewById(R.id.FPR_cardDetailLayout);
+        sidLayout = view.findViewById(R.id.FPR_sidLayout);
+        sidLayout.setVisibility(View.GONE);
+        cardDetailLayout.setVisibility(View.VISIBLE);
         handle = view.findViewById(R.id.FPR_handle);
         txtSubTitle = (TextView) view.findViewById(R.id.FPR_subtitle);
         txtSelect = (TextView) view.findViewById(R.id.FPR_name);
         editCardholder = (EditText) view.findViewById(R.id.FPR_cardHolder);
         editNumber = (EditText) view.findViewById(R.id.FPR_cardNumber);
         editCCV = (EditText) view.findViewById(R.id.FPR_ccv);
-        editAmount = (EditText) view.findViewById(R.id.FPR_amout);
+        editCardAmount = (EditText) view.findViewById(R.id.FPR_amountCard);
+        editSIDamount = (EditText) view.findViewById(R.id.FPR_amountSID);
         monthSpinner = (Spinner) view.findViewById(R.id.FPR_month);
         yearSpinner = (Spinner) view.findViewById(R.id.FPR_year);
         hero = (ImageView) view.findViewById(R.id.FPR_hero);
 
-        btnPay = (Button) view.findViewById(R.id.FPR_btn);
+        btnCardPay = (Button) view.findViewById(R.id.FPR_btnB);
+        btnSIDPay = (Button) view.findViewById(R.id.FPR_btnSID);
         icon = (ImageView) view.findViewById(R.id.FPR_icon);
 
-        btnPay.setOnClickListener(new View.OnClickListener() {
+        btnCardPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendPayment();
+                sendCardPayment();
+            }
+        });
+        btnSIDPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendSIDPayment();
             }
         });
         txtSelect.setOnClickListener(new View.OnClickListener() {
@@ -157,28 +164,53 @@ public class PaymentStartFragment extends Fragment implements PageFragment {
             }
         });
         setSpinners();
-         isDebuggable = 0 != (getActivity().getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE);
-        if (isDebuggable) {
-            creditCard = new CreditCard();
-            creditCard.setCardHolder("Test Buyer VS1");
-            creditCard.setCardNumber("4000 0000 0000 0010");
-            creditCard.setCcv("111");
-            creditCard.setExpiryMonth(11);
-            creditCard.setExpiryYear(2020);
-            creditCard.setCardType("Visa");
-            SharedUtil.saveCreditCard(getActivity(),creditCard);
+
+        visa = SharedUtil.getVisaCard(getActivity());
+        mastercard = SharedUtil.getMasterCard(getActivity());
+        lastPaymentType = SharedUtil.getLastPaymentType(getActivity());
+        switch (lastPaymentType) {
+            case SharedUtil.VISA:
+                creditCard = visa;
+                selectedCard = getString(R.string.visa);
+                cardDetailLayout.setVisibility(View.VISIBLE);
+                sidLayout.setVisibility(View.GONE);
+                setCreditCardFields();
+                break;
+            case SharedUtil.MASTERCARD:
+                creditCard = mastercard;
+                selectedCard = getString(R.string.mastercard);
+                cardDetailLayout.setVisibility(View.VISIBLE);
+                sidLayout.setVisibility(View.GONE);
+                setCreditCardFields();
+
+                break;
+            case SharedUtil.SID:
+                selectedCard = getString(R.string.instant_eft);
+                cardDetailLayout.setVisibility(View.GONE);
+                sidLayout.setVisibility(View.VISIBLE);
+                break;
+            default:
+                selectedCard = "Select payment method";
+                cardDetailLayout.setVisibility(View.GONE);
+                sidLayout.setVisibility(View.GONE);
+                break;
 
         }
+        Util.setCardTypeIcon(selectedCard, icon, ctx);
+        txtSelect.setText(selectedCard);
 
-        creditCard = SharedUtil.getCreditCard(getActivity());
+        animateSomething();
+
+    }
+
+    private void setCreditCardFields() {
         if (creditCard != null) {
             editCardholder.setText(creditCard.getCardHolder());
             editNumber.setText(creditCard.getCardNumber());
             editCCV.setText(creditCard.getCcv());
-
             monthSpinner.setSelection(creditCard.getExpiryMonth());
             int index = 0;
-            for (String s: yearList) {
+            for (String s : yearList) {
                 if (index == 0) {
                     index++;
                     continue;
@@ -191,18 +223,49 @@ public class PaymentStartFragment extends Fragment implements PageFragment {
             if (index < yearList.size()) {
                 yearSpinner.setSelection(index);
             }
-            if (creditCard.getCardType() != null) {
-                selectedCard = creditCard.getCardType();
-                Util.setCardTypeIcon(selectedCard, icon, ctx);
-                txtSelect.setText(selectedCard);
-            }
+
+        } else {
+            editCardholder.setText("");
+            editNumber.setText("");
+            editCCV.setText("");
         }
-
-        animateSomething();
-
     }
     CreditCard creditCard;
-    private void sendPayment() {
+
+    private void sendSIDPayment() {
+        SIDPaymentRequestDTO paymentRequest = new SIDPaymentRequestDTO();
+        paymentRequest.setReference("" + SharedUtil.getProfile(getActivity())
+                .getProfileInfoID().intValue());
+        if (editSIDamount.getText().toString().isEmpty()) {
+            Util.showToast(getActivity(), "Please enter the amount");
+            return;
+        }
+        String x = editSIDamount.getText().toString().trim();
+        Pattern pattern = Pattern.compile(",");
+        String[] bits = pattern.split(x);
+        StringBuilder sb = new StringBuilder();
+        for (String s : bits) {
+            sb.append(s);
+        }
+        double money = Double.parseDouble(sb.toString());
+        if (money == 0.0) {
+            Util.showToast(getActivity(), "Please enter the proper amount");
+            return;
+        }
+        if (money > 200000.00) {
+            Util.showToast(getActivity(), "The amount is above the limit for the transaction");
+            return;
+        }
+        paymentRequest.setAmount(money);
+        SharedUtil.savePaymentType(getActivity(), SharedUtil.SID);
+
+        mListener.onSIDPaymentRequested(paymentRequest);
+
+    }
+
+    CreditCard visa, mastercard;
+    int lastPaymentType;
+    private void sendCardPayment() {
 
         if (editCardholder.getText().toString().isEmpty()) {
             Util.showToast(getActivity(), "Please enter name on the the card");
@@ -216,22 +279,29 @@ public class PaymentStartFragment extends Fragment implements PageFragment {
             Util.showToast(getActivity(), "Please enter the CCV number on the back of the card");
             return;
         }
-        if (editAmount.getText().toString().isEmpty()) {
+        if (editCardAmount.getText().toString().isEmpty()) {
             Util.showToast(getActivity(), "Please enter the amount");
             return;
         }
-        double money = Double.parseDouble(editAmount.getText().toString());
+        String x = editCardAmount.getText().toString().trim();
+        Pattern pattern = Pattern.compile(",");
+        String[] bits = pattern.split(x);
+        StringBuilder sb = new StringBuilder();
+        for (String s : bits) {
+            sb.append(s);
+        }
+        double money = Double.parseDouble(sb.toString());
 
         if (money == 0.0) {
             Util.showToast(getActivity(), "Please enter the amount");
             return;
         }
         if (selectedMonth == 0) {
-            Util.showToast(getActivity(),"Please select expiry month");
+            Util.showToast(getActivity(), "Please select expiry month");
             return;
         }
         if (selectedYear == 0) {
-            Util.showToast(getActivity(),"Please select expiry year");
+            Util.showToast(getActivity(), "Please select expiry year");
             return;
         }
         if (selectedCard == null || selectedCard.isEmpty()) {
@@ -239,40 +309,33 @@ public class PaymentStartFragment extends Fragment implements PageFragment {
             return;
         }
 
-        if (selectedCard.equalsIgnoreCase("MasterCard")) {
+        if (selectedCard.equalsIgnoreCase(getString(R.string.mastercard))) {
             if (!CreditCardValidator.isCreditCardValid(editNumber.getText().toString(),
                     CreditCardValidator.MASTERCARD)) {
-                Util.showErrorToast(getActivity(),"Credit Card number is not valid");
+                Util.showErrorToast(getActivity(), "Credit Card number is not valid");
                 return;
             }
         }
-        if (selectedCard.equalsIgnoreCase("Visa")) {
+        if (selectedCard.equalsIgnoreCase(getString(R.string.visa))) {
             if (!CreditCardValidator.isCreditCardValid(editNumber.getText().toString(),
                     CreditCardValidator.VISA)) {
-                Util.showErrorToast(getActivity(),"Credit Card number is not valid");
+                Util.showErrorToast(getActivity(), "Credit Card number is not valid");
                 return;
             }
         }
         PaymentRequestDTO req = new PaymentRequestDTO();
-        if (isDebuggable) {
-            req.setCardHolder(creditCard.getCardHolder());
-            req.setCardNumber(creditCard.getCardNumber());
-            req.setCCVV(creditCard.getCcv());
-            req.setExpiryMonth(creditCard.getExpiryMonth());
-            req.setExpiryYear(creditCard.getExpiryYear());
+        req.setCardType(selectedCard);
+        req.setProfileInfoID(SharedUtil.getProfile(getActivity()).getProfileInfoID());
+        req.setCardHolder(editCardholder.getText().toString());
+        req.setCardNumber(editNumber.getText().toString());
+        req.setCCVV(editCCV.getText().toString());
+        req.setExpiryMonth(selectedMonth);
+        req.setExpiryYear(selectedYear);
 
-        } else {
-            req.setCardHolder(editCardholder.getText().toString());
-            req.setCardNumber(editNumber.getText().toString());
-            req.setCCVV(editCCV.getText().toString());
-            req.setExpiryMonth(selectedMonth);
-            req.setExpiryYear(selectedYear);
-        }
-        req.setAmount(Double.parseDouble(editAmount.getText().toString()));
+        req.setAmount(money);
         Integer id = SharedUtil.getProfile(getActivity()).getProfileInfoID();
         req.setBuyerID("" + id.intValue());
         req.setReference("" + id.intValue() + "-" + System.currentTimeMillis());
-
 
 
         final RequestDTO w = new RequestDTO(RequestDTO.SEND_PAYMENT);
@@ -284,20 +347,21 @@ public class PaymentStartFragment extends Fragment implements PageFragment {
         creditCard.setCcv(editCCV.getText().toString());
         creditCard.setExpiryMonth(selectedMonth);
         creditCard.setExpiryYear(selectedYear);
-        creditCard.setBank(PaymentRequestDTO.FNB);
+        creditCard.setSIDPayment(false);
+        creditCard.setCardType(selectedCard);
 
         SharedUtil.saveCreditCard(getActivity(), creditCard);
 
         AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
         b.setTitle("Payment Confirmation")
                 .setMessage("Please confirm that you want to submit a payment of "
-                + df.format(req.getAmount()))
+                        + df.format(req.getAmount()))
                 .setPositiveButton("Confirm Payment", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mListener.setBusy(true);
-                        btnPay.setEnabled(false);
-                        btnPay.setAlpha(0.3f);
+                        btnCardPay.setEnabled(false);
+                        btnCardPay.setAlpha(0.3f);
                         NetUtil.sendRequest(getActivity(), w, new NetUtil.NetUtilListener() {
                             @Override
                             public void onResponse(final ResponseDTO response) {
@@ -305,8 +369,8 @@ public class PaymentStartFragment extends Fragment implements PageFragment {
                                     @Override
                                     public void run() {
                                         mListener.setBusy(false);
-                                        FNBandNedbankResponse = response.getFNBandNedbankResponse();
-                                        processFNBNedbankResponse();
+                                        cardResponse = response.getCardResponse();
+                                        processCardResponse();
                                     }
                                 });
                             }
@@ -336,50 +400,46 @@ public class PaymentStartFragment extends Fragment implements PageFragment {
                     }
                 })
                 .show();
-
-
-
-
-
     }
 
-    private void processFNBNedbankResponse() {
-        if (FNBandNedbankResponse.getTransactionOutcome().equalsIgnoreCase("APPROVED")) {
+    private void processCardResponse() {
+        if (cardResponse.getOutcome().equalsIgnoreCase("APPROVED")) {
             Util.showToast(getActivity(), "Your payment has been approved by your bank.\n\nThank You!");
             mListener.onPaymentSuccess();
             return;
         }
-        if (FNBandNedbankResponse.getTransactionOutcome().equalsIgnoreCase("DECLINED")) {
+        if (cardResponse.getOutcome().equalsIgnoreCase("DECLINED")) {
             Util.showToast(getActivity(), "Your payment has been declined by your bank." +
                     "\nPlease get in touch with your bank");
             mListener.onPaymentFailed();
             return;
         }
-        if (FNBandNedbankResponse.getTransactionOutcome().equalsIgnoreCase("ERROR")) {
-            Util.showErrorToast(getActivity(),"Your transaction has been declined by your bank");
+        if (cardResponse.getOutcome().equalsIgnoreCase("ERROR")) {
+            Util.showErrorToast(getActivity(), "Your transaction has been declined by your bank");
+            mListener.onPaymentFailed();
             return;
         }
-        if (FNBandNedbankResponse.getTransactionOutcome().equalsIgnoreCase("ENROLLED")) {
+        if (cardResponse.getOutcome().equalsIgnoreCase("ENROLLED")) {
 
             return;
         }
-        if (FNBandNedbankResponse.getTransactionOutcome().equalsIgnoreCase("UNAVAILABLE")) {
+        if (cardResponse.getOutcome().equalsIgnoreCase("UNAVAILABLE")) {
 
             return;
         }
-        if (FNBandNedbankResponse.getTransactionOutcome().equalsIgnoreCase("ATTEMPTED")) {
+        if (cardResponse.getOutcome().equalsIgnoreCase("ATTEMPTED")) {
 
             return;
         }
-        if (FNBandNedbankResponse.getTransactionOutcome().equalsIgnoreCase("STOP")) {
+        if (cardResponse.getOutcome().equalsIgnoreCase("STOP")) {
 
             return;
         }
-        if (FNBandNedbankResponse.getTransactionOutcome().equalsIgnoreCase("REVIEW")) {
+        if (cardResponse.getOutcome().equalsIgnoreCase("REVIEW")) {
 
             return;
         }
-        if (FNBandNedbankResponse.getTransactionOutcome().equalsIgnoreCase("DUPLICATE")) {
+        if (cardResponse.getOutcome().equalsIgnoreCase("DUPLICATE")) {
 
             return;
         }
@@ -390,14 +450,12 @@ public class PaymentStartFragment extends Fragment implements PageFragment {
         list.add(ctx.getString(R.string.visa));
         list.add(ctx.getString(R.string.mastercard));
         list.add(ctx.getString(R.string.instant_eft));
-        list.add(ctx.getString(R.string.ukash));
-
 
         final ListPopupWindow popupWindow = new ListPopupWindow(getActivity());
 
-        View v = inflater.inflate(R.layout.hero_image_popup, null);
+        final View v = inflater.inflate(R.layout.hero_image_popup, null);
         TextView txt = (TextView) v.findViewById(R.id.HERO_caption);
-        txt.setText("Payment Types");
+        txt.setText("Payment Methods");
         ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
         img.setImageDrawable(Util.getRandomBackgroundImage(ctx));
 
@@ -416,6 +474,25 @@ public class PaymentStartFragment extends Fragment implements PageFragment {
                 selectedCard = list.get(position);
                 Util.setCardTypeIcon(selectedCard, icon, ctx);
                 txtSelect.setText(selectedCard);
+                switch (position) {
+                    case 0:
+                        creditCard = visa;
+                        setCreditCardFields();
+                        cardDetailLayout.setVisibility(View.VISIBLE);
+                        sidLayout.setVisibility(View.GONE);
+                        break;
+                    case 1:
+                        creditCard = mastercard;
+                        setCreditCardFields();
+                        cardDetailLayout.setVisibility(View.VISIBLE);
+                        sidLayout.setVisibility(View.GONE);
+                        break;
+                    case 2:
+                        creditCard = null;
+                        cardDetailLayout.setVisibility(View.GONE);
+                        sidLayout.setVisibility(View.VISIBLE);
+                        break;
+                }
 
             }
         });
@@ -423,7 +500,8 @@ public class PaymentStartFragment extends Fragment implements PageFragment {
     }
 
     List<String> monthList, yearList;
-    int selectedMonth,  selectedYear;
+    int selectedMonth, selectedYear;
+
     private void setSpinners() {
         monthList = new ArrayList<>();
         monthList.add("January");
@@ -440,7 +518,7 @@ public class PaymentStartFragment extends Fragment implements PageFragment {
         monthList.add("December");
 
         ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(
-                getActivity(),android.R.layout.simple_spinner_item, monthList);
+                getActivity(), android.R.layout.simple_spinner_item, monthList);
         monthSpinner.setAdapter(mAdapter);
         monthSpinner.setPrompt("Select Month");
         monthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -465,7 +543,7 @@ public class PaymentStartFragment extends Fragment implements PageFragment {
             yearList.add("" + (startYear + i));
         }
         ArrayAdapter<String> yAdapter = new ArrayAdapter<String>(
-                getActivity(),android.R.layout.simple_spinner_item, yearList);
+                getActivity(), android.R.layout.simple_spinner_item, yearList);
         yearSpinner.setAdapter(yAdapter);
         yearSpinner.setPrompt("Select Year");
         yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -482,6 +560,7 @@ public class PaymentStartFragment extends Fragment implements PageFragment {
 
 
     }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -511,15 +590,19 @@ public class PaymentStartFragment extends Fragment implements PageFragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface PaymentStartListener {
         void onPaymentSuccess();
+
         void setBusy(boolean busy);
+
         void onPaymentFailed();
+
+        void onSIDPaymentRequested(SIDPaymentRequestDTO paymentRequest);
     }
 
     public static final int
@@ -542,7 +625,7 @@ public class PaymentStartFragment extends Fragment implements PageFragment {
                         Util.expand(hero, 1000, new Util.UtilAnimationListener() {
                             @Override
                             public void onAnimationEnded() {
-                                Util.flashSeveralTimes(btnPay, 30, 3, null);
+                                Util.flashSeveralTimes(btnCardPay, 30, 3, null);
                             }
                         });
                     }

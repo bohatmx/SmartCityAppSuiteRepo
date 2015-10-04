@@ -1,11 +1,13 @@
 package com.boha.library.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -14,6 +16,7 @@ import android.view.WindowManager;
 import com.boha.library.R;
 import com.boha.library.dto.AccountDTO;
 import com.boha.library.dto.MunicipalityDTO;
+import com.boha.library.dto.SIDPaymentRequestDTO;
 import com.boha.library.fragments.PaymentStartFragment;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
@@ -113,6 +116,25 @@ public class PaymentStartActivity extends AppCompatActivity
     @Override
     public void onPaymentFailed() {
 
+    }
+
+    static final int SID_PAYMENT_REQUESTED = 8763;
+    @Override
+    public void onSIDPaymentRequested(SIDPaymentRequestDTO paymentRequest) {
+        Intent w = new Intent(this,SIDPaymentsActivity.class);
+        w.putExtra("paymentRequest",paymentRequest);
+        startActivityForResult(w,SID_PAYMENT_REQUESTED);
+    }
+
+    @Override
+    public void onActivityResult(int reqCode, int resCode, Intent data) {
+        Log.i("PaymentStartActivity","onActivityResult");
+        switch (reqCode) {
+            case SID_PAYMENT_REQUESTED:
+                Log.i("PaymentStartActivity", "onActivityResult, payment is back");
+                finish();
+                break;
+        }
     }
     public void setRefreshActionButtonState(final boolean refreshing) {
         if (mMenu != null) {

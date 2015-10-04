@@ -10,7 +10,9 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.boha.library.R;
 import com.boha.library.dto.CreditCard;
+import com.boha.library.dto.GcmDeviceDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.MunicipalityStaffDTO;
 import com.boha.library.dto.ProfileInfoDTO;
@@ -219,10 +221,41 @@ public class SharedUtil {
         return gson.fromJson(json, ProfileInfoDTO.class);
     }
     static Gson gson = new Gson();
-    static final String LANGUAGE_INDEX = "langIndex", CREDIT_CARD = "credCard",
+    static final String LANGUAGE_INDEX = "langIndex",
+            VISA_CREDIT_CARD = "visacredCard",
+            MASTERCARD_CREDIT_CARD = "mccredCard",
+            SID_CARD = "sidCard",
+            LAST_PAYMENT_TYPE = "lastType",
             THEME = "theme", CITY_IMAGES = "cityImages", ADDRESS = "address",
             ID = "id", MUNICIPALITY = "muni", MUNI_STAFF = "muniStaff",
+            GCMDEVICE = "GCMDEVICE",
             USER = "user", PROFILE = "profile", GCM = "gcm", SLIDING_TAB_COUNT = "slidingTabs";
+
+    public static void saveGCMDevice( Context ctx,  GcmDeviceDTO dto) {
+
+
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+        String x = gson.toJson(dto);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putString(GCMDEVICE, x);
+        ed.commit();
+        Log.e("SharedUtil", "%%%%% Device saved in SharedPreferences");
+    }
+
+
+    public static GcmDeviceDTO getGCMDevice( Context ctx) {
+
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+        String adm = sp.getString(GCMDEVICE, null);
+        GcmDeviceDTO co = null;
+        if (adm != null) {
+            co = gson.fromJson(adm, GcmDeviceDTO.class);
+
+        }
+        return co;
+    }
 
     public static void saveAddress(Context ctx, ResidentialAddress m) {
         SharedPreferences sp = PreferenceManager
@@ -339,22 +372,32 @@ public class SharedUtil {
     }
 
     public static void saveCreditCard(Context ctx, CreditCard creditCard) {
+        if (creditCard.getCardType().equalsIgnoreCase(ctx.getString(R.string.visa))) {
+            saveVisaCard(ctx,creditCard);
+            savePaymentType(ctx, SharedUtil.VISA);
+        } else {
+            saveMasterCard(ctx,creditCard);
+            savePaymentType(ctx, SharedUtil.MASTERCARD);
+        }
+
+    }
+    private static void saveVisaCard(Context ctx, CreditCard creditCard) {
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(ctx);
 
         String json = gson.toJson(creditCard);
 
         SharedPreferences.Editor ed = sp.edit();
-        ed.putString(CREDIT_CARD, json);
+        ed.putString(VISA_CREDIT_CARD, json);
         ed.commit();
 
-        Log.w(LOG, "#### creditCard  saved: " + json);
+        Log.w(LOG, "#### visa creditCard  saved: " + json);
 
     }
-    public static CreditCard getCreditCard(Context ctx) {
+    public static CreditCard getVisaCard(Context ctx) {
         SharedPreferences sp = PreferenceManager
                 .getDefaultSharedPreferences(ctx);
-        String json = sp.getString(CREDIT_CARD, null);
+        String json = sp.getString(VISA_CREDIT_CARD, null);
 
         if (json == null) {
             Log.e(LOG, "#### creditCard NOT retrieved");
@@ -362,6 +405,49 @@ public class SharedUtil {
         }
         return gson.fromJson(json, CreditCard.class);
     }
+    private static void saveMasterCard(Context ctx, CreditCard creditCard) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+
+        String json = gson.toJson(creditCard);
+
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putString(MASTERCARD_CREDIT_CARD, json);
+        ed.commit();
+
+        Log.w(LOG, "#### visa creditCard  saved: " + json);
+
+    }
+    public static CreditCard getMasterCard(Context ctx) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+        String json = sp.getString(MASTERCARD_CREDIT_CARD, null);
+
+        if (json == null) {
+            Log.e(LOG, "#### MC creditCard NOT retrieved");
+            return null;
+        }
+        return gson.fromJson(json, CreditCard.class);
+    }
+    public static void savePaymentType(Context ctx, int type) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putInt(LAST_PAYMENT_TYPE, type);
+        ed.commit();
+
+        Log.w(LOG, "#### last payment  saved: " + type);
+
+    }
+    public static int getLastPaymentType(Context ctx) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+        int type = sp.getInt(LAST_PAYMENT_TYPE, 0);
+        return type;
+    }
+    public static final int VISA = 1, MASTERCARD = 2, SID = 3;
+
     public static final int MAX_SLIDING_TAB_VIEWS = 200;
     static final String LOG = SharedUtil.class.getSimpleName();
 }

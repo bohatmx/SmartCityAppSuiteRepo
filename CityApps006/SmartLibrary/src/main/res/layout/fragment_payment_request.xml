@@ -63,8 +63,8 @@
 
                 <ImageView
                     android:id="@+id/FPR_icon"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_action_bell" />
 
@@ -80,11 +80,54 @@
 
             </RelativeLayout>
 
+
+
             <RelativeLayout
-                android:id="@+id/FPR_bottom"
+                android:id="@+id/FPR_sidLayout"
+                android:layout_below="@id/FPR_middle"
+                android:padding="@dimen/mon_wide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/FPR_sidHero"
+                    android:src="@drawable/sid"
+                    android:scaleType="fitCenter"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp" />
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/FPR_textLayout0a"
+                    android:layout_below="@id/FPR_sidHero"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/FPR_amountSID"
+                        style="@style/Title1TextStyleGreen"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Amount To Pay"
+                        android:inputType="numberDecimal"
+                        android:textStyle="bold" />
+
+
+                </android.support.design.widget.TextInputLayout>
+                <Button
+                    android:id="@+id/FPR_btnSID"
+                    style="@style/ButtonRed"
+                    android:layout_marginTop="@dimen/mon_wide"
+                    android:layout_below="@id/FPR_textLayout0a"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Connect to your Bank" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/FPR_cardDetailLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/FPR_middle"
+                android:layout_below="@+id/FPR_sidLayout"
+                android:visibility="gone"
                 android:layout_marginLeft="@dimen/mon_wide"
                 android:layout_marginRight="@dimen/mon_wide">
 
@@ -94,7 +137,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
-                        android:id="@+id/FPR_amout"
+                        android:id="@+id/FPR_amountCard"
                         style="@style/Title1TextStyleGreen"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -193,17 +236,26 @@
                             android:layout_weight="1" />
 
                     </LinearLayout>
-
                     <Button
-                        android:id="@+id/FPR_btn"
+                        android:id="@+id/FPR_btnB"
                         style="@style/ButtonRed"
                         android:layout_marginTop="@dimen/mon_wide"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:layout_below="@id/FPR_layout1"
+                        android:layout_height="wrap_content"
                         android:text="Submit Payment" />
 
+
                 </RelativeLayout>
+
+
+            </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/FPR_btnLayout"
+            android:layout_below="@id/FPR_cardDetailLayout"
+            android:padding="@dimen/mon_wide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             </RelativeLayout>
         </RelativeLayout>

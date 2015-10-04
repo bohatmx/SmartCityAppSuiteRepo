@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
+    <string name="gcm_sender_id">635788281460</string>
     <string name="title_activity_maps">Alert Map</string>
     <string name="select_language">Choose Language</string>
     <string name="welcome">Welcome Aboard!</string>

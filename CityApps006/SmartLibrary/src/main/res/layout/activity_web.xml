@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/AWB_handle"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <ScrollView
+        android:id="@+id/AWB_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/AWB_top"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mon_hero_height_small">
+
+                <ImageView
+                    android:id="@+id/AWB_hero"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/back13" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="@dimen/mon_wide">
+
+                    <TextView
+                        android:id="@+id/AWB_title"
+                        style="@style/Title2TextStyleWhite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/payments" />
+
+                    <TextView
+                        android:id="@+id/AWB_subtitle"
+                        style="@style/TextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/AWB_title"
+                        android:text="subtitle here"
+                        android:textColor="@color/white" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <WebView
+                android:id="@+id/AWB_webView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/AWB_top"
+                android:visibility="visible" />
+
+            <RelativeLayout
+                android:id="@+id/AWB_responseView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/AWB_top">
+
+                <include layout="@layout/sid_response" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_below="@id/AWB_responseView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TableLayout
+                    android:id="@+id/AWB_tableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </TableLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="@dimen/mon_wide"
+        android:layout_marginBottom="@dimen/mon_widest"
+        android:src="@android:drawable/ic_menu_search"
+        app:backgroundTint="@color/blue_800"
+        app:borderWidth="0dp"
+        app:elevation="@dimen/mon_margin"
+        app:pressedTranslationZ="@dimen/mon_wide"
+        app:rippleColor="@color/blue_200" />
+
+</RelativeLayout>
