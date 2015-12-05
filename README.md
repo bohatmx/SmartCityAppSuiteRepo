@@ -5,3 +5,8 @@ The suite of SmartCity apps are part of a platform that provides citizen engagem
 
 ![Alt text](/CityApps006/CitizenApp-eThekwini/screens/d6.png?raw=true "eThekwini App")
 
+First Header | Second Header
+------------ | -------------
+![Alt text](/CityApps006/CitizenApp-eThekwini/screens/d6.png?raw=true "eThekwini App") | ![Alt text](/CityApps006/CitizenApp-eThekwini/screens/d2.png?raw=true "eThekwini App")
+Content in the first column | Content in the second column
+
