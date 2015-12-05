@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +51,17 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
+/**
+ * Fragment that manages the complaint creation flow. Complaints are categorised
+ * and the fragment obtains a list of complaint categories from cache and the user
+ * selects the approriate category before completing the complaint.
+ *
+ * If the complaint is at the user's residence a cached address is used. If the
+ * complaint is elsewhere, the fragment requests a fresh location from its container.
+ *
+ * When the server responds with the expected OK response, the fragment requests the
+ * container to present the PictureActivity and add images to the complaint.
+ */
 public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
     private ComplaintFragmentListener mListener;
@@ -58,14 +69,10 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
     public static ComplaintCreateFragment newInstance() {
         ComplaintCreateFragment fragment = new ComplaintCreateFragment();
-        Bundle args = new Bundle();
-        //args.putSerializable("complaintList", response);
-        fragment.setArguments(args);
         return fragment;
     }
 
     public ComplaintCreateFragment() {
-        // Required empty public constructor
     }
 
     ResponseDTO response;
@@ -213,7 +220,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                                 }
                                 if (response.getComplaintList() != null && !response.getComplaintList().isEmpty()) {
                                     Snackbar.make(btnSend, "Your complaint has been received", Snackbar.LENGTH_LONG).show();
-                                    cancel();
+                                    clearEditFields();
                                     mListener.onComplaintAdded(response.getComplaintList());
                                 } else {
                                     Util.showErrorToast(ctx, "Unable to process the complaint at this time. Please try later");
@@ -267,16 +274,18 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
     }
 
-    private void cancel() {
+    private void clearEditFields() {
         btnSend.setVisibility(View.GONE);
         editComment.setText("");
         complaintType = null;
         editNumber.setText("");
+        editStreet.setText("");
         editComment.setText("");
         editCity.setText("");
         editSuburb.setText("");
         txtComplaintType.setText(R.string.start_complaint);
         txtComplaintType2.setText(R.string.start_complaint);
+        icon.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ic_action_bell));
         Util.flashSeveralTimes(txtComplaintType, 300, 4, null);
     }
 

@@ -25,6 +25,7 @@ import com.boha.foureyes.fragments.ServerLogFragment;
 import com.boha.foureyes.fragments.ServerLogFragment.LogListener;
 import com.boha.foureyes.fragments.SeverEventListFragment;
 import com.boha.foureyes.util.NetUtil;
+import com.boha.foureyes.util.SharedUtil;
 import com.boha.foureyes.util.Util;
 
 import java.util.ArrayList;
@@ -36,17 +37,37 @@ public class EventActivity extends ActionBarActivity
         LogListener, DashboardListFragment.DashboardListListener{
 
 
+    int type;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_pager);
         ctx = getApplicationContext();
         mPager = (ViewPager) findViewById(R.id.pager);
+
+
+        type = SharedUtil.getServerDestination(ctx);
+        ActionBar actionBar = getSupportActionBar();
+
+        switch (type) {
+            case SharedUtil.SERVER_MONITOR:
+                Util.setCustomActionBar(ctx,actionBar,"Monitor FourEyes",
+                        ContextCompat.getDrawable(ctx, R.drawable.glasses32));
+                break;
+            case SharedUtil.SERVER_SMARTCITY:
+                Util.setCustomActionBar(ctx,actionBar,"SmartCity FourEyes",
+                        ContextCompat.getDrawable(ctx, R.drawable.glasses32));
+                break;
+            case -1:
+                SharedUtil.saveServerDestination(ctx, SharedUtil.SERVER_MONITOR);
+                Util.setCustomActionBar(ctx, actionBar, "Monitor FourEyes",
+                        ContextCompat.getDrawable(ctx, R.drawable.glasses32));
+
+                break;
+
+        }
         getServerData();
 
-        ActionBar actionBar = getSupportActionBar();
-        Util.setCustomActionBar(ctx,actionBar,"SmartCity FourEyes",
-                ContextCompat.getDrawable(ctx,R.drawable.glasses32));
     }
 
 
@@ -119,14 +140,15 @@ public class EventActivity extends ActionBarActivity
         data3.putSerializable("response", r3);
         serverLogFragment.setArguments(data3);
 
-        dashboardListFragment = new DashboardListFragment();
-        ResponseDTO r4 = new ResponseDTO();
-        Bundle data4 = new Bundle();
-        r4.setSummaryList(response.getSummaryList());
-        data4.putSerializable("response", r4);
-        dashboardListFragment.setArguments(data4);
-
-        pageFragmentList.add(dashboardListFragment);
+        if (SharedUtil.getServerDestination(ctx) == SharedUtil.SERVER_SMARTCITY) {
+            dashboardListFragment = new DashboardListFragment();
+            ResponseDTO r4 = new ResponseDTO();
+            Bundle data4 = new Bundle();
+            r4.setSummaryList(response.getSummaryList());
+            data4.putSerializable("response", r4);
+            dashboardListFragment.setArguments(data4);
+            pageFragmentList.add(dashboardListFragment);
+        }
         pageFragmentList.add(androidCrashListFragment);
         pageFragmentList.add(severEventListFragment);
         pageFragmentList.add(serverLogFragment);
@@ -193,26 +215,22 @@ public class EventActivity extends ActionBarActivity
 
         @Override
         public CharSequence getPageTitle(int position) {
-            String title = "Title";
-
-            switch (position) {
-                case 0:
-                    title = "Municipality Dashboards";
-                    break;
-                case 1:
-                    title = "Mobile Device Crashes";
-                    break;
-                case 2:
-                    title = "Server Events";
-                    break;
-                case 3:
-                    title = "Server Log";
-                    break;
-
-                default:
-                    break;
+            PageFragment pageFragment = pageFragmentList.get(position);
+            if (pageFragment instanceof DashboardListFragment) {
+                return  "Municipality Dashboards";
             }
-            return title;
+            if (pageFragment instanceof AndroidCrashListFragment) {
+                return  "Mobile Device Crashes";
+            }
+            if (pageFragment instanceof ServerLogFragment) {
+                return "Server Log";
+            }
+            if (pageFragment instanceof SeverEventListFragment) {
+                return  "Server Events";
+            }
+
+
+            return "";
         }
     }
 
@@ -231,6 +249,14 @@ public class EventActivity extends ActionBarActivity
 
         switch (item.getItemId()) {
             case R.id.action_refresh:
+                getServerData();
+                return true;
+            case R.id.action_monitor:
+                SharedUtil.saveServerDestination(ctx,SharedUtil.SERVER_MONITOR);
+                getServerData();
+                return true;
+            case R.id.action_smartcity:
+                SharedUtil.saveServerDestination(ctx,SharedUtil.SERVER_SMARTCITY);
                 getServerData();
                 return true;
             default:

@@ -8,35 +8,14 @@ import android.widget.TextView;
 
 public class Statics {
 
+    private static final String SMARTCITY = "//icsm1.oneconnectgroup.com:7070/sc/";
+    public static final String WEBSOCKET_SMARTCITY = "ws:" + SMARTCITY + "wssmart";
+    public static final String HTTP_SMARTCITY = "http:" + SMARTCITY + "smart?JSON=";
 
-    /**
-     * SmartCity Production Server
-     */
-//    public static final String WEBSOCKET_URL = "ws://62.210.248.238:7070/sc/";
-//    public static final String URL = "http://62.210.248.238:7070/sc/";
-//    public static final String IMAGE_URL = "http://62.210.248.238:7070/";
-//
+    private static final String MONITOR_PLATFORM = "//bohamaker.com:3030/mp/";
+    public static final String WEBSOCKET_MONITOR = "ws:" + MONITOR_PLATFORM + "wsmonitor";
+    public static final String HTTP_MONITOR = "http:" + MONITOR_PLATFORM + "gate?JSON=";
 
-    /*
-     * REMOTE APP_URL - bohamaker back end - production
-     */
-    public
-    static final String WEBSOCKET_URL = "ws://195.154.47.229:7070/sc/";
-    public static final String URL = "http://195.154.47.229:7070/sc/";
-    public static final String IMAGE_URL = "http://195.154.47.229:7070/";
-//    public static final String WEBSOCKET_URL = "ws://bohamaker.com:3030/mp/";
-//    public static final String URL = "http://bohamaker.com:3030/mp/";
-//    public static final String IMAGE_URL = "http://bohamaker.com:3030/";
-
-    /*
-        LOCAL DEV - PECANWOOD
-     */
-//    public static final String WEBSOCKET_URL = "ws://192.168.1.33:8080/sc/";
-//    public static final String URL = "http://192.168.1.33:8080/sc/";
-//    public static final String IMAGE_URL = "http://192.168.1.33:8080/";
-
-    public static final String GATEWAY_SERVLET = "smart?";
-    public static final String GATEWAY_SOCKET = "wssmart";
 
     public static void setRomanFontLight(Context ctx, TextView txt) {
         Typeface font = Typeface.createFromAsset(ctx.getAssets(),

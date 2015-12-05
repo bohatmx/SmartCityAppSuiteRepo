@@ -85,6 +85,9 @@ public class AccountDetailActivity extends AppCompatActivity {
             window.setStatusBarColor(darkColor);
             window.setNavigationBarColor(primaryColor);
         }
+        isDebuggable = 0 != (this.getApplicationInfo().flags
+                &= ApplicationInfo.FLAG_DEBUGGABLE);
+
     }
 
     private void setFields() {
@@ -100,9 +103,6 @@ public class AccountDetailActivity extends AppCompatActivity {
         Statics.setRobotoFontLight(ctx, txtName);
         txtSubtitle = (TextView) topView.findViewById(R.id.TOP_subTitle);
         icon = (ImageView) topView.findViewById(R.id.TOP_icon);
-//        txtFAB = (TextView) topView.findViewById(R.id.FAB_text);
-//        fabIcon = (ImageView) topView.findViewById(R.id.FAB_icon);
-
         txtAcctNumber = (TextView) findViewById(R.id.ACCT_number);
         txtAddress = (TextView) findViewById(R.id.ACCT_address);
         txtArrears = (TextView) findViewById(R.id.ACCT_currArrears);
@@ -110,9 +110,6 @@ public class AccountDetailActivity extends AppCompatActivity {
         btnCurrBal = (Button) findViewById(R.id.button);
         txtNextBill = (TextView) findViewById(R.id.ACCT_nextBillDate);
         txtLastBillAmount = (TextView) findViewById(R.id.ACCT_lastBillAmount);
-
-//        fabIcon.setVisibility(View.GONE);
-//        txtFAB.setVisibility(View.VISIBLE);
         hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
         setFont();
         btnCurrBal.setOnClickListener(new View.OnClickListener() {
@@ -168,28 +165,32 @@ public class AccountDetailActivity extends AppCompatActivity {
     }
 
     private void showDialog() {
-        AlertDialog.Builder d = new AlertDialog.Builder(this);
-        d.setTitle("Payment Reports")
-                .setMessage("Please select the kind of payment report.")
-                .setPositiveButton("Instant EFT", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent w = new Intent(ctx, SIDPaymentsActivity.class);
-                        w.putExtra("primaryColor", primaryColor);
-                        w.putExtra("logo", logo);
-                        startActivity(w);
-                    }
-                })
-                .setNegativeButton("Card Payments", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent w = new Intent(ctx, CardPaymentsActivity.class);
-                        w.putExtra("primaryColor", primaryColor);
-                        w.putExtra("logo", logo);
-                        startActivity(w);
-                    }
-                })
-                .show();
+        if (isDebuggable) {
+            AlertDialog.Builder d = new AlertDialog.Builder(this);
+            d.setTitle("Payment Reports")
+                    .setMessage("Please select the kind of payment report.")
+                    .setPositiveButton("Instant EFT", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent w = new Intent(ctx, SIDPaymentsActivity.class);
+                            w.putExtra("primaryColor", primaryColor);
+                            w.putExtra("logo", logo);
+                            startActivity(w);
+                        }
+                    })
+                    .setNegativeButton("Card Payments", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent w = new Intent(ctx, CardPaymentsActivity.class);
+                            w.putExtra("primaryColor", primaryColor);
+                            w.putExtra("logo", logo);
+                            startActivity(w);
+                        }
+                    })
+                    .show();
+        } else {
+
+        }
     }
     private void setProfileData() {
         if (profileInfo != null) {
@@ -254,6 +255,7 @@ public class AccountDetailActivity extends AppCompatActivity {
 
 
     Menu mMenu;
+    boolean isDebuggable;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -289,9 +291,6 @@ public class AccountDetailActivity extends AppCompatActivity {
     private void startPayment() {
         Log.e(LOG, "########## startPayment");
 
-        boolean isDebuggable = 0 != (this.getApplicationInfo().flags
-                &= ApplicationInfo.FLAG_DEBUGGABLE);
-
         if (isDebuggable) {
             Intent intent = new Intent(ctx, PaymentStartActivity.class);
             intent.putExtra("account", account);
@@ -317,14 +316,6 @@ public class AccountDetailActivity extends AppCompatActivity {
                     })
                     .show();
         }
-
-
-//        Intent intent = new Intent(ctx, PaymentStartActivity.class);
-//        intent.putExtra("account", account);
-//        intent.putExtra("index", selectedIndex);
-//        intent.putExtra("logo", logo);
-//        startActivity(intent);
-
     }
 
     private void sendSurvey(boolean response) {

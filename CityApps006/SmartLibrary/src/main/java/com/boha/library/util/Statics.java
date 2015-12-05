@@ -21,12 +21,14 @@ public class Statics {
 
     //http://munimobileapp.oneconnectgroup.com:7070/
     //http://195.154.47.229:7070
+    //212.83.130.156
+    //http://icsm1.oneconnectgroup.com/
     /**
      * SmartCity Production Server
      */
-    public static final String WEBSOCKET_URL = "ws://195.154.47.229:7070/sc/";
-    public static final String URL = "http://195.154.47.229:7070/sc/";
-    public static final String IMAGE_URL = "http://195.154.47.229:7070/";
+    public static final String WEBSOCKET_URL = "ws://icsm1.oneconnectgroup.com:7070/sc/";
+    public static final String URL = "http://icsm1.oneconnectgroup.com:7070/sc/";
+    public static final String IMAGE_URL = "http://icsm1.oneconnectgroup.com:7070/";
 //
 
 

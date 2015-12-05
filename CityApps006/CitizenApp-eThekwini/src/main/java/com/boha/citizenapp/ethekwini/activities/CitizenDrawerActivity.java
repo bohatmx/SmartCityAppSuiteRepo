@@ -562,6 +562,11 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
     }
 
+    /**
+     * A complaint has been added and a fresh list of complaints has been received from the server.
+     * My
+     * @param complaintList
+     */
     @Override
     public void onComplaintAdded(final List<ComplaintDTO> complaintList) {
         runOnUiThread(new Runnable() {
@@ -571,14 +576,14 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                 Collections.sort(complaintList);
                 response.setComplaintList(complaintList);
 
-                Snackbar.make(mDrawerLayout,"Refreshing list of complaints, will take a minute",
+                Snackbar.make(mDrawerLayout,"Refreshing list of complaints, will take a second",
                         Snackbar.LENGTH_LONG).show();
                 index = 0;
                 myComplaintsFragment.setComplaintList(complaintList);
-//                getLoginData();
 
                 String ref = "Reference Number: " + complaintList.get(0).getReferenceNumber();
                 AlertDialog.Builder d = new AlertDialog.Builder(activity);
+                d.setCancelable(false);
                 d.setTitle("Complaint Pictures")
                         .setMessage(ref + "\n\nPictures may give the Municipality more information about your complaint.\n\nDo you want to take pictures for the complaint?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -595,6 +600,8 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                //go to mycomplaints
+                                mPager.setCurrentItem(1,true);
                             }
                         })
                         .show();
@@ -779,7 +786,9 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 //                checkGPS();
                 break;
             case REQUEST_COMPLAINT_PICTURES:
+                currentPageIndex = 1;
                 getLoginData();
+
                 if (result != RESULT_OK) {
                     Util.showToast(ctx, "No complaint photos");
                 }

@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -47,7 +46,15 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
+/**
+ * This activity serves as the entry point to the app. It manages
+ * the user signin; checks whether the app has just been installed
+ * If new, the acticity provides the UI to accept credentials and send
+ * them to the back-end.
+ *
+ * If already signed in, the activity passes control to the main activity
+ * in the app; CitizenDrawerActivity
+ */
 public class SigninActivity extends AppCompatActivity {
 
     ImageView heroImage;
@@ -56,7 +63,6 @@ public class SigninActivity extends AppCompatActivity {
     View handle, editView;
     RadioButton radioYes, radioNo, radioTourist;
     Context ctx;
-    ProgressBar progressBar;
     Activity activity;
     Button btnSend;
     EditText editID, editPassword;

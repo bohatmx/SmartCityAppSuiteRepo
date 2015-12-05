@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public class SIDPaymentRequestDTO implements Serializable{
 
-    public static final String SID_URL = "https://www.sidpayment.com/paySIDv3/",
+    public static final String SID_URL = "https://www.sidpayment.com/paySID/",
             SID_MERCHANT = "SID_MERCHANT",
             SID_CURRENCY = "SID_CURRENCY",
             SID_COUNTRY = "SID_COUNTRY",

@@ -105,7 +105,7 @@ public class SharedUtil {
         return gson.fromJson(json, ProfileInfoDTO.class);
     }
     static Gson gson = new Gson();
-    static final String LANGUAGE_INDEX = "langIndex",
+    static final String LANGUAGE_INDEX = "langIndex", SERVER_DEST = "server",
             ID = "id", MUNICIPALITY = "muni", MUNI_STAFF = "muniStaff",
             PROFILE = "profile", GCM = "gcm";
 
@@ -155,4 +155,64 @@ public class SharedUtil {
         return gson.fromJson(j, MunicipalityStaffDTO.class);
     }
     static final String LOG = SharedUtil.class.getSimpleName();
+
+    public static final int SERVER_SMARTCITY = 1, SERVER_MONITOR = 2;
+
+    public static void saveServerDestination(Context ctx, int serverDestination) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putInt(SERVER_DEST, serverDestination);
+        ed.commit();
+
+    }
+    public static int getServerDestination(Context ctx) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+        int j = sp.getInt(SERVER_DEST, -1);
+
+        return j;
+    }
+    public static String getServerHTTPUrl(Context ctx) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+        int j = sp.getInt(SERVER_DEST, -1);
+        String url = null;
+        switch (j) {
+            case SERVER_MONITOR:
+                url = Statics.HTTP_MONITOR;
+                break;
+            case SERVER_SMARTCITY:
+                url = Statics.HTTP_SMARTCITY;
+                break;
+            case -1:
+                url = Statics.HTTP_MONITOR;
+                break;
+        }
+
+
+        return url;
+    }
+    public static String getServerWebsocketUrl(Context ctx) {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(ctx);
+        int j = sp.getInt(SERVER_DEST, -1);
+        String url = null;
+        switch (j) {
+            case SERVER_MONITOR:
+                url = Statics.WEBSOCKET_MONITOR;
+                break;
+            case SERVER_SMARTCITY:
+                url = Statics.WEBSOCKET_SMARTCITY;
+                break;
+            case -1:
+                url = Statics.WEBSOCKET_MONITOR;
+                break;
+        }
+
+
+        return url;
+    }
+
 }

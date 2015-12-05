@@ -12,7 +12,6 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.boha.foureyes.dto.RequestDTO;
-import com.boha.foureyes.util.Statics;
 import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
@@ -45,24 +44,20 @@ public class BaseVolley {
     /**
      * This method gets a Volley based communications request started
      *
-     * @param suffix   the suffix pointing to the destination servlet
+     * @param url   the suffix pointing to the destination servlet
      * @param request  the request object in JSON format
      * @param context  the Activity context
      * @param listener the listener implementor who wants to know abdout call status
      */
-    public static void getRemoteData(String suffix, RequestDTO request,
-                                     Context context, BohaVolleyListener listener) {
-
+    public static void sendRequest(String url, RequestDTO request,
+                                   Context context, BohaVolleyListener listener) {
+        Log.d(LOG,"HTTP request: " + url);
         ctx = context;
         bohaVolleyListener = listener;
         if (requestQueue == null) {
-            Log.w(LOG, "getRemoteData requestQueue is null, getting it ...: ");
             requestQueue = BohaVolley.getRequestQueue(ctx);
-        } else {
-            Log.e(LOG, "********** getRemoteData requestQueue is NOT NULL - Kool");
         }
         String json = null, jj = null;
-
         Gson gson = new Gson();
         try {
             jj = gson.toJson(request);
@@ -72,54 +67,24 @@ public class BaseVolley {
         }
         retries = 0;
         StringBuilder sb = new StringBuilder();
-        sb.append(Statics.URL).append(suffix).append("JSON=");
+        sb.append(url);
         sb.append(json);
-        String x = sb.toString();
-        Log.i(LOG, "...sending remote request: ....size: " + x.length() + "...>\n" + Statics.URL + suffix + "JSON=" + jj);
+        Log.w(LOG, "JSON: " + jj);
 
-        bohaRequest = new BohaRequest(Method.POST, x,
+        bohaRequest = new BohaRequest(Method.POST, sb.toString(),
                 onSuccessListener(), onErrorListener());
         bohaRequest.setRetryPolicy(new DefaultRetryPolicy((int) TimeUnit.SECONDS.toMillis(120),
                 0, 0));
         requestQueue.add(bohaRequest);
     }
 
-    public static void getRemoteData(String suffix, RequestDTO request,
-                                     Context context, int timeOutSeconds, BohaVolleyListener listener) {
-
-        ctx = context;
-        bohaVolleyListener = listener;
-        if (requestQueue == null) {
-            Log.w(LOG, "getRemoteData requestQueue is null, getting it ...: ");
-            requestQueue = BohaVolley.getRequestQueue(ctx);
-        } else {
-            Log.e(LOG, "********** getRemoteData requestQueue is NOT NULL - Kool");
-        }
-        String json = null, jj = null;
-
-        Gson gson = new Gson();
-        try {
-            jj = gson.toJson(request);
-            json = URLEncoder.encode(jj, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        retries = 0;
-        String x = Statics.URL + suffix + json;
-        Log.i(LOG, "...sending remote request: ...size: " + x.length() + "...>\n" + Statics.URL + suffix + jj);
-        bohaRequest = new BohaRequest(Method.POST, x,
-                onSuccessListener(), onErrorListener());
-        bohaRequest.setRetryPolicy(new DefaultRetryPolicy((int) TimeUnit.SECONDS.toMillis(timeOutSeconds),
-                0, 0));
-        requestQueue.add(bohaRequest);
-    }
 
     private static Response.Listener<String> onSuccessListener() {
         return new Response.Listener<String>() {
             @Override
             public void onResponse(String r) {
                 response = r;
-                Log.e(LOG, "Yup! ...response string received");
+                Log.e(LOG, "Yup! ...response string received:\n" + response);
                 bohaVolleyListener.onResponseReceived(response);
 
             }

@@ -180,12 +180,12 @@ public class CardPaymentsActivity extends AppCompatActivity {
             table.addView(row);
             totalAmount += x.getAmount().doubleValue();
             count++;
-            if (list.size() > 30) {
-                int rem = count % 20;
-                if (rem == 0) {
-                    table.addView(header);
-                }
-            }
+//            if (list.size() > 30) {
+//                int rem = count % 20;
+//                if (rem == 0) {
+//                    table.addView(header);
+//                }
+//            }
         }
 
         TableRow footer = (TableRow) getLayoutInflater().inflate(R.layout.card_response_footer, null);

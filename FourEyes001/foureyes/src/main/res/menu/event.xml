@@ -9,6 +9,18 @@
         android:title="Refresh"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/action_monitor"
+        android:icon="@drawable/ic_action_refresh"
+        android:orderInCategory="100"
+        android:title="Monitor Platform"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_smartcity"
+        android:icon="@drawable/ic_action_refresh"
+        android:orderInCategory="100"
+        android:title="SmartCity Platform"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_help"
         android:icon="@drawable/ic_action_help"
         android:orderInCategory="100"

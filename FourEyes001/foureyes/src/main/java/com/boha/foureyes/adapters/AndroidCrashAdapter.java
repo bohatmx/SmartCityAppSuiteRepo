@@ -79,7 +79,7 @@ public class AndroidCrashAdapter extends ArrayAdapter<ErrorStoreAndroidDTO> {
         final ErrorStoreAndroidDTO p = mList.get(position);
         vhItem.txtNum.setText("" + (position + 1));
         if (p.getMunicipality() == null) {
-            vhItem.txtCompanyName.setText("Unknown Municipality");
+            vhItem.txtCompanyName.setText("Unknown Owner");
         } else {
             vhItem.txtCompanyName.setText(p.getMunicipality().getMunicipalityName());
         }
