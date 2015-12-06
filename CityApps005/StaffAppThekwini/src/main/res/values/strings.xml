@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">StaffAppThekwini</string>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="choose_email">Select account for sign in</string>
-    <string name="photo_uploading">Alert photos are being uploaded ...</string>
-</resources>
