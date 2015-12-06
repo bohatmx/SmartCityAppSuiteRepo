@@ -17,5 +17,5 @@ eThekwini Metro Municipality | eThekwini Metro Municipality
 
 eThekwini Metro Municipality | eThekwini Metro Municipality
 ------------ | -------------
-![Alt text](/CityApps006/CitizenApp-eThekwini/screens/d5.png?raw=true "eThekwini App") | ![Alt text](/CityApps006/CitizenApp-eThekwini/screens/d9.png?raw=true "eThekwini App")
+![Alt text](/CityApps006/CitizenApp-eThekwini/screens/d5.png?raw=true "eThekwini App") | ![Alt text](/CityApps006/CitizenApp-eThekwini/screens/d8.png?raw=true "eThekwini App")
 
