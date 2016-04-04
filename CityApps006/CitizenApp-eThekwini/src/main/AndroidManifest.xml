@@ -7,6 +7,8 @@
         android:name="com.boha.citizenapp.ethekwini.gcm.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
+
+
     <uses-permission android:name="com.boha.citizenapp.ethekwini.gcm.permission.C2D_MESSAGE" />
 
     <!--
@@ -32,6 +34,7 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
 
         <!-- Activities -->
         <activity
@@ -158,8 +161,7 @@
 
         <activity
             android:name=".activities.AddressActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            >
+            android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
     </application>
 
