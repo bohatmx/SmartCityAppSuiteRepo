@@ -52,7 +52,7 @@ public class MuniContactsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_muni_contacts, menu);
+        //getMenuInflater().inflate(R.menu.menu_muni_contacts, menu);
         return true;
     }
 
@@ -64,9 +64,9 @@ public class MuniContactsActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+      /*  if (id == R.id.action_settings) {
             return true;
-        }
+        } */
 
         return super.onOptionsItemSelected(item);
     }

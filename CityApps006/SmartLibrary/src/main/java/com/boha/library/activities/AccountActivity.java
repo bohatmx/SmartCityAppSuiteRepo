@@ -3,6 +3,7 @@ package com.boha.library.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -116,17 +117,35 @@ public class AccountActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.fake_main, menu);
+        getMenuInflater().inflate(R.menu.menu_faq, menu);
         mMenu = menu;
         return true;
     }
 
+    static final int THEME_REQUESTED = 8075;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_refresh) {
-//            accountFragment.
+        if(id == com.boha.library.R.id.action_app_guide) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("http://etmobileguide.oneconnectgroup.com/"));
+            startActivity(intent);
+        }
+        if (id == com.boha.library.R.id.action_theme) {
+            Intent w = new Intent(this, ThemeSelectorActivity.class);
+            w.putExtra("darkColor", themeDarkColor);
+            startActivityForResult(w, THEME_REQUESTED);
+            return true;
+        }
+        if (id == R.id.action_info) {
+            Intent intent = new Intent(AccountActivity.this, GeneralInfoActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == com.boha.library.R.id.action_emergency) {
+            Intent intent = new Intent(AccountActivity.this, EmergencyContactsActivity.class);
+            startActivity(intent);
             return true;
         }
 

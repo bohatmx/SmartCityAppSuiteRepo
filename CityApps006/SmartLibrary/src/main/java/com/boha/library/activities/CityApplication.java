@@ -166,5 +166,6 @@ public class CityApplication extends Application {
             THEME_BROWN = 14,
             THEME_PURPLE = 15;
 
+
     static final String LOG = CityApplication.class.getSimpleName();
 }

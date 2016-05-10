@@ -4,7 +4,7 @@
     android:id="@+id/FAB_SEND"
     android:elevation="@dimen/mon_divider"
     android:padding="@dimen/mon_padding"
-    android:background="@drawable/xred_oval_large"
+    android:background="@drawable/xblue_oval_large"
     android:layout_width="56dp"
     android:layout_height="56dp">
 

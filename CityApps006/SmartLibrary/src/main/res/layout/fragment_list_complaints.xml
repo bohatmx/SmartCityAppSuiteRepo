@@ -55,6 +55,23 @@
             android:visibility="gone" />
 
     </RelativeLayout>
+  <!--  <RelativeLayout
+        android:id="@+id/FLC_SEARCH_LAY"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/FLC_titleLayout"
+        android:background="@color/white">
+        <ImageView
+            android:id="@+id/FLC_SEARCH_ICON"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_search"/>
+        <AutoCompleteTextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/FLC_SEARCH_ICON"
+            android:id="@+id/autocomplete_complaints"/>
+    </RelativeLayout> -->
 
     <RelativeLayout
         android:layout_width="match_parent"

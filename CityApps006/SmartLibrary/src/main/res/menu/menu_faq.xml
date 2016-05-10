@@ -2,16 +2,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.boha.library.activities.FaqActivity">
-    <item
-        android:id="@+id/action_refresh"
+
+    <item android:id="@+id/action_app_guide"
+        android:title="Smartcity Guide"
         android:orderInCategory="100"
-        android:title="Refresh"
-        android:icon="@drawable/ic_action_refresh"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/action_help"
+        app:showAsAction="never"/>
+
+  <!--  <item
+        android:id="@+id/action_theme"
+        android:title="Set Appearance Colours"
+        android:icon="@drawable/ic_action_slideshow"
         android:orderInCategory="100"
-        android:title="Refresh"
-        android:icon="@drawable/ic_action_help"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" /> -->
+    <item
+        android:id="@+id/action_info"
+        android:title="General Info"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_emergency"
+        android:title="Emergency Contacts"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
 </menu>

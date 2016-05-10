@@ -16,7 +16,7 @@
 
         <Button
             android:id="@+id/button"
-            android:text="Account Detail"
+            android:text="My Account Detail"
             android:padding="@dimen/mon_margin"
             android:background="@color/red_800"
             android:layout_gravity="center"

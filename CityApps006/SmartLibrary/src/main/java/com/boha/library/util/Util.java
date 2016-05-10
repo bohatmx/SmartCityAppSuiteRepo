@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.boha.library.R;
+import com.boha.library.activities.EmergencyContactsActivity;
 import com.boha.library.activities.MuniContactsActivity;
 import com.boha.library.adapters.ComplaintCategoryPopupListAdapter;
 import com.boha.library.adapters.ComplaintTypePopupListAdapter;
@@ -160,7 +161,7 @@ public class Util {
                 Util.flashOnce(logo, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        Intent w = new Intent(ctx, MuniContactsActivity.class);
+                        Intent w = new Intent(ctx, EmergencyContactsActivity.class);
                         w.putExtra("logo", logoInt);
                         w.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         ctx.startActivity(w);
@@ -174,7 +175,7 @@ public class Util {
                 Util.flashOnce(txt, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        Intent w = new Intent(ctx, MuniContactsActivity.class);
+                        Intent w = new Intent(ctx, EmergencyContactsActivity.class);
                         w.putExtra("logo", logoInt);
                         w.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         ctx.startActivity(w);

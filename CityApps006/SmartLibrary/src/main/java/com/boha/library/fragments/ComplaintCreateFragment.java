@@ -573,10 +573,16 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                         timer.purge();
                         timer.cancel();
                         hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+                        Util.expand(hero, 1000, new Util.UtilAnimationListener() {
+                            @Override
+                            public void onAnimationEnded() {
+                                Util.flashOnce(icon, 300, null);
+                            }
+                        });
                     }
                 });
             }
-        }, 5);
+        }, 500);
     }
 
     public void killTimer() {

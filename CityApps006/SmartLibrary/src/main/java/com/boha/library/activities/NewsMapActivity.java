@@ -136,12 +136,15 @@ public class NewsMapActivity extends AppCompatActivity {
         primaryColor = getIntent().getIntExtra("primaryColor",R.color.teal_500);
         darkColor = getIntent().getIntExtra("primaryColor",R.color.teal_700);
         municipality = SharedUtil.getMunicipality(getApplicationContext());
+
         ActionBar actionBar = getSupportActionBar();
         if (logo != 0) {
             Drawable d = ctx.getResources().getDrawable(logo);
-            Util.setCustomActionBarNoAction(ctx,
+            Util.setCustomActionBar(ctx,
                     actionBar,
-                    municipality.getMunicipalityName(), d);
+                    municipality.getMunicipalityName(),
+                    ContextCompat.getDrawable(ctx, R.drawable.elogo), logo);
+
         } else {
             getSupportActionBar().setTitle(municipality.getMunicipalityName());
         }
@@ -433,17 +436,41 @@ public class NewsMapActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu, menu);
+        getMenuInflater().inflate(R.menu.menu_faq, menu);
+        mMenu = menu;
         return true;
     }
+    int themeDarkColor;
 
+    Menu mMenu;
+    static final int THEME_REQUESTED = 8075;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+
+        if(id == com.boha.library.R.id.action_app_guide) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("http://etmobileguide.oneconnectgroup.com/"));
+            startActivity(intent);
+        }
+     //   if (id == com.boha.library.R.id.action_theme) {
+      //      item.set
+        //    Intent w = new Intent(this, ThemeSelectorActivity.class);
+        //    w.putExtra("darkColor", themeDarkColor);
+        //    startActivityForResult(w, THEME_REQUESTED);
+     //       return true;
+      //  }
+        if (id == R.id.action_info) {
+            Intent intent = new Intent(NewsMapActivity.this, GeneralInfoActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == com.boha.library.R.id.action_emergency) {
+            Intent intent = new Intent(NewsMapActivity.this, EmergencyContactsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

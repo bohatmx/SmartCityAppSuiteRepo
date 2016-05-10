@@ -1,7 +1,12 @@
 package com.boha.library.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,9 +14,12 @@ import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.boha.library.R;
+import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.util.CommsUtil;
+import com.boha.library.util.SharedUtil;
+import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 
 public class NewsDetailActivity extends AppCompatActivity {
@@ -20,10 +28,34 @@ public class NewsDetailActivity extends AppCompatActivity {
     NewsArticleDTO newsArticle;
     TextView txtHeader;
     private static final String TEXT = "text/html", UTF = "UTF-8";
+    int darkColor, primaryColor, logo;
+    MunicipalityDTO municipality;
+    Context ctx;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeChooser.setTheme(this);
         setContentView(R.layout.web);
+        ctx = getApplicationContext();
+
+        logo = getIntent().getIntExtra("logo",R.drawable.elogo);
+        primaryColor = getIntent().getIntExtra("primaryColor",R.color.teal_500);
+        darkColor = getIntent().getIntExtra("primaryColor",R.color.teal_700);
+        municipality = SharedUtil.getMunicipality(getApplicationContext());
+
+        ActionBar actionBar = getSupportActionBar();
+        if (logo != 0) {
+            Drawable d = ctx.getResources().getDrawable(logo);
+            Util.setCustomActionBar(ctx,
+                    actionBar,
+                    municipality.getMunicipalityName(),
+                    ContextCompat.getDrawable(ctx, R.drawable.elogo), logo);
+
+        } else {
+            getSupportActionBar().setTitle(municipality.getMunicipalityName());
+        }
+
         webView = (WebView)findViewById(R.id.webView);
         txtHeader = (TextView)findViewById(R.id.title);
 
@@ -46,6 +78,7 @@ public class NewsDetailActivity extends AppCompatActivity {
                     public void run() {
                         setRefreshActionButtonState(false);
                         webView.loadData(data, TEXT, UTF);
+
                     }
                 });
 
@@ -101,10 +134,25 @@ public class NewsDetailActivity extends AppCompatActivity {
             getDetailData();
             return true;
         }
-        if (id == R.id.action_help) {
-            Util.showToast(getApplicationContext(),getString(R.string.under_cons));
+        if (id == R.id.action_app_guide) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("http://etmobileguide.oneconnectgroup.com/"));
+            startActivity(intent);
+        }
+        if (id == R.id.action_info) {
+            Intent intent = new Intent(NewsDetailActivity.this, GeneralInfoActivity.class);
+            startActivity(intent);
             return true;
         }
+        if (id == com.boha.library.R.id.action_emergency) {
+            Intent intent = new Intent(NewsDetailActivity.this, EmergencyContactsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+       /* if (id == R.id.action_help) {
+            Util.showToast(getApplicationContext(),getString(R.string.under_cons));
+            return true;
+        } */
 
         return super.onOptionsItemSelected(item);
     }

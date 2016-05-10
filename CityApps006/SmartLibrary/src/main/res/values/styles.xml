@@ -429,6 +429,12 @@
         <item name="android:background">@color/blue</item>
     </style>
 
+    <style name="ButtonGrey" parent="@android:style/TextAppearance.Small">
+       <!-- <item name="android:textColor">@color/white</item> -->
+        <item name="android:textStyle">normal</item>
+        <item name="android:background">@color/grey</item>
+    </style>
+
     <style name="ButtonNavyBlueSmall" parent="@android:style/TextAppearance.Medium">
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">normal</item>
@@ -584,6 +590,7 @@
         <item name="android:textSize">12sp</item>
         <item name="android:background">@drawable/xgreen_oval_small</item>
     </style>
+
 
     <style name="GreenCircleLarge" parent="@android:style/TextAppearance.Small">
         <item name="android:textColor">@color/white</item>

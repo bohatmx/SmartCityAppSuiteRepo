@@ -118,7 +118,7 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
         }
         txtArrears.setText(currency + df.format(totArrears));
         txtBalance.setText(currency + df.format(totBalance));
-        btnAccountDetails.setText("Account Details & Payment");
+        btnAccountDetails.setText("My Account Details & Payment");
         txtComplaints.setText("0");
         txtResolved.setText("");
         if (complaintList != null) {

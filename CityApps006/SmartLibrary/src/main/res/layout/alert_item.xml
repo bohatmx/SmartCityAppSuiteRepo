@@ -64,7 +64,7 @@
                 android:id="@+id/AI_date"
                 android:layout_toLeftOf="@id/AI_time"
                 android:layout_centerVertical="true"
-                style="@style/Title3TextStyleGrey"
+                style="@style/Title3TextStyleBlue"
                 android:text="23 December 2091"
                 android:layout_marginRight="@dimen/mon_margin"
                 android:layout_width="wrap_content"

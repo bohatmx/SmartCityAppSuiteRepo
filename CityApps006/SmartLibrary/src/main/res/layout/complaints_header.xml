@@ -40,6 +40,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_search"
+
+            app:borderWidth="0dp"
+            app:rippleColor="@color/blue_200"
+            app:backgroundTint="@color/blue_800"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
 
     </RelativeLayout>
     <com.dd.ShadowLayout
@@ -76,20 +89,5 @@
                 android:layout_height="wrap_content" />
         </RelativeLayout>
     </com.dd.ShadowLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_search"
-        android:layout_marginTop="64dp"
-        android:layout_marginRight="@dimen/mon_wide"
-        android:layout_alignParentRight="true"
-
-        app:borderWidth="0dp"
-        app:rippleColor="@color/blue_200"
-        app:backgroundTint="@color/blue_800"
-        app:elevation="@dimen/mon_margin"
-        app:pressedTranslationZ="@dimen/mon_wide"/>
 
 </RelativeLayout>

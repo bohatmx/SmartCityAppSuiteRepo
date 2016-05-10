@@ -12,9 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.boha.library.R;
+import com.boha.library.activities.CityApplication;
+import com.boha.library.activities.ThemeSelectorActivity;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintTypeDTO;
 import com.boha.library.dto.ComplaintUpdateStatusDTO;
+import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 import com.squareup.picasso.Picasso;
 
@@ -129,6 +132,8 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
         }
 
 
+
+
         if (p.getComplaintType() != null) {
             if (p.getComplaintType().getColor() != null) {
                 switch (p.getComplaintType().getColor()) {
@@ -142,13 +147,61 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
                         item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xred_oval_small));
                         break;
                     default:
-                        item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xred_oval_small));
+                         item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xred_oval_small));
                         break;
                 }
             } else {
                 item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xred_oval_small));
+
             }
         }
+
+        switch(position) {
+            case CityApplication.THEME_INDIGO:
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xindigo_oval_small));
+                break;
+            case CityApplication.THEME_GREEN:
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xgreen_oval_small));
+                break;
+            case CityApplication.THEME_BROWN:
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xbrown_oval_small));
+                break;
+            case CityApplication.THEME_AMBER:
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xamber_oval_small));
+                break;
+            case CityApplication.THEME_PURPLE:
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xpurple_oval_small));
+                break;
+            case CityApplication.THEME_LIME:
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xlime_oval_small));
+                break;
+            case CityApplication.THEME_GREY:
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xgrey_oval_small));
+                break;
+            case CityApplication.THEME_BLUE:
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xblue_oval_small));
+                break;
+            case CityApplication.THEME_BLUE_GRAY:
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xblue_gray_oval_small));
+                break;
+            case CityApplication.THEME_TEAL:
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xteal_oval_small));
+                break;
+            case CityApplication.THEME_CYAN:
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xcyan_oval_small));
+                break;
+            case CityApplication.THEME_ORANGE:
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xorange_oval_small));
+                break;
+            case CityApplication.THEME_PINK:
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xpink_oval_small));
+                break;
+            case CityApplication.THEME_RED:
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xred_oval_small));
+                break;
+        }
+
+
         if (p.getComplaintImageList() != null && !p.getComplaintImageList().isEmpty()) {
             item.image.setVisibility(View.VISIBLE);
             String url = p.getComplaintImageList().get(0).getUrl();
@@ -215,6 +268,17 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
             item.statusLayout.setVisibility(View.GONE);
         }
 
+
+      /*  switch (checkTheme) {
+            case CityApplication.THEME_INDIGO:
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xindigo_oval_small));
+                break;
+            case CityApplication.THEME_BLUE:
+                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xblue_oval_small));
+                break;
+        } */
+
+        item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xindigo_oval_small));
         item.iconCamera.setColorFilter(darkColor, PorterDuff.Mode.SRC_IN);
         item.iconDetails.setColorFilter(darkColor, PorterDuff.Mode.SRC_IN);
         item.iconFollow.setColorFilter(darkColor, PorterDuff.Mode.SRC_IN);
@@ -234,6 +298,11 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
         Util.scaleDownAndUp(convertView, 300);
         return (convertView);
     }
+
+    public void setDrawableColor(int index){
+
+    }
+    int checkTheme;
 
 
     public interface ComplaintListListener {

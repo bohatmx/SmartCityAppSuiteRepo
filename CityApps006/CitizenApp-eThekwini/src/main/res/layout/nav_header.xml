@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="Navigation Header Text"
+        android:text="eThekwini Visitor"
         android:layout_marginBottom="@dimen/mon_margin"
         android:layout_marginLeft="@dimen/mon_margin"
 

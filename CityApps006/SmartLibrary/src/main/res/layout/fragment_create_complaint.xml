@@ -22,7 +22,7 @@
             <ImageView
                 android:id="@+id/CC_hero"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/mon_hero_height_small"
+                android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/back6" />
 
@@ -120,7 +120,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
-                        android:hint="@string/enter_detail"
+                        android:hint="@string/enter_detail2"
                         android:inputType="textCapSentences" />
 
                     <TextView
@@ -143,7 +143,7 @@
                         <TextView
                             android:id="@+id/CC_labelNumber"
                             style="@style/TextStyleSmall"
-                            android:layout_width="60dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:text="Number: " />
@@ -168,7 +168,7 @@
                         <TextView
                             android:id="@+id/CC_labelStreet"
                             style="@style/TextStyleSmall"
-                            android:layout_width="60dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:text="Street: " />
@@ -193,7 +193,7 @@
                         <TextView
                             android:id="@+id/CC_labelSuburb"
                             style="@style/TextStyleSmall"
-                            android:layout_width="60dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:text="Suburb: " />
@@ -218,7 +218,7 @@
                         <TextView
                             android:id="@+id/CC_labelCity"
                             style="@style/TextStyleSmall"
-                            android:layout_width="60dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:text="City/Town: " />

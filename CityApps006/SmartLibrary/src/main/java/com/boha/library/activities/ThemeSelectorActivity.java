@@ -2,8 +2,10 @@ package com.boha.library.activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -11,8 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.boha.library.R;
+import com.boha.library.adapters.NewsListAdapter;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
@@ -20,7 +24,7 @@ import com.boha.library.util.Util;
 
 public class ThemeSelectorActivity extends AppCompatActivity {
 
-    View indigo, blue, blueGray, teal, pink, orange, red, cyan,
+    View indigo, blue, blueGray, teal, pink, orange, red, cyan, view,
     green, brown, amber, grey, purple, lime;
     Activity activity;
     Context ctx;
@@ -49,6 +53,7 @@ public class ThemeSelectorActivity extends AppCompatActivity {
         }
     }
 
+
     private void setFields() {
         indigo = findViewById(R.id.TC_indigoLayout);
         blue = findViewById(R.id.TC_blueLayout);
@@ -73,9 +78,11 @@ public class ThemeSelectorActivity extends AppCompatActivity {
                     public void onAnimationEnded() {
 
                         changeToTheme(CityApplication.THEME_INDIGO);
+
                     }
                 });
             }
+
         });
         blue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +92,7 @@ public class ThemeSelectorActivity extends AppCompatActivity {
                     public void onAnimationEnded() {
 
                         changeToTheme(CityApplication.THEME_BLUE);
+
                     }
                 });
             }
@@ -97,6 +105,7 @@ public class ThemeSelectorActivity extends AppCompatActivity {
                     public void onAnimationEnded() {
 
                         changeToTheme(CityApplication.THEME_BLUE_GRAY);
+
                     }
                 });
             }
@@ -109,6 +118,7 @@ public class ThemeSelectorActivity extends AppCompatActivity {
                     public void onAnimationEnded() {
 
                         changeToTheme(CityApplication.THEME_TEAL);
+
                     }
                 });
             }
@@ -121,6 +131,7 @@ public class ThemeSelectorActivity extends AppCompatActivity {
                     public void onAnimationEnded() {
 
                         changeToTheme(CityApplication.THEME_ORANGE);
+
                     }
                 });
             }
@@ -133,6 +144,7 @@ public class ThemeSelectorActivity extends AppCompatActivity {
                     public void onAnimationEnded() {
 
                         changeToTheme(CityApplication.THEME_PINK);
+
                     }
                 });
             }
@@ -145,6 +157,7 @@ public class ThemeSelectorActivity extends AppCompatActivity {
                     public void onAnimationEnded() {
 
                         changeToTheme(CityApplication.THEME_RED);
+
                     }
                 });
             }
@@ -157,6 +170,7 @@ public class ThemeSelectorActivity extends AppCompatActivity {
                     public void onAnimationEnded() {
 
                         changeToTheme(CityApplication.THEME_CYAN);
+
                     }
                 });
             }
@@ -169,6 +183,7 @@ public class ThemeSelectorActivity extends AppCompatActivity {
                     public void onAnimationEnded() {
 
                         changeToTheme(CityApplication.THEME_GREEN);
+
                     }
                 });
             }
@@ -181,7 +196,9 @@ public class ThemeSelectorActivity extends AppCompatActivity {
                     public void onAnimationEnded() {
 
                         changeToTheme(CityApplication.THEME_AMBER);
-                    }
+
+
+                        }
                 });
             }
         });
@@ -193,6 +210,7 @@ public class ThemeSelectorActivity extends AppCompatActivity {
                     public void onAnimationEnded() {
 
                         changeToTheme(CityApplication.THEME_BROWN);
+
                     }
                 });
             }
@@ -205,6 +223,7 @@ public class ThemeSelectorActivity extends AppCompatActivity {
                     public void onAnimationEnded() {
 
                         changeToTheme(CityApplication.THEME_GREY);
+
                     }
                 });
             }
@@ -217,6 +236,7 @@ public class ThemeSelectorActivity extends AppCompatActivity {
                     public void onAnimationEnded() {
 
                         changeToTheme(CityApplication.THEME_LIME);
+
                     }
                 });
             }
@@ -229,6 +249,7 @@ public class ThemeSelectorActivity extends AppCompatActivity {
                     public void onAnimationEnded() {
 
                         changeToTheme(CityApplication.THEME_PURPLE);
+
                     }
                 });
             }
@@ -258,7 +279,7 @@ public class ThemeSelectorActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_theme_selector, menu);
+        //getMenuInflater().inflate(R.menu.menu_theme_selector, menu);
         return true;
     }
 
@@ -270,9 +291,9 @@ public class ThemeSelectorActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+     /*   if (id == R.id.action_settings) {
             return true;
-        }
+        } */
 
         return super.onOptionsItemSelected(item);
     }

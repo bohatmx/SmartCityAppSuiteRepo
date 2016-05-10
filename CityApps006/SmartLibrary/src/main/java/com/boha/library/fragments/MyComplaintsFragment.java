@@ -9,6 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -28,6 +32,7 @@ import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 import com.squareup.leakcanary.RefWatcher;
 
+import java.security.AccessController;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -61,7 +66,7 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     List<String> stringList;
     Activity activity;
     View topView;
-    ImageView hero, noCompImage;
+    ImageView hero, noCompImage, searchIcon;
     TextView txtNoComp;
     ProgressBar progressBar;
 
@@ -103,6 +108,8 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     }
 
     ComplaintListAdapter adapter;
+    private AutoCompleteTextView autoComplete;
+    List <String> complaintNameList;
 
     private void setList() {
         if (complaintList == null) {
@@ -113,6 +120,46 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
             txtNoComp.setVisibility(View.GONE);
         }
         txtCount.setText("" + complaintList.size());
+
+        //complaints search
+      /*  if (complaintList.size() > 5) {
+            complaintNameList = new ArrayList<>(complaintList.size());
+            for (ComplaintDTO c : complaintList) {
+                complaintNameList.add(c.getCategory());
+            }
+            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(ctx,
+                    R.layout.xxsimple_spinner_item, complaintNameList);
+            autoComplete.setAdapter(adapter);
+            autoComplete.setHint("Search for complaint");
+            autoComplete.setThreshold(1);
+            autoComplete.setVisibility(View.VISIBLE);
+
+            autoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
+
+                    hideKeyboard();
+                    listView.smoothScrollToPosition(i);
+                    autoComplete.setText("");
+
+                    int index = 0;
+                   // String name = adapter.getItem(i);
+                    for (ComplaintDTO com : complaintList) {
+                        if (com.getComplaintType().getCategoryName().equalsIgnoreCase(""));
+                        listView.smoothScrollToPosition(index);
+                        autoComplete.setText("");
+                        break;
+                    }
+                    index++;
+                }
+            });
+        } else {
+            autoComplete.setVisibility(View.GONE);
+        }*/
+
+
+
+
 
         adapter = new ComplaintListAdapter(ctx, R.layout.my_complaint_item, primaryDarkColor,
                 ComplaintListAdapter.MY_COMPLAINTS,
@@ -144,6 +191,18 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
         listView.setAdapter(adapter);
 
     }
+
+    /*private void filterComplaints() {
+        List<ComplaintDTO> compList = new ArrayList<ComplaintDTO>();
+        ComplaintDTO complaint = new ComplaintDTO();
+        compList.add(complaint);
+        for (int i = 0; i < 5; i++) {
+            complaint = new ComplaintDTO();
+            compList.add(complaint);
+            complaint = new ComplaintDTO();
+
+        }
+    }*/
 
     private void underConstruction() {
         Util.showToast(ctx, getString(R.string.under_cons));
@@ -216,8 +275,12 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
         txtNoComp = (TextView) view.findViewById(R.id.FLC_noComplaints);
         noCompImage = (ImageView) view.findViewById(R.id.FLC_image);
         listView = (ListView) view.findViewById(R.id.FLC_listView);
-
-
+       /* autoComplete = (AutoCompleteTextView) view.findViewById(R.id.autocomplete_complaints);
+        if (autoComplete != null) {
+            hideKeyboard();
+        }
+        searchIcon = (ImageView) view.findViewById(R.id.FLC_SEARCH_ICON);
+        */
         txtTitle.setText(ctx.getString(R.string.my_complaints));
         txtSubTitle.setText(getString(R.string.history));
 
@@ -270,6 +333,13 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
 //                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy10));
 //                return;
 //        }
+    }
+
+    private void hideKeyboard() {
+            //ctx should be getContext
+        InputMethodManager imm = (InputMethodManager) ctx
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(autoComplete.getWindowToken(), 0);
     }
 
     @Override

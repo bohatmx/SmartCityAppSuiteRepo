@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/TOP_label"
-                android:text="Statements"
+                android:text="Download Statements"
                 style="@style/TextStyleSmall"
                 android:padding="@dimen/mon_divider_small"
                 android:background="@color/transparent_black"
@@ -71,6 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="136dp"
+        android:visibility="gone"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="@dimen/mon_wide"
         android:src="@android:drawable/ic_menu_search"

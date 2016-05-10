@@ -92,7 +92,7 @@
                         android:layout_gravity="center"
                         android:background="@color/red_800"
                         android:padding="@dimen/mon_margin"
-                        android:text="Account Detail"
+                        android:text="Account Details"
                         android:textColor="@color/white" />
                 </com.dd.ShadowLayout>
 
