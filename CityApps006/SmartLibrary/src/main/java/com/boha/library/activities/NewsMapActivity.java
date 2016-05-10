@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -72,7 +73,9 @@ public class NewsMapActivity extends AppCompatActivity {
     // Unique tag for the error dialog fragment
     private static final String DIALOG_ERROR = "dialog_error";
 
-    int index;
+    int index, darkColor, primaryColor;
+    MunicipalityDTO municipality;
+
     TextView text, txtCount;
     ImageView iconCollapse;
     View topLayout, mapInfo;
@@ -93,6 +96,7 @@ public class NewsMapActivity extends AppCompatActivity {
         displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay()
                 .getMetrics(displayMetrics);
+
 
         ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_maps);
@@ -128,14 +132,16 @@ public class NewsMapActivity extends AppCompatActivity {
             return;
         }
 
-        MunicipalityDTO municipality = SharedUtil.getMunicipality(ctx);
-        logo = getIntent().getIntExtra("logo", 0);
+        logo = getIntent().getIntExtra("logo",R.drawable.elogo);
+        primaryColor = getIntent().getIntExtra("primaryColor",R.color.teal_500);
+        darkColor = getIntent().getIntExtra("primaryColor",R.color.teal_700);
+        municipality = SharedUtil.getMunicipality(getApplicationContext());
+        ActionBar actionBar = getSupportActionBar();
         if (logo != 0) {
-            Drawable d = ContextCompat.getDrawable(ctx, logo);
-            Util.setCustomActionBar(ctx,
-                    getSupportActionBar(),
-                    municipality.getMunicipalityName(), d, logo);
-            getSupportActionBar().setTitle("");
+            Drawable d = ctx.getResources().getDrawable(logo);
+            Util.setCustomActionBarNoAction(ctx,
+                    actionBar,
+                    municipality.getMunicipalityName(), d);
         } else {
             getSupportActionBar().setTitle(municipality.getMunicipalityName());
         }
