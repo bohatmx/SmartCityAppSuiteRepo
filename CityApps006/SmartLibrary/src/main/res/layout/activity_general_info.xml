@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.boha.library.activities.GeneralInfoActivity"
+    android:padding="@dimen/mon_padding">
+
+
+
+        <ImageView
+            android:id="@+id/GEN_hero"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:src="@drawable/back8"
+            android:scaleType="centerCrop"/>
+
+        <TextView
+            android:layout_below="@+id/GEN_hero"
+            android:id="@+id/GEN_txt_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:textColor="@color/black"
+            android:text="@string/general_info_title"/>
+
+    <ScrollView
+        android:layout_below="@+id/GEN_txt_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/GEN_SCROLL">
+
+        <RelativeLayout
+            android:id="@+id/general_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/GEN_txt"
+                android:textSize="@dimen/emergency_text_size"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/first_gen_paragraph"/>
+            <TextView
+                android:id="@+id/GEN_txt2"
+                android:textSize="@dimen/emergency_text_size"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/GEN_txt"
+                android:text="@string/report_electricity_outages"/>
+            <TextView
+                android:id="@+id/GEN_txt3"
+                android:textSize="@dimen/emergency_text_size"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/GEN_txt2"
+                android:text="@string/no_water"/>
+            <TextView
+                android:id="@+id/GEN_txt4"
+                android:textSize="@dimen/emergency_text_size"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/GEN_txt3"
+                android:text="@string/missing_manhole_covers"/>
+            <TextView
+                android:id="@+id/GEN_txt5"
+                android:textSize="@dimen/emergency_text_size"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/GEN_txt4"
+                android:text="@string/potholes"/>
+            <TextView
+                android:id="@+id/GEN_txt6"
+                android:textSize="@dimen/emergency_text_size"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/GEN_txt5"
+                android:text="@string/broken_traffic_lights"/>
+            <TextView
+                android:id="@+id/GEN_txt7"
+                android:textSize="@dimen/emergency_text_size"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/GEN_txt6"
+                android:text="@string/noise"/>
+            <TextView
+                android:id="@+id/GEN_txt8"
+                android:textSize="@dimen/emergency_text_size"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/GEN_txt7"
+                android:text="@string/burst_water_pipe"/>
+            <TextView
+                android:id="@+id/GEN_txt9"
+                android:textSize="@dimen/emergency_text_size"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/GEN_txt8"
+                android:text="@string/high_bill"/>
+            <TextView
+                android:id="@+id/GEN_txt10"
+                android:textSize="@dimen/emergency_text_size"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/GEN_txt9"
+                android:text="@string/illegal_dumping"/>
+            <TextView
+                android:id="@+id/GEN_txt11"
+                android:textSize="@dimen/emergency_text_size"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/GEN_txt10"
+                android:text="@string/view_complaints_around_you"/>
+
+            <TextView
+                android:id="@+id/GEN_txt12"
+                android:textSize="@dimen/emergency_text_size"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/GEN_txt11"
+                android:text="@string/second_gen_paragraph"/>
+
+        </RelativeLayout>
+
+      </ScrollView>
+
+</RelativeLayout>

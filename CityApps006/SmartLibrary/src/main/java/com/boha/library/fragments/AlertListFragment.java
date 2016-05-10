@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,7 +92,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_alert_list, container, false);
 
-        topView = inflater.inflate(R.layout.alert_top, null);
+      //  topView = inflater.inflate(R.layout.alert_top, null);
 
         ctx = getActivity();
         setFields();
@@ -99,6 +100,51 @@ public class AlertListFragment extends Fragment implements PageFragment {
             setList();
         } else {
             getCachedAlerts();
+        }
+
+        switch(primaryColor) {
+            case CityApplication.THEME_INDIGO:
+                view.findViewById(R.id.AI_color).setBackground(ContextCompat.getDrawable(ctx, R.drawable.xindigo_oval_small));
+                break;
+            case CityApplication.THEME_GREEN:
+                view.findViewById(R.id.AI_color).setBackground(ContextCompat.getDrawable(ctx, R.drawable.xgreen_oval_small));
+                break;
+            case CityApplication.THEME_BROWN:
+                view.findViewById(R.id.AI_color).setBackground(ContextCompat.getDrawable(ctx, R.drawable.xbrown_oval_small));
+                break;
+            case CityApplication.THEME_AMBER:
+                view.findViewById(R.id.AI_color).setBackground(ContextCompat.getDrawable(ctx, R.drawable.xamber_oval_small));
+                break;
+            case CityApplication.THEME_PURPLE:
+                view.findViewById(R.id.AI_color).setBackground(ContextCompat.getDrawable(ctx, R.drawable.xpurple_oval_small));
+                break;
+            case CityApplication.THEME_LIME:
+                view.findViewById(R.id.AI_color).setBackground(ContextCompat.getDrawable(ctx, R.drawable.xlime_oval_small));
+                break;
+            case CityApplication.THEME_GREY:
+                view.findViewById(R.id.AI_color).setBackground(ContextCompat.getDrawable(ctx, R.drawable.xgrey_oval_small));
+                break;
+            case CityApplication.THEME_BLUE:
+                view.findViewById(R.id.AI_color).setBackground(ContextCompat.getDrawable(ctx, R.drawable.xblue_oval_small));
+                break;
+            case CityApplication.THEME_BLUE_GRAY:
+                view.findViewById(R.id.AI_color).setBackground(ContextCompat.getDrawable(ctx, R.drawable.xblue_gray_oval_small));
+                break;
+            case CityApplication.THEME_TEAL:
+                view.findViewById(R.id.AI_color).setBackground(ContextCompat.getDrawable(ctx, R.drawable.xteal_oval_small));
+                break;
+            case CityApplication.THEME_CYAN:
+                view.findViewById(R.id.AI_color).setBackground(ContextCompat.getDrawable(ctx, R.drawable.xcyan_oval_small));
+                break;
+            case CityApplication.THEME_ORANGE:
+                view.findViewById(R.id.AI_color).setBackground(ContextCompat.getDrawable(ctx, R.drawable.xorange_oval_small));
+                break;
+            case CityApplication.THEME_PINK:
+                view.findViewById(R.id.AI_color).setBackground(ContextCompat.getDrawable(ctx, R.drawable.xpink_oval_small));
+                break;
+            case CityApplication.THEME_RED:
+                view.findViewById(R.id.AI_color).setBackground(ContextCompat.getDrawable(ctx, R.drawable.xred_oval_small));
+                break;
         }
 
         return view;
@@ -115,11 +161,11 @@ public class AlertListFragment extends Fragment implements PageFragment {
         Statics.setRobotoFontLight(ctx, txtEmpty);
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         listView = (ListView) view.findViewById(R.id.ALERT_LIST_listView);
-        heroImage = (ImageView) topView.findViewById(R.id.ALERT_LIST_heroImage);
+        heroImage = (ImageView) view.findViewById(R.id.FAL_hero);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
-        txtTitle = (TextView) topView.findViewById(R.id.ALERT_LIST_title);
-        txtTitle.setText(ctx.getResources().getText(R.string.active_alerts));
+       // txtTitle = (TextView) topView.findViewById(R.id.ALERT_LIST_title);
+       // txtTitle.setText(ctx.getResources().getText(R.string.active_alerts));
 
         ctx = getActivity();
         fab.setOnClickListener(new View.OnClickListener() {
@@ -275,7 +321,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
         }
         if (listView.getHeaderViewsCount() == 0) {
             heroImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-            listView.addHeaderView(topView);
+         //   listView.addHeaderView(topView);
         }
         listView.setAdapter(alertListAdapter);
     }
@@ -315,14 +361,19 @@ public class AlertListFragment extends Fragment implements PageFragment {
                         @Override
                         public void run() {
                             timer.cancel();
-
                             heroImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+                            Util.expand(heroImage, 1000, new Util.UtilAnimationListener() {
+                                @Override
+                                public void onAnimationEnded() {
+                                    Util.flashOnce(fab, 300, null);
+                                }
+                            });
 
                         }
                     });
                 }
             }
-        }, 50);
+        }, 500);
 
     }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.boha.citizenapp.ethekwini" >
+    package="com.boha.citizenapp.ethekwini">
 
     <permission
         android:name="com.boha.citizenapp.ethekwini.gcm.permission.C2D_MESSAGE"
@@ -19,18 +19,19 @@
         RELEASE_KEY: AIzaSyCi7zV2Tc8ItuEXho4Jda1Y-Xh4IyqlkG4
         4F:72:A0:21:0F:AD:8D:6B:EC:B5:83:49:13:CB:64:75:74:62:1A:A7;com.boha.citizenapp.ethekwini
     -->
+    <!-- Machine Api key: AIzaSyBHqQLIZoSu4oZ5HR9E9629G6RVyeLUcBY -->
     <application
         android:name="com.boha.library.activities.CityApplication"
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@style/BlueThemeOne"
-        tools:replace="android:theme" >
+        tools:replace="android:theme">
 
         <!-- Keys and metadata -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCi7zV2Tc8ItuEXho4Jda1Y-Xh4IyqlkG4" />
+            android:value="AIzaSyBHqQLIZoSu4oZ5HR9E9629G6RVyeLUcBY" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -40,7 +41,7 @@
         <activity
             android:name=".activities.SplashActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -75,18 +76,15 @@
         <activity
             android:name="com.boha.library.activities.FaqActivity"
             android:parentActivityName=".activities.CitizenDrawerActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.boha.library.activities.NewsDetailActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SigninActivity"
             android:parentActivityName=".activities.SplashActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
         <activity
             android:name="com.boha.library.activities.AlertPictureGridActivity"
             android:screenOrientation="portrait" />
@@ -103,44 +101,54 @@
         <activity
             android:name="com.boha.library.activities.StatementActivity"
             android:parentActivityName="com.boha.library.activities.AccountActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.boha.library.activities.MuniContactsActivity"
             android:parentActivityName=".activities.CitizenDrawerActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.boha.library.activities.AccountDetailActivity"
-            android:parentActivityName=".activities.CitizenDrawerActivity" >
-        </activity>
+            android:parentActivityName=".activities.CitizenDrawerActivity" />
         <activity
             android:name="com.boha.library.activities.AlertDetailActivity"
-            android:parentActivityName=".activities.CitizenDrawerActivity" >
-        </activity>
+            android:parentActivityName=".activities.CitizenDrawerActivity" />
+        <activity
+            android:name="com.boha.library.activities.FaqTypeActivity"
+            android:parentActivityName=".activities.CitizenDrawerActivity" />
+        <activity
+            android:name="com.boha.library.activities.GeneralInfoActivity"
+            android:parentActivityName=".activities.CitizenDrawerActivity" />
+        <activity
+            android:name="com.boha.library.activities.EmergencyContactsActivity"
+            android:parentActivityName=".activities.CitizenDrawerActivity" />
+        <activity
+            android:name="com.boha.library.activities.ThemeSelectorActivity"
+            android:label="@string/title_activity_theme_selector"
+            android:parentActivityName=".activities.CitizenDrawerActivity" />
 
         <!-- RECEIVERS and SERVICES -->
 
         <service
             android:name="com.boha.library.services.GCMDeviceService"
-            android:exported="false" >
-        </service>
+            android:exported="false" />
 
         <!-- SERVICES -->
         <service android:name="com.boha.library.services.RegistrationIntentService" />
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
                 <category android:name="com.boha.citizenapp.ethekwini" />
             </intent-filter>
         </receiver>
+
         <service
             android:name=".services.CitizenGCMListenerService"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
@@ -149,20 +157,28 @@
             android:name="com.boha.library.services.MonInstanceIDListenerService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
         </service>
 
-        <activity android:name="com.boha.library.activities.CardPaymentsActivity"
-            android:parentActivityName="com.boha.library.activities.AccountDetailActivity"/>
-
-        <activity android:name="com.boha.library.activities.SIDPaymentsActivity"
-            android:parentActivityName="com.boha.library.activities.AccountDetailActivity"/>
-
+        <activity
+            android:name="com.boha.library.activities.CardPaymentsActivity"
+            android:parentActivityName="com.boha.library.activities.AccountDetailActivity" />
+        <activity
+            android:name="com.boha.library.activities.SIDPaymentsActivity"
+            android:parentActivityName="com.boha.library.activities.AccountDetailActivity" />
         <activity
             android:name=".activities.AddressActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
+
+        <activity
+            android:name=".activities.TouristDrawerActivity"
+            android:label="@string/title_activity_tourist_drawer" />
+        <activity
+            android:name=".activities.TouristAddressActivity"
+            android:label="@string/title_activity_tourist_address"></activity>
+
     </application>
 
 </manifest>

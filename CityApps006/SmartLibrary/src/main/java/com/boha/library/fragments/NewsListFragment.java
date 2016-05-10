@@ -82,7 +82,7 @@ public class NewsListFragment extends Fragment implements PageFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_news_list, container, false);
-        topView = inflater.inflate(R.layout.news_top, null);
+        //topView = inflater.inflate(R.layout.news_top, null);
         txtEmpty = (TextView)view.findViewById(R.id.NEWS_LIST_text);
         ctx = getActivity();
         setFields();
@@ -101,18 +101,18 @@ public class NewsListFragment extends Fragment implements PageFragment {
 
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         listView = (ListView) view.findViewById(R.id.NEWS_LIST_listView);
-        heroImage = (ImageView) topView.findViewById(R.id.NEWS_LIST_heroImage);
+        heroImage = (ImageView) view.findViewById(R.id.FNL_hero);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
-        txtTitle = (TextView) topView.findViewById(R.id.NEWS_LIST_title);
-        txtTitle.setText(ctx.getResources().getText(R.string.city_news));
+       // txtTitle = (TextView) topView.findViewById(R.id.NEWS_LIST_title);
+       // txtTitle.setText(ctx.getResources().getText(R.string.city_news));
 
-        topView.setOnClickListener(new View.OnClickListener() {
+       /* topView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //refreshAlerts();
             }
-        });
+        });*/
 
         ctx = getActivity();
 
@@ -190,7 +190,7 @@ public class NewsListFragment extends Fragment implements PageFragment {
         Statics.setRobotoFontLight(ctx,txtEmpty);
         if (listView.getHeaderViewsCount() == 0) {
             heroImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-            listView.addHeaderView(topView);
+        //    listView.addHeaderView(topView);
         }
         listView.setAdapter(newsListAdapter);
     }
@@ -230,11 +230,16 @@ public class NewsListFragment extends Fragment implements PageFragment {
                     public void run() {
                         timer.cancel();
                         heroImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-
+                        Util.expand(heroImage, 1000, new Util.UtilAnimationListener() {
+                            @Override
+                            public void onAnimationEnded() {
+                                Util.flashOnce(fab, 300, null);
+                            }
+                        });
                     }
                 });
             }
-        }, 50);
+        }, 500);
 
     }
 

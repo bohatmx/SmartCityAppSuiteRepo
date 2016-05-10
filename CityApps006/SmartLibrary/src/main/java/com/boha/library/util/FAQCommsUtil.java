@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.boha.library.activities.FaqTypeActivity;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +28,12 @@ public class FAQCommsUtil {
         void onError(String message);
     }
 
+    public interface FAQTypeListener {
+        void onSuccess(FaqStrings faqStrings);
+
+        void onError(String message);
+    }
+
     public static final String
 
             ACCOUNTS = "AccountsPayments.html",
@@ -41,6 +49,7 @@ public class FAQCommsUtil {
     static String request, response;
     static CommsListener commsListener;
     static FAQListener faqListener;
+    static FAQTypeListener faqTypeListener;
     static Context ctx;
 
     public static void getFAQfiles(Context context, Integer municipalityID, FAQListener listener)  {
@@ -48,6 +57,9 @@ public class FAQCommsUtil {
         ctx = context;
         final FaqStrings faqStrings = new FaqStrings();
         final StringBuilder xx = new StringBuilder();
+        //local dev
+       // xx.append(Statics.IMAGE_URL).append("smartcity_images/municipality/faq/");
+        //Online if not enabled faq will not download
         xx.append(Statics.IMAGE_URL).append("smartcity_images/municipality");
         xx.append(municipalityID.intValue()).append("/faq/");
 
@@ -199,11 +211,14 @@ public class FAQCommsUtil {
                 int httpCode = con.getResponseCode();
                 String msg = con.getResponseMessage();
                 Log.i(COMMS, "### HTTP response code: " + httpCode + " msg: " + msg + " request: " + request);
-                response = readStream(is);
+                response = readStream(is).replaceAll("\u2019", "'")
+                        .replaceAll("\u201C", "\"").replace("\u201D", "\"")
+                        .replaceAll("\u2018", "'").replaceAll("\u2026", "...")
+                        .replaceAll("\u2013", "-").replaceAll("U00E8", "è");
 //				Log.d(COMMS, "### RESPONSE: \n" + response);
 
             } catch (IOException e) {
-                Log.e(COMMS, "Houston, we have an IOException. F%$%K!", e);
+                Log.e(COMMS, "Houston, we have an IOException.", e);
                 return 9;
             } catch (Exception e) {
                 return 6;

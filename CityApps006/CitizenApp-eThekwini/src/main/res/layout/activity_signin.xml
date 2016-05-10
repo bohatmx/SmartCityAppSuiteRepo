@@ -48,47 +48,46 @@
             android:layout_below="@id/SIGNIN_heroLayout"
             android:background="@color/beige_pale"
             android:padding="@dimen/mon_padding">
+                 <TextView
+                     android:id="@+id/REG_labelx"
+                     style="@style/Title3TextStyleBlue"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_centerHorizontal="true"
+                     android:layout_marginTop="@dimen/mon_margin"
+                     android:text="Do you have a Municipality Account?" />
 
-            <TextView
-                android:id="@+id/REG_labelx"
-                style="@style/Title3TextStyleBlue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/mon_margin"
-                android:text="Do you have a Municipality Account?" />
+                 <RadioGroup
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_below="@id/REG_labelx"
+                     android:layout_centerHorizontal="true"
+                     android:layout_marginTop="@dimen/mon_margin"
+                     android:orientation="vertical">
 
-            <RadioGroup
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/REG_labelx"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/mon_margin"
-                android:orientation="vertical">
+                     <RadioButton
+                         android:id="@+id/SIGNIN_radioYes"
+                         android:checked="true"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="I have a Municipality Account" />
 
-                <RadioButton
-                    android:id="@+id/SIGNIN_radioYes"
-                    android:checked="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="I have a Municipality Account" />
+                     <RadioButton
+                         android:id="@+id/SIGNIN_radioNo"
+                         android:enabled="false"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="@dimen/mon_margin"
+                         android:text="I do not have an Account" />
 
-                <RadioButton
-                    android:id="@+id/SIGNIN_radioNo"
-                    android:enabled="false"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/mon_margin"
-                    android:text="I do not have an Account" />
-
-                <RadioButton
-                    android:id="@+id/SIGNIN_radioTourist"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/mon_margin"
-                    android:enabled="false"
-                    android:text="I am a Tourist/Visitor" />
-            </RadioGroup>
+                     <RadioButton
+                         android:id="@+id/SIGNIN_radioTourist"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="@dimen/mon_margin"
+                         android:enabled="true"
+                         android:text="I am a Tourist/Visitor" />
+                 </RadioGroup>
         </RelativeLayout>
 
         <RelativeLayout
@@ -125,7 +124,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/SI_emailLayout"
-                    android:layout_marginTop="@dimen/mon_padding" />
+                    android:layout_marginTop="@dimen/mon_padding"/>
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/SI_pinLayout"
                     android:layout_width="match_parent"

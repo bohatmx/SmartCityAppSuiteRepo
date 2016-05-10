@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item android:id="@+id/action_app_guide"
+        android:title="Smartcity Guide"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_emergency"
+        android:title="Emergency Contacts"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+</menu>

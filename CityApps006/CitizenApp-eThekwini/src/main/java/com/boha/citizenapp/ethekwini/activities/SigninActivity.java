@@ -43,6 +43,7 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -146,6 +147,9 @@ public class SigninActivity extends AppCompatActivity {
                                                            if (radioYes.isChecked()) {
                                                                sendSignInCitizen();
                                                            }
+                                                           if (radioTourist.isChecked()) {
+                                                               sendSignInTourist();
+                                                           }
 
                                                        }
                                                    }
@@ -185,7 +189,7 @@ public class SigninActivity extends AppCompatActivity {
                                                    if (isChecked) {
                                                        userType = SharedUtil.CITIZEN_NO_ACCOUNT;
                                                        editID.setVisibility(View.GONE);
-                                                       spinner.setVisibility(View.VISIBLE);
+                                                       spinner.setVisibility(View.GONE);
                                                        editPassword.setVisibility(View.VISIBLE);
                                                        btnSend.setEnabled(true);
                                                    }
@@ -218,8 +222,8 @@ public class SigninActivity extends AppCompatActivity {
                                                         if (isChecked) {
                                                             userType = SharedUtil.TOURIST_VISITOR;
                                                             editID.setVisibility(View.GONE);
-                                                            spinner.setVisibility(View.VISIBLE);
-                                                            editPassword.setVisibility(View.VISIBLE);
+                                                            spinner.setVisibility(View.GONE);
+                                                            editPassword.setVisibility(View.GONE);
                                                             btnSend.setEnabled(true);
                                                         }
                                                     }
@@ -296,7 +300,8 @@ public class SigninActivity extends AppCompatActivity {
                             CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
                                 @Override
                                 public void onDataCached() {
-                                    onBackPressed();
+                                   // onBackPressed();
+                                    check();
                                 }
 
                                 @Override
@@ -331,6 +336,7 @@ public class SigninActivity extends AppCompatActivity {
             }
         });
     }
+
 
     public void sendSignInUser() {
 
@@ -369,7 +375,8 @@ public class SigninActivity extends AppCompatActivity {
                         CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
                             @Override
                             public void onDataCached() {
-                                onBackPressed();
+                                // onBackPressed();
+                                check();
                             }
 
                             @Override
@@ -401,9 +408,100 @@ public class SigninActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        Log.w(LOG, "########### onBackPressed");
+    private String mail = "goltzau@iafrica.com";
+    //Temporary Fix
+    public void sendSignInTourist() {
+        Snackbar.make(editPassword, "Downloading information; may take a minute or two",
+                Snackbar.LENGTH_LONG).show();
+
+        if (email == null) {
+            if (tarList.size() > 1) {
+                email = tarList.get(1);
+            }
+        }
+
+        RequestDTO w = new RequestDTO(RequestDTO.SIGN_IN_CITIZEN);
+        w.setUserName("3702210039184");
+        w.setPassword("alex66");
+        w.setEmail(mail);
+        w.setGcmDevice(gcmDevice);
+        w.setLatitude(0.0);
+        w.setLongitude(0.0);
+        w.setMunicipalityID(municipality.getMunicipalityID());
+
+        setRefreshActionButtonState(true);
+        btnSend.setEnabled(false);
+        NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
+            @Override
+            public void onResponse(final ResponseDTO resp) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setRefreshActionButtonState(false);
+                        btnSend.setEnabled(true);
+                        if (resp.isMunicipalityAccessFailed()) {
+
+                            if (resp.getProfileInfoList() == null || resp.getProfileInfoList().isEmpty()) {
+                                Util.showErrorToast(ctx, getString(R.string.services_not_available));
+//                                finish();
+                                return;
+                            }else {
+                                Util.showErrorToast(ctx, getString(com.boha.library.R.string.unable_connect_muni));
+                            }
+                        }
+
+                        response = resp;
+                   //     if (response.getProfileInfoList() != null && !response.getProfileInfoList().isEmpty()) {
+                   //         profileInfo = response.getProfileInfoList().get(0);
+
+                   //         ProfileInfoDTO sp = new ProfileInfoDTO();
+                   //         sp.setProfileInfoID(profileInfo.getProfileInfoID());
+                            //sp.setFirstName("eThekwini"/*profileInfo.getFirstName()*/);
+                           // sp.setLastName("Visitor"/*profileInfo.getLastName()*/);
+                   //         sp.setiDNumber("3702210039184"/*profileInfo.getiDNumber()*/);
+                   //         sp.setPassword("alex66"/*profileInfo.getPassword()*/);
+
+                         //   SharedUtil.saveProfile(ctx, sp);
+                         //   SharedUtil.setUserType(ctx, userType);
+                            SharedUtil.saveGCMDevice(ctx,gcmDevice);
+                            CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
+                                @Override
+                                public void onDataCached() {
+                                    // onBackPressed();
+                                  //  check();
+                                    TouristCheck();
+                                }
+
+                                @Override
+                                public void onError() {
+                                    Util.showErrorToast(ctx, "Problem saving data");
+                                }
+                            });
+
+                    }
+                });
+            }
+
+            @Override
+            public void onError(final String message) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setRefreshActionButtonState(false);
+                        btnSend.setEnabled(true);
+                        Util.showErrorToast(ctx, message);
+                    }
+                });
+            }
+
+            @Override
+            public void onWebSocketClose() {
+
+            }
+        });
+    }
+
+    private void check() {
         profileInfo = SharedUtil.getProfile(ctx);
         UserDTO user = SharedUtil.getUser(ctx);
         if (profileInfo != null || user != null) {
@@ -416,7 +514,20 @@ public class SigninActivity extends AppCompatActivity {
             setResult(RESULT_CANCELED);
             finish();
         }
+    }
 
+    private void TouristCheck() {
+
+        Intent i = new Intent(ctx, TouristDrawerActivity.class);
+        i.putExtra("justSignedIn", true);
+        startActivity(i);
+    }
+    @Override
+    public void onBackPressed() {
+
+        Intent intent = new Intent(SigninActivity.this, SplashActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public void getEmail() {
@@ -472,11 +583,13 @@ public class SigninActivity extends AppCompatActivity {
 
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main_pager, menu);
-        menu.getItem(0).setVisible(false);
-        mMenu = menu;
+      //  getMenuInflater().inflate(R.menu.menu_main_pager, menu);
+//        menu.getItem(0).setVisible(false);
+      //  mMenu = menu;
 
         return true;
     }
@@ -485,10 +598,10 @@ public class SigninActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_help) {
+      /*  if (id == R.id.action_help) {
             Util.showToast(ctx, getString(R.string.under_cons));
             return true;
-        }
+        } */
 
         return super.onOptionsItemSelected(item);
     }

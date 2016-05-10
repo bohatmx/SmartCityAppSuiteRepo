@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey">
+    android:background="@color/grey"
+    android:id="@+id/faq_Fragment">
 
     <RelativeLayout
         android:id="@+id/FAQ_top"
@@ -53,7 +54,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/FAQ_icon"
                 android:layout_marginLeft="@dimen/mon_margin"
-                android:text="FAQ Type here" />
+                android:text="FAQ Type" />
         </RelativeLayout>
     </RelativeLayout>
 
@@ -64,10 +65,25 @@
         android:background="@color/grey"
         android:padding="@dimen/mon_divider">
 
-        <WebView
+        <TextView
+            android:id="@+id/Faq_text"
+            style="@style/Title1TextStyleRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="No FAQ Available"
+            android:visibility="gone"/>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/FAQ_LIST"/>
+
+
+      <!--  <WebView
             android:id="@+id/FAQ_webView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>  -->
     </RelativeLayout>
 
     <RelativeLayout

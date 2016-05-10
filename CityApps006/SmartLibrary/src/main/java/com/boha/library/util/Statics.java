@@ -29,16 +29,16 @@ public class Statics {
     public static final String WEBSOCKET_URL = "ws://icsm1.oneconnectgroup.com:7070/sc/";
     public static final String URL = "http://icsm1.oneconnectgroup.com:7070/sc/";
     public static final String IMAGE_URL = "http://icsm1.oneconnectgroup.com:7070/";
-//
 
 
     /*
-        LOCAL DEV - PECANWOOD
-     */
-//    public static final String WEBSOCKET_URL = "ws://192.168.1.33:8080/sc/";
-//    public static final String URL = "http://192.168.1.33:8080/sc/";
-//    public static final String IMAGE_URL = "http://192.168.1.33:8080/";
+        LOCAL DEV - DYNATECH  //10.0.0.102  //192.168.1.253// 10.154.165.163
 
+     */
+    /*public static final String WEBSOCKET_URL = "ws://10.0.0.102:8080/sc/";
+    public static final String URL = "http://10.0.0.102:8080/sc/";
+    public static final String IMAGE_URL = "http://10.0.0.102:8080/";
+    */
     public static final String GATEWAY_SERVLET = "smart?";
     public static final String GATEWAY_SOCKET = "wssmart";
     public static final String CACHED_REQUESTS_SOCKET = "wsrequests";

@@ -16,9 +16,24 @@
         android:title="Refresh"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/action_app_guide"
+        android:orderInCategory="100"
+        android:title="Smartcity Guide"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_emergency"
+        android:title="Emergency Contacts"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_info"
+        android:orderInCategory="100"
+        android:title="General Info"
+        app:showAsAction="never"/>
+   <!-- <item
         android:id="@+id/action_help"
         android:icon="@drawable/ic_action_help"
         android:orderInCategory="100"
         android:title="Help"
-        app:showAsAction="never" />
+        app:showAsAction="never" />-->
 </menu>

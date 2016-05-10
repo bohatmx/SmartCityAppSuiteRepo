@@ -446,6 +446,11 @@ public class SharedUtil {
         int type = sp.getInt(LAST_PAYMENT_TYPE, 0);
         return type;
     }
+
+    public static void clearUser(Context ctx) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
+        sp.edit().remove(USER).commit();
+    }
     public static final int VISA = 1, MASTERCARD = 2, SID = 3;
 
     public static final int MAX_SLIDING_TAB_VIEWS = 200;

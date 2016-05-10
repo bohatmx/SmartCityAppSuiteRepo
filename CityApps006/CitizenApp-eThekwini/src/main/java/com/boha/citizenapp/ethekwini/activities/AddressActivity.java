@@ -1,5 +1,6 @@
 package com.boha.citizenapp.ethekwini.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -12,7 +13,9 @@ import android.view.MenuItem;
 
 import com.boha.citizenapp.ethekwini.R;
 import com.boha.citizenapp.ethekwini.fragments.AddressFragment;
+import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.util.SharedUtil;
+import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 
 public class AddressActivity extends AppCompatActivity implements AddressFragment.AddressFragmentListener{
@@ -21,12 +24,16 @@ public class AddressActivity extends AppCompatActivity implements AddressFragmen
     int type;
     Menu mMenu;
     public static final int CALLED_FROM_DRAWER_ACTIVITY = 1;
+    int darkColor, primaryColor, logo;
+    MunicipalityDTO municipality;
+    Context ctx;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG, "onCreate");
+      //  ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_address);
         addressFragment = (AddressFragment)getSupportFragmentManager().findFragmentById(R.id.fragment);
 
@@ -42,6 +49,7 @@ public class AddressActivity extends AppCompatActivity implements AddressFragmen
         Log.d(LOG, "onResume");
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_address, menu);
@@ -60,6 +68,7 @@ public class AddressActivity extends AppCompatActivity implements AddressFragmen
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
     public void onAddressUpdated() {
         Intent w = new Intent(getApplicationContext(), CitizenDrawerActivity.class);
@@ -73,7 +82,8 @@ public class AddressActivity extends AppCompatActivity implements AddressFragmen
     }
     @Override
     public void onBackPressed() {
-
+        finish();
+     //   return;
     }
     static final String LOG = AddressActivity.class.getSimpleName();
     public void setRefreshActionButtonState(final boolean refreshing) {

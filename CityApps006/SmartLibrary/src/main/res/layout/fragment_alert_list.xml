@@ -4,9 +4,21 @@
     android:layout_height="match_parent"
     android:background="@color/grey"
     android:padding="@dimen/mon_divider">
+    <RelativeLayout
+        android:id="@+id/FAL_LAY01"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mon_hero_height_small">
+        <ImageView
+            android:id="@+id/FAL_hero"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:background="@drawable/back8"/>
+    </RelativeLayout>
 
     <!-- The List here-->
     <ListView
+        android:layout_below="@+id/FAL_LAY01"
         android:id="@+id/ALERT_LIST_listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -41,7 +53,7 @@
         android:layout_margin="@dimen/mon_padding"
         android:src="@android:drawable/ic_dialog_map"
 
-        app:backgroundTint="@color/blue_800"
+        app:backgroundTint="@color/blue_600"
         app:borderWidth="0dp"
         app:elevation="@dimen/mon_margin"
         app:pressedTranslationZ="@dimen/mon_wide"

@@ -2,6 +2,7 @@ package com.boha.library.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -11,17 +12,25 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.ListPopupWindow;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.CityApplication;
+import com.boha.library.activities.FaqTypeActivity;
+import com.boha.library.activities.NewsDetailActivity;
+import com.boha.library.adapters.FaqTypeAdapter;
+import com.boha.library.adapters.NewsListAdapter;
+import com.boha.library.dto.FaqDTO;
 import com.boha.library.dto.FreqQuestionTypeDTO;
+import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.FAQCommsUtil;
 import com.boha.library.util.FaqStrings;
 import com.boha.library.util.SharedUtil;
+import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -42,7 +51,7 @@ public class FaqFragment extends Fragment implements PageFragment {
     }
 
     ResponseDTO response;
-    TextView txtTitle, txtFaqType;
+    TextView txtFaqType;
     View view, fab, topView;
     WebView webView;
     Context ctx;
@@ -51,7 +60,7 @@ public class FaqFragment extends Fragment implements PageFragment {
     FaqStrings faqStrings;
     String pageTitle;
     ProgressBar progressBar;
-    int logo, primaryColor, darkColor;
+    int logo, primaryColor, darkColor, position;
 
     static final String LOG = FaqFragment.class.getSimpleName();
 
@@ -71,6 +80,7 @@ public class FaqFragment extends Fragment implements PageFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             response = (ResponseDTO) getArguments().getSerializable("response");
+            faqTypeList = response.getFaqTypeList();
         }
     }
 
@@ -81,9 +91,16 @@ public class FaqFragment extends Fragment implements PageFragment {
         ctx = getActivity();
         activity = getActivity();
         setFields();
-        getFaqTypes();
+        //getFaqTypes();
         animateSomething();
+        //setList();
+        if (faqTypeList != null) {
+            setList();
+        } else {
+            faqTypeList = new ArrayList<>();
+            setList();
 
+        }
 
         return view;
     }
@@ -134,7 +151,7 @@ public class FaqFragment extends Fragment implements PageFragment {
 
     }
 
-    private void getCachedFAQs() {
+   private void getCachedFAQs() {
         mListener.setBusy(true);
         CacheUtil.getCachedFAQ(ctx, new CacheUtil.FAQCacheRetrievalListener() {
             @Override
@@ -164,7 +181,7 @@ public class FaqFragment extends Fragment implements PageFragment {
                     public void onSuccess(FaqStrings fs) {
                         mListener.setBusy(false);
                         faqStrings = fs;
-                        setWebView(0);
+                     //   setWebView(0);
                     }
 
                     @Override
@@ -176,30 +193,71 @@ public class FaqFragment extends Fragment implements PageFragment {
 
     }
 
+    ListView FAQ_LIST;
+    FaqTypeAdapter faqTypeAdapter;
+    List<FreqQuestionTypeDTO> faqTypeList;
+
+    private void setList() {
+        if (faqTypeList == null) {
+            faqTypeList = new ArrayList<>();
+            //faqTypeList.add(ctx.R.drawable.accounts_statement);
+        }
+        faqTypeAdapter = new FaqTypeAdapter(ctx, R.layout.faqtype_item, darkColor, faqTypeList, new FaqTypeAdapter.FaqTypeListListener() {
+
+            @Override
+            public void onFaqTypeClicked(int position) {
+                //setWebView(0);
+               Intent intent = new Intent(ctx, FaqTypeActivity.class);
+                intent.putExtra("positionIndex", position);
+                startActivity(intent);
+                
+            }
+
+        });
+      /*  if (faqTypeList.isEmpty()) {
+            Faq_text.setVisibility(View.VISIBLE);
+        } else {
+            Faq_text.setVisibility(View.GONE);
+        }
+        Statics.setRobotoFontLight(ctx, Faq_text);
+        if (FAQ_LIST.getHeaderViewsCount() == 0) {
+            heroImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+            FAQ_LIST.addHeaderView(topView);
+        } */
+
+        FAQ_LIST.setAdapter(faqTypeAdapter);
+
+    }
+
+    TextView txtTitle,Faq_text ;
+
+
+    public interface FaqListFragmentListener {
+        void onFaqTypeClicked(FaqDTO faq);
+
+        void setBusy(boolean busy);
+    }
     private void setFields() {
+
         topView = view.findViewById(R.id.FAQ_handle);
         txtFaqType = (TextView) view.findViewById(R.id.FAQ_faqType);
         icon = (ImageView) view.findViewById(R.id.FAQ_icon);
         heroImage = (ImageView) view.findViewById(R.id.FAQ_hero);
         txtTitle = (TextView) view.findViewById(R.id.FAQ_title);
+        Faq_text = (TextView)view.findViewById(R.id.NEWS_LIST_text);
         fab = view.findViewById(R.id.FAB);
-        webView = (WebView) view.findViewById(R.id.FAQ_webView);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
+        FAQ_LIST = (ListView) view.findViewById(R.id.FAQ_LIST);
 
-        webView.getSettings().setAllowContentAccess(true);
-        webView.getSettings().setAllowFileAccessFromFileURLs(true);
-        webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
-        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        webView.getSettings().setJavaScriptEnabled(true);
-
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setVisibility(View.GONE);
+      /*  fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Util.flashOnce(fab, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        showPopup();
+                    //    showPopup();
                     }
                 });
             }
@@ -210,7 +268,9 @@ public class FaqFragment extends Fragment implements PageFragment {
                 Util.flashOnce(txtFaqType, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
+                        setWebView();
                         showPopup();
+                        setIcon();
                     }
                 });
             }
@@ -221,14 +281,15 @@ public class FaqFragment extends Fragment implements PageFragment {
                 Util.flashOnce(icon, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        showPopup();
+                           showPopup();
                     }
                 });
             }
-        });
+        });*/
+      //  setIcon();
     }
 
-    private void getFaqTypes() {
+    /*private void getFaqTypes() {
         CacheUtil.getCacheLoginData(ctx, new CacheUtil.CacheRetrievalListener() {
             @Override
             public void onCacheRetrieved(ResponseDTO r) {
@@ -241,7 +302,7 @@ public class FaqFragment extends Fragment implements PageFragment {
 
             }
         });
-    }
+    } */
 
     private void showPopup() {
         List<String> list = new ArrayList<>();
@@ -254,9 +315,8 @@ public class FaqFragment extends Fragment implements PageFragment {
                     public void onItemSelected(int index, ListPopupWindow window) {
                         faqType = response.getFaqTypeList().get(index);
                         txtFaqType.setText(faqType.getFaqTypeName());
-                        setWebView(index);
+                      //  setWebView(index);
                         setIcon();
-
 
                     }
                 });

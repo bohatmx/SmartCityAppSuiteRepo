@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.boha.library" >
+    package="com.boha.library">
+
+
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -12,27 +14,24 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <application android:allowBackup="true" >
+    <application android:allowBackup="true">
         <service android:name=".services.GCMDeviceService" />
         <service android:name=".services.PhotoUploadService" />
         <service
             android:name=".services.StatementService"
-            android:exported="false" >
-        </service>
+            android:exported="false" />
 
         <activity
             android:name=".activities.ThemeSelectorActivity"
-            android:label="@string/title_activity_theme_selector" >
-        </activity>
+            android:label="@string/title_activity_theme_selector" />
 
         <service
             android:name=".services.RequestService"
-            android:exported="false" >
-        </service>
+            android:exported="false" />
 
         <receiver
             android:name="com.google.android.gms.analytics.AnalyticsReceiver"
-            android:enabled="true" >
+            android:enabled="true">
             <intent-filter>
                 <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
             </intent-filter>
@@ -49,13 +48,14 @@
         -->
         <receiver
             android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
 
         <service android:name="com.google.android.gms.analytics.CampaignTrackingService" />
+
     </application>
 
 </manifest>

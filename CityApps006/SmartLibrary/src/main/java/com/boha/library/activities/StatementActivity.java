@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -98,7 +99,7 @@ public class StatementActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main_pager, menu);
+        getMenuInflater().inflate(R.menu.menu_faq, menu);
         menu.getItem(0).setVisible(false);
         mMenu = menu;
         return true;
@@ -109,11 +110,22 @@ public class StatementActivity extends AppCompatActivity
 
         int id = item.getItemId();
 
-        if (id == R.id.action_refresh) {
+        /*if (id == R.id.action_refresh) {
+            return true;
+        } */
+        if(id == com.boha.library.R.id.action_app_guide) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("http://etmobileguide.oneconnectgroup.com/"));
+            startActivity(intent);
+        }
+        if (id == R.id.action_info) {
+            Intent intent = new Intent(StatementActivity.this, GeneralInfoActivity.class);
+            startActivity(intent);
             return true;
         }
-        if (id == R.id.action_help) {
-            Util.showToast(ctx, getString(R.string.under_cons));
+        if (id == com.boha.library.R.id.action_emergency) {
+            Intent intent = new Intent(StatementActivity.this, EmergencyContactsActivity.class);
+            startActivity(intent);
             return true;
         }
 

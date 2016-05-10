@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Resources;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,6 +40,8 @@ import android.widget.TextView;
 import com.boha.citizenapp.ethekwini.R;
 import com.boha.library.activities.AccountDetailActivity;
 import com.boha.library.activities.AlertDetailActivity;
+import com.boha.library.activities.EmergencyContactsActivity;
+import com.boha.library.activities.GeneralInfoActivity;
 import com.boha.library.activities.PictureActivity;
 import com.boha.library.activities.ThemeSelectorActivity;
 import com.boha.library.adapters.AddressListAdapter;
@@ -165,6 +168,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             navText.setText(user.getFirstName() + " " + user.getLastName());
         }
 
+
         ActionBar actionBar = getSupportActionBar();
         Util.setCustomActionBar(ctx,
                 actionBar,
@@ -251,6 +255,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                             noUser = true;
                         }
                         if (noProfile && noUser) {
+
                             return;
                         }
                         if (w.getRequestType() == RequestDTO.SIGN_IN_CITIZEN) {
@@ -325,7 +330,11 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             mDrawerLayout.openDrawer(GravityCompat.START);
             return true;
         }
+
         if (id == com.boha.library.R.id.action_logoff) {
+            SharedUtil.clearUser(ctx);
+            Intent intent = new Intent(CitizenDrawerActivity.this, SigninActivity.class);
+            startActivity(intent);
             finish();
             return true;
         }
@@ -334,8 +343,18 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             getLoginData();
             return true;
         }
+        if (id == com.boha.library.R.id.action_info){
+            Intent intent = new Intent(CitizenDrawerActivity.this, GeneralInfoActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == com.boha.library.R.id.action_emergency) {
+            Intent intent = new Intent(CitizenDrawerActivity.this, EmergencyContactsActivity.class);
+            startActivity(intent);
+            return true;
+        }
         if (id == com.boha.library.R.id.action_theme) {
-            Intent w = new Intent(this, ThemeSelectorActivity.class);
+            Intent w = new Intent(CitizenDrawerActivity.this, ThemeSelectorActivity.class);
             w.putExtra("darkColor", themeDarkColor);
             startActivityForResult(w, THEME_REQUESTED);
             return true;
@@ -343,6 +362,11 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         if (id == com.boha.library.R.id.action_help) {
             Util.showToast(this, getString(R.string.under_cons));
             return true;
+        }
+        if(id == com.boha.library.R.id.action_app_guide) {
+           Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("http://etmobileguide.oneconnectgroup.com/"));
+            startActivity(intent);
         }
 
 
@@ -352,6 +376,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     private void setupViewPager() {
 
         setMenuDestinations();
+
         pageFragmentList = new ArrayList<>();
         if (response.getProfileInfoList() != null && !response.getProfileInfoList().isEmpty()) {
             profileInfoFragment = ProfileInfoFragment.newInstance(response);
@@ -429,7 +454,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
             mPager.setCurrentItem(currentPageIndex);
         } catch (Exception e) {
-            Log.e(LOG, "Fuck!", e);
+            Log.e(LOG, "PagerAdapter failed", e);
             try {
                 Util.showErrorToast(ctx, e.getMessage());
                 ACRA.getErrorReporter().handleException(e, false);
@@ -1096,7 +1121,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        final Handler h = new Handler(Looper.getMainLooper());
+     /*   final Handler h = new Handler(Looper.getMainLooper());
         final Runnable r = new Runnable() {
             public void run() {
                 int index = 0;
@@ -1129,7 +1154,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                         index = 7;
                         break;
                     case 9:
-                        index = 8;
+                        index = 7;
                         break;
                 }
                 mPager.setCurrentItem(index, true);
@@ -1137,7 +1162,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
             }
         };
-        r.run();
+        r.run(); */
 
     }
 }

@@ -10,6 +10,8 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -81,7 +83,8 @@ public class AlertMapActivity extends AppCompatActivity {
     static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
     List<AlertDTO> alertList;
     Activity activity;
-    int logo, primaryColorDark;
+    int logo, primaryColorDark, darkColor, primaryColor;
+    MunicipalityDTO municipality;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +98,8 @@ public class AlertMapActivity extends AppCompatActivity {
         displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay()
                 .getMetrics(displayMetrics);
+
+
 
         setFields();
         ResponseDTO r = (ResponseDTO) getIntent().getSerializableExtra("alertList");
@@ -129,14 +134,19 @@ public class AlertMapActivity extends AppCompatActivity {
 
 
 
-        MunicipalityDTO municipality = SharedUtil.getMunicipality(ctx);
-        logo = getIntent().getIntExtra("logo", 0);
+        logo = getIntent().getIntExtra("logo",R.drawable.elogo);
+        primaryColor = getIntent().getIntExtra("primaryColor",R.color.teal_500);
+        darkColor = getIntent().getIntExtra("primaryColor",R.color.teal_700);
+        municipality = SharedUtil.getMunicipality(getApplicationContext());
+
+        ActionBar actionBar = getSupportActionBar();
         if (logo != 0) {
             Drawable d = ctx.getResources().getDrawable(logo);
             Util.setCustomActionBar(ctx,
-                    getSupportActionBar(),
-                    municipality.getMunicipalityName(), d, logo);
-            getSupportActionBar().setTitle("");
+                    actionBar,
+                    municipality.getMunicipalityName(),
+                    ContextCompat.getDrawable(ctx, R.drawable.elogo), logo);
+
         } else {
             getSupportActionBar().setTitle(municipality.getMunicipalityName());
         }
@@ -217,6 +227,13 @@ public class AlertMapActivity extends AppCompatActivity {
                         txtNumber.setText("" + (index + 1));
                         desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
                         break;
+                   //
+                    default:
+                        dot = inflater.inflate(R.layout.dot_black, null);
+                        txtNumber = (TextView) dot.findViewById(R.id.DOT_text);
+                        txtNumber.setText("" + (index + 1));
+                        desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
+                        break;
                 }
 
             }
@@ -240,13 +257,15 @@ public class AlertMapActivity extends AppCompatActivity {
                     builder.include(marker.getPosition());
                 }
 
-                LatLngBounds bounds = builder.build();
-                int padding = 60; // offset from edges of the map in pixels
-                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                    LatLngBounds bounds = builder.build();
+                    int padding = 60; // offset from edges of the map in pixels
+                    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
 
-                txtCount.setText("" + markers.size());
-                //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 1.0f));
-                googleMap.animateCamera(cu);
+                    txtCount.setText("" + markers.size());
+                    //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 1.0f));
+                    googleMap.animateCamera(cu);
+
+
             }
         });
 
@@ -421,17 +440,40 @@ public class AlertMapActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu, menu);
+        getMenuInflater().inflate(R.menu.menu_faq, menu);
+        mMenu = menu;
         return true;
     }
+    int themeDarkColor;
 
+    Menu mMenu;
+    static final int THEME_REQUESTED = 8075;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+
+        if(id == com.boha.library.R.id.action_app_guide) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("http://etmobileguide.oneconnectgroup.com/"));
+            startActivity(intent);
+        }
+        if (id == com.boha.library.R.id.action_theme) {
+            Intent w = new Intent(this, ThemeSelectorActivity.class);
+            w.putExtra("darkColor", themeDarkColor);
+            startActivityForResult(w, THEME_REQUESTED);
+            return true;
+        }
+        if (id == R.id.action_info) {
+            Intent intent = new Intent(AlertMapActivity.this, GeneralInfoActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == com.boha.library.R.id.action_emergency) {
+            Intent intent = new Intent(AlertMapActivity.this, EmergencyContactsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

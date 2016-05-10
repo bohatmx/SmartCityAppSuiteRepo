@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -47,7 +48,7 @@ public class AccountDetailActivity extends AppCompatActivity {
             txtName, txtAcctNumber, txtSubtitle,
             txtArrears,
             txtLastUpdate, txtNextBill,
-            txtAddress, txtLastBillAmount;
+            txtAddress, txtLastBillAmount, txtClickToPay;
     View  topLayout;
     Button btnCurrBal;
     ImageView  hero;
@@ -104,6 +105,7 @@ public class AccountDetailActivity extends AppCompatActivity {
         txtSubtitle = (TextView) topView.findViewById(R.id.TOP_subTitle);
         icon = (ImageView) topView.findViewById(R.id.TOP_icon);
         txtAcctNumber = (TextView) findViewById(R.id.ACCT_number);
+        //txtClickToPay = (TextView) topView.findViewById(R.id.ACCT_clickToPay);
         txtAddress = (TextView) findViewById(R.id.ACCT_address);
         txtArrears = (TextView) findViewById(R.id.ACCT_currArrears);
         txtLastUpdate = (TextView) findViewById(R.id.ACCT_lastUpdateDate);
@@ -112,7 +114,7 @@ public class AccountDetailActivity extends AppCompatActivity {
         txtLastBillAmount = (TextView) findViewById(R.id.ACCT_lastBillAmount);
         hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
         setFont();
-        btnCurrBal.setOnClickListener(new View.OnClickListener() {
+      /*  btnCurrBal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Util.flashOnce(btnCurrBal, 300, new Util.UtilAnimationListener() {
@@ -133,7 +135,7 @@ public class AccountDetailActivity extends AppCompatActivity {
                     }
                 });
             }
-        });
+        }); */
         icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -259,21 +261,36 @@ public class AccountDetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.fake_main, menu);
+        getMenuInflater().inflate(R.menu.menu_faq, menu);
         mMenu = menu;
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
+    int themeDarkColor;
 
+    static final int THEME_REQUESTED = 8075;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_refresh) {
-            getLoginData();
+        if(id == com.boha.library.R.id.action_app_guide) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("http://etmobileguide.oneconnectgroup.com/"));
+            startActivity(intent);
+        }
+        if (id == com.boha.library.R.id.action_theme) {
+            Intent w = new Intent(this, ThemeSelectorActivity.class);
+            w.putExtra("darkColor", themeDarkColor);
+            startActivityForResult(w, THEME_REQUESTED);
             return true;
         }
-        if (id == R.id.action_help) {
-            Util.showToast(ctx, getString(R.string.under_cons));
+        if (id == R.id.action_info) {
+            Intent intent = new Intent(AccountDetailActivity.this, GeneralInfoActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == com.boha.library.R.id.action_emergency) {
+            Intent intent = new Intent(AccountDetailActivity.this, EmergencyContactsActivity.class);
+            startActivity(intent);
             return true;
         }
 

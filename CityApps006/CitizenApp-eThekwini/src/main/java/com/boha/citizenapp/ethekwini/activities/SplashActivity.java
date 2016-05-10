@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.boha.citizenapp.ethekwini.R;
 import com.boha.library.activities.CityApplication;
@@ -39,6 +40,7 @@ import com.google.android.gms.analytics.Tracker;
 
 import java.util.Random;
 import java.util.Timer;
+import java.util.logging.Handler;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -145,10 +147,14 @@ public class SplashActivity extends AppCompatActivity {
                 });
             }
         });
+
+
         heroImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkVirginity(true);
+                   actionsView.setVisibility(View.VISIBLE);
+                 btnSignIn.setVisibility(View.VISIBLE);
+                //checkVirginity(true);
             }
         });
 
@@ -303,7 +309,7 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_splash, menu);
+        //getMenuInflater().inflate(R.menu.menu_splash, menu);
         return true;
     }
 
@@ -312,7 +318,7 @@ public class SplashActivity extends AppCompatActivity {
         int id = item.getItemId();
 
 
-        if (id == R.id.action_logoff) {
+    /*    if (id == R.id.action_logoff) {
             finish();
             return true;
         }
@@ -326,28 +332,27 @@ public class SplashActivity extends AppCompatActivity {
             startActivityForResult(w,REQUEST_THEME_CHANGE);
             return true;
         }
-//        if (id == R.id.action_afrikaans) {
-//            return true;
-//        }
-//        if (id == R.id.action_zulu) {
-//            return true;
-//        }
-//        if (id == R.id.action_english) {
-//            return true;
-//        }
-//        if (id == R.id.action_french) {
-//            return true;
-//        }
-//        if (id == R.id.action_german) {
-//            return true;
-//        }
-//        if (id == R.id.action_portuguese) {
-//            return true;
-//        }
+        if (id == R.id.action_afrikaans) {
+            return true;
+        }
+        if (id == R.id.action_zulu) {
+            return true;
+        }
+        if (id == R.id.action_english) {
+            return true;
+        }
+        if (id == R.id.action_french) {
+            return true;
+        }
+        if (id == R.id.action_german) {
+            return true;
+        }
+        if (id == R.id.action_portuguese) {
+            return true;
+        } */
 
         return super.onOptionsItemSelected(item);
     }
-
 
 
     int index;
@@ -403,4 +408,10 @@ public class SplashActivity extends AppCompatActivity {
         SharedUtil.setCityImages(ctx,cityImages);
 
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
 }

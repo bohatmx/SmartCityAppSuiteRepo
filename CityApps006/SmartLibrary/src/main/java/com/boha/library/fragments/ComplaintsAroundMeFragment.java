@@ -78,6 +78,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             response = (ResponseDTO) getArguments().getSerializable("complaintList");
+           // complaintList = response.getComplaintList();
         }
     }
 

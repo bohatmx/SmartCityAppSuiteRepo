@@ -247,7 +247,8 @@ public class AccountFragment extends Fragment implements PageFragment {
 //        txtFAB.setVisibility(View.VISIBLE);
         hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
         setFont();
-        btnCurrBal.setOnClickListener(new View.OnClickListener() {
+        txtClickToPay.setVisibility(View.GONE);
+      /*  btnCurrBal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Util.flashOnce(btnCurrBal, 300, new Util.UtilAnimationListener() {
@@ -264,7 +265,7 @@ public class AccountFragment extends Fragment implements PageFragment {
                 Util.flashOnce(btnCurrBal, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                        startPayment();
+                    //    startPayment();
                     }
                 });
             }
@@ -279,7 +280,7 @@ public class AccountFragment extends Fragment implements PageFragment {
                     }
                 });
             }
-        });
+        }); */
         icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -297,6 +298,7 @@ public class AccountFragment extends Fragment implements PageFragment {
 
             }
         });
+       // fab.setVisibility(View.GONE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -420,6 +422,8 @@ public class AccountFragment extends Fragment implements PageFragment {
         this.primaryColor = primaryColor;
         this.primaryDarkColor = primaryDarkColor;
     }
+
+
 
     String pageTitle;
 
