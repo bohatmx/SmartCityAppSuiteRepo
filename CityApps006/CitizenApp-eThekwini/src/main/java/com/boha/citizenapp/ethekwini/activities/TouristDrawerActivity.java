@@ -221,8 +221,8 @@ public class TouristDrawerActivity extends AppCompatActivity implements
       //      w.setUser(user);
       //      w.setRequestType(RequestDTO.SIGN_IN_USER);
      //   } else {
-            w.setUserName("3702210039184"/*profileInfo.getiDNumber()*/);
-            w.setPassword("alex66"/*profileInfo.getPassword()*/);
+            w.setUserName("4406230441086"/*profileInfo.getiDNumber()*/);
+            w.setPassword("Jer3m1ah3"/*profileInfo.getPassword()*/);
      //   }
 
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());

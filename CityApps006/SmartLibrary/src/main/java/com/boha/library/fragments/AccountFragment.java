@@ -85,6 +85,8 @@ public class AccountFragment extends Fragment implements PageFragment {
         return fragment;
     }
 
+
+
     public AccountFragment() {
         // Required empty public constructor
     }

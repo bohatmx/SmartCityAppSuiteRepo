@@ -6,50 +6,25 @@
 
 
     <RelativeLayout
-        android:id="@+id/FLC_handle"
+        android:id="@+id/FCTL_handle"
         android:layout_width="match_parent"
         android:layout_height="1dp" />
 
     <RelativeLayout
-        android:id="@+id/FLC_titleLayout"
+        android:id="@+id/FCTL_titleLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/mon_hero_height_small"
         android:background="@color/midnight_blue">
 
         <ImageView
-            android:id="@+id/FLC_hero"
+            android:id="@+id/FCTL_hero"
             android:layout_width="match_parent"
             android:layout_height="@dimen/mon_hero_height_medium"
             android:scaleType="centerCrop"
             android:src="@drawable/back6" />
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/filter_icon"
-            android:src="@drawable/ic_action_search"
-            android:layout_marginTop="20dp"/>
-
         <TextView
-            android:layout_marginTop="30dp"
-            android:layout_toRightOf="@+id/filter_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="filter by"
-            android:id="@+id/filter_Txt"
-            android:textColor="@color/white"/>
-
-        <TextView
-            android:id="@+id/filter_Txt2"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_toRightOf="@+id/filter_Txt"
-            android:layout_marginTop="30dp"
-            android:text=" - type"
-            android:textColor="@color/white"/>
-
-        <TextView
-            android:id="@+id/FLC_title"
+            android:id="@+id/FCTL_title"
             style="@style/Title1TextStyleWhite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,7 +34,7 @@
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/FLC_subTitle"
+            android:id="@+id/FCTL_subTitle"
             style="@style/TextStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,50 +44,49 @@
             android:textColor="@color/white" />
 
         <TextView
-            android:id="@+id/FLC_userName"
+            android:id="@+id/FCTL_userName"
             style="@style/Title3TextStyleGrey"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/FLC_title"
-            android:layout_below="@id/FLC_subTitle"
+            android:layout_alignLeft="@id/FCTL_title"
+            android:layout_below="@id/FCTL_subTitle"
             android:layout_marginTop="@dimen/mon_padding"
             android:text="Tiger Malenga Malabie"
             android:visibility="gone" />
 
     </RelativeLayout>
-  <!--  <RelativeLayout
-        android:id="@+id/FLC_SEARCH_LAY"
+    <RelativeLayout
+        android:id="@+id/FCTL_SEARCH_LAY"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/FLC_titleLayout"
+        android:layout_below="@+id/FCTL_titleLayout"
         android:background="@color/white">
-        <ImageView
-            android:id="@+id/FLC_SEARCH_ICON"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_search"/>
+        <!-- <ImageView
+             android:id="@+id/FCTL_SEARCH_ICON"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:src="@drawable/ic_action_search"/> -->
         <SearchView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/FLC_complaints_filter">
-            <requestFocus/>
+            android:id="@+id/FCTL_complaints_filter">
         </SearchView>
-    </RelativeLayout> -->
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/FLC_titleLayout"
+        android:layout_below="@id/FCTL_SEARCH_LAY"
         android:background="@color/grey"
         android:padding="@dimen/mon_divider_small">
 
         <ListView
-            android:id="@+id/FLC_listView"
+            android:id="@+id/FCTL_listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/mon_divider" />
         <ImageView
-            android:id="@+id/FLC_image"
+            android:id="@+id/FCTL_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
@@ -122,7 +96,7 @@
 
 
     <TextView
-        android:id="@+id/FLC_noComplaints"
+        android:id="@+id/FCTL_noComplaints"
         style="@style/Title1TextStyleGrey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -130,7 +104,7 @@
         android:text="@string/no_complaints" />
 
     <TextView
-        android:id="@+id/FLC_count"
+        android:id="@+id/FCTL_count"
         style="@style/BlackCircle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

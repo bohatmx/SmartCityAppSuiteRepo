@@ -2,6 +2,7 @@ package com.boha.citizenapp.ethekwini.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -154,7 +155,7 @@ public class SplashActivity extends AppCompatActivity {
             public void onClick(View v) {
                    actionsView.setVisibility(View.VISIBLE);
                  btnSignIn.setVisibility(View.VISIBLE);
-                //checkVirginity(true);
+             //   checkVirginity(true);
             }
         });
 
@@ -254,6 +255,7 @@ public class SplashActivity extends AppCompatActivity {
             checkVirginity(false);
         }
     }
+
     private void checkVirginity(boolean goToMain) {
         profile = SharedUtil.getProfile(ctx);
         user = SharedUtil.getUser(ctx);
@@ -273,6 +275,7 @@ public class SplashActivity extends AppCompatActivity {
             if (goToMain) {
                 Intent intent = new Intent(ctx, CitizenDrawerActivity.class);
                 startActivity(intent);
+
             }
         }
     }
@@ -374,6 +377,7 @@ public class SplashActivity extends AppCompatActivity {
             btnSignIn.setVisibility(View.GONE);
             btnRegister.setVisibility(View.GONE);
         }
+
     }
     @Override
     public void onPause() {

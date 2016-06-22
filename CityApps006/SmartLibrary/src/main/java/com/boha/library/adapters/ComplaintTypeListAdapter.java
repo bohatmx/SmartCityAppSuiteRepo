@@ -1,7 +1,6 @@
 package com.boha.library.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -13,38 +12,36 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.activities.CityApplication;
-import com.boha.library.activities.ThemeSelectorActivity;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintTypeDTO;
 import com.boha.library.dto.ComplaintUpdateStatusDTO;
-import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
+/**
+ * Created by Nkululeko on 2016/05/19.
+ */
+public class ComplaintTypeListAdapter extends ArrayAdapter<ComplaintTypeDTO> {
 
-    ComplaintListListener listener;
+    ComplaintTypeListListener listener;
 
     private final LayoutInflater mInflater;
     private final int mLayoutRes;
-    private List<ComplaintDTO> mList;
+    private List<ComplaintTypeDTO> mList;
     private Context ctx;
     private int darkColor, type;
     public static final int MY_COMPLAINTS = 1, AROUND_ME = 2;
-    private ArrayList<ComplaintDTO> arrayList;
-    static final String LOG = ComplaintListAdapter.class.getSimpleName();
+    static final String LOG = ComplaintTypeListAdapter.class.getSimpleName();
 
-    public ComplaintListAdapter(Context context, int textViewResourceId,
+    public ComplaintTypeListAdapter(Context context, int textViewResourceId,
                                 int darkColor, int type,
-                                List<ComplaintDTO> list, ComplaintListListener listener) {
+                                List<ComplaintTypeDTO> list, ComplaintTypeListListener listener) {
         super(context, textViewResourceId, list);
         this.mLayoutRes = textViewResourceId;
         this.listener = listener;
@@ -54,11 +51,10 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
         ctx = context;
         this.mInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.arrayList = new ArrayList<ComplaintDTO>();
-        this.arrayList.addAll(mList);
     }
 
     View view;
+
 
     static class ViewHolderItem {
         protected ImageView image, iconDetails, iconFollow, iconCamera, iconRoll;
@@ -81,7 +77,7 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
     }
 
     public View getCustomView(final int position, View convertView, ViewGroup parent) {
-         final ViewHolderItem item;
+        final ViewHolderItem item;
         if (convertView == null) {
             convertView = mInflater.inflate(mLayoutRes, null);
             item = new ViewHolderItem();
@@ -113,14 +109,15 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
             item = (ViewHolderItem) convertView.getTag();
         }
 
-        final ComplaintDTO p = mList.get(position);
+        final ComplaintTypeDTO p = mList.get(position);
         item.txtColor.setText("" + (position + 1));
-        if (p.getComplaintType() == null) {
+        item.txtComplaintType.setText(p.getComplaintTypeName());
+     /*   if (p.getComplaintType() == null) {
             item.txtComplaintType.setText("Complaint name unavailable");
         } else {
             item.txtComplaintType.setText(
                     p.getComplaintType().getCategoryName() + " - " +
-                    p.getComplaintType().getComplaintTypeName());
+                            p.getComplaintType().getComplaintTypeName());
         }
         item.txtDate.setText(sdfDate.format(new Date(p.getComplaintDate())));
         item.txtComment.setText(p.getRemarks());
@@ -145,12 +142,13 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
                         item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xred_oval_small));
                         break;
                     default:
-                         item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xred_oval_small));
+                        item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xred_oval_small));
                         break;
                 }
             } else {
                 item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xred_oval_small));
-          }
+
+            }
         }
 
         if (p.getComplaintImageList() != null && !p.getComplaintImageList().isEmpty()) {
@@ -216,7 +214,7 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
 
         } else {
             item.statusLayout.setVisibility(View.GONE);
-        }
+        }*/
 
         item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xindigo_oval_small));
         item.iconCamera.setColorFilter(darkColor, PorterDuff.Mode.SRC_IN);
@@ -226,8 +224,8 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
         item.iconRoll.setVisibility(View.GONE);
         switch (type) {
             case MY_COMPLAINTS:
-                 item.followBox.setVisibility(View.GONE);
-                 item.cameraBox.setVisibility(View.VISIBLE);
+                item.followBox.setVisibility(View.GONE);
+                item.cameraBox.setVisibility(View.VISIBLE);
                 break;
             case AROUND_ME:
                 item.followBox.setVisibility(View.VISIBLE);
@@ -244,28 +242,10 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
     }
     int checkTheme;
 
-    // filter method
-    public void filter(String charText) {
-        charText = charText.toLowerCase(Locale.getDefault());
-        mList.clear();
-        if (charText.length() == 0) {
-            mList.addAll(arrayList);
-        }
-        else {
-            for (ComplaintDTO c : arrayList){
-              if (c.getComplaintType().getComplaintTypeName()
-                        .toLowerCase(Locale.getDefault()).contains(charText)){
-                    mList.add(c);
-                }
-            }
-        }
-        notifyDataSetChanged();
-    }
 
 
 
-
-    public interface ComplaintListListener {
+    public interface ComplaintTypeListListener {
         void onComplaintFollowRequested(ComplaintDTO complaint);
         void onComplaintStatusRequested(ComplaintDTO complaint, int position);
         void onComplaintCameraRequested(ComplaintDTO complaint);
@@ -276,3 +256,4 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
     static final SimpleDateFormat sdfDate = new SimpleDateFormat("EEEE dd MMMM yyyy HH:mm", loc);
     static final SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm", loc);
 }
+

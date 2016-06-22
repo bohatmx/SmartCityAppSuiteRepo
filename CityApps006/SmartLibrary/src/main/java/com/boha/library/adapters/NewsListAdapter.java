@@ -102,51 +102,6 @@ public class NewsListAdapter extends ArrayAdapter<NewsArticleDTO> {
                 break;
         }
 
-     /*   switch(position) {
-            case CityApplication.THEME_INDIGO:
-                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xindigo_oval_small));
-                break;
-            case CityApplication.THEME_GREEN:
-                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xgreen_oval_small));
-                break;
-            case CityApplication.THEME_BROWN:
-                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xbrown_oval_small));
-                break;
-            case CityApplication.THEME_AMBER:
-                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xamber_oval_small));
-                break;
-            case CityApplication.THEME_PURPLE:
-                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xpurple_oval_small));
-                break;
-            case CityApplication.THEME_LIME:
-                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xlime_oval_small));
-                break;
-            case CityApplication.THEME_GREY:
-                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xgrey_oval_small));
-                break;
-            case CityApplication.THEME_BLUE:
-                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xblue_oval_small));
-                break;
-            case CityApplication.THEME_BLUE_GRAY:
-                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xblue_gray_oval_small));
-                break;
-            case CityApplication.THEME_TEAL:
-                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xteal_oval_small));
-                break;
-            case CityApplication.THEME_CYAN:
-                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xcyan_oval_small));
-                break;
-            case CityApplication.THEME_ORANGE:
-                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xorange_oval_small));
-                break;
-            case CityApplication.THEME_PINK:
-                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xpink_oval_small));
-                break;
-            case CityApplication.THEME_RED:
-                item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xred_oval_small));
-                break;
-        } */
-
         item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xindigo_oval_small));
         item.txtColor.setOnClickListener(new View.OnClickListener() {
             @Override

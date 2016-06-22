@@ -496,7 +496,7 @@ public class AlertMapActivity extends AppCompatActivity {
     public void onBackPressed() {
         Log.e(LOG, "######## onBackPressed");
 
-        finish();
+     //   finish();
     }
 
     @Override

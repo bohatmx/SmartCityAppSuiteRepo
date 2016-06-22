@@ -66,11 +66,11 @@ public class CommsUtil {
                         if (news != null) {
                             String x = news.getString("body").replaceAll("\u2019", "'")
 
-                                    .replaceAll("\u201C", "\"").replace("\u201D", "\"")
+                                    .replaceAll("\u201C", "\"").replaceAll("\u201D", "\"")
 
                                     .replaceAll("\u2018", "'").replaceAll("\u2026", "...")
 
-                                    .replaceAll("\u2013", "-");
+                                    .replaceAll("\u2013", "-").replaceAll("\u2022", "&#8226; ");
                             Log.d(COMMS, x);
                             listener.onDataOK(x);
                             return;

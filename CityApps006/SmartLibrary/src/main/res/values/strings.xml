@@ -158,6 +158,7 @@
     <string name="fault_description_1">- replace manhole covers and water pollution complaints </string>
     <string name="faults_number_2">083707 3013</string>
     <string name="fault_description_2">- 24 hour faults (SMS)</string>
+    <string name="complaint_not_found">Complaint not found</string>
 
     <!-- GeneralInfo-->
 
@@ -175,7 +176,7 @@
 - Illegal Dumping,
 - View complaints around you.
 
-You can receive personalised news and alerts, these will be profile and location based. Users have the option to view alerts on a map. Users will also be able to view multiple municipal accounts and balances, pay for their accounts, download their statements in PDF as well as email and print a statement.<br/>
+You can receive personalised news and alerts, these will be profile and location based. Users have the option to view alerts on a map. Users will also be able to view multiple municipal accounts and balances, pay for their accounts, download their statements in PDF as well as email and print a statement.<br />
 The mobile app will also enable citizens to report incorrect billing to the municipality. Other features includes Frequently Asked Questions about the city services. Users with the registered E-services account will get more personalised information about the services.
 The application has emergency numbers from the municipality, such as ambulance number, fire department and metro police department etc.
 </string>
@@ -190,7 +191,7 @@ The application has emergency numbers from the municipality, such as ambulance n
     <string name="high_bill">- High bill</string>
     <string name="illegal_dumping">- Illegal dumping</string>
     <string name="view_complaints_around_you">- View complaints around you</string>
-    <string name="second_gen_paragraph">You can receive personalised news and alerts, these will be profile and location based. Users have the option to view alerts on a map. Users will also be able to view multiple municipal accounts and balances, pay for their accounts, download their statements in PDF as well as email and print a statement.<br/>
+    <string name="second_gen_paragraph">You can receive personalised news and alerts, these will be profile and location based. Users have the option to view alerts on a map. Users will also be able to view multiple municipal accounts and balances, pay for their accounts, download their statements in PDF as well as email and print a statement.<br />
 The mobile app will also enable citizens to report incorrect billing to the municipality. Other features includes Frequently Asked Questions about the city services. Users with the registered E-services account will get more personalised information about the services.
 The application has emergency numbers from the municipality, such as ambulance number, fire department and metro police department etc.</string>
 

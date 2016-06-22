@@ -115,11 +115,13 @@ public class SigninActivity extends AppCompatActivity {
     private void setFields() {
         editView = findViewById(R.id.SIGNIN_editLayout);
         radioNo = (RadioButton) findViewById(R.id.SIGNIN_radioNo);
+        radioNo.setVisibility(View.GONE);
         radioYes = (RadioButton) findViewById(R.id.SIGNIN_radioYes);
         radioTourist = (RadioButton) findViewById(R.id.SIGNIN_radioTourist);
         btnSend = (Button) findViewById(R.id.SIGNIN_btnSignin);
         editID = (EditText) findViewById(R.id.SIGNIN_editUserID);
         spinner = (Spinner) findViewById(R.id.SIGNIN_emailSpinner);
+        spinner.setVisibility(View.GONE);
 
         editPassword = (EditText) findViewById(R.id.SIGNIN_editPIN);
         heroImage = (ImageView) findViewById(R.id.SIGNIN_heroImage);
@@ -408,7 +410,6 @@ public class SigninActivity extends AppCompatActivity {
         });
     }
 
-    private String mail = "goltzau@iafrica.com";
     //Temporary Fix
     public void sendSignInTourist() {
         Snackbar.make(editPassword, "Downloading information; may take a minute or two",
@@ -421,9 +422,9 @@ public class SigninActivity extends AppCompatActivity {
         }
 
         RequestDTO w = new RequestDTO(RequestDTO.SIGN_IN_CITIZEN);
-        w.setUserName("3702210039184");
-        w.setPassword("alex66");
-        w.setEmail(mail);
+        w.setUserName("4406230441086");
+        w.setPassword("Jer3m1ah3");
+        w.setEmail(email);
         w.setGcmDevice(gcmDevice);
         w.setLatitude(0.0);
         w.setLongitude(0.0);
@@ -587,9 +588,9 @@ public class SigninActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-      //  getMenuInflater().inflate(R.menu.menu_main_pager, menu);
-//        menu.getItem(0).setVisible(false);
-      //  mMenu = menu;
+          //  getMenuInflater().inflate(R.menu.menu_main_pager, menu);
+         //  menu.getItem(0).setVisible(false);
+        //  mMenu = menu;
 
         return true;
     }

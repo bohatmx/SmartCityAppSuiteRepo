@@ -80,6 +80,7 @@ public class ComplaintCategoryPopupListAdapter extends ArrayAdapter<ComplaintCat
         Util.setComplaintCategoryIcon(p.getComplaintCategoryName(),item.image, ctx);
 
         item.image.setColorFilter(primaryColorDark, PorterDuff.Mode.SRC_IN);
+      //  setIcon(item.txtString.getText().toString(), item.image, ctx);
         Statics.setRobotoFontLight(ctx, item.txtString);
         return (convertView);
     }

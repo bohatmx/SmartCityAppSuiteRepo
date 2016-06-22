@@ -201,7 +201,7 @@ public class AccountActivity extends AppCompatActivity
             setResult(RESULT_CANCELED);
         }
 
-        finish();
+      //  finish();
 
     }
     Menu mMenu;

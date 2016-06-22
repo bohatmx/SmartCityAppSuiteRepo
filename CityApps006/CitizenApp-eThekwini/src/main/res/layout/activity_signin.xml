@@ -70,7 +70,7 @@
                          android:checked="true"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
-                         android:text="I have a Municipality Account" />
+                         android:text="I am a Registered E-Services User" />
 
                      <RadioButton
                          android:id="@+id/SIGNIN_radioNo"

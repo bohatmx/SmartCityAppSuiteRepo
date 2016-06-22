@@ -108,6 +108,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         FaqFragment.FaqListener {
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -318,6 +319,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     }
 
     static final int THEME_REQUESTED = 8075;
+    static boolean logOff;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -335,6 +337,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             SharedUtil.clearUser(ctx);
             Intent intent = new Intent(CitizenDrawerActivity.this, SigninActivity.class);
             startActivity(intent);
+            logOff = true;
             finish();
             return true;
         }
@@ -791,6 +794,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         if (!googleApiClient.isConnected()) {
             googleApiClient.connect();
         }
+
 
     }
 
