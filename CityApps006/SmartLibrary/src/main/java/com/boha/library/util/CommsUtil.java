@@ -56,6 +56,7 @@ public class CommsUtil {
                         JSONObject err = object.getJSONObject("ERROR");
                         if (err != null) {
                             String x = err.getString("ErrorMessage");
+
                             listener.onError(x);
                             return;
                         }
@@ -63,7 +64,13 @@ public class CommsUtil {
                     if (object.has("News")) {
                         JSONObject news = object.getJSONObject("News");
                         if (news != null) {
-                            String x = news.getString("body");
+                            String x = news.getString("body").replaceAll("\u2019", "'")
+
+                                    .replaceAll("\u201C", "\"").replace("\u201D", "\"")
+
+                                    .replaceAll("\u2018", "'").replaceAll("\u2026", "...")
+
+                                    .replaceAll("\u2013", "-");
                             Log.d(COMMS, x);
                             listener.onDataOK(x);
                             return;
