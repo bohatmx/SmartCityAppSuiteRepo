@@ -153,8 +153,8 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                    actionsView.setVisibility(View.VISIBLE);
-                 btnSignIn.setVisibility(View.VISIBLE);
-                //checkVirginity(true);
+                 btnSignIn.setVisibility(View.GONE);
+                checkVirginity(true);
             }
         });
 
@@ -309,7 +309,7 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.menu_splash, menu);
+        getMenuInflater().inflate(R.menu.menu_splash, menu);
         return true;
     }
 
@@ -318,7 +318,10 @@ public class SplashActivity extends AppCompatActivity {
         int id = item.getItemId();
 
 
-    /*    if (id == R.id.action_logoff) {
+       /* if (id == R.id.action_logoff) {
+            SharedUtil.clearUser(ctx);
+            Intent intent = new Intent(this, SigninActivity.class);
+            startActivity(intent);
             finish();
             return true;
         }
