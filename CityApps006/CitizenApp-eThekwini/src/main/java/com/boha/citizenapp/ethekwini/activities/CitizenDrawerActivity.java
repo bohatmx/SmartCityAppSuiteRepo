@@ -334,7 +334,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         }
 
         if (id == com.boha.library.R.id.action_logoff) {
-            SharedUtil.clearUser(ctx);
+            SharedUtil.clearProfile(ctx);
             Intent intent = new Intent(CitizenDrawerActivity.this, SigninActivity.class);
             startActivity(intent);
             logOff = true;

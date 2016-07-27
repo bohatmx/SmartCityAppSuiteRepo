@@ -451,6 +451,11 @@ public class SharedUtil {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
         sp.edit().remove(USER).commit();
     }
+
+    public static void clearProfile(Context ctx) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
+        sp.edit().remove(PROFILE).commit();
+    }
     public static final int VISA = 1, MASTERCARD = 2, SID = 3;
 
     public static final int MAX_SLIDING_TAB_VIEWS = 200;
