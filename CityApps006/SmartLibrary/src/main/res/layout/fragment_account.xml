@@ -1,8 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.boha.citizenapp.fragments.AccountFragment">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/template"
@@ -14,9 +13,26 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
         <include
+            android:id="@+id/tpg"
             layout="@layout/top_template_green"/>
 
+      <!--  <include
+            android:id="@+id/NP"
+            android:layout_below="@+id/tpg"
+            layout="@layout/next_previous"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/> -->
+
     </RelativeLayout>
+
+ <!--   <RelativeLayout
+        android:layout_below="@+id/template"
+        android:id="@+id/NP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include
+            layout="@layout/next_previous"/>
+    </RelativeLayout> -->
 
     <ScrollView
         android:id="@+id/ACCT_scroll"
@@ -33,13 +49,44 @@
                 android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                       <ImageView
+                           android:id="@+id/previousIMG"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:src="@drawable/ic_action_previous_item"
+                           android:padding="@dimen/mon_padding"/>
+
+                       <TextView
+                           android:id="@+id/ACCFlipText"
+                           android:layout_toRightOf="@+id/previousIMG"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="Switch my accounts"
+                           android:textAlignment="center"
+                           android:padding="@dimen/mon_padding"
+                           style="@style/TextStyle"
+                           android:layout_marginLeft="40dp"
+                           />
+
+                       <ImageView
+                           android:padding="@dimen/mon_padding"
+                           android:id="@+id/nextIMG"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:src="@drawable/ic_action_next_item"
+                           android:layout_alignParentTop="true"
+                           android:layout_alignParentRight="true"
+                           android:layout_alignParentEnd="true"
+                           />
 
                 <RelativeLayout
+                    android:layout_below="@+id/ACCFlipText"
                     android:id="@+id/ACCT_numberLayout"
                     android:padding="@dimen/mon_padding"
                     android:layout_marginRight="@dimen/mon_padding"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
 
                     <TextView
                         android:id="@+id/ACCT_number"

@@ -2,22 +2,31 @@ package com.boha.library.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.CityApplication;
+import com.boha.library.adapters.AccountAdapter;
+import com.boha.library.adapters.AccountPopupListAdapter;
+import com.boha.library.adapters.ComplaintCategoryPopupListAdapter;
 import com.boha.library.dto.AccountDTO;
+import com.boha.library.dto.ComplaintCategoryDTO;
 import com.boha.library.dto.ComplaintDTO;
+import com.boha.library.dto.ComplaintTypeDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.transfer.ResponseDTO;
+import com.boha.library.util.CacheUtil;
 import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
 import com.squareup.leakcanary.RefWatcher;
@@ -56,14 +65,15 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
             response = (ResponseDTO) getArguments().getSerializable("response");
             profileInfo = response.getProfileInfoList().get(0);
             complaintList = response.getComplaintList();
+
         }
 
     }
 
     View view;
-    TextView txtName, txtBalance, txtArrears, txtComplaints, txtResolved;
+    TextView txtName, txtBalance, txtArrears, txtComplaints, txtResolved, ACCFlipText;
     Button btnAccountDetails;
-    ImageView heroImage;
+    ImageView heroImage, previousIMG, nextIMG;
     static final DecimalFormat df = new DecimalFormat("###,###,###,###,###,###,###,##0.00");
     ProfileInfoDTO profileInfo;
     double totBalance, totArrears;
@@ -82,6 +92,18 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
         txtName.setText(profileInfo.getFirstName() + " " + profileInfo.getLastName());
         getTotals();
 
+        getAccounts();
+        //getCachedAccounts();
+        /*if (response.getAccountList() != null) {
+            accountList = response.getAccountList();
+        } */
+       /* if (profileInfo.getAccountList().size() > 1) {
+      //      ACCFlipText.setVisibility(View.GONE);
+      //      previousIMG.setVisibility(View.GONE);
+      //      nextIMG.setVisibility(View.GONE);
+
+
+        } */
         return view;
     }
 
@@ -134,6 +156,85 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
 
     }
 
+    ListPopupWindow accountPopup;
+    List<AccountDTO> accountList;/* = new ArrayList<AccountDTO>()*/
+    AccountDTO account;
+
+    public void showAccountPopup(final List<AccountDTO> list) {
+        if (accountPopup != null) {
+            accountPopup.dismiss();
+        }
+
+        accountPopup = new ListPopupWindow(getActivity());
+        LayoutInflater inf = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inf.inflate(R.layout.hero_image_popup, null);
+        TextView txt = (TextView) v.findViewById(R.id.HERO_caption);
+        txt.setText("My Accounts");
+        ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
+        img.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+
+        accountPopup.setPromptView(v);
+        accountPopup.setPromptPosition(ListPopupWindow.POSITION_PROMPT_ABOVE);
+        accountPopup.setAdapter(new AccountPopupListAdapter(ctx,
+                R.layout.xspinner_item, list, primaryDarkColor));
+        accountPopup.setAnchorView(view);
+        accountPopup.setHorizontalOffset(Util.getPopupHorizontalOffset(getActivity()));
+        accountPopup.setModal(true);
+        accountPopup.setWidth(Util.getPopupWidth(getActivity()));
+        accountPopup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                accountPopup.dismiss();
+                account = list.get(position);
+             //   Util.setComplaintCategoryIcon(account.getAccountNumber(), nextIMG, getActivity());
+            }
+        });
+        accountPopup.show();
+    }
+
+    List<String> stringList;
+
+    private void getCachedAccounts() {
+
+        CacheUtil.getCacheLoginData(ctx, new CacheUtil.CacheRetrievalListener() {
+            @Override
+            public void onCacheRetrieved(ResponseDTO response) {
+                accountList = response.getAccountList();
+               // setList();
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+    }
+
+    private void getAccounts() {
+        CacheUtil.getCacheLoginData(ctx, new CacheUtil.CacheRetrievalListener() {
+            @Override
+            public void onCacheRetrieved(ResponseDTO response) {
+
+                if (response.getAccountList() != null) {
+                    accountList = response.getAccountList();
+                }
+             /*   if (response.getAccountList() != null) {
+                    accountList = response.getAccountList();
+                    stringList = new ArrayList<String>();
+                    for (AccountDTO x : accountList) {
+                        stringList.add(x.getAccountNumber());
+                    }
+                } */
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+    }
+
     private void setFields() {
         txtName = (TextView) view.findViewById(R.id.CITIZEN_name);
         txtBalance = (TextView) view.findViewById(R.id.DASH_currBal);
@@ -142,6 +243,32 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
         txtComplaints = (TextView) view.findViewById(R.id.DASH_complaintCount);
         txtResolved = (TextView) view.findViewById(R.id.DASH_resolvedCount);
         heroImage = (ImageView) view.findViewById(R.id.CITIZEN_image);
+        previousIMG = (ImageView) view.findViewById(R.id.previousIMG);
+        nextIMG = (ImageView) view.findViewById(R.id.nextIMG);
+        ACCFlipText = (TextView) view.findViewById(R.id.ACCFlipText);
+        ACCFlipText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        showAccountPopup(profileInfo.getAccountList());
+                    }
+                });
+
+        nextIMG.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(LOG, "Next Clicked");
+               // setNextAccount();
+            }
+        });
+
+        previousIMG.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(LOG, "Previous Clicked");
+               // setPreviousAccount();
+            }
+        });
 
         Statics.setRobotoFontLight(ctx, txtBalance);
         Statics.setRobotoFontLight(ctx, txtArrears);

@@ -155,7 +155,7 @@ public class SplashActivity extends AppCompatActivity {
             public void onClick(View v) {
                    actionsView.setVisibility(View.VISIBLE);
                  btnSignIn.setVisibility(View.VISIBLE);
-             //   checkVirginity(true);
+                checkVirginity(true);
             }
         });
 
@@ -192,6 +192,7 @@ public class SplashActivity extends AppCompatActivity {
                 break;
         }
     }
+
     private void getMunicipality() {
         municipality = SharedUtil.getMunicipality(ctx);
         if (municipality == null) {

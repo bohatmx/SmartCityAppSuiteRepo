@@ -47,12 +47,12 @@ public class CacheUtil {
     public static final int CACHE_LOGIN = 1,
             CACHE_ALERTS = 2, CACHE_NEWS = 3,
             CACHE_FAQ = 4, CACHE_SID_PAYMENT = 5,
-            CACHE_CARD_PAYMENT = 6;
+            CACHE_CARD_PAYMENT = 6, CACHE_ACCOUNTS = 7;
     public static final String JSON_DATA = "file.json",
             JSON_ALERTS = "alerts.json",
             JSON_SID_PAYMENTS = "sidpayments.json",
             JSON_CARD_PAYMENTS = "cardpayments.json",
-            JSON_NEWS = "news.json", JSON_FAQ = "faq.json";
+            JSON_NEWS = "news.json", JSON_FAQ = "faq.json", JSON_ACCOUNTS = "accounts.json";
     static ResponseDTO response;
     static CacheListener cacheListener;
     static CacheRetrievalListener cacheRetrievalListener;
@@ -175,6 +175,15 @@ public class CacheUtil {
         new CacheTask().execute();
     }
 
+    public static void cacheACCOUNTS(Context context, ResponseDTO w, CacheListener listener) {
+        cacheListener = listener;
+        response = w;
+        ctx = context;
+        dataType = CACHE_ACCOUNTS;
+        new CacheTask().execute();
+
+    }
+
     public static void getCacheAlertData(Context context, CacheRetrievalListener listener) {
         cacheRetrievalListener = listener;
         ctx = context;
@@ -239,6 +248,16 @@ public class CacheUtil {
                         if (file != null) {
                             Log.e(LOG, "News cache written, path: " + file.getAbsolutePath() +
                                     " - length: " + file.length());
+                        }
+                        break;
+                    case CACHE_ACCOUNTS:
+                        json = gson.toJson(response);
+                        outputStream = ctx.openFileOutput(JSON_ACCOUNTS, Context.MODE_PRIVATE);
+                        write(outputStream, json);
+                        file = ctx.getFileStreamPath(JSON_ACCOUNTS);
+                        if (file != null) {
+                            Log.e(LOG, "Accounts cache written, path: " + file.getAbsolutePath() +
+                            " - length: " + file.length());
                         }
                         break;
                     case CACHE_FAQ:
@@ -314,8 +333,6 @@ public class CacheUtil {
                         response = getData(stream);
                         Log.i(LOG, "++ sid payment cache retrieved");
                         break;
-
-
                     case CACHE_LOGIN:
                         stream = ctx.openFileInput(JSON_DATA);
                         response = getData(stream);
@@ -326,6 +343,12 @@ public class CacheUtil {
                         stream = ctx.openFileInput(JSON_ALERTS);
                         response = getData(stream);
                         Log.i(LOG, "++ alert cache retrieved");
+                        break;
+
+                    case CACHE_ACCOUNTS:
+                        stream = ctx.openFileInput(JSON_ACCOUNTS);
+                        response = getData(stream);
+                        Log.i(LOG, "++ account cache retrieved");
                         break;
 
 

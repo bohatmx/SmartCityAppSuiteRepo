@@ -101,11 +101,20 @@
         </RelativeLayout>
 
         <include
+            android:id="@+id/dashboard"
             layout="@layout/dashboard"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/CITIZEN_acctsLayout" />
 
+        <include
+            android:layout_below="@id/dashboard"
+            layout="@layout/next_previous"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
     </RelativeLayout>
+
+
 </ScrollView>
 

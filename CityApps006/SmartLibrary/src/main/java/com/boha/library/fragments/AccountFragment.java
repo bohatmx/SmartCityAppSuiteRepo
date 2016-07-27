@@ -15,8 +15,10 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListPopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -26,11 +28,13 @@ import com.boha.library.activities.PaymentStartActivity;
 import com.boha.library.activities.SIDPaymentsActivity;
 import com.boha.library.activities.StatementActivity;
 import com.boha.library.adapters.AccountAdapter;
+import com.boha.library.adapters.AccountPopupListAdapter;
 import com.boha.library.dto.AccountDTO;
 import com.boha.library.dto.PaymentSurveyDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
+import com.boha.library.util.CacheUtil;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Statics;
@@ -41,6 +45,7 @@ import com.squareup.leakcanary.RefWatcher;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -49,16 +54,16 @@ public class AccountFragment extends Fragment implements PageFragment {
 
     private AccountFragmentListener mListener;
     private ProfileInfoDTO profileInfo;
-    private View view, detailView, topView, handle;
+    private View view, detailView, topView, handle, npView;
     private TextView
             txtName, txtAcctNumber, txtSubtitle,
             txtArrears, txtFAB, txtClickToPay,
             txtLastUpdate, txtNextBill,
-            txtAddress, txtLastBillAmount;
-    View topLayout;
+            txtAddress, txtLastBillAmount, ACCFlipText;
+    View topLayout, npLayout;
     FloatingActionButton fab;
     Button btnCurrBal;
-    ImageView fabIcon, hero;
+    ImageView fabIcon, hero, previousIMG, nextIMG;
     ScrollView scrollView;
     AccountAdapter adapter;
     ImageView icon;
@@ -117,11 +122,16 @@ public class AccountFragment extends Fragment implements PageFragment {
         activity = getActivity();
         ctx = getActivity();
         setFields();
+        getAccounts();
 
         if (profileInfo != null) {
             if (!profileInfo.getAccountList().isEmpty()) {
+                nextIMG.setVisibility(View.GONE);
+                previousIMG.setVisibility(View.GONE);
+                ACCFlipText.setVisibility(View.GONE);
                 account = profileInfo.getAccountList().get(0);
                 setAccountFields(account);
+
             }
 
         }
@@ -136,15 +146,148 @@ public class AccountFragment extends Fragment implements PageFragment {
         return view;
     }
 
-    public void setProfileInfo(ProfileInfoDTO profileInfo) {
+    ListPopupWindow accountPopup;
+    List<AccountDTO> accountList;
+
+    public void showAccountPopup(final List<AccountDTO> list) {
+        if (accountPopup != null) {
+            accountPopup.dismiss();
+        }
+
+        accountPopup = new ListPopupWindow(getActivity());
+        LayoutInflater inf = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inf.inflate(R.layout.hero_image_popup, null);
+        TextView txt = (TextView) v.findViewById(R.id.HERO_caption);
+        txt.setText("My Accounts");
+        ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
+        img.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+
+        accountPopup.setPromptView(v);
+        accountPopup.setPromptPosition(ListPopupWindow.POSITION_PROMPT_ABOVE);
+        accountPopup.setAdapter(new AccountPopupListAdapter(ctx,
+                R.layout.xspinner_item, list, primaryDarkColor));
+        accountPopup.setAnchorView(view);
+        accountPopup.setHorizontalOffset(Util.getPopupHorizontalOffset(getActivity()));
+        accountPopup.setModal(true);
+        accountPopup.setWidth(Util.getPopupWidth(getActivity()));
+        accountPopup.setHeight(Util.getWindowHeight(getActivity()));
+        accountPopup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                accountPopup.dismiss();
+                account = list.get(position);
+                Util.setComplaintCategoryIcon(account.getAccountNumber(), nextIMG, getActivity());
+            }
+        });
+        accountPopup.show();
+    }
+
+    private void getAccounts() {
+        CacheUtil.getCacheLoginData(ctx, new CacheUtil.CacheRetrievalListener() {
+            @Override
+            public void onCacheRetrieved(ResponseDTO response) {
+
+                if (response.getAccountList() != null) {
+                    accountList = response.getAccountList();
+                }
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+    }
+
+    int next = 0;
+    private void setNextAccount() {
+
+        next++;
+        if(next == profileInfo.getAccountList().size()) {
+            nextIMG.setVisibility(View.GONE);
+            } else {
+            for(AccountDTO acc : profileInfo.getAccountList()) {
+                profileInfo.getAccountList().get(next);
+                setAccountFields(acc);
+            }
+        }
+
+
+    }
+
+    int previous = 0;
+    private void setPreviousAccount() {
+
+        previous--;
+        if(previous < 0) {
+            previousIMG.setVisibility(View.GONE);
+        } else {
+            for(AccountDTO acc : profileInfo.getAccountList()) {
+            profileInfo.getAccountList().get(previous);
+            setAccountFields(acc);
+        }}
+
+
+    }
+
+    int index;
+    public void setProfileInfo(final ProfileInfoDTO profileInfo) {
         this.profileInfo = profileInfo;
+
+        index++;
         if (profileInfo.getAccountList().isEmpty()) {
             Log.e("AccountFragment", "--- account list is empty");
             return;
         }
+
         account = profileInfo.getAccountList().get(0);
         setAccountFields(account);
         txtFAB.setText("1");
+
+      /*  nextIMG.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                account = profileInfo.getAccountList().get(index);
+                setAccountFields(account);
+                txtFAB.setText("2");
+            }
+        });
+        account = profileInfo.getAccountList().get(1);
+        setAccountFields(account);
+        txtFAB.setText("2");
+
+        account = profileInfo.getAccountList().get(2);
+        setAccountFields(account);
+        txtFAB.setText("3");
+
+        account = profileInfo.getAccountList().get(3);
+        setAccountFields(account);
+        txtFAB.setText("4");
+
+        account = profileInfo.getAccountList().get(4);
+        setAccountFields(account);
+        txtFAB.setText("5");
+
+        account = profileInfo.getAccountList().get(5);
+        setAccountFields(account);
+        txtFAB.setText("6");
+
+        account = profileInfo.getAccountList().get(6);
+        setAccountFields(account);
+        txtFAB.setText("7");
+
+        account = profileInfo.getAccountList().get(7);
+        setAccountFields(account);
+        txtFAB.setText("8");
+
+        account = profileInfo.getAccountList().get(8);
+        setAccountFields(account);
+        txtFAB.setText("9");
+
+        account = profileInfo.getAccountList().get(9);
+        setAccountFields(account);
+        txtFAB.setText("10"); */
 
     }
 
@@ -175,8 +318,6 @@ public class AccountFragment extends Fragment implements PageFragment {
                     }
                 })
                 .show();
-
-
 
 
     }
@@ -222,6 +363,9 @@ public class AccountFragment extends Fragment implements PageFragment {
 
     private void setFields() {
         topView = view.findViewById(R.id.template);
+        npView = view.findViewById(R.id.npLay);
+       // npView = view.findViewById(R.id.NP);
+      //  npView = view.findViewById(R.id.NP);
         fab = (FloatingActionButton)view.findViewById(R.id.fab);
         hero = (ImageView) view.findViewById(R.id.TOP_heroImage);
         topLayout = view.findViewById(R.id.TOP_titleLayout);
@@ -245,12 +389,42 @@ public class AccountFragment extends Fragment implements PageFragment {
         txtNextBill = (TextView) view.findViewById(R.id.ACCT_nextBillDate);
         txtLastBillAmount = (TextView) view.findViewById(R.id.ACCT_lastBillAmount);
 
+      //  detailView = view.findViewById(R.id.ACCS);
+        previousIMG = (ImageView) detailView.findViewById(R.id.previousIMG);
+        nextIMG = (ImageView) detailView.findViewById(R.id.nextIMG);
+        ACCFlipText = (TextView) detailView.findViewById(R.id.ACCFlipText);
+
+        ACCFlipText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(LOG, "text clicked");
+                showAccountPopup(profileInfo.getAccountList());
+            }
+        });
+
+        nextIMG.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(LOG, "nextIMG btn clicked");
+              //  setProfileInfo(profileInfo);
+                setNextAccount();
+            }
+        });
+        previousIMG.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(LOG, "previousIMG btn clicked");
+                setPreviousAccount();
+            }
+        });
+
 //        fabIcon.setVisibility(View.GONE);
 //        txtFAB.setVisibility(View.VISIBLE);
         hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+
         setFont();
         txtClickToPay.setVisibility(View.GONE);
-      /*  btnCurrBal.setOnClickListener(new View.OnClickListener() {
+        btnCurrBal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Util.flashOnce(btnCurrBal, 300, new Util.UtilAnimationListener() {
@@ -261,7 +435,7 @@ public class AccountFragment extends Fragment implements PageFragment {
                 });
             }
         });
-        txtClickToPay.setOnClickListener(new View.OnClickListener() {
+     /*   txtClickToPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Util.flashOnce(btnCurrBal, 300, new Util.UtilAnimationListener() {

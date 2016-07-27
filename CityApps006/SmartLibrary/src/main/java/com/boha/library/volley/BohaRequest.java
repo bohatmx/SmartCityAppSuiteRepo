@@ -99,5 +99,6 @@ public class BohaRequest extends Request<ResponseDTO> {
         return m.doubleValue();
     }
     static final String LOG = "BohaRequest";
+
 }
 

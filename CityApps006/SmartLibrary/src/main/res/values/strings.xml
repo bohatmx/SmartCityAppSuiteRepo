@@ -13,6 +13,7 @@
     <string name="create_alert">Create Alert</string>
 
     <string name="enter_id">Enter your ID number</string>
+    <string name="enter_email">Email Address</string>
     <string name="enter_pswd">Password</string>
     <string name="under_cons">Under Construction. Watch this space!</string>
     <string name="visiting">Just Visiting</string>

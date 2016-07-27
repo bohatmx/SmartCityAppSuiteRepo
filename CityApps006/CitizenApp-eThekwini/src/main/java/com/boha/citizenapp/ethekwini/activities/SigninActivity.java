@@ -243,7 +243,7 @@ public class SigninActivity extends AppCompatActivity {
         Snackbar.make(editPassword, "Downloading information; may take a minute or two",
                 Snackbar.LENGTH_LONG).show();
         if (editID.getText().toString().isEmpty()) {
-            Util.showErrorToast(ctx, getString(R.string.enter_id));
+            Util.showErrorToast(ctx, getString(R.string.enter_email));
             return;
         }
         if (editPassword.getText().toString().isEmpty()) {
@@ -255,7 +255,6 @@ public class SigninActivity extends AppCompatActivity {
                 email = tarList.get(1);
             }
         }
-
 
         RequestDTO w = new RequestDTO(RequestDTO.SIGN_IN_CITIZEN);
         w.setUserName(editID.getText().toString());
@@ -302,8 +301,8 @@ public class SigninActivity extends AppCompatActivity {
                             CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
                                 @Override
                                 public void onDataCached() {
-                                   // onBackPressed();
-                                    check();
+                                    onBackPressed();
+                                  //  check();
                                 }
 
                                 @Override
@@ -377,8 +376,8 @@ public class SigninActivity extends AppCompatActivity {
                         CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
                             @Override
                             public void onDataCached() {
-                                // onBackPressed();
-                                check();
+                                 onBackPressed();
+                              //  check();
                             }
 
                             @Override
@@ -409,6 +408,8 @@ public class SigninActivity extends AppCompatActivity {
             }
         });
     }
+
+    String mail = "";
 
     //Temporary Fix
     public void sendSignInTourist() {
@@ -523,12 +524,25 @@ public class SigninActivity extends AppCompatActivity {
         i.putExtra("justSignedIn", true);
         startActivity(i);
     }
+
     @Override
     public void onBackPressed() {
-
-        Intent intent = new Intent(SigninActivity.this, SplashActivity.class);
+    Log.w(LOG, "#### onBackPressed");
+        profileInfo = SharedUtil.getProfile(ctx);
+        UserDTO user = SharedUtil.getUser(ctx);
+        if (profileInfo != null || user != null) {
+            setResult(RESULT_OK);
+            finish();
+            Intent i = new Intent(ctx, CitizenDrawerActivity.class);
+            i.putExtra("justSignedIn", true);
+            startActivity(i);
+        } else {
+            setResult(RESULT_CANCELED);
+            finish();
+        }
+       /* Intent intent = new Intent(SigninActivity.this, SplashActivity.class);
         startActivity(intent);
-        finish();
+        finish(); */
     }
 
     public void getEmail() {

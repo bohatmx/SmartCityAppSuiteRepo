@@ -105,7 +105,8 @@ public class AccountDetailActivity extends AppCompatActivity {
         txtSubtitle = (TextView) topView.findViewById(R.id.TOP_subTitle);
         icon = (ImageView) topView.findViewById(R.id.TOP_icon);
         txtAcctNumber = (TextView) findViewById(R.id.ACCT_number);
-        //txtClickToPay = (TextView) topView.findViewById(R.id.ACCT_clickToPay);
+        txtClickToPay = (TextView) topView.findViewById(R.id.ACCT_clickToPay);
+        //txtClickToPay.setVisibility(View.GONE);
         txtAddress = (TextView) findViewById(R.id.ACCT_address);
         txtArrears = (TextView) findViewById(R.id.ACCT_currArrears);
         txtLastUpdate = (TextView) findViewById(R.id.ACCT_lastUpdateDate);

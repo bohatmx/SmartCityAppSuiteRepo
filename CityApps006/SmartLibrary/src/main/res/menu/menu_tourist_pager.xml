@@ -1,4 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.boha.citizenapp.activities.TouristDrawerActivity">
 
+    <item
+        android:id="@+id/action_refresh"
+        android:title="Refresh Data"
+        android:icon="@drawable/ic_action_refresh"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom" />
+    <item android:id="@+id/action_app_guide"
+        android:title="Smartcity Guide"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_help"
+        android:title="Help"
+        android:icon="@drawable/ic_action_help"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_theme"
+        android:title="Set Appearance Colours"
+        android:icon="@drawable/ic_action_slideshow"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+   <!-- <item
+        android:id="@+id/action_address"
+        android:title="@string/update_address"
+        android:icon="@drawable/ic_action_edit"
+        android:orderInCategory="100"
+        app:showAsAction="never" /> -->
+    <item
+        android:id="@+id/action_emergency"
+        android:title="Emergency Contacts"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_info"
+        android:title="General Info"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_logoff"
+        android:title="Log Off"
+        android:icon="@drawable/ic_action_event"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
 </menu>

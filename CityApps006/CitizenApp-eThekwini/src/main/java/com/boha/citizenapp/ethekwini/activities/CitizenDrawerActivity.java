@@ -160,6 +160,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                 .build();
         municipality = SharedUtil.getMunicipality(ctx);
         profileInfo = SharedUtil.getProfile(ctx);
+        Log.i(LOG, "accountList is: " + profileInfo.getAccountList().size());
 
         if (profileInfo != null) {
             navText.setText(profileInfo.getFirstName() + " " + profileInfo.getLastName());
@@ -185,6 +186,8 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         }
         mDrawerLayout.openDrawer(GravityCompat.START);
     }
+
+
 
     private void checkAddress() {
         ResidentialAddress address = SharedUtil.getAddress(ctx);
