@@ -12,32 +12,22 @@ import android.widget.TextView;
 public class Statics {
 
     /*
-     * REMOTE APP_URL - Zebula back end - local laptop
+     * PECANWOOD BACKEND APP_URL'S - pecanwood back end endpoint on laptop
      */
 
-    public static final String WEBSOCKET_URL = "ws://192.168.1.233:40405/sc/";
-    public static final String URL = "http://192.168.1.233:40405/sc/";
-    public static final String IMAGE_URL = "http://192.168.1.233:40405/";
+    public static final String PREFIX = "http://192.168.1.233:40405";
+    public static final String URL = PREFIX + "/sc/";
+    public static final String IMAGE_URL = PREFIX + "/";
 
-    //http://munimobileapp.oneconnectgroup.com:7070/
-    //http://195.154.47.229:7070
-    //212.83.130.156
-    //http://icsm1.oneconnectgroup.com/
+
     /**
      * SmartCity Production Server
      */
-  /*  public static final String WEBSOCKET_URL = "ws://icsm1.oneconnectgroup.com:7070/sc/";
-    public static final String URL = "http://icsm1.oneconnectgroup.com:7070/sc/";
-    public static final String IMAGE_URL = "http://icsm1.oneconnectgroup.com:7070/";
-    */
 
-    /*
-        LOCAL DEV - DYNATECH  //10.0.0.102  //192.168.1.253// 10.154.165.163
+//    public static final String PREFIX  = "ws://icsm1.oneconnectgroup.com:7070";
+//    public static final String URL = PREFIX + "/sc/";
+//    public static final String IMAGE_URL = PREFIX + "/";
 
-     */
-//    public static final String WEBSOCKET_URL = "ws://10.0.0.59:8080/sc/";
-//    public static final String URL = "http://10.0.0.59:8080/sc/";
-//    public static final String IMAGE_URL = "http://10.0.0.59:8080/";
 
     public static final String GATEWAY_SERVLET = "smart?";
     public static final String GATEWAY_SOCKET = "wssmart";
@@ -54,6 +44,7 @@ public class Statics {
     public static final String GOOGLE_DISTANCE_MATRIX_URL = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=";
 
     public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
+
     public static void setRomanFontLight(Context ctx, TextView txt) {
         Typeface font = Typeface.createFromAsset(ctx.getAssets(),
                 "fonts/Neuton-Light.ttf");

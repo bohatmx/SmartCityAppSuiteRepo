@@ -53,6 +53,7 @@ public class WebSocketUtil {
         void onError(String message);
     }
 
+    public static final String WEBSOCKET_URL = "ws://192.168.1.233:40405/sc/";
 
     static TimerUtil timerUtil;
     public static void sendRequest(Context ctx, final String suffix,
@@ -62,7 +63,7 @@ public class WebSocketUtil {
         mSuffix = suffix;
         context = ctx;
         retryCount = 0;
-        final String url = Statics.WEBSOCKET_URL + suffix;
+        final String url = WEBSOCKET_URL + suffix;
         final String json = GSON.toJson(w);
         try {
             timerUtil = new TimerUtil();
