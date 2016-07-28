@@ -3,274 +3,172 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/template"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <RelativeLayout
-            android:id="@+id/ACCT_handle"
-            android:layout_marginTop="@dimen/mon_wide"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"/>
-        <include
-            android:id="@+id/tpg"
-            layout="@layout/top_template_green"/>
 
-      <!--  <include
-            android:id="@+id/NP"
-            android:layout_below="@+id/tpg"
-            layout="@layout/next_previous"
+    <RelativeLayout
+        android:id="@+id/ACCT_detailLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+
+        <RelativeLayout
+            android:id="@+id/ACCT_currBalLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/> -->
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/mon_padding"
+            android:padding="@dimen/mon_padding">
+
+            <TextView
+                android:id="@+id/ACCT_currBal"
+                style="@style/Title1TextStyleBlue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="000,000.00" />
+
+
+            <TextView
+                android:id="@+id/ACCT_label3"
+                style="@style/TextStyle"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/mon_padding"
+                android:layout_toLeftOf="@id/ACCT_currBal"
+                android:text="Current Balance" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ACCT_currArrLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ACCT_currBalLayout"
+            android:layout_marginRight="@dimen/mon_padding"
+            android:padding="@dimen/mon_padding">
+
+            <TextView
+                android:id="@+id/ACCT_currArrears"
+                style="@style/Title2TextStyleRed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="R63,999.56"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/ACCT_label4"
+                style="@style/TextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/mon_margin"
+                android:layout_toLeftOf="@id/ACCT_currArrears"
+                android:text="Current Arrears" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ACCT_lastBillLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ACCT_currArrLayout"
+            android:layout_marginRight="@dimen/mon_padding"
+            android:layout_marginTop="@dimen/mon_padding"
+            android:padding="@dimen/mon_padding">
+
+            <TextView
+                android:id="@+id/ACCT_lastBillAmount"
+                style="@style/Title3TextStyleBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="R76,643.03"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/ACCT_label4a"
+                style="@style/TextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/mon_margin"
+                android:layout_toLeftOf="@id/ACCT_lastBillAmount"
+                android:text="Last Bill Amount" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ACCT_nextBillLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ACCT_lastBillLayout"
+            android:layout_marginRight="@dimen/mon_padding"
+            android:layout_marginTop="@dimen/mon_padding"
+            android:padding="@dimen/mon_padding">
+
+            <TextView
+                android:id="@+id/ACCT_nextBillDate"
+                style="@style/TextStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="23 December 2091"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/ACCT_label5"
+                style="@style/TextStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/mon_margin"
+                android:layout_toLeftOf="@id/ACCT_nextBillDate"
+                android:text="Next Bill Date" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ACCT_lastUpdateLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ACCT_nextBillLayout"
+            android:layout_marginRight="@dimen/mon_padding"
+            android:padding="@dimen/mon_padding">
+
+            <TextView
+                android:id="@+id/ACCT_lastUpdateDate"
+                style="@style/TextStyleBlueSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="01 December 2091"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/ACCT_label6"
+                style="@style/TextStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/mon_margin"
+                android:layout_toLeftOf="@id/ACCT_lastUpdateDate"
+                android:text="Last Updated" />
+        </RelativeLayout>
 
     </RelativeLayout>
 
- <!--   <RelativeLayout
-        android:layout_below="@+id/template"
-        android:id="@+id/NP"
+    <RelativeLayout
+        android:id="@+id/ACCT_addressLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <include
-            layout="@layout/next_previous"/>
-    </RelativeLayout> -->
+        android:layout_height="match_parent"
+        android:layout_below="@id/ACCT_detailLayout"
+        android:layout_marginBottom="@dimen/mon_wide"
+        android:padding="@dimen/mon_margin">
 
-    <ScrollView
-        android:id="@+id/ACCT_scroll"
-        android:layout_below="@id/template"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RelativeLayout
-                android:id="@+id/ACCT_detailLayout"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                       <ImageView
-                           android:id="@+id/previousIMG"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:src="@drawable/ic_action_previous_item"
-                           android:padding="@dimen/mon_padding"/>
-
-                       <TextView
-                           android:id="@+id/ACCFlipText"
-                           android:layout_toRightOf="@+id/previousIMG"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:text="Switch my accounts"
-                           android:textAlignment="center"
-                           android:padding="@dimen/mon_padding"
-                           style="@style/TextStyle"
-                           android:layout_marginLeft="40dp"
-                           />
-
-                       <ImageView
-                           android:padding="@dimen/mon_padding"
-                           android:id="@+id/nextIMG"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:src="@drawable/ic_action_next_item"
-                           android:layout_alignParentTop="true"
-                           android:layout_alignParentRight="true"
-                           android:layout_alignParentEnd="true"
-                           />
-
-                <RelativeLayout
-                    android:layout_below="@+id/ACCFlipText"
-                    android:id="@+id/ACCT_numberLayout"
-                    android:padding="@dimen/mon_padding"
-                    android:layout_marginRight="@dimen/mon_padding"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/ACCT_address"
+            style="@style/TextStyle20"
+            android:lines="4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30 Kingfisher Drive, Pecanwood Estate" />
+    </RelativeLayout>
 
 
-                    <TextView
-                        android:id="@+id/ACCT_number"
-                        android:text="999-999123456"
-                        style="@style/Title2TextStyleBlue"
-                        android:layout_alignParentRight="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/ACCT_label2"
-                        android:text="Account Number"
-                        style="@style/TextStyle"
-                        android:layout_marginRight="@dimen/mon_margin"
-                        android:layout_toLeftOf="@id/ACCT_number"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/ACCT_currBalLayout"
-                    android:layout_below="@id/ACCT_numberLayout"
-                    android:padding="@dimen/mon_padding"
-                    android:layout_marginRight="@dimen/mon_padding"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <include android:id="@+id/ACCT_currBal"
-                        layout="@layout/blue_button_small"
-                        android:layout_alignParentRight="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:id="@+id/ACCT_clickToPay"
-                        android:text="Click to Pay"
-                        style="@style/Title3TextStyleBlue"
-                        android:layout_marginRight="@dimen/mon_padding"
-                        android:layout_alignParentRight="true"
-                        android:layout_below="@id/ACCT_currBal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/ACCT_label3"
-                        android:text="Current Balance"
-                        android:layout_centerVertical="true"
-                        style="@style/TextStyle"
-                        android:layout_marginRight="@dimen/mon_padding"
-                        android:layout_toLeftOf="@id/ACCT_currBal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/ACCT_currArrLayout"
-                    android:layout_below="@id/ACCT_currBalLayout"
-                    android:padding="@dimen/mon_padding"
-                    android:layout_marginRight="@dimen/mon_padding"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/ACCT_currArrears"
-                        android:text="R63,999.56"
-                        style="@style/Title2TextStyleRed"
-                        android:textStyle="bold"
-                        android:layout_alignParentRight="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/ACCT_label4"
-                        android:text="Current Arrears"
-                        style="@style/TextStyle"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/mon_margin"
-                        android:layout_toLeftOf="@id/ACCT_currArrears"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </RelativeLayout>
-                <RelativeLayout
-                    android:id="@+id/ACCT_lastBillLayout"
-                    android:layout_below="@id/ACCT_currArrLayout"
-                    android:padding="@dimen/mon_padding"
-                    android:layout_marginTop="@dimen/mon_padding"
-                    android:layout_marginRight="@dimen/mon_padding"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/ACCT_lastBillAmount"
-                        android:text="R76,643.03"
-                        style="@style/Title3TextStyleBlack"
-                        android:textStyle="bold"
-                        android:layout_alignParentRight="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/ACCT_label4a"
-                        android:text="Last Bill Amount"
-                        style="@style/TextStyle"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/mon_margin"
-                        android:layout_toLeftOf="@id/ACCT_lastBillAmount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/ACCT_nextBillLayout"
-                    android:layout_below="@id/ACCT_lastBillLayout"
-                    android:padding="@dimen/mon_padding"
-                    android:layout_marginRight="@dimen/mon_padding"
-                    android:layout_marginTop="@dimen/mon_padding"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/ACCT_nextBillDate"
-                        android:text="23 December 2091"
-                        style="@style/TextStyleSmall"
-                        android:textStyle="bold"
-                        android:layout_alignParentRight="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/ACCT_label5"
-                        android:text="Next Bill Date"
-                        style="@style/TextStyleSmall"
-                        android:layout_marginRight="@dimen/mon_margin"
-                        android:layout_toLeftOf="@id/ACCT_nextBillDate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/ACCT_lastUpdateLayout"
-                    android:layout_below="@id/ACCT_nextBillLayout"
-                    android:padding="@dimen/mon_padding"
-                    android:layout_marginRight="@dimen/mon_padding"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/ACCT_lastUpdateDate"
-                        android:text="01 December 2091"
-                        style="@style/TextStyleBlueSmall"
-                        android:textStyle="bold"
-                        android:layout_alignParentRight="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/ACCT_label6"
-                        android:text="Last Updated"
-                        style="@style/TextStyleSmall"
-                        android:layout_marginRight="@dimen/mon_margin"
-                        android:layout_toLeftOf="@id/ACCT_lastUpdateDate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </RelativeLayout>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/ACCT_addressLayout"
-                android:layout_below="@id/ACCT_detailLayout"
-                android:background="@color/beige_pale"
-                android:padding="@dimen/mon_margin"
-                android:layout_marginBottom="@dimen/mon_wide"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/ACCT_address"
-                    style="@style/TextStyleRed"
-                    android:text="30 Kingfisher Drive, Pecanwood Estate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </RelativeLayout>
-
-
-        </RelativeLayout>
-    </ScrollView>
 </RelativeLayout>

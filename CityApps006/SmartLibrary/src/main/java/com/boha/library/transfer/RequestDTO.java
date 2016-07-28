@@ -60,6 +60,7 @@ public class RequestDTO {
     private String userName, password, referenceNumber,
             gcmRegistrationID, email,municipalityName, accountNumber, dataURL;
     private Double latitude, longitude;
+    private boolean spoof;
 
     //select network protocol, FALSE = http, TRUE = websocket
     private Boolean rideWebSocket = Boolean.FALSE;
@@ -100,6 +101,14 @@ public class RequestDTO {
     private RequestList requestList;
     private GISAddressDTO address;
     private PaymentSurveyDTO paymentSurvey;
+
+    public boolean isSpoof() {
+        return spoof;
+    }
+
+    public void setSpoof(boolean spoof) {
+        this.spoof = spoof;
+    }
 
     public SIDPaymentRequestDTO getSidPaymentRequest() {
         return sidPaymentRequest;

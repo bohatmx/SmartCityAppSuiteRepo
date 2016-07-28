@@ -17,13 +17,14 @@
             android:padding="0dp"
             android:background="@color/blue_300"
             app:cardElevation="@dimen/mon_padding"
+            android:layout_margin="@dimen/activity_horizontal_margin"
             tools:cardCornerRadius="16dp">
 
 
             <RelativeLayout
                 android:id="@+id/CITIZEN_midLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@color/beige_pale">
 
 
@@ -40,13 +41,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
+
                     android:layout_marginLeft="@dimen/mon_margin"
                     android:layout_marginTop="@dimen/mon_margin"
                     android:text="@string/my_accounts" />
 
                 <TextView
                     android:id="@+id/CITIZEN_name"
-                    style="@style/TextStyle"
+                    style="@style/Title2TextStyleWhite"
                     android:textColor="@color/grey"
                     android:background="@color/transparent_black"
                     android:padding="@dimen/mon_margin"
@@ -66,10 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/card_view"
             android:background="@color/beige_pale"
-
-            android:gravity="right"
-            android:padding="@dimen/mon_margin">
-
+            android:gravity="right">
 
             <RelativeLayout
                 android:id="@+id/buttonLayout"
@@ -107,11 +106,12 @@
             android:layout_height="match_parent"
             android:layout_below="@id/CITIZEN_acctsLayout" />
 
-        <include
-            android:layout_below="@id/dashboard"
-            layout="@layout/next_previous"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+        <!--<include-->
+            <!--android:layout_below="@id/dashboard"-->
+            <!--layout="@layout/next_previous"-->
+            <!---->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
 
     </RelativeLayout>
 

@@ -1,0 +1,128 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="@dimen/mon_margin">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/mon_margin">
+
+
+
+            <RelativeLayout
+                android:id="@+id/layout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title">
+
+                <TextView
+                    android:id="@+id/label2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/mon_margin"
+                    android:text="Account Number:" />
+
+                <TextView
+                    android:id="@+id/accountNumber"
+                    style="@style/Title0TextStyleBlue"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/label2"
+                    android:text="12345276s" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/TOP_titleLayout"
+                android:layout_below="@id/layout1"
+                android:background="@color/medium_sea_green"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mon_hero_height_medium">
+                <ImageView
+                    android:id="@+id/TOP_heroImage"
+                    android:src="@drawable/back4"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/mon_hero_height_medium" />
+                <TextView
+                    android:id="@+id/TOP_title"
+                    android:text="My Title Here"
+                    style="@style/Title2TextStyleWhite"
+                    android:layout_marginTop="@dimen/mon_widest"
+                    android:layout_marginLeft="@dimen/mon_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/TOP_subTitle"
+                    android:text="My sub title will occupy pride of place here"
+                    style="@style/TextStyleSmall"
+                    android:layout_alignLeft="@id/TOP_title"
+                    android:textColor="@color/white"
+                    android:layout_below="@id/TOP_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+                <RelativeLayout
+                    android:id="@+id/TOP_iconLayout"
+                    android:padding="@dimen/mon_divider"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="@dimen/mon_divider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/TOP_icon"
+                        android:src="@drawable/ic_my_library_books_black_36dp"
+                        android:tint="@color/yellow"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/TOP_label"
+                        android:text="Download Statements"
+                        style="@style/TextStyleSmallWhite"
+                        android:padding="@dimen/mon_divider_small"
+                        android:layout_below="@id/TOP_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="180dp"
+                android:visibility="visible"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/mon_wide"
+                android:src="@drawable/ic_payment"
+                app:backgroundTint="?attr/colorPrimary"
+                app:borderWidth="0dp"
+                app:elevation="@dimen/mon_margin"
+                app:pressedTranslationZ="@dimen/mon_wide"
+                app:rippleColor="@color/blue_200" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/card" />
+</RelativeLayout>

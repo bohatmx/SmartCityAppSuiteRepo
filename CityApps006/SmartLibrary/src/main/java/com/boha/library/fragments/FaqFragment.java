@@ -19,18 +19,13 @@ import android.widget.TextView;
 import com.boha.library.R;
 import com.boha.library.activities.CityApplication;
 import com.boha.library.activities.FaqTypeActivity;
-import com.boha.library.activities.NewsDetailActivity;
 import com.boha.library.adapters.FaqTypeAdapter;
-import com.boha.library.adapters.NewsListAdapter;
-import com.boha.library.dto.FaqDTO;
 import com.boha.library.dto.FreqQuestionTypeDTO;
-import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.FAQCommsUtil;
 import com.boha.library.util.FaqStrings;
 import com.boha.library.util.SharedUtil;
-import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -200,13 +195,11 @@ public class FaqFragment extends Fragment implements PageFragment {
     private void setList() {
         if (faqTypeList == null) {
             faqTypeList = new ArrayList<>();
-            //faqTypeList.add(ctx.R.drawable.accounts_statement);
         }
         faqTypeAdapter = new FaqTypeAdapter(ctx, R.layout.faqtype_item, darkColor, faqTypeList, new FaqTypeAdapter.FaqTypeListListener() {
 
             @Override
             public void onFaqTypeClicked(int position) {
-                //setWebView(0);
                Intent intent = new Intent(ctx, FaqTypeActivity.class);
                 intent.putExtra("positionIndex", position);
                 startActivity(intent);
@@ -214,16 +207,6 @@ public class FaqFragment extends Fragment implements PageFragment {
             }
 
         });
-      /*  if (faqTypeList.isEmpty()) {
-            Faq_text.setVisibility(View.VISIBLE);
-        } else {
-            Faq_text.setVisibility(View.GONE);
-        }
-        Statics.setRobotoFontLight(ctx, Faq_text);
-        if (FAQ_LIST.getHeaderViewsCount() == 0) {
-            heroImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-            FAQ_LIST.addHeaderView(topView);
-        } */
 
         FAQ_LIST.setAdapter(faqTypeAdapter);
 
@@ -233,9 +216,8 @@ public class FaqFragment extends Fragment implements PageFragment {
 
 
     public interface FaqListFragmentListener {
-        void onFaqTypeClicked(FaqDTO faq);
+        void onCloseRequested();
 
-        void setBusy(boolean busy);
     }
     private void setFields() {
 

@@ -6,24 +6,15 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.Spanned;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListPopupWindow;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.boha.library.R;
@@ -45,10 +36,8 @@ import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 import com.squareup.leakcanary.RefWatcher;
 
-import java.security.AccessController;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -276,40 +265,43 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     Random random = new Random(System.currentTimeMillis());
 
     private void setNoCompImage() {
-        noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.happy3));
-//        int index = random.nextInt(9);
-//        switch (index) {
-//            case 0:
-//                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy1));
-//                return;
-//            case 1:
-//                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy2));
-//                return;
-//            case 2:
-//                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy3));
-//                return;
-//            case 3:
-//                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy4));
-//                return;
-//            case 4:
-//                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy5));
-//                return;
-//            case 5:
-//                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy6));
-//                return;
-//            case 6:
-//                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy7));
-//                return;
-//            case 7:
-//                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy8));
-//                return;
-//            case 8:
-//                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy9));
-//                return;
-//            case 9:
-//                noCompImage.setImageDrawable(ctx.getResources().getDrawable(R.drawable.happy10));
-//                return;
-//        }
+        noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.happy1));
+        int index = random.nextInt(9);
+        switch (index) {
+            case 0:
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy1));
+                return;
+            case 1:
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy2));
+                return;
+            case 2:
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy3));
+                return;
+            case 3:
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy4));
+                return;
+            case 4:
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy5));
+                return;
+            case 5:
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy6));
+                return;
+            case 6:
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy7));
+                return;
+            case 7:
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy1));
+                return;
+            case 8:
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy2));
+                return;
+            case 9:
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy5));
+                return;
+            default:
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy1));
+                return;
+        }
     }
 
     @Override

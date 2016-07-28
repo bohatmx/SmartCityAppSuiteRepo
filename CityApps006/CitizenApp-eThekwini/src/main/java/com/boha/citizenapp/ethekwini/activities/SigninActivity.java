@@ -43,7 +43,6 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -261,10 +260,11 @@ public class SigninActivity extends AppCompatActivity {
         w.setPassword(editPassword.getText().toString());
         w.setEmail(email);
         w.setGcmDevice(gcmDevice);
+
         w.setLatitude(0.0);
         w.setLongitude(0.0);
         w.setMunicipalityID(municipality.getMunicipalityID());
-
+//        w.setSpoof(true);
         setRefreshActionButtonState(true);
         btnSend.setEnabled(false);
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {

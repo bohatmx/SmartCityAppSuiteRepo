@@ -5,11 +5,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -17,46 +24,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.dto.AccountDTO;
 import com.boha.library.dto.MunicipalityDTO;
-import com.boha.library.dto.PaymentSurveyDTO;
 import com.boha.library.dto.ProfileInfoDTO;
-import com.boha.library.transfer.RequestDTO;
-import com.boha.library.transfer.ResponseDTO;
-import com.boha.library.util.CacheUtil;
-import com.boha.library.util.NetUtil;
+import com.boha.library.fragments.AccountFragment;
+import com.boha.library.fragments.PageFragment;
 import com.boha.library.util.SharedUtil;
-import com.boha.library.util.Statics;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class AccountDetailActivity extends AppCompatActivity {
+public class AccountDetailActivity extends AppCompatActivity implements AccountFragment.AccountFragmentListener{
 
     private ProfileInfoDTO profileInfo;
-    private View view, detailView, topView, handle;
-    private TextView
-            txtName, txtAcctNumber, txtSubtitle,
-            txtArrears,
-            txtLastUpdate, txtNextBill,
-            txtAddress, txtLastBillAmount, txtClickToPay;
-    View  topLayout;
-    Button btnCurrBal;
-    ImageView  hero;
-    ScrollView scrollView;
-    ImageView icon;
-    FloatingActionButton fab;
+    private ViewPager viewPager;
 
-    AccountDTO account;
     int darkColor, primaryColor, logo;
     Context ctx;
     int selectedIndex;
@@ -66,7 +56,7 @@ public class AccountDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ThemeChooser.setTheme(this);
-        setContentView(R.layout.fragment_account);
+        setContentView(R.layout.activity_account_detail);
 
         Log.d(LOG, "@@@@@@@ onCreate");
         ctx = getApplicationContext();
@@ -91,80 +81,74 @@ public class AccountDetailActivity extends AppCompatActivity {
 
     }
 
+    PagerAdapter adapter;
+    TextView name, acctNumber;
+    ImageView icon;
+    AccountDTO account;
+
     private void setFields() {
-        topView = findViewById(R.id.template);
-        fab = (FloatingActionButton)findViewById(R.id.fab);
-        hero = (ImageView) findViewById(R.id.TOP_heroImage);
-        topLayout = findViewById(R.id.TOP_titleLayout);
-        topLayout.setBackgroundColor(primaryColor);
-        handle = findViewById(R.id.ACCT_handle);
-        scrollView = (ScrollView) findViewById(R.id.ACCT_scroll);
-        detailView = findViewById(R.id.ACCT_detailLayout);
-        txtName = (TextView) topView.findViewById(R.id.TOP_title);
-        Statics.setRobotoFontLight(ctx, txtName);
-        txtSubtitle = (TextView) topView.findViewById(R.id.TOP_subTitle);
-        icon = (ImageView) topView.findViewById(R.id.TOP_icon);
-        txtAcctNumber = (TextView) findViewById(R.id.ACCT_number);
-        txtClickToPay = (TextView) topView.findViewById(R.id.ACCT_clickToPay);
-        //txtClickToPay.setVisibility(View.GONE);
-        txtAddress = (TextView) findViewById(R.id.ACCT_address);
-        txtArrears = (TextView) findViewById(R.id.ACCT_currArrears);
-        txtLastUpdate = (TextView) findViewById(R.id.ACCT_lastUpdateDate);
-        btnCurrBal = (Button) findViewById(R.id.button);
-        txtNextBill = (TextView) findViewById(R.id.ACCT_nextBillDate);
-        txtLastBillAmount = (TextView) findViewById(R.id.ACCT_lastBillAmount);
-        hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-        setFont();
-      /*  btnCurrBal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Util.flashOnce(btnCurrBal, 300, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        startPayment();
-                    }
-                });
-            }
-        });
-        txtArrears.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Util.flashOnce(txtArrears, 300, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        startPayment();
-                    }
-                });
-            }
-        }); */
-        icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Util.flashOnce(icon, 300, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        Intent w = new Intent(ctx, StatementActivity.class);
-                        w.putExtra("primaryColor", primaryColor);
-                        w.putExtra("darkColor", darkColor);
-                        w.putExtra("logo", logo);
-                        startActivity(w);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        name = (TextView) findViewById(R.id.TOP_title);
+        acctNumber = (TextView) findViewById(R.id.accountNumber);
+        fab = (FloatingActionButton) findViewById(R.id.fabButton);
+        icon = (ImageView) findViewById(R.id.TOP_icon);
 
-                    }
-                });
-
-            }
-        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               showDialog();
-
+                snackbar = Snackbar.make(fab, "Mobile payment will be available shortly", Snackbar.LENGTH_INDEFINITE);
+                snackbar.setActionTextColor(Color.parseColor("GREEN"));
+                snackbar.setAction("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snackbar.dismiss();
+                    }
+                });
+                snackbar.show();
             }
         });
 
-        setProfileData();
+        icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //todo get account statement
+            }
+        });
+        adapter = new PagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        animateSomething();
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position < profileInfo.getAccountList().size()) {
+                    account = profileInfo.getAccountList().get(position);
+                    name.setText(account.getCustomerAccountName());
+                    acctNumber.setText(account.getAccountNumber());
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        createFragments();
+    }
+
+    private void createFragments() {
+        for (AccountDTO acc : profileInfo.getAccountList()) {
+            AccountFragment f = AccountFragment.newInstance(acc);
+            pageFragmentList.add(f);
+        }
+        adapter.notifyDataSetChanged();
+
+        initializeTimerTask();
+        startTimer();
+
     }
 
     private void showDialog() {
@@ -195,70 +179,15 @@ public class AccountDetailActivity extends AppCompatActivity {
 
         }
     }
-    private void setProfileData() {
-        if (profileInfo != null) {
-            if (!profileInfo.getAccountList().isEmpty()) {
-                account = profileInfo.getAccountList().get(0);
-                setAccountFields(account);
-            }
-        }
-    }
 
-    private void setAccountFields(AccountDTO account) {
-        String currency = "R";
-        txtAcctNumber.setText(account.getAccountNumber());
-        txtAddress.setText(account.getPropertyAddress());
-
-        if (account.getCurrentArrears() != null) {
-            txtArrears.setText(currency + df.format(account.getCurrentArrears()));
-        } else {
-            txtArrears.setText("0.00");
-        }
-        if (account.getCurrentBalance() != null) {
-            btnCurrBal.setText(currency + df.format(account.getCurrentBalance()));
-        } else {
-            btnCurrBal.setText("0.00");
-        }
-        if (account.getLastBillAmount() != null) {
-            txtLastBillAmount.setText(currency + df.format(account.getLastBillAmount()));
-        } else {
-            txtLastBillAmount.setText("0.00");
-        }
-        if (account.getDateLastUpdated() != null) {
-            txtSubtitle.setText(ctx.getString(R.string.last_update) + sd.format(account.getDateLastUpdated()));
-            txtLastUpdate.setText(sd.format(account.getDateLastUpdated()));
-        } else {
-            txtLastUpdate.setText(R.string.not_available);
-        }
-        txtName.setText(account.getCustomerAccountName());
-        if (account.getNextBillDate() != null) {
-            txtNextBill.setText(sd.format(account.getNextBillDate()));
-        }
-
-
-        Util.expand(detailView, 1000, null);
-
-    }
-
-    private void setFont() {
-        Statics.setRobotoFontLight(ctx, txtAcctNumber);
-        Statics.setRobotoFontLight(ctx, txtArrears);
-        Statics.setRobotoFontLight(ctx, btnCurrBal);
-        Statics.setRobotoFontLight(ctx, txtLastBillAmount);
-        Statics.setRobotoFontLight(ctx, txtNextBill);
-        Statics.setRobotoFontLight(ctx, txtLastUpdate);
-
-
-    }
-
-    static final DecimalFormat df = new DecimalFormat("###,###,###,###,###,###,##0.00");
-
-    static final Locale LOCALE = Locale.getDefault();
-    static final SimpleDateFormat sd = new SimpleDateFormat("EEEE dd MMMM yyyy", LOCALE);
-
-
+    int index;
+    Timer timer;
+    TimerTask timerTask;
+    final Handler handler = new Handler();
     Menu mMenu;
     boolean isDebuggable;
+    FloatingActionButton fab;
+    Snackbar snackbar;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -266,14 +195,16 @@ public class AccountDetailActivity extends AppCompatActivity {
         mMenu = menu;
         return true;
     }
+
     int themeDarkColor;
 
     static final int THEME_REQUESTED = 8075;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == com.boha.library.R.id.action_app_guide) {
+        if (id == com.boha.library.R.id.action_app_guide) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("http://etmobileguide.oneconnectgroup.com/"));
             startActivity(intent);
@@ -302,78 +233,9 @@ public class AccountDetailActivity extends AppCompatActivity {
     public void onBackPressed() {
 
 
-    //    finish();
+            finish();
     }
 
-
-    private void startPayment() {
-        Log.e(LOG, "########## startPayment");
-
-        if (isDebuggable) {
-            Intent intent = new Intent(ctx, PaymentStartActivity.class);
-            intent.putExtra("account", account);
-            intent.putExtra("index", selectedIndex);
-            intent.putExtra("logo", logo);
-            startActivity(intent);
-        } else {
-            AlertDialog.Builder d = new AlertDialog.Builder(this);
-            d.setTitle("Mobile Payment Survey")
-                    .setMessage("The payment facility is not available yet. The municipality is conducting a survey to find the level of interest in paying your account on the app.\n\n" +
-                            "Do you want to be able to pay from the app?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            sendSurvey(true);
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            sendSurvey(false);
-                        }
-                    })
-                    .show();
-        }
-    }
-
-    private void sendSurvey(boolean response) {
-        PaymentSurveyDTO x = new PaymentSurveyDTO();
-        x.setMunicipalityID(SharedUtil.getMunicipality(getApplicationContext()).getMunicipalityID());
-        x.setResponse(response);
-        x.setAccountNumber(account.getAccountNumber());
-
-        RequestDTO w = new RequestDTO(RequestDTO.ADD_SURVEY);
-        w.setPaymentSurvey(x);
-
-        setRefreshActionButtonState(true);
-        NetUtil.sendRequest(getApplicationContext(), w, new NetUtil.NetUtilListener() {
-            @Override
-            public void onResponse(ResponseDTO response) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        setRefreshActionButtonState(false);
-                    }
-                });
-            }
-
-            @Override
-            public void onError(final String message) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        setRefreshActionButtonState(false);
-                        Util.showErrorToast(getApplicationContext(), message);
-                    }
-                });
-            }
-
-            @Override
-            public void onWebSocketClose() {
-
-            }
-        });
-    }
 
 
     private void animateSomething() {
@@ -386,66 +248,6 @@ public class AccountDetailActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    private void getLoginData() {
-        Log.e(LOG, "@@@@@@@@@ getLoginData ...... ");
-
-        final RequestDTO w = new RequestDTO(RequestDTO.SIGN_IN_CITIZEN);
-
-        w.setUserName(profileInfo.getiDNumber());
-        w.setPassword(profileInfo.getPassword());
-
-        w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
-        setRefreshActionButtonState(true);
-        NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
-            @Override
-            public void onResponse(final ResponseDTO resp) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        setRefreshActionButtonState(false);
-                        if (resp.getProfileInfoList() != null) {
-                            profileInfo = resp.getProfileInfoList().get(0);
-                            setProfileData();
-                        }
-
-                        CacheUtil.cacheLoginData(ctx, resp, new CacheUtil.CacheListener() {
-                            @Override
-                            public void onDataCached() {
-                            }
-
-                            @Override
-                            public void onError() {
-                            }
-                        });
-
-                    }
-                });
-            }
-
-            @Override
-            public void onError(final String message) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        setRefreshActionButtonState(false);
-                        Util.showErrorToast(ctx, message);
-                    }
-                });
-            }
-
-            @Override
-            public void onWebSocketClose() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        setRefreshActionButtonState(false);
-                        Util.showErrorToast(ctx, "Network connection closed");
-                    }
-                });
-            }
-        });
-
-    }
 
     public void setRefreshActionButtonState(final boolean refreshing) {
         if (mMenu != null) {
@@ -458,5 +260,88 @@ public class AccountDetailActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    @Override
+    public void onAccountStatementRequested(AccountDTO account) {
+
+    }
+
+    @Override
+    public void onRefreshRequested() {
+
+    }
+
+    @Override
+    public void setBusy(boolean busy) {
+
+    }
+
+    private static class PagerAdapter extends FragmentStatePagerAdapter {
+
+        public PagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int i) {
+
+            return (Fragment) pageFragmentList.get(i);
+        }
+
+        @Override
+        public int getCount() {
+            return pageFragmentList.size();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            PageFragment pf = pageFragmentList.get(position);
+            return pf.getPageTitle();
+        }
+    }
+
+    static List<PageFragment> pageFragmentList = new ArrayList<>();
+    public void startTimer() {
+        //set a new Timer
+        timer = new Timer();
+
+        //initialize the TimerTask's job
+        initializeTimerTask();
+
+        //schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
+        timer.schedule(timerTask, 300, 500); //
+    }
+
+    public void stopTimerTask() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
+
+    public void initializeTimerTask() {
+
+        timerTask = new TimerTask() {
+            public void run() {
+
+                //use a handler to run a toast that shows the current timestamp
+                handler.post(new Runnable() {
+                    public void run() {
+                        index++;
+                        if (index == pageFragmentList.size()) {
+                            stopTimerTask();
+                            viewPager.setCurrentItem(0);
+                            name.setText(profileInfo.getAccountList().get(0).getCustomerAccountName());
+                            acctNumber.setText(profileInfo.getAccountList().get(0).getAccountNumber());
+                            return;
+                        }
+                        viewPager.setCurrentItem(index);
+                        name.setText(profileInfo.getAccountList().get(index).getCustomerAccountName());
+                        acctNumber.setText(profileInfo.getAccountList().get(index).getAccountNumber());
+                    }
+                });
+            }
+        };
     }
 }

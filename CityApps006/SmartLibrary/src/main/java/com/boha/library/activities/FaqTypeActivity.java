@@ -134,8 +134,8 @@ public class FaqTypeActivity extends AppCompatActivity implements FaqFragment.Fa
 
                     @Override
                     public void onError(String message) {
-//                        mListener.setBusy(false);
                         Util.showErrorToast(ctx, message);
+                        onBackPressed();
                     }
                 });
 

@@ -115,6 +115,7 @@
             android:id="@+id/FLC_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="@dimen/mon_margin"
             android:scaleType="centerCrop"
             android:src="@drawable/happy1" />
     </RelativeLayout>

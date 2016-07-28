@@ -1,7 +1,6 @@
 package com.boha.library.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -13,12 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.activities.CityApplication;
-import com.boha.library.activities.ThemeSelectorActivity;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintTypeDTO;
 import com.boha.library.dto.ComplaintUpdateStatusDTO;
-import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 import com.squareup.picasso.Picasso;
 
@@ -122,7 +118,11 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
                     p.getComplaintType().getCategoryName() + " - " +
                     p.getComplaintType().getComplaintTypeName());
         }
-        item.txtDate.setText(sdfDate.format(new Date(p.getComplaintDate())));
+        if (p.getComplaintDate() != null) {
+            item.txtDate.setText(sdfDate.format(new Date(p.getComplaintDate())));
+        } else {
+            item.txtDate.setText("Date Unavailable");
+        }
         item.txtComment.setText(p.getRemarks());
         item.txtRef.setText(p.getReferenceNumber());
         item.position = position;

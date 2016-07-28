@@ -1,98 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TableLayout
-        android:background="@color/white"
-        android:paddingTop="@dimen/mon_padding"
-        android:paddingBottom="@dimen/mon_padding"
-        android:paddingLeft="@dimen/mon_padding"
-        android:paddingRight="@dimen/mon_padding"
+    <RelativeLayout
+        android:id="@+id/layout1"
+        android:padding="@dimen/mon_divider"
+        android:layout_marginRight="@dimen/mon_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TableRow android:padding="@dimen/mon_padding">
-            <TextView
-                android:text="Current Balance"
-                android:gravity="right"
-                android:padding="@dimen/mon_padding"
-                style="@style/TextStyle" />
 
-            <TextView
-                android:id="@+id/DASH_currBal"
-                android:text="0.00"
-                android:elevation="@dimen/mon_padding"
-                android:padding="@dimen/mon_padding"
-                style="@style/Title1TextStyleGreen"
-                android:textStyle="bold" />
-        </TableRow>
+        <TextView
+            android:id="@+id/DASH_currBal"
+            style="@style/Title0TextStyleBlue"
+            android:layout_alignParentRight="true"
+            android:text="0.00"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-        <TableRow >
+        <TextView
+            style="@style/TextStyle"
+            android:layout_toLeftOf="@id/DASH_currBal"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/mon_margin"
+            android:text="Current Balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-            <TextView
-                android:text="Current Arrears"
-                android:padding="@dimen/mon_padding"
-                android:gravity="right"
-                style="@style/TextStyle" />
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/DASH_arrears"
-                android:text="0.00"
-                android:padding="@dimen/mon_padding"
-                style="@style/Title3TextStyleRed"
-                android:textStyle="bold" />
-        </TableRow>
+    <RelativeLayout
+        android:id="@+id/layout2"
+        android:padding="@dimen/mon_divider"
+        android:layout_marginRight="@dimen/mon_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout1">
 
-        <TableRow android:padding="@dimen/mon_padding">
 
-            <TextView
-                android:text="@string/my_complaints"
-                android:padding="@dimen/mon_padding"
-                android:gravity="right"
-                style="@style/TextStyle" />
+        <TextView
+            android:id="@+id/DASH_arrears"
+            style="@style/Title0TextStyleRed"
+            android:layout_alignParentRight="true"
+            android:text="0.00"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/DASH_complaintCount"
-                android:text="0"
-                android:elevation="@dimen/mon_padding"
-                android:padding="@dimen/mon_padding"
-                style="@style/Title1TextStyleBlue"
-                android:textStyle="bold" />
-        </TableRow>
+        <TextView
+            style="@style/TextStyle"
+            android:layout_toLeftOf="@id/DASH_arrears"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/mon_middle"
+            android:text="Current Arrears"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-        <TableRow >
+    </RelativeLayout>
 
-            <TextView
-                android:text="Resolved"
-                android:gravity="right"
-                android:padding="@dimen/mon_padding"
-                style="@style/TextStyle"/>
+    <RelativeLayout
+        android:id="@+id/layout3"
+        android:padding="@dimen/mon_margin"
+        android:layout_marginRight="@dimen/mon_margin"
+        android:layout_marginTop="@dimen/mon_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout2">
 
-            <TextView
-                android:id="@+id/DASH_resolvedCount"
-                android:text="0"
-                android:padding="@dimen/mon_padding"
-                style="@style/Title2TextStyleGreen"
-                android:textStyle="bold" />
-        </TableRow>
-        <TableRow
-            android:paddingTop="@dimen/mon_wide"
-            android:visibility="gone"
-            android:paddingBottom="@dimen/mon_padding"
-            android:paddingLeft="@dimen/mon_padding">
 
-            <TextView
-                android:text="Next Bill Date"
-                android:gravity="right"
-                android:padding="@dimen/mon_padding"
-                style="@style/TextStyle" />
+        <TextView
+            android:id="@+id/DASH_complaintCount"
+            style="@style/Title1TextStyleBlack"
+            android:layout_alignParentRight="true"
+            android:text="0"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-            <TextView
-                android:text="23 December 2099"
-                android:padding="@dimen/mon_padding"
-                style="@style/TextStyleBoldBlueSmall" />
-        </TableRow>
-    </TableLayout>
+        <TextView
+            style="@style/TextStyle"
+            android:layout_toLeftOf="@id/DASH_complaintCount"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/mon_margin"
+            android:text="@string/my_complaints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout4"
+        android:padding="@dimen/mon_divider"
+        android:layout_marginRight="@dimen/mon_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout3">
+
+
+        <TextView
+            android:id="@+id/DASH_resolvedCount"
+            style="@style/Title1TextStyleGreen"
+            android:layout_alignParentRight="true"
+            android:text="0"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            style="@style/TextStyle"
+            android:layout_toLeftOf="@id/DASH_resolvedCount"
+            android:layout_centerVertical="true"             
+            android:layout_marginRight="@dimen/mon_margin"
+            android:text="Resolved"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout5"
+        android:padding="@dimen/mon_divider"
+        android:layout_marginRight="@dimen/mon_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout4">
+
+
+        <TextView
+            android:id="@+id/DASH_accounts"
+            style="@style/Title0TextStyleBlue"
+            android:layout_alignParentRight="true"
+            android:text="1"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
+
+        <TextView
+            style="@style/TextStyle"
+            android:layout_toLeftOf="@id/DASH_accounts"
+            android:layout_centerVertical="true"             
+            android:layout_marginRight="@dimen/mon_margin"
+            android:text="My Accounts"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

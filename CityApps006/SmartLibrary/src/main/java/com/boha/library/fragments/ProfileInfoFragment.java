@@ -2,7 +2,6 @@ package com.boha.library.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -17,21 +16,15 @@ import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.CityApplication;
-import com.boha.library.adapters.AccountAdapter;
 import com.boha.library.adapters.AccountPopupListAdapter;
-import com.boha.library.adapters.ComplaintCategoryPopupListAdapter;
 import com.boha.library.dto.AccountDTO;
-import com.boha.library.dto.ComplaintCategoryDTO;
 import com.boha.library.dto.ComplaintDTO;
-import com.boha.library.dto.ComplaintTypeDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
 import com.squareup.leakcanary.RefWatcher;
-
-import org.acra.ACRA;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -71,7 +64,7 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
     }
 
     View view;
-    TextView txtName, txtBalance, txtArrears, txtComplaints, txtResolved, ACCFlipText;
+    TextView txtName, txtBalance, txtArrears, txtComplaints, txtResolved, txtAccounts;
     Button btnAccountDetails;
     ImageView heroImage, previousIMG, nextIMG;
     static final DecimalFormat df = new DecimalFormat("###,###,###,###,###,###,###,##0.00");
@@ -93,17 +86,6 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
         getTotals();
 
         getAccounts();
-        //getCachedAccounts();
-        /*if (response.getAccountList() != null) {
-            accountList = response.getAccountList();
-        } */
-       /* if (profileInfo.getAccountList().size() > 1) {
-      //      ACCFlipText.setVisibility(View.GONE);
-      //      previousIMG.setVisibility(View.GONE);
-      //      nextIMG.setVisibility(View.GONE);
-
-
-        } */
         return view;
     }
 
@@ -130,14 +112,7 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
             }
         }
         String currency = "R";
-        if (txtArrears == null) {
-            Log.e(LOG, "--- strange, txtArrears is NULL");
-            try {
-                ACRA.getErrorReporter().handleException(
-                        new UnsupportedOperationException("Things fucked up. txtArrears is NULL"),false);
-            } catch (Exception e) {}
-            return;
-        }
+
         txtArrears.setText(currency + df.format(totArrears));
         txtBalance.setText(currency + df.format(totBalance));
         btnAccountDetails.setText("My Account Details & Payment");
@@ -157,7 +132,7 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
     }
 
     ListPopupWindow accountPopup;
-    List<AccountDTO> accountList;/* = new ArrayList<AccountDTO>()*/
+    List<AccountDTO> accountList = new ArrayList<AccountDTO>();
     AccountDTO account;
 
     public void showAccountPopup(final List<AccountDTO> list) {
@@ -192,24 +167,9 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
         accountPopup.show();
     }
 
-    List<String> stringList;
+public static final String TAG = ProfileInfoFragment.class.getSimpleName();
 
-    private void getCachedAccounts() {
-
-        CacheUtil.getCacheLoginData(ctx, new CacheUtil.CacheRetrievalListener() {
-            @Override
-            public void onCacheRetrieved(ResponseDTO response) {
-                accountList = response.getAccountList();
-               // setList();
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
-    }
-
+    double balance, arrears;
     private void getAccounts() {
         CacheUtil.getCacheLoginData(ctx, new CacheUtil.CacheRetrievalListener() {
             @Override
@@ -217,14 +177,17 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
 
                 if (response.getAccountList() != null) {
                     accountList = response.getAccountList();
-                }
-             /*   if (response.getAccountList() != null) {
-                    accountList = response.getAccountList();
-                    stringList = new ArrayList<String>();
-                    for (AccountDTO x : accountList) {
-                        stringList.add(x.getAccountNumber());
+                    txtAccounts.setText("" + accountList.size());
+                    for (AccountDTO a: accountList) {
+                        balance += a.getCurrentBalance();
+                        arrears += a.getCurrentArrears();
+                        txtArrears.setText(df.format(arrears));
+                        txtBalance.setText(df.format(balance));
+                        Log.d(TAG, "onCacheRetrieved: adding up balance: " + balance + " arrears: " + arrears);
                     }
-                } */
+                } else {
+                    txtAccounts.setText("0");
+                }
 
             }
 
@@ -243,32 +206,19 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
         txtComplaints = (TextView) view.findViewById(R.id.DASH_complaintCount);
         txtResolved = (TextView) view.findViewById(R.id.DASH_resolvedCount);
         heroImage = (ImageView) view.findViewById(R.id.CITIZEN_image);
-        previousIMG = (ImageView) view.findViewById(R.id.previousIMG);
-        nextIMG = (ImageView) view.findViewById(R.id.nextIMG);
-        ACCFlipText = (TextView) view.findViewById(R.id.ACCFlipText);
-        ACCFlipText.setOnClickListener(new View.OnClickListener() {
+        txtAccounts = (TextView) view.findViewById(R.id.DASH_accounts);
+
+        txtComplaints.setText("" + complaintList.size());
+        txtResolved.setText("0");
+
+        txtAccounts.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        showAccountPopup(profileInfo.getAccountList());
+                        startAccountActivity();
                     }
                 });
 
-        nextIMG.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(LOG, "Next Clicked");
-               // setNextAccount();
-            }
-        });
-
-        previousIMG.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(LOG, "Previous Clicked");
-               // setPreviousAccount();
-            }
-        });
 
         Statics.setRobotoFontLight(ctx, txtBalance);
         Statics.setRobotoFontLight(ctx, txtArrears);
@@ -306,24 +256,23 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
                 });
             }
         });
-//        txtComplaints.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Util.flashOnce(txtComplaints, 300, new Util.UtilAnimationListener() {
-//                    @Override
-//                    public void onAnimationEnded() {
-//                        startMyComplaintsActivity();
-//                    }
-//                });
-//            }
-//        });
+        txtComplaints.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.flashOnce(txtComplaints, 300, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        //startMyComplaintsActivity();
+                    }
+                });
+            }
+        });
 
 
 
     }
 
     private void startAccountActivity() {
-
         profileInfoListener.onAccountDetailRequested(profileInfo);
     }
 

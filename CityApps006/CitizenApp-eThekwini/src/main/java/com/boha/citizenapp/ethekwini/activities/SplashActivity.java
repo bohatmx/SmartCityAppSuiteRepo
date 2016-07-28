@@ -2,7 +2,6 @@ package com.boha.citizenapp.ethekwini.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -20,11 +19,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.boha.citizenapp.ethekwini.R;
 import com.boha.library.activities.CityApplication;
-import com.boha.library.activities.ThemeSelectorActivity;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.UserDTO;
@@ -41,7 +38,6 @@ import com.google.android.gms.analytics.Tracker;
 
 import java.util.Random;
 import java.util.Timer;
-import java.util.logging.Handler;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -56,7 +52,7 @@ public class SplashActivity extends AppCompatActivity {
     MunicipalityDTO municipality;
     static final Random RANDOM = new Random(System.currentTimeMillis());
     static final int ONE_SECOND = 1000, QUICK = 200, THIRTY_SECONDS = ONE_SECOND * 30;
-    static final String LOG = SplashActivity.class.getSimpleName();
+    static final String TAG = SplashActivity.class.getSimpleName();
     //TODO - customize the app for each Municipality
     /**
      * This name identifies the app; the  name must be as recorded in the database
@@ -173,7 +169,7 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int reqCode, int resCode, Intent data) {
-        Log.d(LOG, "##------> onActivityResult reqCode: "
+        Log.d(TAG, "##------> onActivityResult reqCode: "
                 + reqCode + " resCode: " + resCode);
         switch (reqCode) {
             case REQUEST_SIGN_IN:
@@ -194,6 +190,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void getMunicipality() {
+        Log.d(TAG, ".........getMunicipality: ");
         municipality = SharedUtil.getMunicipality(ctx);
         if (municipality == null) {
             RequestDTO w = new RequestDTO(RequestDTO.GET_MUNICIPALITY_BY_NAME);
@@ -252,7 +249,7 @@ public class SplashActivity extends AppCompatActivity {
             });
 
         } else {
-            Log.i(LOG, "Municipality found: " + municipality.getMunicipalityName());
+            Log.i(TAG, "Municipality found: " + municipality.getMunicipalityName());
             checkVirginity(false);
         }
     }
@@ -269,7 +266,7 @@ public class SplashActivity extends AppCompatActivity {
             if (SharedUtil.getRegistrationID(ctx) == null) {
                 Intent intent = new Intent(ctx, GCMDeviceService.class);
                 intent.putExtra("profile", profile);
-                Log.w(LOG, "GCMDeviceService starting .....");
+                Log.w(TAG, "GCMDeviceService starting .....");
                 startService(intent);
             }
 

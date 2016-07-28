@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/fragment_account" />
+        <include layout="@layout/activity_account_detail" />
     </RelativeLayout>
 
     <fragment

@@ -11,9 +11,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -203,6 +201,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         CacheUtil.getCacheLoginData(ctx, new CacheUtil.CacheRetrievalListener() {
             @Override
             public void onCacheRetrieved(ResponseDTO r) {
+                Log.d(LOG, "getCachedLoginData: onCacheRetrieved: ");
                 response = r;
                 if (response.getProfileInfoList() != null && !response.getProfileInfoList().isEmpty()) {
                     setupViewPager();
@@ -224,7 +223,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     }
 
     private void getLoginData() {
-        Log.e(LOG, "@@@@@@@@@ getLoginData ...... ");
+        Log.e(LOG, "@@@@@@@@@ .............. ............  getLoginData ...... ");
         final RequestDTO w = new RequestDTO(RequestDTO.SIGN_IN_CITIZEN);
         if (user != null) {
             w.setUser(user);
@@ -242,6 +241,8 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             w.setLatitude(0.0);
             w.setLongitude(0.0);
         }
+        //todo reset after test
+//        w.setSpoof(true);
         setRefreshActionButtonState(true);
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
@@ -282,7 +283,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                             }
                         }
                         setupViewPager();
-//                        complaintList = response.getComplaintList();
+                        complaintList = response.getComplaintList();
 //                        getAllCaseDetails();
 
 
@@ -697,8 +698,6 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         intent.putExtra("logo", logo);
         intent.putExtra("darkColor", themeDarkColor);
         intent.putExtra("primaryColor", themePrimaryColor);
-//        startActivityForResult(intent, CHECK_DESTINATION);
-
 
         startActivityForResult(intent, CHECK_DESTINATION);
 

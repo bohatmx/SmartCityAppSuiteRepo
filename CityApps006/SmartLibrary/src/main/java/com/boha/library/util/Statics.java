@@ -15,9 +15,9 @@ public class Statics {
      * REMOTE APP_URL - Zebula back end - local laptop
      */
 
-//    public static final String WEBSOCKET_URL = "ws://192.168.2.45:8080/sc/";
-//    public static final String URL = "http://192.168.2.45:8080/sc/";
-//    public static final String IMAGE_URL = "http://192.168.2.45:8080/";
+    public static final String WEBSOCKET_URL = "ws://192.168.1.233:40405/sc/";
+    public static final String URL = "http://192.168.1.233:40405/sc/";
+    public static final String IMAGE_URL = "http://192.168.1.233:40405/";
 
     //http://munimobileapp.oneconnectgroup.com:7070/
     //http://195.154.47.229:7070
@@ -35,9 +35,9 @@ public class Statics {
         LOCAL DEV - DYNATECH  //10.0.0.102  //192.168.1.253// 10.154.165.163
 
      */
-    public static final String WEBSOCKET_URL = "ws://10.0.0.59:8080/sc/";
-    public static final String URL = "http://10.0.0.59:8080/sc/";
-    public static final String IMAGE_URL = "http://10.0.0.59:8080/";
+//    public static final String WEBSOCKET_URL = "ws://10.0.0.59:8080/sc/";
+//    public static final String URL = "http://10.0.0.59:8080/sc/";
+//    public static final String IMAGE_URL = "http://10.0.0.59:8080/";
 
     public static final String GATEWAY_SERVLET = "smart?";
     public static final String GATEWAY_SOCKET = "wssmart";

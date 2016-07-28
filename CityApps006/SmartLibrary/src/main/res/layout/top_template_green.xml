@@ -15,6 +15,7 @@
             android:id="@+id/TOP_heroImage"
                android:src="@drawable/back4"
             android:scaleType="centerCrop"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="@dimen/mon_hero_height_medium" />
         <TextView
@@ -57,7 +58,6 @@
                 android:text="Download Statements"
                 style="@style/TextStyleSmall"
                 android:padding="@dimen/mon_divider_small"
-                android:background="@color/transparent_black"
                 android:textColor="@color/white"
                 android:layout_below="@id/TOP_icon"
                 android:layout_width="wrap_content"
@@ -71,9 +71,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="136dp"
-        android:visibility="gone"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="@dimen/mon_wide"
+        android:visibility="visible"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/mon_wide"
         android:src="@android:drawable/ic_menu_search"
         app:backgroundTint="?attr/colorPrimary"
         app:borderWidth="0dp"
