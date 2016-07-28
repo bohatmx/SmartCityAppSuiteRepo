@@ -264,6 +264,7 @@ public class SigninActivity extends AppCompatActivity {
         w.setLatitude(0.0);
         w.setLongitude(0.0);
         w.setMunicipalityID(municipality.getMunicipalityID());
+        //todo reset after testing complete
 //        w.setSpoof(true);
         setRefreshActionButtonState(true);
         btnSend.setEnabled(false);

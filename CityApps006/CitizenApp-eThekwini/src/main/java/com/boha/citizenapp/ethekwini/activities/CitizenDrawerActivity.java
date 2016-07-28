@@ -241,7 +241,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             w.setLatitude(0.0);
             w.setLongitude(0.0);
         }
-        //todo reset after test
+        //todo reset after testing finished
 //        w.setSpoof(true);
         setRefreshActionButtonState(true);
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
