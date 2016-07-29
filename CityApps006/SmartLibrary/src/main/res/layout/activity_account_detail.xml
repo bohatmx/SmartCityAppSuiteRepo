@@ -13,7 +13,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/mon_margin">
+            android:padding="@dimen/mon_divider">
 
 
 
@@ -33,7 +33,7 @@
 
                 <TextView
                     android:id="@+id/accountNumber"
-                    style="@style/Title1TextStyleBlue"
+                    style="@style/Title2TextStyleBlue"
                     android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                 android:layout_below="@id/layout1"
                 android:background="@color/medium_sea_green"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/mon_hero_height_medium">
+                android:layout_height="@dimen/mon_hero_height_medium_lite">
                 <ImageView
                     android:id="@+id/TOP_heroImage"
                     android:src="@drawable/back4"
@@ -58,7 +58,7 @@
                 <TextView
                     android:id="@+id/TOP_title"
                     android:text="My Title Here"
-                    style="@style/Title2TextStyleWhite"
+                    style="@style/Title3TextStyleWhite"
                     android:layout_marginTop="@dimen/mon_widest"
                     android:layout_marginLeft="@dimen/mon_margin"
                     android:layout_width="wrap_content"
@@ -105,7 +105,7 @@
                 android:id="@+id/fabButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="180dp"
+                android:layout_marginTop="130dp"
                 android:visibility="visible"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/mon_wide"
