@@ -265,7 +265,7 @@ public class SigninActivity extends AppCompatActivity {
         w.setLongitude(0.0);
         w.setMunicipalityID(municipality.getMunicipalityID());
         //todo reset after testing complete
-//        w.setSpoof(true);
+        w.setSpoof(true);
         setRefreshActionButtonState(true);
         btnSend.setEnabled(false);
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
