@@ -242,7 +242,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             w.setLongitude(0.0);
         }
         //todo reset after testing finished
-//        w.setSpoof(true);
+        w.setSpoof(true);
         setRefreshActionButtonState(true);
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
