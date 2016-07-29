@@ -115,7 +115,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/mon_wide"
-                    android:hint="ID Number" />
+                    android:hint="Email Address"
+                    android:inputType="textEmailAddress"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <Spinner
