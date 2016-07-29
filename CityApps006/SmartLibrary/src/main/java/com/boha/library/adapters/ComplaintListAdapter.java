@@ -111,13 +111,11 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
 
         final ComplaintDTO p = mList.get(position);
         item.txtColor.setText("" + (position + 1));
-        if (p.getComplaintType() == null) {
-            item.txtComplaintType.setText("Complaint name unavailable");
-        } else {
-            item.txtComplaintType.setText(
-                    p.getComplaintType().getCategoryName() + " - " +
-                    p.getComplaintType().getComplaintTypeName());
-        }
+
+        item.txtComplaintType.setText(
+                    p.getCategory() + " - " +
+                    p.getSubCategory());
+
         if (p.getComplaintDate() != null) {
             item.txtDate.setText(sdfDate.format(new Date(p.getComplaintDate())));
         } else {

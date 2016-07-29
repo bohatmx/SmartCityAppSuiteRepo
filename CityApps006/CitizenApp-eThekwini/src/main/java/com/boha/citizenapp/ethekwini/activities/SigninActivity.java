@@ -264,8 +264,11 @@ public class SigninActivity extends AppCompatActivity {
         w.setLatitude(0.0);
         w.setLongitude(0.0);
         w.setMunicipalityID(municipality.getMunicipalityID());
+
         //todo reset after testing complete
-        w.setSpoof(true);
+        w.setSpoof(false);
+        //
+
         setRefreshActionButtonState(true);
         btnSend.setEnabled(false);
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
@@ -302,6 +305,7 @@ public class SigninActivity extends AppCompatActivity {
                             CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
                                 @Override
                                 public void onDataCached() {
+                                    Log.e(LOG, "cacheLoginData..... onDataCached: " + profileInfo.getFirstName() + " " + profileInfo.getLastName() );
                                     onBackPressed();
                                   //  check();
                                 }
