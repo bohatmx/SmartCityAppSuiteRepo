@@ -4,8 +4,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.boha.library.activities.FaqTypeActivity;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,10 +56,8 @@ public class FAQCommsUtil {
         final FaqStrings faqStrings = new FaqStrings();
         final StringBuilder xx = new StringBuilder();
         //local dev
-        xx.append(Statics.IMAGE_URL).append("smartcity_images/municipality/faq/");
-        //Online if not enabled faq will not download
-        //xx.append(Statics.IMAGE_URL).append("smartcity_images/municipality");
-        //xx.append(municipalityID.intValue()).append("/faq/");
+        xx.append(Statics.IMAGE_URL).append("smartcity_images/");
+        xx.append("municipality").append(municipalityID).append("/faq/");
 
         getSimpleData(xx.toString() + ACCOUNTS, new CommsListener() {
             @Override

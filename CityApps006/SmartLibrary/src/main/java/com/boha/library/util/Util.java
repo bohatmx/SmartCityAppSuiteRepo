@@ -6,12 +6,14 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.util.DisplayMetrics;
@@ -30,7 +32,6 @@ import android.widget.Toast;
 
 import com.boha.library.R;
 import com.boha.library.activities.EmergencyContactsActivity;
-import com.boha.library.activities.MuniContactsActivity;
 import com.boha.library.adapters.ComplaintCategoryPopupListAdapter;
 import com.boha.library.adapters.ComplaintTypePopupListAdapter;
 import com.boha.library.adapters.FAQPopupListAdapter;
@@ -54,6 +55,26 @@ import java.util.Random;
 public class Util {
     public interface UtilAnimationListener {
         public void onAnimationEnded();
+    }
+
+    public static ProgressDialog showProgressDialog(String title, String message, Activity activity) {
+        ProgressDialog  p = new ProgressDialog(activity);
+        p.setTitle(title);
+        p.setMessage(message);
+        p.show();
+        return p;
+    }
+    public static Snackbar showSnackBar(View view,String message, String action, int color) {
+        final Snackbar s = Snackbar.make(view,message, Snackbar.LENGTH_INDEFINITE);
+        s.setActionTextColor(color);
+        s.setAction(action, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                s.dismiss();
+            }
+        });
+        s.show();
+        return s;
     }
 
     public static void scaleDownAndUp(View view, int duration) {

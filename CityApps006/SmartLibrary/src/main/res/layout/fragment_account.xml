@@ -1,16 +1,21 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/mon_padding">
+
+    <android.support.v7.widget.CardView
+        app:cardElevation="@dimen/mon_padding"
+
+        android:layout_margin="@dimen/mon_margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <RelativeLayout
+            android:padding="@dimen/mon_margin"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:id="@+id/ACCT_detailLayout"
@@ -166,18 +171,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/ACCT_detailLayout"
-                android:layout_marginBottom="@dimen/mon_wide"
-                android:padding="@dimen/mon_margin">
+                android:layout_marginBottom="@dimen/mon_divider"
+                android:padding="@dimen/mon_padding">
 
                 <TextView
                     android:id="@+id/ACCT_address"
-                    style="@style/TextStyle20"
+                    style="@style/TextStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:lines="4"
                     android:text="30 Kingfisher Drive, Pecanwood Estate" />
             </RelativeLayout>
         </RelativeLayout>
-    </ScrollView>
+    </android.support.v7.widget.CardView>
+</ScrollView>
 
-</RelativeLayout>

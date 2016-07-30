@@ -2,7 +2,9 @@ package com.boha.citizenapp.ethekwini.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -95,6 +97,7 @@ public class AddressFragment extends Fragment implements PageFragment {
         iconSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideKeyboard();
                 search();
             }
         });
@@ -193,7 +196,16 @@ public class AddressFragment extends Fragment implements PageFragment {
                     @Override
                     public void run() {
                         mListener.setBusy(false);
-                        Util.showErrorToast(getActivity(), message);
+                        final Snackbar bar = Snackbar.make(edNumber,"Unable to search for address", Snackbar.LENGTH_INDEFINITE);
+                        bar.setActionTextColor(Color.parseColor("YELLOW"));
+                        bar.setAction("Continue", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                bar.dismiss();
+                                mListener.onAddressUpdated();
+                            }
+                        });
+                        bar.show();
                     }
                 });
             }
@@ -283,5 +295,11 @@ public class AddressFragment extends Fragment implements PageFragment {
 
         void setBusy(boolean busy);
     }
+    void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getActivity()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(edNumber.getWindowToken(), 0);
+    }
+
 
 }

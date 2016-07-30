@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/mon_margin"
+    app:cardElevation="@dimen/mon_divider"
     android:layout_width="match_parent"
-    android:background="@color/grey"
     android:padding="@dimen/mon_divider"
     android:layout_height="match_parent">
 
@@ -34,10 +36,33 @@
                 android:layout_margin="@dimen/mon_margin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+            <RelativeLayout
+                android:id="@+id/acctLayout"
+                android:layout_below="@+id/ST_title"
+                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/ST_accountLabel"
+                    android:text="Account Number"
+                    style="@style/TextStyleSmallWhite"
+                    android:layout_marginRight="@dimen/mon_margin"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/ST_account"
+                    android:text="1324536467"
+                    android:layout_toRightOf="@id/ST_accountLabel"
+                    style="@style/Title2TextStyleWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
 
             <TextView
                 android:id="@+id/ST_label"
-                android:layout_below="@id/ST_title"
+                android:layout_below="@id/acctLayout"
                 android:text="Latest Statement Available"
                 android:layout_marginTop="@dimen/mon_margin"
                 android:layout_marginLeft="@dimen/mon_margin"
@@ -54,7 +79,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </RelativeLayout>
-
 
         <ListView
             android:id="@+id/ST_list"
@@ -83,13 +107,7 @@
             android:layout_marginRight="@dimen/mon_wide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/mon_margin"
-            android:layout_marginRight="@dimen/mon_wide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+
     </RelativeLayout>
 
-</RelativeLayout>
+</android.support.v7.widget.CardView>

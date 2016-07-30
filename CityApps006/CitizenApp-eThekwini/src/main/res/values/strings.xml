@@ -13,5 +13,6 @@
     <string name="title_activity_browser_drawer">BrowserDrawerActivity</string>
     <string name="title_activity_tourist_drawer">TouristDrawerActivity</string>
     <string name="title_activity_tourist_address">TouristAddressActivity</string>
+    <string name="enter_email">Enter Email Address</string>
 
 </resources>

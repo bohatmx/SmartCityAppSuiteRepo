@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -89,6 +90,7 @@ public class PictureActivity extends AppCompatActivity
             NEWS_ARTICLE_IMAGE = 3,
             MUNICIPALITY_IMAGE = 4;
     private int imageType, logo;
+    FloatingActionButton fab;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +113,7 @@ public class PictureActivity extends AppCompatActivity
                 break;
             case COMPLAINT_IMAGE:
                 complaint = (ComplaintDTO) getIntent().getSerializableExtra("complaint");
-                txtType.setText(complaint.getComplaintType().getComplaintTypeName());
+                txtType.setText(complaint.getCategory() + " " + complaint.getSubCategory());
                 break;
             case NEWS_ARTICLE_IMAGE:
                 newsArticle = (NewsArticleDTO) getIntent().getSerializableExtra("alert");
@@ -177,6 +179,7 @@ public class PictureActivity extends AppCompatActivity
     private void setFields() {
         activity = this;
         municipality = SharedUtil.getMunicipality(ctx);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         txtType = (TextView) findViewById(R.id.CAM_alertTypeName);
         projectLayout = findViewById(R.id.CAM_typeLayout);
         imageContainerLayout = (LinearLayout) findViewById(R.id.CAM_imageContainer);
@@ -200,6 +203,12 @@ public class PictureActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 dispatchTakePictureIntent();
+            }
+        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadPhotos();
             }
         });
     }
@@ -686,7 +695,7 @@ public class PictureActivity extends AppCompatActivity
 
                         @Override
                         public void onDataCached() {
-                            uploadPhotos();
+                            //uploadPhotos();
                         }
 
                         @Override
@@ -722,7 +731,7 @@ public class PictureActivity extends AppCompatActivity
         Picasso.with(ctx).load(uri).into(img);
         imageContainerLayout.addView(v, 0);
         txtMessage.setVisibility(View.VISIBLE);
-        uploadPhotos();
+//        uploadPhotos();
 
 
     }

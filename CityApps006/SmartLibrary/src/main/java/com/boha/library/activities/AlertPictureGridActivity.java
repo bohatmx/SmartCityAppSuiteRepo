@@ -182,7 +182,7 @@ public class AlertPictureGridActivity extends AppCompatActivity {
                 lastIndex = position;
                 Intent i = new Intent(getApplicationContext(), FullPhotoActivity.class);
                 i.putExtra("alert", alert);
-                i.putExtra("index", position);
+                i.putExtra("position", position);
                 i.putExtra("type", 1);
 //                startActivity(i);
             }

@@ -142,7 +142,7 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
 
             @Override
             public void onComplaintCameraRequested(ComplaintDTO complaint) {
-                underConstruction();
+                listener.onCameraRequested(complaint);
             }
 
             @Override
@@ -374,6 +374,7 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     public interface MyComplaintsListener {
         void setBusy(boolean busy);
         void onRefreshRequested(ComplaintDTO complaint);
+        void onCameraRequested(ComplaintDTO complaint);
     }
 
     //complaint filter

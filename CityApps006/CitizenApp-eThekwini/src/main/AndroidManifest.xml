@@ -51,13 +51,10 @@
         <activity
             android:name=".activities.CitizenDrawerActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="com.boha.library.activities.AccountActivity"
-            android:parentActivityName=".activities.CitizenDrawerActivity"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name="com.boha.library.activities.PaymentStartActivity"
-            android:parentActivityName="com.boha.library.activities.AccountActivity"
+            android:parentActivityName="com.boha.library.activities.AccountDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
@@ -100,7 +97,7 @@
             android:parentActivityName=".activities.CitizenDrawerActivity" />
         <activity
             android:name="com.boha.library.activities.StatementActivity"
-            android:parentActivityName="com.boha.library.activities.AccountActivity"
+            android:parentActivityName="com.boha.library.activities.AccountDetailActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.boha.library.activities.MuniContactsActivity"

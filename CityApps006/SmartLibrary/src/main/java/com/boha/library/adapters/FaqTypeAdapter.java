@@ -9,12 +9,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.boha.library.activities.CityApplication;
-import com.boha.library.activities.ThemeSelectorActivity;
-import com.boha.library.dto.FreqQuestionTypeDTO;
-import com.boha.library.util.FaqStrings;
-import com.boha.library.util.Statics;
 import com.boha.library.R;
+import com.boha.library.activities.CityApplication;
+import com.boha.library.dto.FreqQuestionTypeDTO;
+import com.boha.library.util.Statics;
+
 import java.util.List;
 
 public class FaqTypeAdapter extends ArrayAdapter<FreqQuestionTypeDTO> {

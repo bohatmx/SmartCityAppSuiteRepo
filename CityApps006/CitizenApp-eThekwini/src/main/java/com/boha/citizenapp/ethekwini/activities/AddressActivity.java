@@ -1,6 +1,6 @@
 package com.boha.citizenapp.ethekwini.activities;
 
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -13,34 +13,28 @@ import android.view.MenuItem;
 
 import com.boha.citizenapp.ethekwini.R;
 import com.boha.citizenapp.ethekwini.fragments.AddressFragment;
-import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.util.SharedUtil;
-import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 
-public class AddressActivity extends AppCompatActivity implements AddressFragment.AddressFragmentListener{
+public class AddressActivity extends AppCompatActivity implements AddressFragment.AddressFragmentListener {
 
     AddressFragment addressFragment;
-    int type;
     Menu mMenu;
     public static final int CALLED_FROM_DRAWER_ACTIVITY = 1;
-    int darkColor, primaryColor, logo;
-    MunicipalityDTO municipality;
-    Context ctx;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG, "onCreate");
-      //  ThemeChooser.setTheme(this);
+        //  ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_address);
-        addressFragment = (AddressFragment)getSupportFragmentManager().findFragmentById(R.id.fragment);
+        addressFragment = (AddressFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
 
         Drawable x = ContextCompat.getDrawable(getBaseContext(), R.drawable.logo);
         ActionBar bar = getSupportActionBar();
-        Util.setCustomActionBar(getApplicationContext(),bar,
-                SharedUtil.getMunicipality(getApplicationContext()).getMunicipalityName(),x,1);
+        Util.setCustomActionBar(getApplicationContext(), bar,
+                SharedUtil.getMunicipality(getApplicationContext()).getMunicipalityName(), x, 1);
     }
 
     @Override
@@ -59,7 +53,7 @@ public class AddressActivity extends AppCompatActivity implements AddressFragmen
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-         int id = item.getItemId();
+        int id = item.getItemId();
 
         if (id == R.id.action_refresh) {
             return true;
@@ -73,29 +67,35 @@ public class AddressActivity extends AppCompatActivity implements AddressFragmen
     public void onAddressUpdated() {
         Intent w = new Intent(getApplicationContext(), CitizenDrawerActivity.class);
         startActivity(w);
-        finish();
+        //finish();
     }
 
     @Override
     public void setBusy(boolean busy) {
-        setRefreshActionButtonState(busy);
+        if (busy) {
+            setProgressDialog();
+        } else {
+            if (progressDialog != null)
+                progressDialog.dismiss();
+        }
     }
+
     @Override
     public void onBackPressed() {
         finish();
-     //   return;
+        //   return;
     }
+
     static final String LOG = AddressActivity.class.getSimpleName();
-    public void setRefreshActionButtonState(final boolean refreshing) {
-        if (mMenu != null) {
-            final MenuItem refreshItem = mMenu.findItem(R.id.action_refresh);
-            if (refreshItem != null) {
-                if (refreshing) {
-                    refreshItem.setActionView(R.layout.action_bar_progess);
-                } else {
-                    refreshItem.setActionView(null);
-                }
-            }
-        }
+    ProgressDialog progressDialog;
+
+    void setProgressDialog() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Signing In");
+        progressDialog.setMessage("eThekwini services are signing you in");
+        progressDialog.setIndeterminate(true);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+
     }
 }

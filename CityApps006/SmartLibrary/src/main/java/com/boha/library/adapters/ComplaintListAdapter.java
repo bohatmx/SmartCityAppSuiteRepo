@@ -50,7 +50,7 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
         ctx = context;
         this.mInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.arrayList = new ArrayList<ComplaintDTO>();
+        this.arrayList = new ArrayList<>();
         this.arrayList.addAll(mList);
     }
 

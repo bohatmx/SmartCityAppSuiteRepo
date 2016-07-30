@@ -15,7 +15,7 @@ public class Statics {
      * PECANWOOD BACKEND APP_URL'S - pecanwood back end endpoint on laptop
      */
 
-    public static final String PREFIX = "http://10.0.0.166:40405";
+    public static final String PREFIX = "http://192.168.1.233:40405";
     public static final String URL = PREFIX + "/sc/";
     public static final String IMAGE_URL = PREFIX + "/";
 
