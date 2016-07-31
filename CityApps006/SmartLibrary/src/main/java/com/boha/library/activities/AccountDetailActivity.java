@@ -49,7 +49,7 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
 
     int darkColor, primaryColor, logo;
     Context ctx;
-    int selectedIndex;
+    ImageView statementsIcon;
     static final String LOG = AccountDetailActivity.class.getSimpleName();
 
     @Override
@@ -112,6 +112,9 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
             @Override
             public void onClick(View v) {
                 //todo get account statement
+                Intent m = new Intent(getApplicationContext(),StatementActivity.class);
+                m.putExtra("account",account);
+                startActivity(m);
             }
         });
         adapter = new PagerAdapter(getSupportFragmentManager());
@@ -324,21 +327,22 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
 
         timerTask = new TimerTask() {
             public void run() {
-
                 //use a handler to run a toast that shows the current timestamp
                 handler.post(new Runnable() {
                     public void run() {
                         index++;
-                        if (index == pageFragmentList.size()) {
+                        if (index == profileInfo.getAccountList().size()) {
                             stopTimerTask();
                             viewPager.setCurrentItem(0);
                             name.setText(profileInfo.getAccountList().get(0).getCustomerAccountName());
                             acctNumber.setText(profileInfo.getAccountList().get(0).getAccountNumber());
                             return;
                         }
-                        viewPager.setCurrentItem(index);
-                        name.setText(profileInfo.getAccountList().get(index).getCustomerAccountName());
-                        acctNumber.setText(profileInfo.getAccountList().get(index).getAccountNumber());
+                        if (index < profileInfo.getAccountList().size()) {
+                            viewPager.setCurrentItem(index);
+                            name.setText(profileInfo.getAccountList().get(index).getCustomerAccountName());
+                            acctNumber.setText(profileInfo.getAccountList().get(index).getAccountNumber());
+                        }
                     }
                 });
             }

@@ -42,7 +42,7 @@ public class PaymentStartActivity extends AppCompatActivity
         logo = getIntent().getIntExtra("logo",R.drawable.ic_action_globe);
         themeDarkColor = getIntent().getIntExtra("darkColor",R.color.blue_900);
         themePrimaryColor = getIntent().getIntExtra("primaryColor",R.color.blue_500);
-        int index = getIntent().getIntExtra("index",0);
+        int index = getIntent().getIntExtra("position",0);
         paymentStartFragment = (PaymentStartFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragment);
         paymentStartFragment.setAccount(account, index);

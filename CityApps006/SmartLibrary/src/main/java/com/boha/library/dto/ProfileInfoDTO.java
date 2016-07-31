@@ -12,7 +12,7 @@ import java.util.List;
 public class ProfileInfoDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     private Integer profileInfoID;
-    private Integer customerTypeID, countryID;
+    private Integer customerTypeID, countryID, customerID;
     private String iDNumber;
     private String title;
     private String firstName;
@@ -21,6 +21,14 @@ public class ProfileInfoDTO implements Serializable {
     private String email;
 
     private List<GcmDeviceDTO> gcmDeviceList;
+
+    public Integer getCustomerID() {
+        return customerID;
+    }
+
+    public void setCustomerID(Integer customerID) {
+        this.customerID = customerID;
+    }
 
     private String password;
     private List<ComplaintDTO> complaintList = new ArrayList<>();

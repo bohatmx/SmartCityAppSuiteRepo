@@ -8,15 +8,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.CityApplication;
-import com.boha.library.adapters.AccountPopupListAdapter;
 import com.boha.library.dto.AccountDTO;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ProfileInfoDTO;
@@ -78,14 +75,14 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(LOG,"******* onCreateView ....");
+        Log.d(LOG,"****** onCreateView ....");
         view = inflater.inflate(R.layout.fragment_citizen, container, false);
         ctx = getActivity();
         setFields();
         txtName.setText(profileInfo.getFirstName() + " " + profileInfo.getLastName());
         getTotals();
 
-        getAccounts();
+        //getAccounts();
         return view;
     }
 
@@ -111,8 +108,8 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
                 totArrears += acc.getCurrentArrears();
             }
         }
-        String currency = "R";
-
+        String currency = "";
+        txtAccounts.setText("" + profileInfo.getAccountList().size());
         txtArrears.setText(currency + df.format(totArrears));
         txtBalance.setText(currency + df.format(totBalance));
         btnAccountDetails.setText("My Account Details & Payment");
@@ -131,41 +128,8 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
 
     }
 
-    ListPopupWindow accountPopup;
     List<AccountDTO> accountList = new ArrayList<AccountDTO>();
-    AccountDTO account;
 
-    public void showAccountPopup(final List<AccountDTO> list) {
-        if (accountPopup != null) {
-            accountPopup.dismiss();
-        }
-
-        accountPopup = new ListPopupWindow(getActivity());
-        LayoutInflater inf = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inf.inflate(R.layout.hero_image_popup, null);
-        TextView txt = (TextView) v.findViewById(R.id.HERO_caption);
-        txt.setText("My Accounts");
-        ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
-        img.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-
-        accountPopup.setPromptView(v);
-        accountPopup.setPromptPosition(ListPopupWindow.POSITION_PROMPT_ABOVE);
-        accountPopup.setAdapter(new AccountPopupListAdapter(ctx,
-                R.layout.xspinner_item, list, primaryDarkColor));
-        accountPopup.setAnchorView(view);
-        accountPopup.setHorizontalOffset(Util.getPopupHorizontalOffset(getActivity()));
-        accountPopup.setModal(true);
-        accountPopup.setWidth(Util.getPopupWidth(getActivity()));
-        accountPopup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                accountPopup.dismiss();
-                account = list.get(position);
-             //   Util.setComplaintCategoryIcon(account.getAccountNumber(), nextIMG, getActivity());
-            }
-        });
-        accountPopup.show();
-    }
 
 public static final String TAG = ProfileInfoFragment.class.getSimpleName();
 
@@ -185,6 +149,7 @@ public static final String TAG = ProfileInfoFragment.class.getSimpleName();
                         txtBalance.setText(df.format(balance));
                         Log.d(TAG, "onCacheRetrieved: adding up balance: " + balance + " arrears: " + arrears);
                     }
+                    txtAccounts.setText("" + accountList.size());
                 } else {
                     txtAccounts.setText("0");
                 }

@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.dto.FreqQuestionTypeDTO;
@@ -31,9 +32,11 @@ public class FaqTypeActivity extends AppCompatActivity implements FaqFragment.Fa
     Context ctx;
     ResponseDTO response;
     FaqStrings faqStrings;
-    int index;
+    int position;
     int darkColor, primaryColor, logo;
     MunicipalityDTO municipality;
+    FreqQuestionTypeDTO freqQuestionType;
+    TextView txtTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,9 @@ public class FaqTypeActivity extends AppCompatActivity implements FaqFragment.Fa
         ctx = getApplicationContext();
 
         logo = getIntent().getIntExtra("logo",R.drawable.elogo);
+        position = getIntent().getIntExtra("position",0);
+        txtTitle = (TextView)findViewById(R.id.title);
+
         primaryColor = getIntent().getIntExtra("primaryColor",R.color.teal_500);
         darkColor = getIntent().getIntExtra("primaryColor",R.color.teal_700);
         municipality = SharedUtil.getMunicipality(getApplicationContext());
@@ -65,19 +71,14 @@ public class FaqTypeActivity extends AppCompatActivity implements FaqFragment.Fa
             getSupportActionBar().setTitle(municipality.getMunicipalityName());
         }
 
-        Bundle b = getIntent().getExtras();
-
-        index = (b != null) ? b.getInt("positionIndex") : getIntent().getIntExtra("positionIndex", 0);
 
         getFaqTypes();
-        //getCachedFAQs();
-        //setWebView(index);
-        //getRemoteFAQs();
+
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt("positionIndex", index);
+//        outState.putInt("positionIndex", position);
         super.onSaveInstanceState(outState);
     }
 
@@ -98,17 +99,15 @@ public class FaqTypeActivity extends AppCompatActivity implements FaqFragment.Fa
     }
 
     private void getCachedFAQs() {
-//        mListener.setBusy(true);
         CacheUtil.getCachedFAQ(ctx, new CacheUtil.FAQCacheRetrievalListener() {
             @Override
             public void onCacheRetrieved(FaqStrings fs) {
-           //     mListener.setBusy(false);
                 if (fs.getAccountsFAQ() == null) {
                     getRemoteFAQs();
                     return;
                 }
                 faqStrings = fs;
-                setWebView(index);
+                setWebView(position);
             }
 
             @Override
@@ -127,9 +126,8 @@ public class FaqTypeActivity extends AppCompatActivity implements FaqFragment.Fa
                 new FAQCommsUtil.FAQListener() {
                     @Override
                     public void onSuccess(FaqStrings fs) {
-            //            mListener.setBusy(false);
                         faqStrings = fs;
-                        setWebView(index);
+                        setWebView(position);
                     }
 
                     @Override
@@ -152,13 +150,10 @@ public class FaqTypeActivity extends AppCompatActivity implements FaqFragment.Fa
 
     }
 
-    public interface FaqTypeListener {
-        void setBusy(boolean busy);
-    }
 
     private void setWebView(int position) {
 
-        response.getFaqTypeList().get(position).getFaqTypeName();
+        txtTitle.setText(response.getFaqTypeList().get(position).getFaqTypeName());
         switch (position) {
             case 0:
                 webView.loadData(faqStrings.getAccountsFAQ(), TEXT, UTF);

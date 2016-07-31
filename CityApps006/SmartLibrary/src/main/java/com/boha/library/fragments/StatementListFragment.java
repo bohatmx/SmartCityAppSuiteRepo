@@ -3,6 +3,7 @@ package com.boha.library.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,7 +18,6 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.boha.library.R;
@@ -33,7 +33,10 @@ import com.squareup.leakcanary.RefWatcher;
 
 import org.joda.time.DateTime;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,18 +45,19 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Pattern;
 
 public class StatementListFragment extends Fragment implements PageFragment {
 
     public interface StatementFragmentListener {
-        void onPDFDownloadRequested(String accountNumber,
-                                    List<String> fileNameList);
+        void onPDFDownloaded(String fileName);
+
         void setBusy(boolean busy);
     }
 
     StatementFragmentListener statementFragmentListener;
     ResponseDTO response;
-    TextView txtTitle, txtDate, txtCount;
+    TextView txtTitle, txtDate, txtCount, txtAccount;
     View view, fab, topView, handle;
     Context ctx;
     ImageView heroImage;
@@ -65,12 +69,11 @@ public class StatementListFragment extends Fragment implements PageFragment {
     AccountDTO account;
     StatementAdapter statementAdapter;
     ListView listView;
-    ProgressBar progressBar;
 
-    public void setAccountList(List<AccountDTO> accountList) {
-        Log.d(LOG, "### setAccountList");
-        this.accountList = accountList;
-        account = accountList.get(0);
+    public void setAccount(AccountDTO account) {
+        Log.d(LOG, "### setAccount");
+        this.account = account;
+        txtAccount.setText(account.getAccountNumber());
         getCachedStatements();
     }
 
@@ -90,7 +93,7 @@ public class StatementListFragment extends Fragment implements PageFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            response = (ResponseDTO) getArguments().getSerializable("response");
+//            response = (ResponseDTO) getArguments().getSerializable("response");
         }
     }
 
@@ -124,13 +127,11 @@ public class StatementListFragment extends Fragment implements PageFragment {
             if (file.getName().contains(account.getAccountNumber())) {
                 if (file.getName().contains(".pdf")) {
                     filePathList.add(file.getAbsolutePath());
-
                 }
             }
         }
 
         if (filePathList.isEmpty()) {
-//            getPDFStatement();
         } else {
             fileContainerList.clear();
             for (String d : filePathList) {
@@ -149,12 +150,13 @@ public class StatementListFragment extends Fragment implements PageFragment {
         txtCount.setText("" + filePathList.size());
         String p = filePathList.get(0);
         try {
-            int i = p.indexOf("_");
-            String ys = p.substring(i + 1, i + 5);
-            i = p.lastIndexOf("_");
-            int j = p.lastIndexOf(".");
-            String ms = p.substring(i + 1, j);
-            DateTime dateTime = new DateTime(Integer.parseInt(ys), Integer.parseInt(ms), 1, 0, 0);
+            Pattern pat = Pattern.compile("-");
+            String[] keyParts = pat.split(p);
+            String acctNumber = keyParts[0];
+            String year = keyParts[1];
+            String month = keyParts[2];
+
+            DateTime dateTime = new DateTime(Integer.parseInt(year), Integer.parseInt(month), 1, 0, 0);
             txtDate.setText(sdf.format(dateTime.toDate()));
         } catch (Exception e) {
             txtDate.setText("Unavailable Date");
@@ -198,11 +200,12 @@ public class StatementListFragment extends Fragment implements PageFragment {
         handle = view.findViewById(R.id.ST_handle);
         txtDate = (TextView) view.findViewById(R.id.ST_subtitle);
         txtCount = (TextView) view.findViewById(R.id.ST_count);
+        txtAccount = (TextView) view.findViewById(R.id.ST_account);
         heroImage = (ImageView) view.findViewById(R.id.ST_hero);
         txtTitle = (TextView) view.findViewById(R.id.ST_title);
         listView = (ListView) view.findViewById(R.id.ST_list);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.GONE);
+
+
         txtDate.setText("Not Downloaded");
         txtCount.setText("0");
         fab = view.findViewById(R.id.FAB);
@@ -305,6 +308,8 @@ public class StatementListFragment extends Fragment implements PageFragment {
         if (busyDownloading) {
             return;
         }
+
+        busyDownloading = true;
         Snackbar.make(fab, "Statement download may take a few minutes", Snackbar.LENGTH_LONG).show();
         if (year == 0 || month == 0) {
             DateTime dateTime = new DateTime();
@@ -330,24 +335,23 @@ public class StatementListFragment extends Fragment implements PageFragment {
                         @Override
                         public void run() {
                             statementFragmentListener.setBusy(false);
+                            busyDownloading = false;
                             if (response.getStatusCode() == 0) {
-                                Log.i(LOG, "+++ we cool, cool ...");
+                                Log.i(LOG, "+++ statements from server, we cool, cool ...");
+                                if (response.getPdfHashMap() != null && !response.getPdfHashMap().isEmpty()) {
+                                    Log.i(LOG, "Statements found on server: " + response.getPdfHashMap().size());
 
-
-                                if (response.getPdfFileNameList() != null && !response.getPdfFileNameList().isEmpty()) {
-                                    Log.i(LOG, "Statements found on server: " + response.getPdfFileNameList().size());
-                                    for (String x: response.getPdfFileNameList()) {
-                                        Log.d(LOG,"file: " + x);
+                                    for (String key : response.getPdfHashMap().keySet()) {
+                                        String data = response.getPdfHashMap().get(key);
+                                        savePDF(key, data);
                                     }
-                                    busyDownloading = true;
-                                    statementFragmentListener.onPDFDownloadRequested(account.getAccountNumber(),
-                                            response.getPdfFileNameList());
+
                                 } else {
                                     enableFab();
                                     if (response.isMunicipalityAccessFailed()) {
-                                        Util.showErrorToast(ctx, ctx.getString(R.string.unable_connect_muni));
+                                        Util.showSnackBar(txtTitle, ctx.getString(R.string.unable_connect_muni),"OK", Color.parseColor("RED"));
                                     } else {
-                                        Util.showToast(ctx, "No statements found for the month selected");
+                                        Util.showSnackBar(txtTitle, "No statements found for the month selected","OK", Color.parseColor("YELLOW"));
                                     }
                                 }
                             }
@@ -365,7 +369,7 @@ public class StatementListFragment extends Fragment implements PageFragment {
                         public void run() {
                             statementFragmentListener.setBusy(false);
                             enableFab();
-                            Util.showErrorToast(ctx, message);
+                            snackbar = Util.showSnackBar(txtTitle, message, "OK", Color.parseColor("RED"));
                         }
                     });
                 }
@@ -378,11 +382,27 @@ public class StatementListFragment extends Fragment implements PageFragment {
         });
     }
 
-    public void downloadsCompleted() {
-        busyDownloading = false;
-        enableFab();
-        getCachedStatements();
+    private void savePDF(String key, String data) {
+        File directory = Environment.getExternalStorageDirectory();
+        File myDir = new File(directory, "smartCity");
+        if (!myDir.exists()) {
+            myDir.mkdir();
+        }
+        File pdfFile = new File(myDir, key + "-statement.pdf");
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter(pdfFile));
+            writer.write(data);
+            writer.close();
+            Log.w(LOG, "savePDF: Statement pdf file: " + pdfFile.getAbsolutePath() + " written to disk" );
+            getCachedStatements();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
+
+    Snackbar snackbar;
 
     private void enableFab() {
         fab.setAlpha(1.0f);
@@ -427,9 +447,10 @@ public class StatementListFragment extends Fragment implements PageFragment {
             }
         });
 
-        monthPicker.show(fragmentManager,"monthpicker");
+        monthPicker.show(fragmentManager, "monthpicker");
 
     }
+
 
     static final Locale d = Locale.getDefault();
     static final SimpleDateFormat sdf = new SimpleDateFormat("MMMM yyyy", d);

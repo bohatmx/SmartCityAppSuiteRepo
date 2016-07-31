@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
@@ -71,7 +72,6 @@ import com.boha.library.util.CacheUtil;
 import com.boha.library.util.CommsUtil;
 import com.boha.library.util.DepthPageTransformer;
 import com.boha.library.util.NetUtil;
-import com.boha.library.util.ResidentialAddress;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
@@ -106,7 +106,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         FaqFragment.FaqListener {
 
 
-
+     ActionBar ab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,11 +125,11 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         logo = R.drawable.logo;
 
 
-        final ActionBar ab = getSupportActionBar();
+         ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
 
-        checkAddress();
+//        checkAddress();
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -187,15 +187,15 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
 
 
-    private void checkAddress() {
-        ResidentialAddress address = SharedUtil.getAddress(ctx);
-        if (address == null) {
-            Intent w = new Intent(ctx, AddressActivity.class);
-            w.putExtra("type", AddressActivity.CALLED_FROM_DRAWER_ACTIVITY);
-            startActivity(w);
-            finish();
-        }
-    }
+//    private void checkAddress() {
+//        ResidentialAddress address = SharedUtil.getAddress(ctx);
+//        if (address == null) {
+//            Intent w = new Intent(ctx, AddressActivity.class);
+//            w.putExtra("type", AddressActivity.CALLED_FROM_DRAWER_ACTIVITY);
+//            startActivity(w);
+//            finish();
+//        }
+//    }
     private void getCachedLoginData() {
 
         CacheUtil.getCacheLoginData(ctx, new CacheUtil.CacheRetrievalListener() {
@@ -299,7 +299,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                     @Override
                     public void run() {
                         setRefreshActionButtonState(false);
-                        Util.showErrorToast(ctx, message);
+                        Util.showSnackBar(mPager,message,"OK", Color.parseColor("RED"));
                     }
                 });
             }
@@ -916,6 +916,14 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     public void onRefreshRequested(ComplaintDTO complaint) {
         mRefreshFromComplaint = true;
         getLoginData();
+    }
+
+    @Override
+    public void onCameraRequested(ComplaintDTO complaint) {
+        Intent m = new Intent(getApplicationContext(),PictureActivity.class);
+        m.putExtra("imageType", PictureActivity.COMPLAINT_IMAGE);
+        m.putExtra("complaint", complaint);
+        startActivity(m);
     }
 
     @Override

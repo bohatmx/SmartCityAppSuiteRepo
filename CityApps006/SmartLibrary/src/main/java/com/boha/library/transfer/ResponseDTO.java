@@ -3,6 +3,7 @@ package com.boha.library.transfer;
 import com.boha.library.dto.AccountDTO;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.AlertTypeDTO;
+import com.boha.library.dto.CardResponseDTO;
 import com.boha.library.dto.CityDTO;
 import com.boha.library.dto.ComplaintCategoryDTO;
 import com.boha.library.dto.ComplaintDTO;
@@ -13,7 +14,6 @@ import com.boha.library.dto.CustomerStatusDTO;
 import com.boha.library.dto.CustomerTypeDTO;
 import com.boha.library.dto.ErrorStoreAndroidDTO;
 import com.boha.library.dto.ErrorStoreDTO;
-import com.boha.library.dto.CardResponseDTO;
 import com.boha.library.dto.FaqDTO;
 import com.boha.library.dto.FreqQuestionTypeDTO;
 import com.boha.library.dto.GISAddressDTO;
@@ -29,6 +29,7 @@ import com.boha.library.dto.StaffTypeDTO;
 import com.boha.library.dto.UserDTO;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -52,7 +53,6 @@ public class ResponseDTO implements Serializable {
     private Boolean municipalityAccessFailed = Boolean.FALSE;
     private List<String> pdfFileNameList;
     private Integer goodResponses = 0, badResponses = 0;
-
     //response lists
     private CardResponseDTO cardResponse;
     private List<GISAddressDTO> addressList;
@@ -83,6 +83,15 @@ public class ResponseDTO implements Serializable {
     private List<UserDTO> userList;
     private List<SIDResponseDTO> sidResponseList;
     private List<CardResponseDTO> cardResponseList;
+    private HashMap<String, String> pdfHashMap;
+
+    public HashMap<String, String> getPdfHashMap() {
+        return pdfHashMap;
+    }
+
+    public void setPdfHashMap(HashMap<String, String> pdfHashMap) {
+        this.pdfHashMap = pdfHashMap;
+    }
 
     public List<CardResponseDTO> getCardResponseList() {
         return cardResponseList;

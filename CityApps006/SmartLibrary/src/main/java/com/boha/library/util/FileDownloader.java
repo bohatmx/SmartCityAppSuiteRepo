@@ -69,7 +69,7 @@ public class FileDownloader {
         if (!myDir.exists()) {
             myDir.mkdir();
         }
-        pdfFile = new File(myDir,fileName);
+        pdfFile = new File(myDir,accountNumber + "-" + fileName);
         StringBuilder sb = Util.getStartURL(SharedUtil.getMunicipality(ctx).getMunicipalityID());
         sb.append("/documents/account_").append(accountNumber).append("/");
         sb.append(fileName);

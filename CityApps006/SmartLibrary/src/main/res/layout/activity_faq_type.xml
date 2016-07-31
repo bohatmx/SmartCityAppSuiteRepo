@@ -1,16 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.boha.library.activities.FaqTypeActivity"
-    android:padding="@dimen/mon_padding">
+    android:padding="@dimen/mon_padding"
+    tools:context="com.boha.library.activities.FaqTypeActivity">
 
-    <WebView
-        android:id="@+id/FAQ_webView"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
 
+        <android.support.v7.widget.CardView
+            android:id="@+id/card"
+            app:cardElevation="@dimen/mon_divider"
+            android:layout_margin="@dimen/mon_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:padding="@dimen/mon_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/title"
+                    android:text="@string/faq"
+                    android:layout_centerHorizontal="true"
+                    style="@style/Title3TextStyleBlue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
 
+        <WebView
+            android:id="@+id/FAQ_webView"
+            android:layout_margin="@dimen/mon_margin"
+            android:layout_below="@id/card"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
 
 </RelativeLayout>
