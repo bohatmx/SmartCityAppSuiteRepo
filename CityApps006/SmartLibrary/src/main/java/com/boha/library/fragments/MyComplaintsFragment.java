@@ -166,7 +166,7 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     }
 
     private void getCaseDetails(final String href, final int position) {
-        Log.e(LOG, "##getCaseDetails, href: " + href);
+        Log.e(LOG, "##getCaseDetails....., href: " + href);
         RequestDTO w = new RequestDTO(RequestDTO.GET_COMPLAINT_STATUS);
         w.setReferenceNumber(href);
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
