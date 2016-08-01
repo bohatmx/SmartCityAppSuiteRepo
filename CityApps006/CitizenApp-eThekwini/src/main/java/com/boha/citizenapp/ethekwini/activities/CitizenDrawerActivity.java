@@ -106,7 +106,8 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         FaqFragment.FaqListener {
 
 
-     ActionBar ab;
+    ActionBar ab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,7 +126,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         logo = R.drawable.logo;
 
 
-         ab = getSupportActionBar();
+        ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
 
@@ -186,8 +187,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     }
 
 
-
-//    private void checkAddress() {
+    //    private void checkAddress() {
 //        ResidentialAddress address = SharedUtil.getAddress(ctx);
 //        if (address == null) {
 //            Intent w = new Intent(ctx, AddressActivity.class);
@@ -286,7 +286,6 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                         }
                         setupViewPager();
                         complaintList = response.getComplaintList();
-//                        getAllCaseDetails();
 
 
                     }
@@ -299,7 +298,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                     @Override
                     public void run() {
                         setRefreshActionButtonState(false);
-                        Util.showSnackBar(mPager,message,"OK", Color.parseColor("RED"));
+                        Util.showSnackBar(mPager, message, "OK", Color.parseColor("RED"));
                     }
                 });
             }
@@ -326,11 +325,12 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
     static final int THEME_REQUESTED = 8075;
     static boolean logOff;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_address) {
-            Intent w = new Intent(this,AddressActivity.class);
+            Intent w = new Intent(this, AddressActivity.class);
             startActivity(w);
             return true;
         }
@@ -352,7 +352,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             getLoginData();
             return true;
         }
-        if (id == com.boha.library.R.id.action_info){
+        if (id == com.boha.library.R.id.action_info) {
             Intent intent = new Intent(CitizenDrawerActivity.this, GeneralInfoActivity.class);
             startActivity(intent);
             return true;
@@ -372,8 +372,8 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             Util.showToast(this, getString(R.string.under_cons));
             return true;
         }
-        if(id == com.boha.library.R.id.action_app_guide) {
-           Intent intent = new Intent(Intent.ACTION_VIEW);
+        if (id == com.boha.library.R.id.action_app_guide) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("http://etmobileguide.oneconnectgroup.com/"));
             startActivity(intent);
         }
@@ -425,10 +425,14 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         faqFragment.setPageTitle(getString(R.string.faq));
 
         if (profileInfoFragment != null) {
-            pageFragmentList.add(profileInfoFragment);
+            if (user == null) {
+                pageFragmentList.add(profileInfoFragment);
+            }
         }
-        pageFragmentList.add(myComplaintsFragment);
-        pageFragmentList.add(complaintCreateFragment);
+        if (user == null) {
+            pageFragmentList.add(myComplaintsFragment);
+            pageFragmentList.add(complaintCreateFragment);
+        }
         pageFragmentList.add(alertListFragment);
 
         pageFragmentList.add(newsListFragment);
@@ -599,6 +603,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     /**
      * A complaint has been added and a fresh list of complaints has been received from the server.
      * My
+     *
      * @param complaintList
      */
     @Override
@@ -610,7 +615,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                 Collections.sort(complaintList);
                 response.setComplaintList(complaintList);
 
-                Snackbar.make(mDrawerLayout,"Refreshing list of complaints, will take a second",
+                Snackbar.make(mDrawerLayout, "Refreshing list of complaints, will take a second",
                         Snackbar.LENGTH_LONG).show();
                 index = 0;
                 myComplaintsFragment.setComplaintList(complaintList);
@@ -635,7 +640,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 //go to mycomplaints
-                                mPager.setCurrentItem(1,true);
+                                mPager.setCurrentItem(1, true);
                             }
                         })
                         .show();
@@ -920,7 +925,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
     @Override
     public void onCameraRequested(ComplaintDTO complaint) {
-        Intent m = new Intent(getApplicationContext(),PictureActivity.class);
+        Intent m = new Intent(getApplicationContext(), PictureActivity.class);
         m.putExtra("imageType", PictureActivity.COMPLAINT_IMAGE);
         m.putExtra("complaint", complaint);
         startActivity(m);
@@ -939,7 +944,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             }
         });
 
-        addressDialog.show(getSupportFragmentManager(),"oiyoiu");
+        addressDialog.show(getSupportFragmentManager(), "oiyoiu");
     }
 
     @Override

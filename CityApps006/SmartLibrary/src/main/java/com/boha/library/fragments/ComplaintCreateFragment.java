@@ -174,10 +174,6 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             complaint.setProfileInfo(prof);
             complaint.getProfileInfo().setAccountList(null);
             complaint.getProfileInfo().setComplaintList(null);
-            complaint.getProfileInfo().setFirstName(null);
-            complaint.getProfileInfo().setLastName(null);
-            complaint.getProfileInfo().setEmail(null);
-            complaint.getProfileInfo().setCellNumber(null);
 
         }
         if (user != null) {
@@ -192,7 +188,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         w.setComplaint(complaint);
         complaint.setComplaintType(complaintType);
         complaint.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
-        w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
+        w.setMunicipalityID(complaint.getMunicipalityID());
 
         if (WebCheck.checkNetworkAvailability(ctx).isNetworkUnavailable()) {
             Util.showErrorToast(ctx, getString(R.string.no_network));
@@ -321,7 +317,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         txtSubTitle.setVisibility(View.GONE);
         txtGetAddress.setVisibility(View.GONE);
         txtComplaintType.setText(R.string.start_complaint);
-        txtComplaintType2.setText(R.string.start_complaint);
+//        txtComplaintType2.setText(R.string.start_complaint);
 
 
         btnSend.setOnClickListener(new View.OnClickListener() {
@@ -464,8 +460,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                 icon.setColorFilter(primaryDarkColor, PorterDuff.Mode.SRC_IN);
                 txtComplaintType.setText(complaintCategory.getComplaintCategoryName()
                         + " - " + complaintType.getComplaintTypeName());
-                txtComplaintType2.setText(complaintCategory.getComplaintCategoryName()
-                        + " - " + complaintType.getComplaintTypeName());
+
                 selectComplaintLocationDialog();
 
             }
