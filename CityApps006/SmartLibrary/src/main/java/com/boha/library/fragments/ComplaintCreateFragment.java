@@ -308,14 +308,14 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
         editComment = (EditText) view.findViewById(R.id.CC_comment);
         txtComplaintType = (TextView) view.findViewById(R.id.CC_complaintType);
-        txtComplaintType2 = (TextView) view.findViewById(R.id.CC_complaintType2);
+//        txtComplaintType2 = (TextView) view.findViewById(R.id.CC_complaintType2);
         txtTitle = (TextView) view.findViewById(R.id.CC_title);
         txtSubTitle = (TextView) view.findViewById(R.id.CC_subTitle);
         txtGetAddress = (TextView) view.findViewById(R.id.CC_getGeoAddress);
         btnSend = (Button) view.findViewById(R.id.button);
         editComment.setVisibility(View.GONE);
 
-        btnSend.setVisibility(View.GONE);
+//        btnSend.setVisibility(View.GONE);
 
         txtTitle.setText(ctx.getString(R.string.make_complaint));
         txtSubTitle.setVisibility(View.GONE);
@@ -359,17 +359,17 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                 });
             }
         });
-        txtComplaintType2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                Util.flashOnce(txtComplaintType2, 200, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        showComplaintCategoryPopup();
-                    }
-                });
-            }
-        });
+//        txtComplaintType2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(final View v) {
+//                Util.flashOnce(txtComplaintType2, 200, new Util.UtilAnimationListener() {
+//                    @Override
+//                    public void onAnimationEnded() {
+//                        showComplaintCategoryPopup();
+//                    }
+//                });
+//            }
+//        });
         icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
