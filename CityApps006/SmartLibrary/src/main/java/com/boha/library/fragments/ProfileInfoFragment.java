@@ -125,6 +125,12 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
             }
             txtResolved.setText("" + resolved);
         }
+        if (profileInfo.getAccountList().isEmpty()) {
+            btnAccountDetails.setEnabled(false);
+            btnAccountDetails.setAlpha(0.7f);
+            txtBalance.setAlpha(0.6f);
+            txtArrears.setAlpha(0.6f);
+        }
 
     }
 

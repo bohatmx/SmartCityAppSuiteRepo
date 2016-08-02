@@ -116,6 +116,7 @@
                     style="@style/Title1TextStyleBlue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
                     android:hint="Email Address" />
             </android.support.design.widget.TextInputLayout>
 
