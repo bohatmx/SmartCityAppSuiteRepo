@@ -56,7 +56,7 @@ public class RequestDTO {
 
     private Integer requestType, radius,
             municipalityID;
-    private Integer year, month;
+    private Integer year, month, count;
     private String userName, password, referenceNumber,
             gcmRegistrationID, email,municipalityName, accountNumber, dataURL;
     private Double latitude, longitude;
@@ -101,6 +101,14 @@ public class RequestDTO {
     private RequestList requestList;
     private GISAddressDTO address;
     private PaymentSurveyDTO paymentSurvey;
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
 
     public boolean isSpoof() {
         return spoof;

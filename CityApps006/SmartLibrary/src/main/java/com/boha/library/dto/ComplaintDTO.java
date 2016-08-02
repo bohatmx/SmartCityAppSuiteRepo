@@ -14,8 +14,7 @@ public class ComplaintDTO implements Serializable, Comparable<ComplaintDTO> {
             subCategoryID;
     private Integer id, numberOfFollowers;
     private String referenceNumber, href;
-    private String remarks, address,number, street,
-            suburb, city, category, subCategory;
+    private String accountNumber, category, subCategory;
     private Long complaintDate;
     private Double latitude, distance;
     private Double longitude;
@@ -60,9 +59,6 @@ public class ComplaintDTO implements Serializable, Comparable<ComplaintDTO> {
         this.numberOfFollowers = numberOfFollowers;
     }
 
-    public String getNumber() {
-        return number;
-    }
 
     public String getHref() {
         return href;
@@ -72,32 +68,12 @@ public class ComplaintDTO implements Serializable, Comparable<ComplaintDTO> {
         this.href = href;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public String getAccountNumber() {
+        return accountNumber;
     }
 
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getSuburb() {
-        return suburb;
-    }
-
-    public void setSuburb(String suburb) {
-        this.suburb = suburb;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 
     public UserDTO getUser() {
@@ -147,14 +123,6 @@ public class ComplaintDTO implements Serializable, Comparable<ComplaintDTO> {
         this.referenceNumber = referenceNumber;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public List<ComplaintUpdateStatusDTO> getComplaintUpdateStatusList() {
         return complaintUpdateStatusList;
     }
@@ -202,14 +170,6 @@ public class ComplaintDTO implements Serializable, Comparable<ComplaintDTO> {
 
     public void setComplaintID(Integer complaintID) {
         this.complaintID = complaintID;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
     }
 
     public Long getComplaintDate() {

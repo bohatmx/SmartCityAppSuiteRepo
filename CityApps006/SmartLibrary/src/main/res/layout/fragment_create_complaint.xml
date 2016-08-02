@@ -4,269 +4,92 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <RelativeLayout
+        android:id="@+id/CC_handle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="1dp" />
 
-        <RelativeLayout
-            android:id="@+id/CC_handle"
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />
+    <RelativeLayout
+        android:id="@+id/CC_titleLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mon_hero_height_medium_lite"
+        android:layout_below="@id/CC_handle">
 
-        <RelativeLayout
-            android:id="@+id/CC_titleLayout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/mon_margin"
-            android:layout_below="@id/CC_handle">
-
-            <ImageView
-                android:id="@+id/CC_hero"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/back6" />
-
-            <TextView
-                android:id="@+id/CC_title"
-                style="@style/Title1TextStyleWhite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/mon_margin"
-                android:background="@color/transparent_black"
-                android:padding="@dimen/mon_margin"
-                android:text="My Title Here"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/CC_subTitle"
-                style="@style/TextStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/CC_title"
-                android:layout_below="@id/CC_title"
-                android:text="My sub title will occupy pride of place here"
-                android:textColor="@color/white"
-                android:visibility="gone" />
-
-        </RelativeLayout>
-
-        <ScrollView
-            android:id="@+id/CC_scroll"
+        <ImageView
+            android:id="@+id/CC_hero"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/CC_titleLayout">
+            android:scaleType="centerCrop"
+            android:src="@drawable/back6" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/grey"
-                android:padding="@dimen/mon_divider">
+        <TextView
+            android:id="@+id/CC_title"
+            style="@style/Title2TextStyleWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/mon_margin"
+            android:background="@color/transparent_black"
+            android:padding="@dimen/mon_margin"
+            android:text="@string/make_complaint"
+            android:visibility="visible" />
 
-
-                <RelativeLayout
-                    android:id="@+id/CC_iconLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/beige_pale"
-                    android:padding="@dimen/mon_margin">
-
-                    <ImageView
-                        android:id="@+id/CC_icon"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_action_bell" />
-
-                    <RelativeLayout
-                        android:id="@+id/CC_tapLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/mon_margin"
-                        android:layout_centerVertical="true"
-                        android:layout_toRightOf="@id/CC_icon">
-
-                        <TextView
-                            android:id="@+id/CC_complaintType"
-                            style="@style/Title3TextStyleBlue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/mon_margin"
-                            android:text="@string/start_complaint" />
-
-                        <TextView
-                            android:id="@+id/CC_label"
-                            style="@style/TextStyleSmall"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/CC_complaintType"
-                            android:layout_marginLeft="@dimen/mon_margin"
-                            android:text="Tap here to create and submit complaint" />
-                    </RelativeLayout>
-                </RelativeLayout>
-
-
-                <RelativeLayout
-                    android:id="@+id/CC_addressLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/CC_iconLayout"
-                    android:background="@color/white"
-                    android:padding="@dimen/mon_margin"
-                    android:visibility="visible">
-
-                    <TextView
-                        android:id="@+id/title"
-                        android:text="Complaint Name"
-                        style="@style/Title3TextStyleBlue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <EditText
-                        android:id="@+id/CC_comment"
-                        android:layout_below="@id/title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:hint="@string/enter_detail2"
-                        android:inputType="textCapSentences" />
-
-                    <TextView
-                        android:id="@+id/CC_getGeoAddress"
-                        style="@style/Title3TextStyleBlue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/CC_comment"
-                        android:layout_marginTop="@dimen/mon_margin"
-                        android:text="Get address where you are now"
-                        android:visibility="gone" />
-
-                    <RelativeLayout
-                        android:id="@+id/CC_numberLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/CC_getGeoAddress"
-                        android:layout_marginTop="@dimen/mon_padding">
-
-                        <TextView
-                            android:id="@+id/CC_labelNumber"
-                            style="@style/TextStyleSmall"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="Number: " />
-
-                        <EditText
-                            android:id="@+id/CC_number"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/CC_labelNumber"
-                            android:hint="Street Number"
-                            android:inputType="text" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/CC_streetLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/CC_numberLayout"
-                        android:layout_marginTop="@dimen/mon_padding">
-
-                        <TextView
-                            android:id="@+id/CC_labelStreet"
-                            style="@style/TextStyleSmall"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="Street: " />
-
-                        <EditText
-                            android:id="@+id/CC_street"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/CC_labelStreet"
-                            android:hint="Street Name"
-                            android:inputType="textCapWords" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/CC_suburbLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/CC_streetLayout"
-                        android:layout_marginTop="@dimen/mon_padding">
-
-                        <TextView
-                            android:id="@+id/CC_labelSuburb"
-                            style="@style/TextStyleSmall"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="Suburb: " />
-
-                        <EditText
-                            android:id="@+id/CC_suburb"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/CC_labelSuburb"
-                            android:hint="Suburb Name"
-                            android:inputType="textCapWords" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/CC_cityLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/CC_suburbLayout"
-                        android:layout_marginTop="@dimen/mon_padding">
-
-                        <TextView
-                            android:id="@+id/CC_labelCity"
-                            style="@style/TextStyleSmall"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="City/Town: " />
-
-                        <EditText
-                            android:id="@+id/CC_city"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/CC_labelCity"
-                            android:hint="City/Town Name"
-                            android:inputType="textCapWords" />
-
-                    </RelativeLayout>
-
-
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/CC_addressLayout"
-                    android:layout_marginTop="@dimen/mon_divider"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="@dimen/mon_divider">
-
-                    <Button
-                        android:id="@+id/button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@color/red_800"
-                        android:padding="@dimen/mon_margin"
-                        android:text="Submit Complaint"
-                        android:textColor="@color/white" />
-
-
-                </LinearLayout>
-
-            </RelativeLayout>
-        </ScrollView>
+        <TextView
+            android:id="@+id/CC_subTitle"
+            style="@style/TextStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/CC_title"
+            android:layout_below="@id/CC_title"
+            android:text="My sub title will occupy pride of place here"
+            android:textColor="@color/white"
+            android:visibility="visible" />
 
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout1"
+        android:layout_below="@id/CC_titleLayout"
+        android:layout_margin="@dimen/mon_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/category"
+            style="@style/Title3TextStyleGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Complaint Category" />
+
+        <ImageView
+            android:id="@+id/backIcon"
+            android:src="@drawable/ic_action_back"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/mon_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+    <Spinner
+        android:id="@+id/spinnerAccounts"
+        android:layout_below="@id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_below="@id/spinnerAccounts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabSend"
+        android:src="@drawable/ic_near_me"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:elevation="@dimen/mon_margin"
+        android:layout_margin="@dimen/mon_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
 </RelativeLayout>

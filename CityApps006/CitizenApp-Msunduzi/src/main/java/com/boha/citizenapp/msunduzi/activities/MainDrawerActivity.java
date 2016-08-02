@@ -41,7 +41,6 @@ import com.boha.library.activities.AlertDetailActivity;
 import com.boha.library.activities.AlertMapActivity;
 import com.boha.library.activities.CityApplication;
 import com.boha.library.activities.PictureActivity;
-import com.boha.library.adapters.AddressListAdapter;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.GISAddressDTO;
@@ -49,7 +48,6 @@ import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.UserDTO;
-import com.boha.library.fragments.AddressDialog;
 import com.boha.library.fragments.AlertListFragment;
 import com.boha.library.fragments.ComplaintCreateFragment;
 import com.boha.library.fragments.ComplaintsAroundMeFragment;
@@ -486,7 +484,6 @@ public class MainDrawerActivity extends ActionBarActivity
         complaintsAroundMeFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         newsListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 
-        complaintCreateFragment.setLogo(logo);
         complaintsAroundMeFragment.setLogo(logo);
         alertListFragment.setLogo(logo);
         newsListFragment.setLogo(logo);
@@ -543,17 +540,7 @@ public class MainDrawerActivity extends ActionBarActivity
     @Override
     public void onMultiAddressDialog(List<GISAddressDTO> list) {
 
-        AddressDialog addressDialog = new AddressDialog();
-        addressDialog.setAddressList(list);
-        addressDialog.setListener(new AddressListAdapter.AddressListener() {
-            @Override
-            public void onAddressClicked(GISAddressDTO address) {
 
-                complaintCreateFragment.setSelectedAddress(address);
-            }
-        });
-
-        addressDialog.show(getSupportFragmentManager(),"");
     }
     @Override
     public void onFindComplaintsLikeMine(ComplaintDTO complaint) {

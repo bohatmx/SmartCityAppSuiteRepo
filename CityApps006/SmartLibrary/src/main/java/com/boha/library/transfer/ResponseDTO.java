@@ -83,13 +83,13 @@ public class ResponseDTO implements Serializable {
     private List<UserDTO> userList;
     private List<SIDResponseDTO> sidResponseList;
     private List<CardResponseDTO> cardResponseList;
-    private HashMap<String, String> pdfHashMap;
+    private HashMap<String, byte[]> pdfHashMap;
 
-    public HashMap<String, String> getPdfHashMap() {
+    public HashMap<String, byte[]> getPdfHashMap() {
         return pdfHashMap;
     }
 
-    public void setPdfHashMap(HashMap<String, String> pdfHashMap) {
+    public void setPdfHashMap(HashMap<String, byte[]> pdfHashMap) {
         this.pdfHashMap = pdfHashMap;
     }
 

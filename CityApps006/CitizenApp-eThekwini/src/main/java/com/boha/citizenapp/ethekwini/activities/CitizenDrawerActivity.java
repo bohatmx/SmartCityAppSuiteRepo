@@ -43,7 +43,6 @@ import com.boha.library.activities.EmergencyContactsActivity;
 import com.boha.library.activities.GeneralInfoActivity;
 import com.boha.library.activities.PictureActivity;
 import com.boha.library.activities.ThemeSelectorActivity;
-import com.boha.library.adapters.AddressListAdapter;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.ComplaintCategoryDTO;
 import com.boha.library.dto.ComplaintDTO;
@@ -53,7 +52,6 @@ import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.UserDTO;
-import com.boha.library.fragments.AddressDialog;
 import com.boha.library.fragments.AlertListFragment;
 import com.boha.library.fragments.ComplaintCreateFragment;
 import com.boha.library.fragments.ComplaintsAroundMeFragment;
@@ -87,7 +85,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * TODO
@@ -229,7 +226,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             w.setUser(user);
             w.setRequestType(RequestDTO.SIGN_IN_USER);
         } else {
-            w.setUserName(profileInfo.getiDNumber());
+            w.setUserName(profileInfo.getEmail());
             w.setPassword(profileInfo.getPassword());
         }
 
@@ -262,19 +259,10 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                             noUser = true;
                         }
                         if (noProfile && noUser) {
-
                             return;
                         }
                         if (w.getRequestType() == RequestDTO.SIGN_IN_CITIZEN) {
-
-                            ProfileInfoDTO sp = new ProfileInfoDTO();
-                            sp.setProfileInfoID(profileInfo.getProfileInfoID());
-                            sp.setFirstName(profileInfo.getFirstName());
-                            sp.setLastName(profileInfo.getLastName());
-                            sp.setiDNumber(profileInfo.getiDNumber());
-                            sp.setPassword(profileInfo.getPassword());
-
-                            SharedUtil.saveProfile(ctx, sp);
+                            SharedUtil.saveProfile(ctx, profileInfo);
                         } else {
                             SharedUtil.saveUser(ctx, response.getUserList().get(0));
                         }
@@ -329,11 +317,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_address) {
-            Intent w = new Intent(this, AddressActivity.class);
-            startActivity(w);
-            return true;
-        }
+
         if (id == android.R.id.home) {
             mDrawerLayout.openDrawer(GravityCompat.START);
             return true;
@@ -410,7 +394,6 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         complaintsAroundMeFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         newsListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 
-        complaintCreateFragment.setLogo(logo);
         complaintsAroundMeFragment.setLogo(logo);
         alertListFragment.setLogo(logo);
         newsListFragment.setLogo(logo);
@@ -504,21 +487,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                 }
                 if (menuItem.getItemId() == R.id.nav_createComplaint) {
                     mPager.setCurrentItem(2, true);
-                    timer = new Timer();
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            timer.purge();
-                            timer.cancel();
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    complaintCreateFragment.showComplaintCategoryPopup();
-                                }
-                            });
-                        }
-                    }, 600);
-                    return true;
+
                 }
                 if (menuItem.getItemId() == R.id.nav_alerts) {
                     mPager.setCurrentItem(3, true);
@@ -934,17 +903,6 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     @Override
     public void onMultiAddressDialog(List<GISAddressDTO> list) {
 
-        AddressDialog addressDialog = new AddressDialog();
-        addressDialog.setAddressList(list);
-        addressDialog.setListener(new AddressListAdapter.AddressListener() {
-            @Override
-            public void onAddressClicked(GISAddressDTO address) {
-
-                complaintCreateFragment.setSelectedAddress(address);
-            }
-        });
-
-        addressDialog.show(getSupportFragmentManager(), "oiyoiu");
     }
 
     @Override
