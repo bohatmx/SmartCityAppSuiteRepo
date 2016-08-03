@@ -53,7 +53,7 @@ public class SplashActivity extends AppCompatActivity {
     UserDTO user;
     MunicipalityDTO municipality;
     static final Random RANDOM = new Random(System.currentTimeMillis());
-    static final int ONE_SECOND = 1000, QUICK = 200, SECONDS_TO_WAIT = ONE_SECOND * 3;
+    static final int ONE_SECOND = 1000, QUICK = 200, SECONDS_TO_WAIT = ONE_SECOND * 4;
     static final String TAG = SplashActivity.class.getSimpleName();
     //TODO - customize the app for each Municipality
     /**
@@ -174,12 +174,11 @@ public class SplashActivity extends AppCompatActivity {
                 + reqCode + " resCode: " + resCode);
         switch (reqCode) {
             case REQUEST_SIGN_IN:
-                if (SharedUtil.getProfile(ctx) != null
-                        || SharedUtil.getUser(ctx) != null) {
-                    btnSignIn.setVisibility(View.GONE);
-                    btnRegister.setVisibility(View.GONE);
-                    finish();
-                }
+
+                Intent i = new Intent(ctx, CitizenDrawerActivity.class);
+                i.putExtra("justSignedIn", true);
+                startActivity(i);
+
                 break;
             case REQUEST_THEME_CHANGE:
                 finish();
@@ -260,25 +259,18 @@ public class SplashActivity extends AppCompatActivity {
 
 
     private void startTimer() {
-
         timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        timer.purge();
-                        timer.cancel();
-                        Intent m = new Intent(getApplicationContext(), CitizenDrawerActivity.class);
-                        startActivity(m);
-                        finish();
-
-                    }
-                });
-
+                timer.purge();
+                timer.cancel();
+                Intent m = new Intent(getApplicationContext(), CitizenDrawerActivity.class);
+                startActivity(m);
+                finish();
             }
-        }, SECONDS_TO_WAIT, SECONDS_TO_WAIT);
+        }, SECONDS_TO_WAIT);
+
     }
 
     @Override

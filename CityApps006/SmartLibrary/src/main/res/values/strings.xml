@@ -197,4 +197,8 @@ The mobile app will also enable citizens to report incorrect billing to the muni
 The application has emergency numbers from the municipality, such as ambulance number, fire department and metro police department etc.</string>
 
     <string name="general_info_title">eThekwini Municipality Mobile Application</string>
+    <string name="unable_complain">Unable to send complaint. Service not available. Please try again</string>
+    <string name="close">Close</string>
+    <string name="complaint_received">Your complaint has been received</string>
+    <string name="process_complaint_unable">Unable to process the complaint at this time. Please try later</string>
 </resources>

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 
 import com.boha.library.R;
@@ -25,9 +26,11 @@ public class MonthPickerDialogFragment extends DialogFragment {
 
     Spinner monthSpinner, yearSpinner;
     ImageView iconCancel, iconSearch;
+    RadioButton radio1, radio2, radio3;
     MonthPickerListener listener;
+
     public interface MonthPickerListener {
-        void onDatePicked(int month, int year);
+        void onDatePicked(int month, int year, int count);
     }
 
     @Override
@@ -35,6 +38,9 @@ public class MonthPickerDialogFragment extends DialogFragment {
         View rootView = inflater.inflate(R.layout.month_selection, container, false);
         monthSpinner = (Spinner)rootView.findViewById(R.id.spinnerMonth);
         yearSpinner = (Spinner)rootView.findViewById(R.id.spinnerYear);
+        radio1 = (RadioButton) rootView.findViewById(R.id.radioOne);
+        radio2 = (RadioButton) rootView.findViewById(R.id.radioTwo);
+        radio3 = (RadioButton) rootView.findViewById(R.id.radioThree);
 
         iconCancel = (ImageView)rootView.findViewById(R.id.iconCancel);
         iconSearch = (ImageView)rootView.findViewById(R.id.iconSearch);
@@ -43,7 +49,17 @@ public class MonthPickerDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
 
-                listener.onDatePicked(selectedMonth,selectedYear);
+                int count = 1;
+                if (radio1.isChecked()) {
+                    count = 1;
+                }
+                if (radio2.isChecked()) {
+                    count = 2;
+                }
+                if (radio3.isChecked()) {
+                    count = 3;
+                }
+                listener.onDatePicked(selectedMonth,selectedYear, count);
                 dismiss();
             }
         });

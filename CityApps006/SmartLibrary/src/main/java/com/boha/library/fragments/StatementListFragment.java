@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -33,9 +32,9 @@ import com.squareup.leakcanary.RefWatcher;
 
 import org.joda.time.DateTime;
 
-import java.io.BufferedWriter;
+import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,7 +62,7 @@ public class StatementListFragment extends Fragment implements PageFragment {
     ImageView heroImage;
     Activity activity;
     String pageTitle;
-    int primaryColor, darkColor, month, year;
+    int primaryColor, darkColor, month, year, count;
     FragmentManager fragmentManager;
     List<AccountDTO> accountList;
     AccountDTO account;
@@ -125,13 +124,14 @@ public class StatementListFragment extends Fragment implements PageFragment {
         filePathList = new ArrayList<>();
         for (File file : files) {
             if (file.getName().contains(account.getAccountNumber())) {
-                if (file.getName().contains(".pdf")) {
+                if (file.getName().contains("statement.pdf")) {
                     filePathList.add(file.getAbsolutePath());
                 }
             }
         }
 
         if (filePathList.isEmpty()) {
+            Log.d(LOG, "getCachedStatements: filePathList is empty");
         } else {
             fileContainerList.clear();
             for (String d : filePathList) {
@@ -172,27 +172,18 @@ public class StatementListFragment extends Fragment implements PageFragment {
                     return;
                 }
                 File file = new File(filePathList.get(position));
+                Log.e(LOG, "pdf file: " + file.getAbsolutePath() + " length: " + file.length());
                 if (file.exists()) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     ctx.startActivity(intent);
                 } else {
                     Util.showToast(ctx, "Statement is still downloading");
                 }
             }
         });
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                // TODO Auto-generated method stub
-            }
 
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                    //Log.i("StatementFragment", "scrolling stopped...");
-                }
-            }
-        });
     }
 
     private void setFields() {
@@ -317,12 +308,13 @@ public class StatementListFragment extends Fragment implements PageFragment {
             month = dateTime.getMonthOfYear();
         }
         Log.d(LOG, "*** year: " + year
-                + " month: " + month + " selected for statement download");
+                + " month: " + month +  " count: " + count + " selected for statement download");
 
         RequestDTO w = new RequestDTO(RequestDTO.GET_PDF_STATEMENT);
         w.setAccountNumber(account.getAccountNumber());
         w.setYear(year);
         w.setMonth(month);
+        w.setCount(count);
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
 
         statementFragmentListener.setBusy(true);
@@ -336,18 +328,18 @@ public class StatementListFragment extends Fragment implements PageFragment {
                         public void run() {
                             statementFragmentListener.setBusy(false);
                             busyDownloading = false;
+                            enableFab();
                             if (response.getStatusCode() == 0) {
-                                Log.i(LOG, "+++ statements from server, we cool, cool ...");
+                                Log.i(LOG, "+++ statement(s) from server, we cool, cool ...");
                                 if (response.getPdfHashMap() != null && !response.getPdfHashMap().isEmpty()) {
                                     Log.i(LOG, "Statements found on server: " + response.getPdfHashMap().size());
 
                                     for (String key : response.getPdfHashMap().keySet()) {
-                                        String data = response.getPdfHashMap().get(key);
+                                        byte[] data = response.getPdfHashMap().get(key);
                                         savePDF(key, data);
                                     }
 
                                 } else {
-                                    enableFab();
                                     if (response.isMunicipalityAccessFailed()) {
                                         Util.showSnackBar(txtTitle, ctx.getString(R.string.unable_connect_muni),"OK", Color.parseColor("RED"));
                                     } else {
@@ -382,19 +374,21 @@ public class StatementListFragment extends Fragment implements PageFragment {
         });
     }
 
-    private void savePDF(String key, String data) {
+    private void savePDF(String key, byte[] data) {
+        Log.d(LOG, "savePDF: data length: " + data.length);
         File directory = Environment.getExternalStorageDirectory();
         File myDir = new File(directory, "smartCity");
         if (!myDir.exists()) {
             myDir.mkdir();
         }
         File pdfFile = new File(myDir, key + "-statement.pdf");
-        BufferedWriter writer = null;
         try {
-            writer = new BufferedWriter(new FileWriter(pdfFile));
-            writer.write(data);
-            writer.close();
-            Log.w(LOG, "savePDF: Statement pdf file: " + pdfFile.getAbsolutePath() + " written to disk" );
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(pdfFile));
+            bos.write(data);
+            bos.flush();
+            bos.close();
+
+            Log.w(LOG, "savePDF: monthly Statement pdf file: " + pdfFile.getAbsolutePath() + " written to disk" );
             getCachedStatements();
         } catch (IOException e) {
             e.printStackTrace();
@@ -423,27 +417,36 @@ public class StatementListFragment extends Fragment implements PageFragment {
         MonthPickerDialogFragment monthPicker = new MonthPickerDialogFragment();
         monthPicker.setListener(new MonthPickerDialogFragment.MonthPickerListener() {
             @Override
-            public void onDatePicked(int m, int y) {
-                year = y;
-                month = m + 1;
-                int index = 0;
-                boolean found = false;
-                for (String s : filePathList) {
-                    if (s.contains(account.getAccountNumber())) {
-                        if (s.contains("" + year + "_" + month)) {
-                            found = true;
-                            break;
-                        }
+            public void onDatePicked(int month, int year, int count) {
 
-                    }
-                    index++;
-                }
-                if (!found) {
-                    getPDFStatement();
-                } else {
-                    listView.setSelection(index);
-                    Util.showToast(getActivity(), ctx.getString(R.string.stmt_exists));
-                }
+                StatementListFragment.this.count = count;
+                StatementListFragment.this.year = year;
+                StatementListFragment.this.month = month + 1;
+
+                getPDFStatement();
+//                int index = 0;
+//                boolean found = false;
+//                final Pattern patt = Pattern.compile("-");
+//
+//                for (String s : filePathList) {
+//                    if (s.contains(account.getAccountNumber())) {
+//                        String[] parts = patt.split(s);
+//                        int y = Integer.parseInt(parts[1]);
+//                        int m = Integer.parseInt(parts[2]);
+//                        if (y == year && m == month) {
+//                            found = true;
+//                            break;
+//                        }
+//
+//                    }
+//                    index++;
+//                }
+//                if (!found) {
+//
+//                } else {
+//                    listView.setSelection(index);
+//                    Util.showSnackBar(txtAccount,ctx.getString(R.string.stmt_exists), "OK", Color.parseColor("BLUE"));
+//                }
             }
         });
 
@@ -464,13 +467,11 @@ public class StatementListFragment extends Fragment implements PageFragment {
         public FileContainer(String filename) {
             this.fileName = filename;
             try {
-                int i = filename.indexOf("_");
-                String ys = filename.substring(i + 1, i + 5);
-                i = filename.lastIndexOf("_");
-                int j = filename.lastIndexOf(".");
-                String ms = filename.substring(i + 1, j);
-                DateTime dateTime = new DateTime(Integer.parseInt(ys),
-                        Integer.parseInt(ms), 1, 0, 0);
+                Pattern patt = Pattern.compile("-");
+                String[] parts = patt.split(filename);
+
+                DateTime dateTime = new DateTime(Integer.parseInt(parts[1]),
+                        Integer.parseInt(parts[2]), 1, 0, 0);
                 date = dateTime.toDate();
             } catch (Exception e) {
                 Log.e("FileContainer", "problem", e);

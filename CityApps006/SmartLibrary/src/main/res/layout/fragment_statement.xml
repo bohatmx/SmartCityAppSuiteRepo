@@ -84,6 +84,8 @@
             android:id="@+id/ST_list"
             android:layout_below="@id/ST_top"
             android:padding="@dimen/mon_divider"
+            android:dividerHeight="@dimen/mon_divider"
+            android:layout_margin="@dimen/mon_margin"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

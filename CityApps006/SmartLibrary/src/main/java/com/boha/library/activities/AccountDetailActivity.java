@@ -313,7 +313,7 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
         initializeTimerTask();
 
         //schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
-        timer.schedule(timerTask, 300, 500); //
+        timer.schedule(timerTask, 100, 200); //
     }
 
     public void stopTimerTask() {

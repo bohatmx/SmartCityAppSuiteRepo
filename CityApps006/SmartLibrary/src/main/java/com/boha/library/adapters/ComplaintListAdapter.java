@@ -121,14 +121,11 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
         } else {
             item.txtDate.setText("Date Unavailable");
         }
-        item.txtComment.setText(p.getRemarks());
         item.txtRef.setText(p.getReferenceNumber());
         item.position = position;
-        if (p.getAddress() != null) {
-            item.txtAddress.setText(p.getAddress());
-        } else {
+
             item.txtAddress.setText("");
-        }
+
 
         if (p.getComplaintType() != null) {
             if (p.getComplaintType().getColor() != null) {

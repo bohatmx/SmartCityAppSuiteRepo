@@ -3,7 +3,6 @@ package com.boha.citizenapp.ethekwini.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -198,7 +197,6 @@ public class SigninActivity extends AppCompatActivity {
                         if (resp.isMunicipalityAccessFailed()) {
                             if (resp.getProfileInfoList() == null || resp.getProfileInfoList().isEmpty()) {
                                 Util.showErrorToast(ctx, getString(R.string.services_not_available));
-//                                finish();
                                 return;
                             } else {
                                 Util.showErrorToast(ctx, getString(com.boha.library.R.string.unable_connect_muni));
@@ -208,15 +206,8 @@ public class SigninActivity extends AppCompatActivity {
                         if (response.getProfileInfoList() != null && !response.getProfileInfoList().isEmpty()) {
                             profileInfo = response.getProfileInfoList().get(0);
 
-                            ProfileInfoDTO sp = new ProfileInfoDTO();
-                            sp.setProfileInfoID(profileInfo.getProfileInfoID());
-                            sp.setCustomerID(profileInfo.getCustomerID());
-                            sp.setFirstName(profileInfo.getFirstName());
-                            sp.setLastName(profileInfo.getLastName());
-                            sp.setiDNumber(profileInfo.getiDNumber());
-                            sp.setPassword(profileInfo.getPassword());
 
-                            SharedUtil.saveProfile(ctx, sp);
+                            SharedUtil.saveProfile(ctx, profileInfo);
                             SharedUtil.setUserType(ctx, userType);
                             SharedUtil.saveGCMDevice(ctx, gcmDevice);
                             CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
@@ -338,16 +329,11 @@ public class SigninActivity extends AppCompatActivity {
         if (profileInfo != null || user != null) {
             setResult(RESULT_OK);
             finish();
-            Intent i = new Intent(ctx, CitizenDrawerActivity.class);
-            i.putExtra("justSignedIn", true);
-            startActivity(i);
+
         } else {
             setResult(RESULT_CANCELED);
             finish();
         }
-       /* Intent intent = new Intent(SigninActivity.this, SplashActivity.class);
-        startActivity(intent);
-        finish(); */
     }
 
     ProgressDialog progressDialog;

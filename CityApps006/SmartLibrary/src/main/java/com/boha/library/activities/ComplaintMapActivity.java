@@ -226,7 +226,6 @@ public class ComplaintMapActivity extends AppCompatActivity {
                         googleMap.addMarker(new MarkerOptions()
                                 .title("" + comp.getComplaintID().intValue())
                                 .icon(desc)
-                                .snippet(comp.getRemarks())
                                 .position(pnt));
                 markers.add(m);
                 index++;
@@ -293,7 +292,7 @@ public class ComplaintMapActivity extends AppCompatActivity {
                 googleMap.addMarker(new MarkerOptions()
                         .title("" + complaint.getComplaintID().intValue())
                         .icon(desc)
-                        .snippet(complaint.getRemarks())
+//                        .snippet(complaint.getRemarks())
                         .position(pnt));
         markers.add(m);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pnt, 1.0f));

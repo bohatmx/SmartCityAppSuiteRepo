@@ -186,7 +186,7 @@ public class AccountFragment extends Fragment implements PageFragment {
         });
 
         setAccountFields();
-        animateSomething();
+       // animateSomething();
     }
 
 
@@ -248,28 +248,6 @@ public static final String CURRENCY_SYMBOL = "R";
 
     @Override
     public void animateSomething() {
-//        final Timer timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                if (getActivity() != null) {
-//                    getActivity().runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            timer.cancel();
-//                            hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-//                            Util.expand(hero, 1000, new Util.UtilAnimationListener() {
-//                                @Override
-//                                public void onAnimationEnded() {
-//                                    Util.flashSeveralTimes(txtBalance, 30, 3, null);
-//                                }
-//                            });
-//                        }
-//                    });
-//                }
-//            }
-//        }, 500);
-
     }
 
     int primaryColor, primaryDarkColor;
