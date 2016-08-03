@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="@dimen/mon_margin"
+    android:layout_margin="@dimen/mon_16"
     app:cardElevation="@dimen/mon_divider"
     android:layout_width="match_parent"
     android:padding="@dimen/mon_divider"
@@ -33,20 +33,20 @@
                 android:id="@+id/ST_title"
                 android:text="Statements"
                 style="@style/Title1TextStyleWhite"
-                android:layout_margin="@dimen/mon_margin"
+                android:layout_margin="@dimen/mon_16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <RelativeLayout
                 android:id="@+id/acctLayout"
                 android:layout_below="@+id/ST_title"
-                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_marginLeft="@dimen/mon_16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/ST_accountLabel"
                     android:text="Account Number"
                     style="@style/TextStyleSmallWhite"
-                    android:layout_marginRight="@dimen/mon_margin"
+                    android:layout_marginRight="@dimen/mon_16"
                     android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -64,8 +64,8 @@
                 android:id="@+id/ST_label"
                 android:layout_below="@id/acctLayout"
                 android:text="Latest Statement Available"
-                android:layout_marginTop="@dimen/mon_margin"
-                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_marginTop="@dimen/mon_16"
+                android:layout_marginLeft="@dimen/mon_16"
                 style="@style/TextStyleSmall"
                 android:textColor="@color/grey"
                 android:layout_width="wrap_content"
@@ -74,23 +74,21 @@
                 android:id="@+id/ST_subtitle"
                 android:layout_below="@id/ST_label"
                 android:text="February 2015"
-                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_marginLeft="@dimen/mon_16"
                 style="@style/Title3TextStyleWhite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </RelativeLayout>
 
-        <ListView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/ST_list"
             android:layout_below="@id/ST_top"
             android:padding="@dimen/mon_divider"
-            android:dividerHeight="@dimen/mon_divider"
-            android:layout_margin="@dimen/mon_margin"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
 
-        </ListView>
+        </android.support.v7.widget.RecyclerView>
 
         <include
             layout="@layout/fab_search"
@@ -105,7 +103,7 @@
             style="@style/BlackCountBox"
             android:text="99"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/mon_margin"
+            android:layout_marginTop="@dimen/mon_16"
             android:layout_marginRight="@dimen/mon_wide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

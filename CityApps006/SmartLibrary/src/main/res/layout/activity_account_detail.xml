@@ -8,7 +8,7 @@
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="@dimen/mon_margin">
+        app:cardElevation="@dimen/mon_16">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -21,7 +21,7 @@
                 android:id="@+id/layout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_marginLeft="@dimen/mon_16"
                 android:layout_below="@id/title">
 
                 <TextView
@@ -29,7 +29,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/mon_margin"
+                    android:layout_marginRight="@dimen/mon_16"
                     android:text="Account Number:" />
 
                 <TextView
@@ -61,7 +61,7 @@
                     android:text="My Title Here"
                     style="@style/Title3TextStyleWhite"
                     android:layout_marginTop="@dimen/mon_widest"
-                    android:layout_marginLeft="@dimen/mon_margin"
+                    android:layout_marginLeft="@dimen/mon_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -113,7 +113,7 @@
                 android:src="@drawable/ic_payment"
                 app:backgroundTint="?attr/colorPrimary"
                 app:borderWidth="0dp"
-                app:elevation="@dimen/mon_margin"
+                app:elevation="@dimen/mon_16"
                 app:pressedTranslationZ="@dimen/mon_wide"
                 app:rippleColor="@color/blue_200" />
 

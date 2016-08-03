@@ -7,6 +7,7 @@ import com.boha.library.dto.CardResponseDTO;
 import com.boha.library.dto.CityDTO;
 import com.boha.library.dto.ComplaintCategoryDTO;
 import com.boha.library.dto.ComplaintDTO;
+import com.boha.library.dto.ComplaintImageDTO;
 import com.boha.library.dto.ComplaintTypeDTO;
 import com.boha.library.dto.ComplaintUpdateStatusDTO;
 import com.boha.library.dto.CountryDTO;
@@ -84,6 +85,15 @@ public class ResponseDTO implements Serializable {
     private List<SIDResponseDTO> sidResponseList;
     private List<CardResponseDTO> cardResponseList;
     private HashMap<String, byte[]> pdfHashMap;
+    private List<ComplaintImageDTO> complaintImageList;
+
+    public List<ComplaintImageDTO> getComplaintImageList() {
+        return complaintImageList;
+    }
+
+    public void setComplaintImageList(List<ComplaintImageDTO> complaintImageList) {
+        this.complaintImageList = complaintImageList;
+    }
 
     public HashMap<String, byte[]> getPdfHashMap() {
         return pdfHashMap;

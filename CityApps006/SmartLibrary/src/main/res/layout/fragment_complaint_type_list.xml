@@ -28,8 +28,8 @@
             style="@style/Title1TextStyleWhite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/mon_middle"
-            android:layout_marginTop="@dimen/mon_middle"
+            android:layout_marginLeft="@dimen/mon_12"
+            android:layout_marginTop="@dimen/mon_12"
             android:text="My Title Here"
             android:visibility="gone" />
 
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:padding="@dimen/mon_margin"
+            android:padding="@dimen/mon_16"
             android:text="My sub title will occupy pride of place here"
             android:textColor="@color/white" />
 
@@ -110,7 +110,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="@dimen/mon_margin"
+        android:layout_margin="@dimen/mon_16"
         android:text="0" />
 
     <RelativeLayout
@@ -119,7 +119,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="@dimen/mon_wider"
-        android:layout_marginRight="@dimen/mon_margin">
+        android:layout_marginRight="@dimen/mon_16">
 
 
     </RelativeLayout>
@@ -129,6 +129,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/mon_margin" />
+        android:layout_margin="@dimen/mon_16" />
 
 </RelativeLayout>

@@ -288,6 +288,7 @@ public class RequestDTO {
             REFRESH_CITIZEN_COMPLAINTS_FROM_SERVICE = 313,
             REFRESH_CITIZEN_ACCOUNTS = 314,
             GET_ERROR_REPORTS = 315,
+            GET_COMPLAINT_IMAGES = 316,
             CLEAN_UP_ERROR_STORES = 999;
 
     int numberOfDays;

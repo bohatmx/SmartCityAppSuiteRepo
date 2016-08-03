@@ -2,7 +2,6 @@ package com.boha.library.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -10,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListPopupWindow;
 import android.widget.ListView;
@@ -19,9 +17,7 @@ import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.CityApplication;
-import com.boha.library.adapters.ComplaintCategoryPopupListAdapter;
 import com.boha.library.adapters.ComplaintListAdapter;
-import com.boha.library.adapters.ComplaintTypePopupListAdapter;
 import com.boha.library.dto.ComplaintCategoryDTO;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintTypeDTO;
@@ -234,7 +230,7 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
                     @Override
                     public void onAnimationEnded() {
 
-                        showComplaintCategoryPopup();
+                        Log.e(LOG, "setFields: onAnimationEnded: filterIcon onClick" );;
 
                     }
                 });
@@ -383,76 +379,6 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     ComplaintCategoryDTO complaintCategory;
     ComplaintTypeDTO complaintType;
     ListPopupWindow categoryPopup, complaintPopup;
-    ComplaintCategoryPopupListAdapter complaintCategoryPopup;
-
-    public void showComplaintCategoryPopup() {
-        if (complaintPopup != null) {
-            complaintPopup.dismiss();
-        }
-
-        categoryPopup = new ListPopupWindow(getActivity());
-        LayoutInflater inf = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inf.inflate(R.layout.hero_image_popup, null);
-        TextView txt = (TextView) v.findViewById(R.id.HERO_caption);
-        txt.setText("Complaints Categories");
-        ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
-        img.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-
-        categoryPopup.setPromptView(v);
-        categoryPopup.setPromptPosition(ListPopupWindow.POSITION_PROMPT_ABOVE);
-        categoryPopup.setAdapter(new ComplaintCategoryPopupListAdapter(ctx,
-                R.layout.xspinner_item, complaintCategoryList, primaryDarkColor));
-        categoryPopup.setAnchorView(handle);
-        categoryPopup.setHorizontalOffset(Util.getPopupHorizontalOffset(getActivity()));
-        categoryPopup.setModal(true);
-        categoryPopup.setWidth(Util.getPopupWidth(getActivity()));
-        categoryPopup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                categoryPopup.dismiss();
-                complaintCategory = complaintCategoryList.get(position);
-                Util.setComplaintCategoryIcon(complaintCategory.getComplaintCategoryName(), filterIcon, getActivity());
-                filterIcon.setColorFilter(primaryDarkColor, PorterDuff.Mode.SRC_IN);
-                FilterTxt.setText(complaintCategoryList.get(position).getComplaintCategoryName());
-                showComplaintTypePopup(complaintCategory.getComplaintTypeList());
-            }
-        });
-        categoryPopup.show();
-    }
-
-    public void showComplaintTypePopup(final List<ComplaintTypeDTO> list) {
-        if (categoryPopup != null) {
-            categoryPopup.dismiss();
-        }
-        complaintPopup = new ListPopupWindow(getActivity());
-        LayoutInflater inf = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inf.inflate(R.layout.hero_image_popup, null);
-        TextView txt = (TextView) v.findViewById(R.id.HERO_caption);
-        txt.setText("Complaints");
-        ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
-        img.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-
-        complaintPopup.setPromptView(v);
-        complaintPopup.setPromptPosition(ListPopupWindow.POSITION_PROMPT_ABOVE);
-        complaintPopup.setAdapter(new ComplaintTypePopupListAdapter(ctx,
-                R.layout.xspinner_item, list, primaryDarkColor));
-        complaintPopup.setAnchorView(handle);
-        complaintPopup.setHorizontalOffset(Util.getPopupHorizontalOffset(getActivity()));
-        complaintPopup.setModal(true);
-        complaintPopup.setWidth(Util.getPopupWidth(getActivity()));
-        complaintPopup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                complaintPopup.dismiss();
-                complaintType = list.get(position);
-                Util.setComplaintTypeIcon(complaintType.getComplaintTypeName(), filterIcon, ctx);
-                filterIcon.setColorFilter(primaryDarkColor, PorterDuff.Mode.SRC_IN);
-                FilterTxt2.setText(list.get(position).getComplaintTypeName());
-                adapter.filter(FilterTxt2.getText().toString());
-            }
-        });
-        complaintPopup.show();
-    }
 
     List<ComplaintTypeDTO> complaintTypeList;
     private void getCachedComplaintTypes() {

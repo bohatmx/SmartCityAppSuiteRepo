@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:id="@+id/TOP_layout"
     android:background="@color/white"
-    android:paddingBottom="@dimen/mon_margin"
+    android:paddingBottom="@dimen/mon_16"
     android:layout_height="wrap_content">
 
     <RelativeLayout
@@ -17,7 +17,7 @@
             android:id="@+id/TOP_title"
             android:text="My Title Here"
             style="@style/Title2TextStyleWhite"
-            android:layout_marginTop="@dimen/mon_margin"
+            android:layout_marginTop="@dimen/mon_16"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

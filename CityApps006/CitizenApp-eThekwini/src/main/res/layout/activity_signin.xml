@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/mon_margin"
+                android:layout_marginTop="@dimen/mon_16"
                 android:text="Sign In" />
 
             <ImageView
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/SIGNIN_heroLayout"
-            android:layout_margin="@dimen/mon_margin"
+            android:layout_margin="@dimen/mon_16"
             app:cardElevation="@dimen/mon_padding">
 
 
@@ -84,7 +84,7 @@
                         android:id="@+id/SIGNIN_radioNo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/mon_margin"
+                        android:layout_marginTop="@dimen/mon_16"
                         android:enabled="false"
                         android:text="I do not have an Account" />
 
@@ -92,7 +92,7 @@
                         android:id="@+id/SIGNIN_radioTourist"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/mon_margin"
+                        android:layout_marginTop="@dimen/mon_16"
                         android:enabled="true"
                         android:text="I am a Tourist/Visitor" />
                 </RadioGroup>
@@ -102,7 +102,7 @@
         <RelativeLayout
             android:id="@+id/SIGNIN_editLayout"
             android:layout_width="match_parent"
-            android:layout_margin="@dimen/mon_margin"
+            android:layout_margin="@dimen/mon_16"
             android:layout_height="wrap_content"
             android:layout_below="@id/card">
 
@@ -142,7 +142,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/SI_pinLayout"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/mon_margin"
+                android:layout_margin="@dimen/mon_16"
                 android:background="@color/red_800"
                 android:text="Sign In"
                 android:textColor="@color/white" />

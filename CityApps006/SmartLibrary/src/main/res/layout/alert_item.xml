@@ -1,87 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="@dimen/mon_divider_small"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/AI_main"
-    android:background="@color/grey"
+    app:cardElevation="@dimen/mon_divider"
+    android:layout_margin="@dimen/mon_16"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/mon_divider_small">
 
     <RelativeLayout
-        android:id="@+id/AI_toptop"
-        android:background="@color/white"
-        android:padding="@dimen/mon_margin"
+        android:id="@+id/AI_main2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:padding="@dimen/mon_divider_small">
 
         <RelativeLayout
-            android:id="@+id/AI_top"
+            android:id="@+id/AI_toptop"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="@dimen/mon_16">
+
+            <RelativeLayout
+                android:id="@+id/AI_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/AI_color"
+                    style="@style/BlueCircle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0" />
+
+                <TextView
+                    android:id="@+id/AI_desc"
+                    style="@style/Title3TextStyleBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/mon_16"
+                    android:layout_toRightOf="@id/AI_color"
+                    android:text="Alert Description here" />
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/AI_color"
-                style="@style/BlueCircle"
-                android:text="0"
+                android:id="@+id/AI_type"
+                style="@style/TextStyleSmall"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_below="@id/AI_top"
+                android:layout_marginLeft="80dp"
+                android:text="AlertType" />
 
-            <TextView
-                android:id="@+id/AI_desc"
-                style="@style/Title3TextStyleBlack"
-                android:text="Alert Description here"
-                android:layout_marginLeft="@dimen/mon_margin"
-                android:layout_toRightOf="@id/AI_color"
-                android:layout_centerVertical="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <RelativeLayout
+                android:id="@+id/AI_dateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/AI_type"
+                android:layout_marginLeft="24dp">
+
+                <TextView
+                    android:id="@+id/AI_time"
+                    style="@style/Title2TextStyleBlue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/mon_16"
+                    android:text="10:26" />
+
+                <TextView
+                    android:id="@+id/AI_date"
+                    style="@style/Title3TextStyleBlue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/mon_16"
+                    android:layout_toLeftOf="@id/AI_time"
+                    android:text="23 December 2091" />
+            </RelativeLayout>
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/AI_type"
-            style="@style/TextStyleSmall"
-            android:text="AlertType"
-            android:layout_below="@id/AI_top"
-            android:layout_marginLeft="80dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <RelativeLayout
-            android:id="@+id/AI_dateLayout"
-            android:layout_below="@id/AI_type"
-            android:layout_marginLeft="24dp"
+        <WebView
+            android:id="@+id/AI_webView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/AI_time"
-                style="@style/Title2TextStyleBlue"
-                android:text="10:26"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/mon_margin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            android:layout_below="@id/AI_toptop" />
 
-            <TextView
-                android:id="@+id/AI_date"
-                android:layout_toLeftOf="@id/AI_time"
-                android:layout_centerVertical="true"
-                style="@style/Title3TextStyleBlue"
-                android:text="23 December 2091"
-                android:layout_marginRight="@dimen/mon_margin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
+        <ImageView
+            android:id="@+id/AI_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mon_picture_large"
+            android:layout_below="@id/AI_webView"
+            android:scaleType="centerCrop"
+            android:src="@drawable/under_construction2" />
+
     </RelativeLayout>
-    <WebView
-        android:id="@+id/AI_webView"
-        android:layout_below="@id/AI_toptop"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-    <ImageView
-        android:id="@+id/AI_image"
-        android:src="@drawable/under_construction2"
-        android:scaleType="centerCrop"
-        android:layout_below="@id/AI_webView"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/mon_picture_large" />
-
-</RelativeLayout>
+</android.support.v7.widget.CardView>

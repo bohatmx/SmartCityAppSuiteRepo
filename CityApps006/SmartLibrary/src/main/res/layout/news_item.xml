@@ -15,7 +15,7 @@
 
         <RelativeLayout
             android:id="@+id/NEWS_top"
-            android:padding="@dimen/mon_margin"
+            android:padding="@dimen/mon_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -30,7 +30,7 @@
                 android:id="@+id/NEWS_desc"
                 style="@style/Title3TextStyleBlack"
                 android:text="News Text here"
-                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_marginLeft="@dimen/mon_16"
                 android:layout_toRightOf="@id/NEWS_color"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
@@ -57,7 +57,7 @@
                 style="@style/Title2TextStyleBlue"
                 android:text="10:26"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/mon_margin"
+                android:layout_marginRight="@dimen/mon_16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -67,7 +67,7 @@
                 android:layout_centerVertical="true"
                 style="@style/Title3TextStyleBlue"
                 android:text="23 December 2091"
-                android:layout_marginRight="@dimen/mon_margin"
+                android:layout_marginRight="@dimen/mon_16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </RelativeLayout>

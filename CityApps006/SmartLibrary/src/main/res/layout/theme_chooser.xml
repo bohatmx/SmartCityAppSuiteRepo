@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/beige_pale"
-            android:padding="@dimen/mon_margin">
+            android:padding="@dimen/mon_16">
 
             <TextView
                 style="@style/Title2TextStyleBlue"
@@ -34,9 +34,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/TC_top"
-                android:layout_marginLeft="@dimen/mon_wide"
+                android:layout_marginLeft="@dimen/mon_24"
                 android:layout_marginRight="@dimen/mon_wide"
-                android:layout_marginTop="@dimen/mon_margin">
+                android:layout_marginTop="@dimen/mon_16">
                 <RelativeLayout
                     android:id="@+id/TC_indigoLayout"
                     android:layout_width="match_parent"

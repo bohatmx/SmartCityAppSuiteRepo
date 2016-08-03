@@ -8,12 +8,12 @@
     <android.support.v7.widget.CardView
         app:cardElevation="@dimen/mon_padding"
 
-        android:layout_margin="@dimen/mon_margin"
+        android:layout_margin="@dimen/mon_16"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <RelativeLayout
-            android:padding="@dimen/mon_margin"
+            android:padding="@dimen/mon_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -75,7 +75,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/mon_margin"
+                        android:layout_marginRight="@dimen/mon_16"
                         android:layout_toLeftOf="@id/ACCT_currArrears"
                         android:text="Current Arrears" />
                 </RelativeLayout>
@@ -104,7 +104,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/mon_margin"
+                        android:layout_marginRight="@dimen/mon_16"
                         android:layout_toLeftOf="@id/ACCT_lastBillAmount"
                         android:text="Last Bill Amount" />
                 </RelativeLayout>
@@ -132,7 +132,7 @@
                         style="@style/TextStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/mon_margin"
+                        android:layout_marginRight="@dimen/mon_16"
                         android:layout_toLeftOf="@id/ACCT_nextBillDate"
                         android:text="Next Bill Date" />
                 </RelativeLayout>
@@ -159,7 +159,7 @@
                         style="@style/TextStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/mon_margin"
+                        android:layout_marginRight="@dimen/mon_16"
                         android:layout_toLeftOf="@id/ACCT_lastUpdateDate"
                         android:text="Last Updated" />
                 </RelativeLayout>

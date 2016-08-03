@@ -28,9 +28,9 @@
             style="@style/Title2TextStyleWhite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/mon_margin"
+            android:layout_margin="@dimen/mon_16"
             android:background="@color/transparent_black"
-            android:padding="@dimen/mon_margin"
+            android:padding="@dimen/mon_16"
             android:text="@string/make_complaint"
             android:visibility="visible" />
 
@@ -64,7 +64,7 @@
             android:id="@+id/backIcon"
             android:src="@drawable/ic_action_back"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/mon_margin"
+            android:layout_marginRight="@dimen/mon_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         </RelativeLayout>
@@ -86,8 +86,8 @@
         android:src="@drawable/ic_near_me"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:elevation="@dimen/mon_margin"
-        android:layout_margin="@dimen/mon_margin"
+        android:elevation="@dimen/mon_16"
+        android:layout_margin="@dimen/mon_16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

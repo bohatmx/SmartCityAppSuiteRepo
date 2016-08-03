@@ -10,7 +10,7 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/mon_margin">
+        android:layout_marginTop="@dimen/mon_16">
 
         <TextView
             android:id="@+id/title"
@@ -24,7 +24,7 @@
 
         <RelativeLayout
             android:id="@+id/topRelLayout"
-            android:layout_margin="@dimen/mon_margin"
+            android:layout_margin="@dimen/mon_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/title"
@@ -34,7 +34,7 @@
                 android:id="@+id/monthsLabel"
                 android:text="Months"
                 style="@style/TextStyleGreySmall"
-                android:layout_marginRight="@dimen/mon_margin"
+                android:layout_marginRight="@dimen/mon_16"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/topRelLayout"
             android:orientation="horizontal"
-            android:padding="@dimen/mon_margin">
+            android:padding="@dimen/mon_16">
 
             <Spinner
                 android:id="@+id/spinnerMonth"
@@ -103,15 +103,15 @@
             android:layout_height="wrap_content"
             android:background="@color/grey_100"
             android:layout_below="@id/topLayout"
-            android:layout_margin="@dimen/mon_margin"
-            android:padding="@dimen/mon_margin">
+            android:layout_margin="@dimen/mon_16"
+            android:padding="@dimen/mon_16">
 
             <ImageView
                 android:id="@+id/iconCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_marginLeft="@dimen/mon_16"
                 android:src="@drawable/ic_action_cancel"
                 android:tint="@color/red_600" />
 

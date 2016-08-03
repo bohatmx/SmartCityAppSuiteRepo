@@ -9,8 +9,6 @@ public interface ImageInterface {
     File getFile();
     void setUrl(String url);
     void setSecureUrl(String url);
-    void setSignature(String signature);
-    void seteTag(String eTag);
     void setHeight(Integer height);
     void setWidth(Integer width);
     void setBytes(Integer bytes);

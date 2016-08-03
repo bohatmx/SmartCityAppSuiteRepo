@@ -122,8 +122,6 @@ public class CDNUploader {
 
                 image.setUrl((String) map.get("url"));
                 image.setSecureUrl((String) map.get("secure_url"));
-                image.setSignature((String) map.get("signature"));
-                image.seteTag((String) map.get("etag"));
                 image.setHeight((int) map.get("height"));
                 image.setWidth((int) map.get("width"));
                 image.setBytes((int) map.get("bytes"));

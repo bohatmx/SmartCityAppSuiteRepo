@@ -24,7 +24,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_below="@id/TRAFF_top"
-        android:padding="@dimen/mon_margin"
+        android:padding="@dimen/mon_16"
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_height="wrap_content">

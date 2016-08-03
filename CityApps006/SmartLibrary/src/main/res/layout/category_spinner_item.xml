@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text1"
-    android:textSize="16sp"
+    style="@style/Title3TextStyleBlack"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:ellipsize="marquee"
-    android:textStyle="normal"
-    android:paddingLeft="@dimen/mon_padding"
+    android:paddingLeft="@dimen/mon_16"
     android:paddingBottom="@dimen/mon_divider"
+    android:textStyle="normal"
     android:maxLines="1"
     android:textColor="@color/black" />

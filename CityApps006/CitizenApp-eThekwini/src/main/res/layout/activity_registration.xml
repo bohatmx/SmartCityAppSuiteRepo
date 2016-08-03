@@ -31,7 +31,7 @@
                 android:id="@+id/REG_dome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/mon_margin"
+                android:layout_margin="@dimen/mon_16"
                 android:visibility="gone"
                 android:src="@drawable/abc_btn_check_material" />
         </RelativeLayout>
@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/REG_heroLayout"
-            android:paddingBottom="@dimen/mon_margin">
+            android:paddingBottom="@dimen/mon_16">
 
             <RelativeLayout
                 android:id="@+id/REG_welcomeLayout"
@@ -52,7 +52,7 @@
                 <TextView
                     android:id="@+id/REG_labelx"
                     style="@style/Title3TextStyleBlue"
-                    android:layout_marginTop="@dimen/mon_margin"
+                    android:layout_marginTop="@dimen/mon_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/REG_labelx"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/mon_margin"
+                    android:layout_marginTop="@dimen/mon_16"
                     android:orientation="horizontal">
 
                     <RadioButton
@@ -88,7 +88,7 @@
 
                 android:layout_height="wrap_content"
                 android:layout_below="@id/REG_welcomeLayout"
-                android:padding="@dimen/mon_margin">
+                android:padding="@dimen/mon_16">
 
                 <EditText
                     android:id="@+id/REG_editFirstName"
@@ -96,7 +96,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
-                    android:layout_marginTop="@dimen/mon_margin"
+                    android:layout_marginTop="@dimen/mon_16"
                     android:hint="First Name"
                     android:inputType="textCapWords" />
 
@@ -137,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/REG_editLayout"
                 android:layout_marginTop="@dimen/mon_padding"
-                android:padding="@dimen/mon_margin">
+                android:padding="@dimen/mon_16">
 
                 <Spinner
                     android:id="@+id/REG_emailSpinner"
@@ -161,7 +161,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="@color/teal_900"
-                        android:padding="@dimen/mon_margin"
+                        android:padding="@dimen/mon_16"
                         android:text="Send Registration"
                         android:textColor="@color/white" />
                 </com.dd.ShadowLayout>

@@ -38,8 +38,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:text="eThekwini Visitor"
-        android:layout_marginBottom="@dimen/mon_margin"
-        android:layout_marginLeft="@dimen/mon_margin"
+        android:layout_marginBottom="@dimen/mon_16"
+        android:layout_marginLeft="@dimen/mon_16"
 
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 

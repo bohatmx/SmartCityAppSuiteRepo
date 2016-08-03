@@ -18,7 +18,7 @@
         android:text="00"
         style="@style/TextStyleSmall"
         android:textColor="@color/white"
-        android:layout_margin="@dimen/mon_margin"
+        android:layout_margin="@dimen/mon_16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

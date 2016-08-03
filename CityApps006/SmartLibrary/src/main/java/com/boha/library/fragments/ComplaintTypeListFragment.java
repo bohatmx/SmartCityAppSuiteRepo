@@ -290,7 +290,7 @@ public class ComplaintTypeListFragment extends Fragment {
             index++;
         }
         if (isFound == true) {
-            listView.setSelection(index);
+            recyclerView.setSelection(index);
         } else {
             Util.showToast(ctx, ctx.getString(R.string.complaint_not_found));
         }
@@ -331,7 +331,7 @@ public class ComplaintTypeListFragment extends Fragment {
                 underConstruction();
             }
         });
-        listView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
 
     }*/
 

@@ -30,7 +30,6 @@ import com.boha.library.dto.AccountDTO;
 import com.boha.library.dto.ComplaintCategoryDTO;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintTypeDTO;
-import com.boha.library.dto.GISAddressDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.UserDTO;
 import com.boha.library.transfer.RequestDTO;
@@ -45,7 +44,6 @@ import com.squareup.leakcanary.RefWatcher;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import static com.boha.library.util.Util.showSnackBar;
 
@@ -148,9 +146,13 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
         UserDTO user = SharedUtil.getUser(ctx);
         if (profile != null) {
-            complaint.setProfileInfo(profile);
-            complaint.getProfileInfo().setAccountList(null);
-            complaint.getProfileInfo().setComplaintList(null);
+            ProfileInfoDTO pi = new ProfileInfoDTO();
+            pi.setCustomerID(profile.getCustomerID());
+            pi.setMunicipalityID(profile.getMunicipalityID());
+            pi.setEmail(profile.getEmail());
+            pi.setFirstName(profile.getFirstName());
+            pi.setLastName(profile.getLastName());
+            complaint.setProfileInfo(pi);
             if (account == null) {
                 Log.e(LOG, "sendComplaint: account is null " );
                 snackbar = showSnackBar(txtCategory,"Please select accountget", "OK",
@@ -195,7 +197,9 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                             } else {
                                 if (response.getComplaintList() != null && !response.getComplaintList().isEmpty()) {
                                     showSnackBar(fabSend,getString(R.string.complaint_received),"OK",Color.parseColor("GREEN"));
+                                    showPictureDialog(response.getComplaintList().get(0));
                                     mListener.onComplaintAdded(response.getComplaintList());
+
                                 } else {
                                     showSnackBar(fabSend,getString(R.string.process_complaint_unable),"OK", Color.parseColor("YELLOW"));
                                     return;
@@ -229,7 +233,24 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         });
 
     }
+    private void showPictureDialog(final ComplaintDTO complaint) {
+        AlertDialog.Builder d = new AlertDialog.Builder(getActivity());
+        d.setTitle("Confirm Complaint")
+                .setMessage("Do you want to take pictures this complaint?\n"
+                        + complaintCategory.getComplaintCategoryName() +  " - " + complaintType.getComplaintTypeName() )
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mListener.onPictureRequired(complaint);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
+                    }
+                }).show();
+    }
     CategoryAdapter categoryAdapter;
     SubCategoryAdapter subCategoryAdapter;
 
@@ -252,9 +273,28 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                 complaintType = type;
                 fabSend.setEnabled(true);
                 fabSend.setAlpha(1.0f);
+                showConfirmDialog();
             }
         });
         recyclerView.setAdapter(subCategoryAdapter);
+    }
+    private void showConfirmDialog() {
+        AlertDialog.Builder d = new AlertDialog.Builder(getActivity());
+        d.setTitle("Confirm Complaint")
+                .setMessage("Do you want to send this complaint?\n"
+                        + complaintCategory.getComplaintCategoryName() +  " - " + complaintType.getComplaintTypeName() )
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sendComplaint();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).show();
     }
     ProfileInfoDTO profile;
     private void setFields() {
@@ -308,7 +348,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             list.add("Account No: " + acc.getAccountNumber());
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                R.layout.xxsimple_spinner_item,list);
+                R.layout.category_spinner_item,list);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -380,35 +420,27 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
     @Override
     public void animateSomething() {
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (getActivity() == null) return;
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        timer.purge();
-                        timer.cancel();
-                        hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-                        Util.expand(hero, 1000, new Util.UtilAnimationListener() {
-                            @Override
-                            public void onAnimationEnded() {
-                                Util.flashOnce(icon, 300, null);
-                            }
-                        });
-                    }
-                });
-            }
-        }, 500);
-    }
-
-    public void killTimer() {
-        if (timer != null) {
-            timer.purge();
-            timer.cancel();
-        }
-
+//        timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                if (getActivity() == null) return;
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        timer.purge();
+//                        timer.cancel();
+//                        hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+//                        Util.expand(hero, 1000, new Util.UtilAnimationListener() {
+//                            @Override
+//                            public void onAnimationEnded() {
+//                                Util.flashOnce(icon, 300, null);
+//                            }
+//                        });
+//                    }
+//                });
+//            }
+//        }, 500);
     }
 
     int primaryColor, primaryDarkColor;
@@ -420,9 +452,6 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     }
 
     public interface ComplaintFragmentListener {
-        void onFindComplaintsLikeMine(ComplaintDTO complaint);
-
-        void onFindComplaintsAroundMe();
 
         void onComplaintAdded(List<ComplaintDTO> complaintList);
 
@@ -430,7 +459,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
         void setBusy(boolean busy);
 
-        void onMultiAddressDialog(List<GISAddressDTO> list);
+        void onPictureRequired(ComplaintDTO complaint);
     }
 
     Location location;

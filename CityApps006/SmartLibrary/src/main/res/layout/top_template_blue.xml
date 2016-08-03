@@ -41,7 +41,7 @@
     <RelativeLayout
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/mon_hero_height_medium_lite"
-        android:layout_marginRight="@dimen/mon_wide"
+        android:layout_marginRight="@dimen/mon_24"
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">

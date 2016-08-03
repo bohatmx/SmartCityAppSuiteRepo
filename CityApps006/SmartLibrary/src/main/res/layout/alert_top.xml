@@ -21,7 +21,7 @@
 
                 <RelativeLayout
                     android:id="@+id/ALERT_LIST_titleLayout"
-                    android:layout_margin="@dimen/mon_margin"
+                    android:layout_margin="@dimen/mon_16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -52,7 +52,7 @@
                         android:tint="@color/white"
                         android:visibility="gone"
                         android:layout_alignParentRight="true"
-                        android:layout_margin="@dimen/mon_margin"
+                        android:layout_margin="@dimen/mon_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
@@ -109,7 +109,7 @@
                             android:id="@+id/ALERT_LIST_refresh"
                             android:src="@android:drawable/ic_menu_search"
                             android:layout_alignParentRight="true"
-                            android:layout_marginLeft="@dimen/mon_margin"
+                            android:layout_marginLeft="@dimen/mon_16"
                             android:tint="@color/blue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />

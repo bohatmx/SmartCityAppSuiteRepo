@@ -10,18 +10,18 @@ import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.CityApplication;
-import com.boha.library.adapters.StatementAdapter;
+import com.boha.library.adapters.StatementRecyclerAdapter;
 import com.boha.library.dto.AccountDTO;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
@@ -66,8 +66,8 @@ public class StatementListFragment extends Fragment implements PageFragment {
     FragmentManager fragmentManager;
     List<AccountDTO> accountList;
     AccountDTO account;
-    StatementAdapter statementAdapter;
-    ListView listView;
+    StatementRecyclerAdapter statementAdapter;
+    RecyclerView recyclerView;
 
     public void setAccount(AccountDTO account) {
         Log.d(LOG, "### setAccount");
@@ -152,7 +152,6 @@ public class StatementListFragment extends Fragment implements PageFragment {
         try {
             Pattern pat = Pattern.compile("-");
             String[] keyParts = pat.split(p);
-            String acctNumber = keyParts[0];
             String year = keyParts[1];
             String month = keyParts[2];
 
@@ -161,12 +160,10 @@ public class StatementListFragment extends Fragment implements PageFragment {
         } catch (Exception e) {
             txtDate.setText("Unavailable Date");
         }
-        statementAdapter = new StatementAdapter(ctx, R.layout.statement_item, filePathList);
-        listView.setAdapter(statementAdapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        statementAdapter = new StatementRecyclerAdapter(filePathList, getActivity(),
+                new StatementRecyclerAdapter.StatementAdapterListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onStatementClicked(int position) {
                 if (busyDownloading) {
                     Util.showToast(ctx, "Still downloading statements, please wait");
                     return;
@@ -184,6 +181,13 @@ public class StatementListFragment extends Fragment implements PageFragment {
             }
         });
 
+        LinearLayoutManager lm = new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.VERTICAL,false);
+        recyclerView.setLayoutManager(lm);
+        recyclerView.setAdapter(statementAdapter);
+
+
+
     }
 
     private void setFields() {
@@ -194,7 +198,7 @@ public class StatementListFragment extends Fragment implements PageFragment {
         txtAccount = (TextView) view.findViewById(R.id.ST_account);
         heroImage = (ImageView) view.findViewById(R.id.ST_hero);
         txtTitle = (TextView) view.findViewById(R.id.ST_title);
-        listView = (ListView) view.findViewById(R.id.ST_list);
+        recyclerView = (RecyclerView) view.findViewById(R.id.ST_list);
 
 
         txtDate.setText("Not Downloaded");
@@ -444,7 +448,7 @@ public class StatementListFragment extends Fragment implements PageFragment {
 //                if (!found) {
 //
 //                } else {
-//                    listView.setSelection(index);
+//                    recyclerView.setSelection(index);
 //                    Util.showSnackBar(txtAccount,ctx.getString(R.string.stmt_exists), "OK", Color.parseColor("BLUE"));
 //                }
             }

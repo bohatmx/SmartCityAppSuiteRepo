@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="@dimen/mon_margin"
+    android:padding="@dimen/mon_16"
     android:background="@color/beige_pale"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -30,7 +30,7 @@
     <RelativeLayout
         android:id="@+id/stLayout"
         android:layout_below="@id/dateLayout"
-        android:padding="@dimen/mon_margin"
+        android:padding="@dimen/mon_16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -42,7 +42,7 @@
         <TextView
             android:id="@+id/SL_statusText"
             android:text="The municipality ....."
-            android:layout_marginTop="@dimen/mon_margin"
+            android:layout_marginTop="@dimen/mon_16"
             android:layout_below="@id/SL_ack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

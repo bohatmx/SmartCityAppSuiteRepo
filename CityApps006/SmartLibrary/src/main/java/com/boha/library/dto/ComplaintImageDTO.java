@@ -11,20 +11,26 @@ import java.io.Serializable;
  */
 public class ComplaintImageDTO implements Serializable, ImageInterface {
     private static final long serialVersionUID = 1L;
-    private Integer complaintImageID, complaintID, municipalityID;
     private String fileName, localFilepath;
+    private Integer complaintImageID, municipalityID;
     private Long dateUploaded;
     private Long dateTaken;
-    private Double latitude;
-    private Double longitude;
+    private Double longitude, latitude;
     private Boolean activeFlag;
     private String url;
-    private String secureUrl;
-    private String signature;
-    private String eTag;
+    private String secureUrl, referenceNumber;
+
     private Integer height;
     private Integer width;
     private Integer bytes;
+
+    public String getReferenceNumber() {
+        return referenceNumber;
+    }
+
+    public void setReferenceNumber(String referenceNumber) {
+        this.referenceNumber = referenceNumber;
+    }
 
     public Boolean getActiveFlag() {
         return activeFlag;
@@ -50,22 +56,6 @@ public class ComplaintImageDTO implements Serializable, ImageInterface {
 
     public void setSecureUrl(String secureUrl) {
         this.secureUrl = secureUrl;
-    }
-
-    public String getSignature() {
-        return signature;
-    }
-
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
-
-    public String geteTag() {
-        return eTag;
-    }
-
-    public void seteTag(String eTag) {
-        this.eTag = eTag;
     }
 
     public Integer getHeight() {
@@ -126,15 +116,6 @@ public class ComplaintImageDTO implements Serializable, ImageInterface {
     public Integer getComplaintImageID() {
         return complaintImageID;
     }
-
-    public Integer getComplaintID() {
-        return complaintID;
-    }
-
-    public void setComplaintID(Integer complaintID) {
-        this.complaintID = complaintID;
-    }
-
     public void setComplaintImageID(Integer complaintImageID) {
         this.complaintImageID = complaintImageID;
     }

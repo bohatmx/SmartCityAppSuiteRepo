@@ -54,8 +54,8 @@
         android:id="@+id/PHOTO_number"
         style="@style/RedCircleSmall"
         android:text="00"
-        android:layout_marginTop="@dimen/mon_margin"
-        android:layout_marginLeft="@dimen/mon_wide"
+        android:layout_marginTop="@dimen/mon_16"
+        android:layout_marginLeft="@dimen/mon_24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

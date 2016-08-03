@@ -8,6 +8,7 @@ import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
@@ -134,6 +135,7 @@ public class PictureActivity extends AppCompatActivity
                 actionBar,
                 municipality.getMunicipalityName(), d, logo);
         getSupportActionBar().setTitle("");
+
         dispatchTakePictureIntent();
 
         //Track analytics
@@ -220,17 +222,13 @@ public class PictureActivity extends AppCompatActivity
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         switch (requestCode) {
             case CAPTURE_IMAGE:
-                if (resultCode == Activity.RESULT_OK) {
                     if (resultCode == Activity.RESULT_OK) {
                         if (photoFile != null) {
                             Log.e(LOG, "++ hopefully photo file has a length: " + photoFile.length());
-
+                            pictureChanged = true;
                             new PhotoTask().execute();
                         }
                     }
-                    pictureChanged = true;
-
-                }
                 break;
             case REQUEST_VIDEO_CAPTURE:
 
@@ -607,7 +605,7 @@ public class PictureActivity extends AppCompatActivity
                         options.inJustDecodeBounds = true;
                         BitmapFactory.decodeFile(photoFile.getAbsolutePath(), options);
 
-                        options.inSampleSize = calculateInSampleSize(options, 400, 600);
+                        options.inSampleSize = calculateInSampleSize(options, 640, 800);
                         options.inJustDecodeBounds = false;
                         Bitmap bm = BitmapFactory.decodeFile(photoFile.getAbsolutePath(), options);
 
@@ -677,7 +675,7 @@ public class PictureActivity extends AppCompatActivity
                             break;
                         case COMPLAINT_IMAGE:
                             ci = new ComplaintImageDTO();
-                            ci.setComplaintID(complaint.getComplaintID());
+                            ci.setReferenceNumber(complaint.getReferenceNumber());
                             ci.setMunicipalityID(municipality.getMunicipalityID());
                             ci.setLocalFilepath(currentThumbFile.getAbsolutePath());
                             ci.setLatitude(location.getLatitude());
@@ -695,12 +693,12 @@ public class PictureActivity extends AppCompatActivity
 
                         @Override
                         public void onDataCached() {
-                            //uploadPhotos();
+                            Util.showSnackBar(txtType,"Photo saved on device disk", "OK", Color.parseColor("CYAN"));
                         }
 
                         @Override
                         public void onError() {
-                            Util.showErrorToast(ctx, getString(R.string.unable_save_photo));
+                            Util.showSnackBar(txtType,getString(R.string.unable_save_photo), "OK", Color.parseColor("CYAN"));
                         }
                     });
 

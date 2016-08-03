@@ -15,7 +15,7 @@
         android:id="@+id/ADDR_address"
         android:text="A long StreetName Here\nSuburb Name Here\nCity/Town"
         android:layout_toRightOf="@id/ADDR_number"
-        android:layout_marginLeft="@dimen/mon_margin"
+        android:layout_marginLeft="@dimen/mon_16"
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
