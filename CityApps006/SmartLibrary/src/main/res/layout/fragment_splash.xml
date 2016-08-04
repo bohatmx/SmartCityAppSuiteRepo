@@ -17,7 +17,7 @@
         android:textColor="@color/white"
         style="@style/Title3TextStyleBlack"
         android:padding="@dimen/mon_padding"
-        android:layout_marginBottom="@dimen/mon_margin"
+        android:layout_marginBottom="@dimen/mon_16"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

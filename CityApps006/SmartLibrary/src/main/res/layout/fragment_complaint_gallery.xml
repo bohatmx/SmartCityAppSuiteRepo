@@ -19,9 +19,9 @@
                 android:id="@+id/CCX_title"
                 android:text="My Complaint Type Here"
                 style="@style/Title1TextStyleWhite"
-                android:layout_marginTop="@dimen/mon_margin"
+                android:layout_marginTop="@dimen/mon_16"
                 android:layout_centerHorizontal="false"
-                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_marginLeft="@dimen/mon_16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -50,7 +50,7 @@
                     android:textColor="@color/white"
                     android:layout_toLeftOf="@id/CCX_time"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/mon_margin"
+                    android:layout_marginRight="@dimen/mon_16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -61,7 +61,7 @@
         <RelativeLayout
             android:id="@+id/CCX_addressLayout"
             android:layout_below="@id/CCX_titleLayout"
-            android:padding="@dimen/mon_margin"
+            android:padding="@dimen/mon_16"
             android:background="@color/black"
             android:visibility="visible"
             android:layout_width="match_parent"

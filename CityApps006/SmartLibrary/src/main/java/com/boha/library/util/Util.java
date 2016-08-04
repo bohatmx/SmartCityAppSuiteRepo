@@ -32,14 +32,8 @@ import android.widget.Toast;
 
 import com.boha.library.R;
 import com.boha.library.activities.EmergencyContactsActivity;
-import com.boha.library.adapters.ComplaintCategoryPopupListAdapter;
-import com.boha.library.adapters.ComplaintTypePopupListAdapter;
-import com.boha.library.adapters.FAQPopupListAdapter;
 import com.boha.library.adapters.PopupListAdapter;
 import com.boha.library.dto.AlertImageDTO;
-import com.boha.library.dto.ComplaintCategoryDTO;
-import com.boha.library.dto.ComplaintImageDTO;
-import com.boha.library.dto.ComplaintTypeDTO;
 import com.boha.library.dto.NewsArticleImageDTO;
 
 import java.io.File;
@@ -238,15 +232,6 @@ public class Util {
         return sb.toString();
     }
 
-    public static String getComplaintImageURL(ComplaintImageDTO p) {
-        StringBuilder sb = getStartURL(p.getMunicipalityID());
-        sb.append("/complaints/");
-        sb.append("complaint")
-                .append(p.getComplaintID()).append("/")
-                .append(p.getFileName());
-        Log.i("Util", "Loading complaint image: " + sb.toString());
-        return sb.toString();
-    }
 
     public static StringBuilder getStartURL(Integer municipalityID) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -455,111 +440,6 @@ public class Util {
         pop.show();
     }
 
-    public static void showComplaintCategoryPopup(Context ctx, Activity act,
-                                           List<ComplaintCategoryDTO> list,
-                                           View anchorView, String caption, int primaryColorDark,
-                                           final UtilPopupListener listener) {
-        final ListPopupWindow pop = new ListPopupWindow(act);
-        LayoutInflater inf = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inf.inflate(R.layout.hero_image_popup, null);
-        TextView txt = (TextView) v.findViewById(R.id.HERO_caption);
-        if (caption != null) {
-            txt.setText(caption);
-        } else {
-            txt.setVisibility(View.GONE);
-        }
-        ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
-        img.setImageDrawable(getRandomBackgroundImage(ctx));
-
-        pop.setPromptView(v);
-        pop.setPromptPosition(ListPopupWindow.POSITION_PROMPT_ABOVE);
-        pop.setAdapter(new ComplaintCategoryPopupListAdapter(ctx, R.layout.xspinner_item,
-                list, primaryColorDark));
-        pop.setAnchorView(anchorView);
-        pop.setHorizontalOffset(getPopupHorizontalOffset(act));
-        pop.setModal(true);
-        pop.setWidth(getPopupWidth(act));
-        pop.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                pop.dismiss();
-                if (listener != null) {
-                    listener.onItemSelected(position,pop);
-                }
-            }
-        });
-        pop.show();
-    }
-    public static void showComplaintTypePopup(Context ctx, Activity act,
-                                                  List<ComplaintTypeDTO> list,
-                                                  View anchorView, String caption, int primaryColorDark,
-                                                  final UtilPopupListener listener) {
-        final ListPopupWindow pop = new ListPopupWindow(act);
-        LayoutInflater inf = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inf.inflate(R.layout.hero_image_popup, null);
-        TextView txt = (TextView) v.findViewById(R.id.HERO_caption);
-        if (caption != null) {
-            txt.setText(caption);
-        } else {
-            txt.setVisibility(View.GONE);
-        }
-        ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
-        img.setImageDrawable(getRandomBackgroundImage(ctx));
-
-        pop.setPromptView(v);
-        pop.setPromptPosition(ListPopupWindow.POSITION_PROMPT_ABOVE);
-        pop.setAdapter(new ComplaintTypePopupListAdapter(ctx,
-                R.layout.xspinner_item, list, primaryColorDark));
-        pop.setAnchorView(anchorView);
-        pop.setHorizontalOffset(getPopupHorizontalOffset(act));
-        pop.setModal(true);
-        pop.setWidth(getPopupWidth(act));
-        pop.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                pop.dismiss();
-                if (listener != null) {
-                    listener.onItemSelected(position, pop);
-                }
-            }
-        });
-        pop.show();
-    }
-
-    public static void showFAQPopup(Context ctx, Activity act,
-                                    List<String> list,
-                                    View anchorView, String caption, int primaryColorDark,
-                                    final UtilPopupListener listener) {
-        final ListPopupWindow pop = new ListPopupWindow(act);
-        LayoutInflater inf = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inf.inflate(R.layout.hero_image_popup, null);
-        TextView txt = (TextView) v.findViewById(R.id.HERO_caption);
-        if (caption != null) {
-            txt.setText(caption);
-        } else {
-            txt.setVisibility(View.GONE);
-        }
-        ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
-        img.setImageDrawable(getRandomBackgroundImage(ctx));
-
-        pop.setPromptView(v);
-        pop.setPromptPosition(ListPopupWindow.POSITION_PROMPT_ABOVE);
-        pop.setAdapter(new FAQPopupListAdapter(ctx, R.layout.xspinner_item, list, primaryColorDark));
-        pop.setAnchorView(anchorView);
-        pop.setHorizontalOffset(getPopupHorizontalOffset(act));
-        pop.setModal(true);
-        pop.setWidth(getPopupWidth(act));
-        pop.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                pop.dismiss();
-                if (listener != null) {
-                    listener.onItemSelected(position, pop);
-                }
-            }
-        });
-        pop.show();
-    }
 
     public interface UtilPopupListener {
          void onItemSelected(int index,ListPopupWindow window);

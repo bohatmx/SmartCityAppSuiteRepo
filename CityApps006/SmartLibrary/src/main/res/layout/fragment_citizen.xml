@@ -42,8 +42,8 @@
                     android:layout_height="wrap_content"
                     android:visibility="gone"
 
-                    android:layout_marginLeft="@dimen/mon_margin"
-                    android:layout_marginTop="@dimen/mon_margin"
+                    android:layout_marginLeft="@dimen/mon_16"
+                    android:layout_marginTop="@dimen/mon_16"
                     android:text="@string/my_accounts" />
 
                 <TextView
@@ -51,7 +51,7 @@
                     style="@style/Title2TextStyleWhite"
                     android:textColor="@color/grey"
                     android:background="@color/transparent_black"
-                    android:padding="@dimen/mon_margin"
+                    android:padding="@dimen/mon_16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
@@ -102,21 +102,21 @@
         <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             app:cardElevation="@dimen/mon_divider"
-            android:layout_margin="@dimen/mon_margin"
+            android:layout_margin="@dimen/mon_16"
             android:layout_below="@id/CITIZEN_acctsLayout"
             android:padding="@dimen/mon_padding"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:padding="@dimen/mon_margin"
+                android:padding="@dimen/mon_16"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <RelativeLayout
                     android:id="@+id/layout1"
                     android:padding="@dimen/mon_divider"
-                    android:layout_marginRight="@dimen/mon_margin"
+                    android:layout_marginRight="@dimen/mon_16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -134,7 +134,7 @@
                         style="@style/TextStyle"
                         android:layout_toLeftOf="@id/DASH_currBal"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/mon_margin"
+                        android:layout_marginRight="@dimen/mon_16"
                         android:text="Current Balance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -144,7 +144,7 @@
                 <RelativeLayout
                     android:id="@+id/layout2"
                     android:padding="@dimen/mon_divider"
-                    android:layout_marginRight="@dimen/mon_margin"
+                    android:layout_marginRight="@dimen/mon_16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/layout1">
@@ -172,7 +172,7 @@
 
                 <RelativeLayout
                     android:id="@+id/layout3"
-                    android:layout_marginTop="@dimen/mon_margin"
+                    android:layout_marginTop="@dimen/mon_16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/layout2">
@@ -191,7 +191,7 @@
                         style="@style/TextStyleGrey"
                         android:layout_toLeftOf="@id/DASH_complaintCount"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/mon_margin"
+                        android:layout_marginRight="@dimen/mon_16"
                         android:text="@string/my_complaints"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -218,7 +218,7 @@
                         style="@style/TextStyleGrey"
                         android:layout_toLeftOf="@id/DASH_resolvedCount"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/mon_margin"
+                        android:layout_marginRight="@dimen/mon_16"
                         android:text="Resolved"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -245,7 +245,7 @@
                         style="@style/TextStyleGrey"
                         android:layout_toLeftOf="@id/DASH_accounts"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/mon_margin"
+                        android:layout_marginRight="@dimen/mon_16"
                         android:text="My Accounts"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content" />

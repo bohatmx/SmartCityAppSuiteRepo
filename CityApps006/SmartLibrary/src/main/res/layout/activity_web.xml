@@ -99,7 +99,7 @@
         android:src="@android:drawable/ic_menu_search"
         app:backgroundTint="@color/blue_800"
         app:borderWidth="0dp"
-        app:elevation="@dimen/mon_margin"
+        app:elevation="@dimen/mon_16"
         app:pressedTranslationZ="@dimen/mon_wide"
         app:rippleColor="@color/blue_200" />
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:padding="@dimen/mon_margin"
+    android:padding="@dimen/mon_16"
     android:layout_height="match_parent">
 
     <ImageView
@@ -29,7 +29,7 @@
 
     <RelativeLayout
         android:id="@+id/SIDR_detailLayout"
-        android:padding="@dimen/mon_margin"
+        android:padding="@dimen/mon_16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/SIDR_bank">
@@ -38,7 +38,7 @@
             android:id="@+id/SIDR_statusLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/mon_margin">
+            android:padding="@dimen/mon_16">
 
             <TextView
                 android:id="@+id/SIDR_statusLabel"
@@ -65,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/SIDR_statusLayout"
-            android:padding="@dimen/mon_margin">
+            android:padding="@dimen/mon_16">
 
             <TextView
                 android:id="@+id/SIDR_amountLabel"
@@ -92,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/SIDR_amountLayout"
-            android:padding="@dimen/mon_margin">
+            android:padding="@dimen/mon_16">
 
             <TextView
                 android:id="@+id/SIDR_dateLabel"
@@ -115,7 +115,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/SIDR_dateLayout"
-            android:padding="@dimen/mon_margin">
+            android:padding="@dimen/mon_16">
 
             <TextView
                 android:id="@+id/SIDR_receptLabel"
@@ -137,7 +137,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/SIDR_receptLayout"
-            android:padding="@dimen/mon_margin">
+            android:padding="@dimen/mon_16">
 
             <TextView
                 android:id="@+id/SIDR_refLabel"
@@ -157,7 +157,7 @@
 
         <RelativeLayout
             android:id="@+id/SIDR_bottomLayout"
-            android:padding="@dimen/mon_margin"
+            android:padding="@dimen/mon_16"
             android:background="@color/beige_pale"
             android:layout_below="@id/SIDR_refLayout"
             android:layout_width="match_parent"
@@ -168,7 +168,7 @@
                 android:text="Done"
                 style="@style/ButtonNavyBlue"
                 android:visibility="gone"
-                android:layout_marginLeft="@dimen/mon_wide"
+                android:layout_marginLeft="@dimen/mon_24"
                 android:layout_centerVertical="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

@@ -47,7 +47,6 @@ import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.ComplaintCategoryDTO;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintTypeDTO;
-import com.boha.library.dto.GISAddressDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.dto.ProfileInfoDTO;
@@ -559,15 +558,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void onFindComplaintsLikeMine(ComplaintDTO complaint) {
 
-    }
-
-    @Override
-    public void onFindComplaintsAroundMe() {
-
-    }
 
     /**
      * A complaint has been added and a fresh list of complaints has been received from the server.
@@ -664,13 +655,12 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onAccountDetailRequested(ProfileInfoDTO profileInfo) {
+    public void onAccountDetailRequested() {
         if (profileInfo.getAccountList() == null || profileInfo.getAccountList().isEmpty()) {
             Util.showErrorToast(ctx, "Account information not available at this time");
             return;
         }
         Intent intent = new Intent(ctx, AccountDetailActivity.class);
-        intent.putExtra("profileInfo", profileInfo);
         intent.putExtra("logo", logo);
         intent.putExtra("darkColor", themeDarkColor);
         intent.putExtra("primaryColor", themePrimaryColor);
@@ -887,6 +877,14 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onPictureRequired(ComplaintDTO complaint) {
+        Intent m = new Intent(getApplicationContext(), PictureActivity.class);
+        m.putExtra("complaint", complaint);
+        m.putExtra("imageType", PictureActivity.COMPLAINT_IMAGE);
+        startActivity(m);
+    }
+
+    @Override
     public void onRefreshRequested(ComplaintDTO complaint) {
         mRefreshFromComplaint = true;
         getLoginData();
@@ -897,13 +895,10 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         Intent m = new Intent(getApplicationContext(), PictureActivity.class);
         m.putExtra("imageType", PictureActivity.COMPLAINT_IMAGE);
         m.putExtra("complaint", complaint);
+        m.putExtra("logo",logo);
         startActivity(m);
     }
 
-    @Override
-    public void onMultiAddressDialog(List<GISAddressDTO> list) {
-
-    }
 
     @Override
     public void onAlertClicked(final AlertDTO alert) {

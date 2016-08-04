@@ -14,7 +14,7 @@
     <RelativeLayout
         android:id="@+id/SPLASH_actions"
         android:layout_alignParentBottom="true"
-        android:padding="@dimen/mon_wide"
+        android:padding="@dimen/mon_24"
         android:layout_marginBottom="@dimen/mon_wider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -28,8 +28,8 @@
             android:elevation="@dimen/mon_padding"
             android:drawableLeft="@android:drawable/ic_menu_send"
             android:background="@color/red_800"
-            android:layout_marginLeft="@dimen/mon_margin"
-            android:layout_marginRight="@dimen/mon_margin"
+            android:layout_marginLeft="@dimen/mon_16"
+            android:layout_marginRight="@dimen/mon_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -45,8 +45,8 @@
             android:layout_marginTop="@dimen/mon_padding"
             android:drawableLeft="@android:drawable/ic_menu_add"
             android:layout_below="@id/SPLASH_btnSignin"
-            android:layout_marginLeft="@dimen/mon_margin"
-            android:layout_marginRight="@dimen/mon_margin"
+            android:layout_marginLeft="@dimen/mon_16"
+            android:layout_marginRight="@dimen/mon_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -56,7 +56,7 @@
     <ImageView
         android:id="@+id/SPLASH_logo"
         android:src="@drawable/fire"
-        android:layout_margin="@dimen/mon_margin"
+        android:layout_margin="@dimen/mon_16"
         android:visibility="gone"
         android:scaleType="centerCrop"
         android:layout_width="wrap_content"
@@ -83,7 +83,7 @@
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/mon_margin"
+        android:layout_margin="@dimen/mon_16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

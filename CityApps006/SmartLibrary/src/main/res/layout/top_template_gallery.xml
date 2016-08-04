@@ -17,14 +17,14 @@
             style="@style/Title1TextStyleWhite"
             android:layout_marginTop="@dimen/mon_padding"
             android:layout_centerHorizontal="false"
-            android:layout_marginLeft="@dimen/mon_margin"
+            android:layout_marginLeft="@dimen/mon_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <RelativeLayout
             android:id="@+id/TOPG_subLayout"
             android:layout_below="@id/TOPG_title"
-            android:layout_marginTop="@dimen/mon_margin"
+            android:layout_marginTop="@dimen/mon_16"
             android:padding="@dimen/mon_padding"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -47,7 +47,7 @@
                 android:textColor="@color/white"
                 android:layout_toLeftOf="@id/TOPG_time"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/mon_margin"
+                android:layout_marginRight="@dimen/mon_16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </RelativeLayout>

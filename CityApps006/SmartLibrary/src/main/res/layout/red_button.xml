@@ -17,7 +17,7 @@
         <Button
             android:id="@+id/button"
             android:text="My Account Detail"
-            android:padding="@dimen/mon_margin"
+            android:padding="@dimen/mon_16"
             android:background="@color/red_800"
             android:layout_gravity="center"
             android:textColor="@color/white"

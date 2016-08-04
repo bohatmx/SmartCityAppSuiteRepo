@@ -16,6 +16,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -49,7 +50,6 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
 
     int darkColor, primaryColor, logo;
     Context ctx;
-    ImageView statementsIcon;
     static final String LOG = AccountDetailActivity.class.getSimpleName();
 
     @Override
@@ -60,13 +60,12 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
 
         Log.d(LOG, "@@@@@@@ onCreate");
         ctx = getApplicationContext();
-        profileInfo = (ProfileInfoDTO) getIntent().getSerializableExtra("profileInfo");
         darkColor = getIntent().getIntExtra("darkColor", R.color.black);
         primaryColor = getIntent().getIntExtra("primaryColor", R.color.black);
         logo = getIntent().getIntExtra("logo", R.drawable.ic_action_globe);
         setFields();
         MunicipalityDTO municipality = SharedUtil.getMunicipality(getApplicationContext());
-        Drawable d = ctx.getResources().getDrawable(logo);
+        Drawable d = ContextCompat.getDrawable(ctx,logo);
         Util.setCustomActionBar(ctx,
                 getSupportActionBar(),
                 municipality.getMunicipalityName(), d, logo);
@@ -143,14 +142,24 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
     }
 
     private void createFragments() {
-        for (AccountDTO acc : profileInfo.getAccountList()) {
-            AccountFragment f = AccountFragment.newInstance(acc);
-            pageFragmentList.add(f);
+        profileInfo = SharedUtil.getProfile(this);
+        if (profileInfo != null) {
+            for (AccountDTO acc : profileInfo.getAccountList()) {
+                if (acc != null) {
+                    AccountFragment f = AccountFragment.newInstance(acc);
+                    pageFragmentList.add(f);
+                }
+            }
+            if (!profileInfo.getAccountList().isEmpty()) {
+                account = profileInfo.getAccountList().get(0);
+                name.setText(account.getCustomerAccountName());
+                acctNumber.setText(account.getAccountNumber());
+            }
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
 
-        initializeTimerTask();
-        startTimer();
+//        initializeTimerTask();
+//        startTimer();
 
     }
 

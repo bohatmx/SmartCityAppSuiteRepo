@@ -7,7 +7,7 @@
         android:endColor="@color/blue" />
 
     <size
-        android:height="@dimen/mon_margin"
-        android:width="@dimen/mon_margin" />
+        android:height="@dimen/mon_16"
+        android:width="@dimen/mon_16" />
 
 </shape>

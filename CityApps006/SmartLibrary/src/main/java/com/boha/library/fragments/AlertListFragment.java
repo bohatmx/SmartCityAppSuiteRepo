@@ -9,32 +9,30 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.AlertMapActivity;
 import com.boha.library.activities.CityApplication;
-import com.boha.library.adapters.AlertListAdapter;
+import com.boha.library.adapters.AlertRecyclerAdapter;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.Statics;
-import com.boha.library.util.Util;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Fragment to house local pictures
@@ -67,7 +65,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
     }
 
     View view, topView;
-    ListView listView;
+    RecyclerView recyclerView;
     TextView txtTitle, txtEmpty;
     Context ctx;
     List<AlertDTO> alertList;
@@ -91,9 +89,6 @@ public class AlertListFragment extends Fragment implements PageFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_alert_list, container, false);
-
-      //  topView = inflater.inflate(R.layout.alert_top, null);
-
         ctx = getActivity();
         setFields();
         if (alertList != null) {
@@ -160,7 +155,9 @@ public class AlertListFragment extends Fragment implements PageFragment {
         txtEmpty = (TextView)view.findViewById(R.id.ALERT_LIST_text);
         Statics.setRobotoFontLight(ctx, txtEmpty);
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        listView = (ListView) view.findViewById(R.id.ALERT_LIST_listView);
+        recyclerView = (RecyclerView) view.findViewById(R.id.ALERT_LIST_listView);
+        LinearLayoutManager lm = new LinearLayoutManager(ctx,LinearLayoutManager.VERTICAL,false);
+        recyclerView.setLayoutManager(lm);
         heroImage = (ImageView) view.findViewById(R.id.FAL_hero);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
@@ -172,7 +169,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
             @Override
             public void onClick(View v) {
                 if (alertList == null || alertList.isEmpty()) {
-                    Snackbar.make(listView, ctx.getString(R.string.noalerts_map),
+                    Snackbar.make(recyclerView, ctx.getString(R.string.noalerts_map),
                             Snackbar.LENGTH_LONG).show();
                     return;
                 }
@@ -299,31 +296,28 @@ public class AlertListFragment extends Fragment implements PageFragment {
 
     }
 
-    AlertListAdapter alertListAdapter;
+    AlertRecyclerAdapter alertListAdapter;
     static final long THREE_DAYS = 1000 * 60 * 60 * 24 * 3;
 
     private void setList() {
         if (alertList == null) {
             alertList = new ArrayList<>();
         }
-        alertListAdapter = new AlertListAdapter(ctx, R.layout.alert_item,
-                alertList, new AlertListAdapter.AlertListListener() {
+        alertListAdapter = new AlertRecyclerAdapter(alertList, ctx, new AlertRecyclerAdapter.AlertAdapterListener() {
             @Override
-            public void onAlertClicked(int position) {
-                mListener.onAlertClicked(alertList.get(position));
+            public void onAlertClicked(AlertDTO alert) {
+            mListener.onAlertClicked(alert);
             }
         });
+
 
         if (alertList.isEmpty()) {
             txtEmpty.setVisibility(View.VISIBLE);
         } else {
             txtEmpty.setVisibility(View.GONE);
         }
-        if (listView.getHeaderViewsCount() == 0) {
-            heroImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-         //   listView.addHeaderView(topView);
-        }
-        listView.setAdapter(alertListAdapter);
+
+        recyclerView.setAdapter(alertListAdapter);
     }
 
     @Override
@@ -352,28 +346,28 @@ public class AlertListFragment extends Fragment implements PageFragment {
 
     @Override
     public void animateSomething() {
-        final Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            timer.cancel();
-                            heroImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-                            Util.expand(heroImage, 1000, new Util.UtilAnimationListener() {
-                                @Override
-                                public void onAnimationEnded() {
-                                    Util.flashOnce(fab, 300, null);
-                                }
-                            });
-
-                        }
-                    });
-                }
-            }
-        }, 500);
+//        final Timer timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                if (getActivity() != null) {
+//                    getActivity().runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            timer.cancel();
+//                            heroImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+//                            Util.expand(heroImage, 1000, new Util.UtilAnimationListener() {
+//                                @Override
+//                                public void onAnimationEnded() {
+//                                    Util.flashOnce(fab, 300, null);
+//                                }
+//                            });
+//
+//                        }
+//                    });
+//                }
+//            }
+//        }, 500);
 
     }
 

@@ -25,7 +25,7 @@
 
             <RelativeLayout
                 android:id="@+id/PAY_amtLayout"
-                android:padding="@dimen/mon_margin"
+                android:padding="@dimen/mon_16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -68,7 +68,7 @@
                         <Button
                             android:id="@+id/button"
                             android:text="Pay the Amount Listed"
-                            android:padding="@dimen/mon_margin"
+                            android:padding="@dimen/mon_16"
                             android:background="@color/red_800"
                             android:layout_gravity="center"
                             android:textColor="@color/white"

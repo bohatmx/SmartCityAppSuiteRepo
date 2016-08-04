@@ -26,9 +26,9 @@
         <TextView
             android:id="@+id/CAM_alertTypeName"
             android:layout_toRightOf="@id/CAM_label1"
-            style="@style/Title3TextStyleBlack"
+            style="@style/Title2TextStyleBlack"
             android:text="AlertType Name Here"
-            android:layout_marginLeft="@dimen/mon_margin"
+            android:layout_marginLeft="@dimen/mon_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
@@ -79,9 +79,21 @@
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:src="@drawable/ic_file_upload"
+        android:elevation="@dimen/mon_12"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/mon_margin"
+        android:layout_margin="@dimen/mon_56"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/labelx"
+        android:text="Upload Picture"
+        style="@style/TextStyleSmallWhite"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/mon_56"
+        android:layout_marginBottom="@dimen/mon_24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

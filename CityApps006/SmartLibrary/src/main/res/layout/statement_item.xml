@@ -2,7 +2,7 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/SI_main"
-    android:layout_margin="@dimen/mon_margin"
+    android:layout_margin="@dimen/mon_16"
     app:cardElevation="@dimen/mon_divider"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -10,7 +10,7 @@
     <RelativeLayout
         android:id="@+id/SI_toptop"
         android:background="@color/white"
-        android:padding="@dimen/mon_margin"
+        android:padding="@dimen/mon_16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -23,35 +23,35 @@
                 android:id="@+id/SI_number"
                 style="@style/BlueCircleSmall"
                 android:text="0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/SI_filename"
-                style="@style/Title3TextStyleBlack"
-                android:text="StatementFile Name here"
-                android:layout_marginLeft="@dimen/mon_margin"
-                android:layout_toRightOf="@id/SI_number"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+            <RelativeLayout
+                android:id="@+id/SI_bottom"
+                android:layout_toRightOf="@id/SI_number"
+                android:layout_marginLeft="@dimen/mon_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/SI_date"
+                    style="@style/Title3TextStyleBlack"
+                    android:text="December 2099"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/SI_filename"
+                    style="@style/TextStyleGreySmall"
+                    android:text="StatementFile Name here"
+                    android:layout_marginTop="@dimen/mon_padding"
+                    android:layout_below="@id/SI_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/SI_bottom"
-            android:layout_below="@id/SI_top"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/SI_date"
-                style="@style/TextStyleBoldBlueSmall"
-                android:text="December 2099"
-                android:layout_marginLeft="@dimen/mon_margin"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            </RelativeLayout>
+
     </RelativeLayout>
 
 

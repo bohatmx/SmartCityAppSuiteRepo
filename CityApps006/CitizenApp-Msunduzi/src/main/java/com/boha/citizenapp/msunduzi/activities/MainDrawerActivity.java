@@ -43,7 +43,6 @@ import com.boha.library.activities.CityApplication;
 import com.boha.library.activities.PictureActivity;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.ComplaintDTO;
-import com.boha.library.dto.GISAddressDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.dto.ProfileInfoDTO;
@@ -537,21 +536,6 @@ public class MainDrawerActivity extends ActionBarActivity
             }
         }
     }
-    @Override
-    public void onMultiAddressDialog(List<GISAddressDTO> list) {
-
-
-    }
-    @Override
-    public void onFindComplaintsLikeMine(ComplaintDTO complaint) {
-
-    }
-
-    @Override
-    public void onFindComplaintsAroundMe() {
-
-    }
-
 
 
     @Override
@@ -605,13 +589,9 @@ public class MainDrawerActivity extends ActionBarActivity
     }
 
     @Override
-    public void onAccountDetailRequested(ProfileInfoDTO profileInfo) {
-        if (profileInfo.getAccountList() == null || profileInfo.getAccountList().isEmpty()) {
-            Util.showErrorToast(ctx, "Account information not available at this time");
-            return;
-        }
+    public void onAccountDetailRequested() {
+
         Intent intent = new Intent(ctx, AccountDetailActivity.class);
-        intent.putExtra("profileInfo", profileInfo);
         intent.putExtra("logo", logo);
         intent.putExtra("darkColor", themeDarkColor);
         intent.putExtra("primaryColor", themePrimaryColor);
@@ -730,6 +710,11 @@ public class MainDrawerActivity extends ActionBarActivity
     @Override
     public void setBusy(boolean busy) {
         setRefreshActionButtonState(busy);
+    }
+
+    @Override
+    public void onPictureRequired(ComplaintDTO complaint) {
+
     }
 
     @Override

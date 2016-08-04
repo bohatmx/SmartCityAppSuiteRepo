@@ -3,10 +3,12 @@ package com.boha.library.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -128,8 +130,11 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         w.setLongitude(location.getLongitude());
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
 
+        //
+        w.setSpoof(true);
         disableFAB();
         mListener.setBusy(true);
+        snackbar = Util.showSnackBar(listView,"Searching for cases around you ...", "OK", Color.parseColor("TEAL"));
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO response) {
@@ -139,8 +144,11 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
                         public void run() {
                             enableFAB();
                             mListener.setBusy(false);
+                            snackbar.dismiss();
                             complaintList = response.getComplaintList();
                             setList();
+                            Util.showSnackBar(listView,"Complaints around you found: "
+                                    + complaintList.size(),"OK",Color.parseColor("GREEN"));
                         }
                     });
                 }
@@ -153,8 +161,9 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
                     @Override
                     public void run() {
                         mListener.setBusy(false);
+                        snackbar.dismiss();
                         enableFAB();
-                        Util.showErrorToast(ctx, message);
+                        Util.showSnackBar(fab,message,"OK", Color.parseColor("RED"));
                     }
                 });
             }
@@ -215,12 +224,14 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
             public void onClick(final View v) {
                 mListener.setBusy(true);
                 disableFAB();
+                snackbar = Util.showSnackBar(listView, "Searching for GPS coordinates ...", "OK", Color.parseColor("YELLOW"));
                 mListener.onLocationForComplaintsAroundMe();
             }
         });
 
     }
     ComplaintListAdapter adapter;
+    Snackbar snackbar;
     public void setList() {
 
         if(complaintList == null) {
@@ -396,6 +407,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
     }
     public void setLocation(Location location) {
         this.location = location;
+        snackbar.dismiss();
         getComplaintsAroundMe();
     }
 

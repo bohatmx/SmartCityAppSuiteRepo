@@ -5,7 +5,7 @@
 
     <RelativeLayout
         android:id="@+id/MONTOAST_top"
-        android:padding="@dimen/mon_margin"
+        android:padding="@dimen/mon_16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/teal_300">
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:background="@color/beige_pale"
         android:layout_below="@id/MONTOAST_top"
-        android:padding="@dimen/mon_margin">
+        android:padding="@dimen/mon_16">
 
 
         <TextView
@@ -40,7 +40,7 @@
             android:id="@+id/MONTOAST_text"
             style="@style/TextStyle"
             android:layout_toRightOf="@id/MONTOAST_indicator"
-            android:layout_marginLeft="@dimen/mon_margin"
+            android:layout_marginLeft="@dimen/mon_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="General message" />

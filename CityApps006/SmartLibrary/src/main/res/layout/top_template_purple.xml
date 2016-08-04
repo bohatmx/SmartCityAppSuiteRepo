@@ -16,7 +16,7 @@
             android:id="@+id/TOP_title"
             android:text="My Title Here"
             style="@style/Title1TextStyleWhite"
-            android:layout_margin="@dimen/mon_margin"
+            android:layout_margin="@dimen/mon_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_marginTop="@dimen/mon_hero_height_medium_lite"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/mon_margin"
+        android:layout_marginRight="@dimen/mon_16"
         android:layout_height="wrap_content">
         <include layout="@layout/fab_steelblue"/>
     </RelativeLayout>

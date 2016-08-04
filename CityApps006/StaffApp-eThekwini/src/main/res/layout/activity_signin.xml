@@ -31,7 +31,7 @@
             <ImageView
                 android:id="@+id/SIGNIN_dome"
                 android:src="@drawable/abc_btn_check_material"
-                android:layout_margin="@dimen/mon_margin"
+                android:layout_margin="@dimen/mon_16"
                 android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -41,7 +41,7 @@
             android:layout_below="@id/SIGNIN_heroLayout"
             android:background="@color/white"
             android:layout_marginTop="@dimen/mon_padding"
-            android:padding="@dimen/mon_margin"
+            android:padding="@dimen/mon_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -54,7 +54,7 @@
             <EditText
                 android:id="@+id/SIGNIN_editPIN"
                 android:layout_below="@id/SIGNIN_emailSpinner"
-                android:layout_marginTop="@dimen/mon_margin"
+                android:layout_marginTop="@dimen/mon_16"
                 android:hint="@string/enter_pswd"
                 android:inputType="textPassword"
                 style="@style/Title1TextStyleRed"

@@ -32,7 +32,7 @@
                 layout="@layout/blue_button"
                 android:layout_marginTop="@dimen/mon_wider"
                 android:layout_centerHorizontal="true"
-                android:padding="@dimen/mon_margin"
+                android:padding="@dimen/mon_16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

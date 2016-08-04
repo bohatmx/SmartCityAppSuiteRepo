@@ -35,8 +35,7 @@ public class NewsArticleImageDTO implements Serializable, ImageInterface {
     private Boolean activeFlag;
     private String url;
     private String secureUrl;
-    private String signature;
-    private String eTag;
+
     private Integer height;
     private Integer width;
     private Integer bytes;
@@ -65,22 +64,6 @@ public class NewsArticleImageDTO implements Serializable, ImageInterface {
 
     public void setSecureUrl(String secureUrl) {
         this.secureUrl = secureUrl;
-    }
-
-    public String getSignature() {
-        return signature;
-    }
-
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
-
-    public String geteTag() {
-        return eTag;
-    }
-
-    public void seteTag(String eTag) {
-        this.eTag = eTag;
     }
 
     public Integer getHeight() {

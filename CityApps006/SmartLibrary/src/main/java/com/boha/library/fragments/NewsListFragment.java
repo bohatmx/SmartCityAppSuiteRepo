@@ -30,8 +30,6 @@ import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Fragment to house local pictures
@@ -190,7 +188,7 @@ public class NewsListFragment extends Fragment implements PageFragment {
         Statics.setRobotoFontLight(ctx,txtEmpty);
         if (listView.getHeaderViewsCount() == 0) {
             heroImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-        //    listView.addHeaderView(topView);
+        //    recyclerView.addHeaderView(topView);
         }
         listView.setAdapter(newsListAdapter);
     }
@@ -221,25 +219,25 @@ public class NewsListFragment extends Fragment implements PageFragment {
 
     @Override
     public void animateSomething() {
-        final Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        timer.cancel();
-                        heroImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-                        Util.expand(heroImage, 1000, new Util.UtilAnimationListener() {
-                            @Override
-                            public void onAnimationEnded() {
-                                Util.flashOnce(fab, 300, null);
-                            }
-                        });
-                    }
-                });
-            }
-        }, 500);
+//        final Timer timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        timer.cancel();
+//                        heroImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+//                        Util.expand(heroImage, 1000, new Util.UtilAnimationListener() {
+//                            @Override
+//                            public void onAnimationEnded() {
+//                                Util.flashOnce(fab, 300, null);
+//                            }
+//                        });
+//                    }
+//                });
+//            }
+//        }, 500);
 
     }
 

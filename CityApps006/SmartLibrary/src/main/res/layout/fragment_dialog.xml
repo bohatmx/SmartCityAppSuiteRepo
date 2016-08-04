@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:id="@+id/FD_topLayout"
-        android:padding="@dimen/mon_margin"
+        android:padding="@dimen/mon_16"
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -28,7 +28,7 @@
     </RelativeLayout>
     <ListView
         android:id="@+id/FD_list"
-        android:layout_marginTop="@dimen/mon_margin"
+        android:layout_marginTop="@dimen/mon_16"
         android:background="@color/white"
         android:dividerHeight="@dimen/mon_divider"
         android:layout_below="@id/FD_topLayout"

@@ -113,7 +113,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/CI_topTop"
         android:background="@color/white"
-        android:padding="@dimen/mon_margin">
+        android:padding="@dimen/mon_16">
 
         <TextView
             android:id="@+id/CI_color"
@@ -130,7 +130,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/mon_margin"
+            android:layout_marginLeft="@dimen/mon_16"
             android:layout_toRightOf="@id/CI_color"
             android:text="ComplaintType" />
     </RelativeLayout>
@@ -148,7 +148,7 @@
             style="@style/Title3TextStyleBlue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/mon_margin"
+            android:layout_marginLeft="@dimen/mon_16"
             android:text="Tuesday, 09 December 2099" />
 
         <RelativeLayout
@@ -156,7 +156,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/CI_date"
-            android:layout_marginTop="@dimen/mon_margin">
+            android:layout_marginTop="@dimen/mon_16">
 
             <TextView
                 android:id="@+id/CI_referenceLabel"
@@ -165,7 +165,7 @@
 
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_marginLeft="@dimen/mon_16"
                 android:text="Reference: " />
 
             <TextView
@@ -174,7 +174,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_marginLeft="@dimen/mon_16"
                 android:layout_toRightOf="@id/CI_referenceLabel"
                 android:text="6568586865876" />
         </RelativeLayout>
@@ -183,7 +183,7 @@
             android:id="@+id/CI_statusLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/mon_margin"
+            android:layout_marginTop="@dimen/mon_16"
             android:layout_below="@id/CI_refLayout"
             android:orientation="vertical">
 
@@ -197,7 +197,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/CI_middle"
         android:background="@color/beige_pale"
-        android:padding="@dimen/mon_margin"
+        android:padding="@dimen/mon_16"
         android:visibility="gone">
 
         <TextView
@@ -214,7 +214,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/CI_address"
             android:layout_centerVertical="true"
-            android:layout_marginTop="@dimen/mon_margin"
+            android:layout_marginTop="@dimen/mon_16"
             android:text="The municipality response text" />
 
     </RelativeLayout>
@@ -233,7 +233,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/CI_image"
         android:background="@color/white"
-        android:padding="@dimen/mon_margin">
+        android:padding="@dimen/mon_16">
 
         <TextView
             android:id="@+id/CI_followers"
@@ -241,7 +241,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/mon_middle"
+            android:layout_marginRight="@dimen/mon_12"
             android:text="0" />
 
         <TextView
@@ -250,7 +250,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/mon_margin"
+            android:layout_marginRight="@dimen/mon_16"
             android:layout_toLeftOf="@id/CI_followers"
             android:text="Followed By" />
     </RelativeLayout>

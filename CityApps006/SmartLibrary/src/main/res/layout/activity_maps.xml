@@ -32,7 +32,7 @@
         <TextView
             android:id="@+id/MAP_distanceTitle"
             android:text="Title"
-            android:layout_marginTop="@dimen/mon_wide"
+            android:layout_marginTop="@dimen/mon_24"
             android:padding="@dimen/mon_padding"
             style="@style/Title3TextStyleBlack"
             android:layout_width="wrap_content"
@@ -63,7 +63,7 @@
         <RelativeLayout
             android:id="@+id/MAP_distLayout"
             android:layout_below="@id/MAP_addressTo"
-            android:layout_marginTop="@dimen/mon_margin"
+            android:layout_marginTop="@dimen/mon_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -119,7 +119,7 @@
             android:id="@+id/MAP_iconCollapse"
             android:src="@drawable/ic_action_collapse"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/mon_wide"
+            android:layout_marginRight="@dimen/mon_24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

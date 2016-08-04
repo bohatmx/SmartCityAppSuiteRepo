@@ -30,12 +30,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/mon_wide"
-            android:layout_marginTop="@dimen/mon_margin"
+            android:layout_marginTop="@dimen/mon_16"
             android:text="@string/faq" />
 
         <RelativeLayout
             android:layout_below="@id/FAQ_title"
-            android:layout_marginTop="@dimen/mon_wide"
+            android:layout_marginTop="@dimen/mon_24"
             android:padding="@dimen/mon_padding"
 
             android:layout_width="match_parent"
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/FAQ_icon"
-                android:layout_marginLeft="@dimen/mon_margin"
+                android:layout_marginLeft="@dimen/mon_16"
                 android:text="FAQ Type" />
         </RelativeLayout>
     </RelativeLayout>
@@ -101,7 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/mon_margin" />
+        android:layout_margin="@dimen/mon_16" />
 
 
 </RelativeLayout>

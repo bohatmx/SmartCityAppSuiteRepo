@@ -23,7 +23,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/mon_wide"
+            android:layout_margin="@dimen/mon_24"
             android:layout_alignParentBottom="true">
 
             <TextView
@@ -59,7 +59,7 @@
                 android:id="@+id/FPR_middle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/mon_margin">
+                android:layout_margin="@dimen/mon_16">
 
                 <ImageView
                     android:id="@+id/FPR_icon"
@@ -74,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/mon_margin"
+                    android:layout_marginLeft="@dimen/mon_16"
                     android:layout_toRightOf="@id/FPR_icon"
                     android:text="Please select Card" />
 
@@ -201,7 +201,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/FPR_textLayout3"
-                    android:layout_margin="@dimen/mon_margin">
+                    android:layout_margin="@dimen/mon_16">
 
                     <TextView
                         android:id="@+id/FPR_label1"
@@ -213,7 +213,7 @@
 
                     <LinearLayout
                         android:id="@+id/FPR_layout1"
-                        android:layout_marginTop="@dimen/mon_margin"
+                        android:layout_marginTop="@dimen/mon_16"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/FPR_label1"

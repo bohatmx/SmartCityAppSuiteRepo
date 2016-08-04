@@ -24,7 +24,7 @@
         <TextView
             android:id="@+id/NAV_subtitle"
             android:text="SubTitleHere"
-            android:layout_marginLeft="@dimen/mon_margin"
+            android:layout_marginLeft="@dimen/mon_16"
             android:layout_marginTop="@dimen/mon_wider"
             style="@style/TextStyleSmall"
             android:textColor="@color/white"
