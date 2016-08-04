@@ -129,6 +129,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     AccountDTO account;
 
     Snackbar snackbar;
+    boolean sendAccount;
 
     private void sendComplaint() {
 
@@ -154,22 +155,24 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             pi.setLastName(profile.getLastName());
             pi.setPassword(profile.getPassword());
             complaint.setProfileInfo(pi);
-            if (account == null) {
-                Log.e(LOG, "sendComplaint: account is null " );
-                snackbar = showSnackBar(txtCategory,"Please select accountget", "OK",
-                        Color.parseColor("YELLOW"));
-                return;
+            if (sendAccount) {
+                if (account == null) {
+                    Log.e(LOG, "sendComplaint: account is null ");
+                    snackbar = showSnackBar(txtCategory, "Please select accountget", "OK",
+                            Color.parseColor("YELLOW"));
+                    return;
+                }
+                complaint.setAccountNumber(account.getAccountNumber());
             }
-            complaint.setAccountNumber(account.getAccountNumber());
 
         }
-        if (user != null) {
-            user.setDateRegistered(null);
-            user.setFirstName(null);
-            user.setLastName(null);
-            complaint.setUser(user);
-
-        }
+//        if (user != null) {
+//            user.setDateRegistered(null);
+//            user.setFirstName(null);
+//            user.setLastName(null);
+//            complaint.setUser(user);
+//
+//        }
         complaint.setCategory(complaintCategory.getComplaintCategoryName());
         complaint.setSubCategory(complaintType.getComplaintTypeName());
 
@@ -177,6 +180,10 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         complaint.setComplaintType(complaintType);
         complaint.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
         w.setMunicipalityID(complaint.getMunicipalityID());
+
+        //todo remove when done testing
+        w.setSpoof(true);
+        //
 
         if (WebCheck.checkNetworkAvailability(ctx).isNetworkUnavailable()) {
             Util.showErrorToast(ctx, getString(R.string.no_network));
@@ -274,6 +281,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                 complaintType = type;
                 fabSend.setEnabled(true);
                 fabSend.setAlpha(1.0f);
+                mListener.onComplaintLocationRequested();
                 showConfirmDialog();
             }
         });
@@ -369,8 +377,18 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         });
     }
     private void selectComplaintLocationDialog() {
-        AlertDialog.Builder d = new AlertDialog.Builder(activity);
 
+
+        if (complaintCategory.getComplaintCategoryName().equalsIgnoreCase("Road")
+                || complaintCategory.getComplaintCategoryName().equalsIgnoreCase("Pollution")
+                || complaintCategory.getComplaintCategoryName().equalsIgnoreCase("Traffic")
+                || complaintCategory.getComplaintCategoryName().equalsIgnoreCase("Waste Water")) {
+            sendAccount = false;
+            mListener.onComplaintLocationRequested();
+            return;
+
+        }
+        AlertDialog.Builder d = new AlertDialog.Builder(activity);
         d.setTitle("Choose Complaint Location")
                 .setMessage("Is the complaint for your residential address?\n\nIf YES, the app will use your residential  address on the system, " +
                         "\n\nif NO, the app will use GPS to find the location of the complaint.")
@@ -378,12 +396,14 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         location = null;
+                        sendAccount = true;
                         sendComplaint();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        sendAccount = false;
                         mListener.onComplaintLocationRequested();
                     }
                 })
@@ -468,6 +488,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     public void setLocation(Location location) {
         Log.w(LOG, "$$$$ setLocation, acc: " + location.getAccuracy());
         this.location = location;
+
         sendComplaint();
     }
 

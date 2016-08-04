@@ -24,7 +24,7 @@ public class Statics {
      * SmartCity Production Server
      */
 
-//    public static final String PREFIX  = "ws://icsm1.oneconnectgroup.com:7070";
+//    public static final String PREFIX  = "http://icsm1.oneconnectgroup.com:7070";
 //    public static final String URL = PREFIX + "/sc/";
 //    public static final String IMAGE_URL = PREFIX + "/";
 
