@@ -64,10 +64,11 @@
                 android:id="@+id/ST_label"
                 android:layout_below="@id/acctLayout"
                 android:text="Latest Statement Available"
-                android:layout_marginTop="@dimen/mon_16"
+                android:layout_marginTop="@dimen/mon_divider"
                 android:layout_marginLeft="@dimen/mon_16"
                 style="@style/TextStyleSmall"
                 android:textColor="@color/grey"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
@@ -76,6 +77,7 @@
                 android:text="February 2015"
                 android:layout_marginLeft="@dimen/mon_16"
                 style="@style/Title3TextStyleWhite"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </RelativeLayout>

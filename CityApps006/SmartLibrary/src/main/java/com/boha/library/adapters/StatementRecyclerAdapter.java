@@ -64,7 +64,7 @@ public class StatementRecyclerAdapter extends RecyclerView.Adapter<StatementRecy
 
         String[] data = pattern.split(p);
         DateTime dateTime = new DateTime(Integer.parseInt(data[1]),Integer.parseInt(data[2]),1,0,0);
-        holder.txtDate.setText(sdf.format(dateTime.toDate()) + " Statement");
+        holder.txtDate.setText(" Statement:  " + sdf.format(dateTime.toDate()));
 
 
 
@@ -98,7 +98,7 @@ public class StatementRecyclerAdapter extends RecyclerView.Adapter<StatementRecy
 
     }
     static final Locale d = Locale.getDefault();
-    static final SimpleDateFormat sdf = new SimpleDateFormat("MMMM yyyy", d);
+    static final SimpleDateFormat sdf = new SimpleDateFormat("MMMM, yyyy", d);
 
     static final String LOG = StatementRecyclerAdapter.class.getSimpleName();
 }

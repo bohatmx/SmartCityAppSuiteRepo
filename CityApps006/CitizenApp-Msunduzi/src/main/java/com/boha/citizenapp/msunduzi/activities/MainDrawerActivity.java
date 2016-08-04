@@ -589,13 +589,9 @@ public class MainDrawerActivity extends ActionBarActivity
     }
 
     @Override
-    public void onAccountDetailRequested(ProfileInfoDTO profileInfo) {
-        if (profileInfo.getAccountList() == null || profileInfo.getAccountList().isEmpty()) {
-            Util.showErrorToast(ctx, "Account information not available at this time");
-            return;
-        }
+    public void onAccountDetailRequested() {
+
         Intent intent = new Intent(ctx, AccountDetailActivity.class);
-        intent.putExtra("profileInfo", profileInfo);
         intent.putExtra("logo", logo);
         intent.putExtra("darkColor", themeDarkColor);
         intent.putExtra("primaryColor", themePrimaryColor);

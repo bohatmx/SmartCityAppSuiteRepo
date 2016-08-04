@@ -6,6 +6,7 @@ import android.util.Log;
 import com.boha.library.dto.AlertImageDTO;
 import com.boha.library.dto.ComplaintImageDTO;
 import com.boha.library.dto.ImageInterface;
+import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.MunicipalityImageDTO;
 import com.boha.library.dto.NewsArticleImageDTO;
 import com.boha.library.dto.ProfileImageDTO;
@@ -127,6 +128,10 @@ public class CDNUploader {
                 image.setBytes((int) map.get("bytes"));
 
                 RequestDTO w = new RequestDTO(RequestDTO.ADD_PHOTO);
+                MunicipalityDTO m = SharedUtil.getMunicipality(ctx);
+                if (m != null) {
+                    w.setMunicipalityID(m.getMunicipalityID());
+                }
                 w.setPhotoUpload(new PhotoUploadDTO());
                 if (image instanceof AlertImageDTO) {
                     w.getPhotoUpload().setAlertImage((AlertImageDTO) image);

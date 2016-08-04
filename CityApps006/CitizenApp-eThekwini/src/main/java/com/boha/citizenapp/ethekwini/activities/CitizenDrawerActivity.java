@@ -655,13 +655,12 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onAccountDetailRequested(ProfileInfoDTO profileInfo) {
+    public void onAccountDetailRequested() {
         if (profileInfo.getAccountList() == null || profileInfo.getAccountList().isEmpty()) {
             Util.showErrorToast(ctx, "Account information not available at this time");
             return;
         }
         Intent intent = new Intent(ctx, AccountDetailActivity.class);
-        intent.putExtra("profileInfo", profileInfo);
         intent.putExtra("logo", logo);
         intent.putExtra("darkColor", themeDarkColor);
         intent.putExtra("primaryColor", themePrimaryColor);
@@ -896,6 +895,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         Intent m = new Intent(getApplicationContext(), PictureActivity.class);
         m.putExtra("imageType", PictureActivity.COMPLAINT_IMAGE);
         m.putExtra("complaint", complaint);
+        m.putExtra("logo",logo);
         startActivity(m);
     }
 

@@ -244,7 +244,7 @@ public static final String TAG = ProfileInfoFragment.class.getSimpleName();
     }
 
     private void startAccountActivity() {
-        profileInfoListener.onAccountDetailRequested(profileInfo);
+        profileInfoListener.onAccountDetailRequested();
     }
 
     @Override
@@ -260,7 +260,7 @@ public static final String TAG = ProfileInfoFragment.class.getSimpleName();
     }
 
     public interface ProfileInfoListener {
-        void onAccountDetailRequested(ProfileInfoDTO profileInfo);
+        void onAccountDetailRequested();
     }
     @Override
     public void onDetach() {

@@ -143,7 +143,7 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
 
             @Override
             public void onComplaintImagesRequested(ComplaintDTO complaint) {
-                underConstruction();
+
             }
         });
         listView.setAdapter(adapter);

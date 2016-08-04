@@ -152,6 +152,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             pi.setEmail(profile.getEmail());
             pi.setFirstName(profile.getFirstName());
             pi.setLastName(profile.getLastName());
+            pi.setPassword(profile.getPassword());
             complaint.setProfileInfo(pi);
             if (account == null) {
                 Log.e(LOG, "sendComplaint: account is null " );
