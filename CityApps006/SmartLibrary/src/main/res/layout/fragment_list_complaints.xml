@@ -23,30 +23,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/back6" />
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/filter_icon"
-            android:src="@drawable/ic_action_search"
-            android:layout_marginTop="20dp"/>
 
-        <TextView
-            android:layout_marginTop="30dp"
-            android:layout_toRightOf="@+id/filter_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="filter by"
-            android:id="@+id/filter_Txt"
-            android:textColor="@color/white"/>
-
-        <TextView
-            android:id="@+id/filter_Txt2"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_toRightOf="@+id/filter_Txt"
-            android:layout_marginTop="30dp"
-            android:text=" - type"
-            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/FLC_title"

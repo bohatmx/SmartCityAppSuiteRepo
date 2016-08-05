@@ -65,8 +65,8 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     List<String> stringList;
     Activity activity;
     View topView;
-    ImageView hero, noCompImage, filterIcon;
-    TextView txtNoComp, FilterTxt, FilterTxt2;
+    ImageView hero, noCompImage;
+    TextView txtNoComp;
     ProgressBar progressBar;
 
 
@@ -222,23 +222,24 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
         txtNoComp = (TextView) view.findViewById(R.id.FLC_noComplaints);
         noCompImage = (ImageView) view.findViewById(R.id.FLC_image);
         listView = (ListView) view.findViewById(R.id.FLC_listView);
-        filterIcon = (ImageView) view.findViewById(R.id.filter_icon);
-        filterIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Util.flashOnce(view, 200, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-
-                        Log.e(LOG, "setFields: onAnimationEnded: filterIcon onClick" );;
-
-                    }
-                });
-
-            }
-        });
-        FilterTxt = (TextView) view.findViewById(R.id.filter_Txt);
-        FilterTxt2 = (TextView) view.findViewById(R.id.filter_Txt2);
+//
+//        filterIcon = (ImageView) view.findViewById(R.id.filter_icon);
+//        filterIcon.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Util.flashOnce(view, 200, new Util.UtilAnimationListener() {
+//                    @Override
+//                    public void onAnimationEnded() {
+//
+//                        Log.e(LOG, "setFields: onAnimationEnded: filterIcon onClick" );;
+//
+//                    }
+//                });
+//
+//            }
+//        });
+//        FilterTxt = (TextView) view.findViewById(R.id.filter_Txt);
+//        FilterTxt2 = (TextView) view.findViewById(R.id.filter_Txt2);
 
 
 

@@ -244,6 +244,7 @@ public class ComplaintDTO implements Serializable, Comparable<ComplaintDTO> {
      */
     @Override
     public int compareTo(ComplaintDTO another) {
+        if (this.complaintDate == null || another.complaintDate == null) return 0;
         if (this.complaintDate.longValue() < another.complaintDate.longValue()) {
             return 1;
         }
