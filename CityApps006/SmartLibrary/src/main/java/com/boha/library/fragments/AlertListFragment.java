@@ -3,10 +3,10 @@ package com.boha.library.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +29,7 @@ import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.Statics;
+import com.boha.library.util.Util;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
@@ -169,16 +170,25 @@ public class AlertListFragment extends Fragment implements PageFragment {
             @Override
             public void onClick(View v) {
                 if (alertList == null || alertList.isEmpty()) {
-                    Snackbar.make(recyclerView, ctx.getString(R.string.noalerts_map),
-                            Snackbar.LENGTH_LONG).show();
+                    Util.showSnackBar(recyclerView,"No alerts for display","OK", Color.parseColor("CYAN"));
                     return;
                 }
-                Intent i = new Intent(ctx, AlertMapActivity.class);
-                ResponseDTO r = new ResponseDTO();
-                r.setAlertList(alertList);
-                i.putExtra("alertList", r);
-                i.putExtra("primaryColorDark", primaryDarkColor);
-                startActivity(i);
+                int count = 0;
+                for (AlertDTO m: alertList) {
+                    if (m.getLatitude() != null) {
+                        count++;
+                    }
+                }
+                if (count > 0) {
+                    Intent i = new Intent(ctx, AlertMapActivity.class);
+                    ResponseDTO r = new ResponseDTO();
+                    r.setAlertList(alertList);
+                    i.putExtra("alertList", r);
+                    i.putExtra("primaryColorDark", primaryDarkColor);
+                    startActivity(i);
+                } else {
+                    Util.showSnackBar(recyclerView,"No located alerts for display","OK", Color.parseColor("CYAN"));
+                }
 
             }
         });

@@ -100,7 +100,6 @@ public class AlertMapActivity extends AppCompatActivity {
                 .getMetrics(displayMetrics);
 
 
-
         setFields();
         ResponseDTO r = (ResponseDTO) getIntent().getSerializableExtra("alertList");
         primaryColorDark = getIntent().getIntExtra("primaryColorDark", R.color.blue_gray_800);
@@ -133,10 +132,9 @@ public class AlertMapActivity extends AppCompatActivity {
         }
 
 
-
-        logo = getIntent().getIntExtra("logo",R.drawable.elogo);
-        primaryColor = getIntent().getIntExtra("primaryColor",R.color.teal_500);
-        darkColor = getIntent().getIntExtra("primaryColor",R.color.teal_700);
+        logo = getIntent().getIntExtra("logo", R.drawable.elogo);
+        primaryColor = getIntent().getIntExtra("primaryColor", R.color.teal_500);
+        darkColor = getIntent().getIntExtra("primaryColor", R.color.teal_700);
         municipality = SharedUtil.getMunicipality(getApplicationContext());
 
         ActionBar actionBar = getSupportActionBar();
@@ -227,7 +225,7 @@ public class AlertMapActivity extends AppCompatActivity {
                         txtNumber.setText("" + (index + 1));
                         desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
                         break;
-                   //
+                    //
                     default:
                         dot = inflater.inflate(R.layout.dot_black, null);
                         txtNumber = (TextView) dot.findViewById(R.id.DOT_text);
@@ -256,7 +254,7 @@ public class AlertMapActivity extends AppCompatActivity {
                 for (Marker marker : markers) {
                     builder.include(marker.getPosition());
                 }
-
+                if (markers != null || !markers.isEmpty()) {
                     LatLngBounds bounds = builder.build();
                     int padding = 60; // offset from edges of the map in pixels
                     CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
@@ -264,6 +262,7 @@ public class AlertMapActivity extends AppCompatActivity {
                     txtCount.setText("" + markers.size());
                     //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 1.0f));
                     googleMap.animateCamera(cu);
+                }
 
 
             }
@@ -444,15 +443,17 @@ public class AlertMapActivity extends AppCompatActivity {
         mMenu = menu;
         return true;
     }
+
     int themeDarkColor;
 
     Menu mMenu;
     static final int THEME_REQUESTED = 8075;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == com.boha.library.R.id.action_app_guide) {
+        if (id == com.boha.library.R.id.action_app_guide) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("http://etmobileguide.oneconnectgroup.com/"));
             startActivity(intent);
@@ -496,7 +497,7 @@ public class AlertMapActivity extends AppCompatActivity {
     public void onBackPressed() {
         Log.e(LOG, "######## onBackPressed");
 
-     //   finish();
+        //   finish();
     }
 
     @Override

@@ -21,7 +21,7 @@
             android:text="Category Name Here"
             android:layout_toRightOf="@id/icon"
             android:layout_marginLeft="@dimen/mon_16"
-            style="@style/Title3TextStyleBlue"
+            style="@style/Title2TextStyleBlue"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

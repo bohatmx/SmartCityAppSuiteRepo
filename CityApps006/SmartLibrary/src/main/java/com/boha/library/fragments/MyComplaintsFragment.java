@@ -35,8 +35,6 @@ import com.squareup.leakcanary.RefWatcher;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Manage the User's own complaints history
@@ -65,8 +63,8 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     List<String> stringList;
     Activity activity;
     View topView;
-    ImageView hero, noCompImage, filterIcon;
-    TextView txtNoComp, FilterTxt, FilterTxt2;
+    ImageView hero, noCompImage;
+    TextView txtNoComp;
     ProgressBar progressBar;
 
 
@@ -114,8 +112,10 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
             complaintList = new ArrayList<>();
         }
         if (!complaintList.isEmpty()) {
-            noCompImage.setVisibility(View.GONE);
-            txtNoComp.setVisibility(View.GONE);
+            if (noCompImage != null) {
+                noCompImage.setVisibility(View.GONE);
+                txtNoComp.setVisibility(View.GONE);
+            }
         }
         txtCount.setText("" + complaintList.size());
 
@@ -222,25 +222,6 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
         txtNoComp = (TextView) view.findViewById(R.id.FLC_noComplaints);
         noCompImage = (ImageView) view.findViewById(R.id.FLC_image);
         listView = (ListView) view.findViewById(R.id.FLC_listView);
-        filterIcon = (ImageView) view.findViewById(R.id.filter_icon);
-        filterIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Util.flashOnce(view, 200, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-
-                        Log.e(LOG, "setFields: onAnimationEnded: filterIcon onClick" );;
-
-                    }
-                });
-
-            }
-        });
-        FilterTxt = (TextView) view.findViewById(R.id.filter_Txt);
-        FilterTxt2 = (TextView) view.findViewById(R.id.filter_Txt2);
-
-
 
         txtTitle.setText(ctx.getString(R.string.my_complaints));
         txtSubTitle.setText(getString(R.string.history));
@@ -259,6 +240,8 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
 
 
     Random random = new Random(System.currentTimeMillis());
+
+
 
     private void setNoCompImage() {
         noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.happy1));
@@ -328,20 +311,7 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
 
     @Override
     public void animateSomething() {
-        final Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        timer.cancel();
-                        hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
 
-                    }
-                });
-            }
-        }, 50);
     }
 
     int primaryColor, primaryDarkColor;

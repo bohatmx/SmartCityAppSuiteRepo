@@ -231,7 +231,7 @@
             android:id="@+id/CI_image"
             android:layout_width="match_parent"
             android:layout_height="@dimen/mon_picture_large"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             android:src="@drawable/back4" />
     </RelativeLayout>
 

@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.boha.library.dto.AlertImageDTO;
@@ -171,6 +172,10 @@ public class PhotoUploadService extends IntentService {
                 } else {
                     clearCache(okList);
                 }
+                //broadcast to activities
+                LocalBroadcastManager bm = LocalBroadcastManager.getInstance(getApplicationContext());
+                Intent m = new Intent(BROADCAST_UPLOADED);
+                bm.sendBroadcast(m);
 
             }
 
@@ -181,7 +186,7 @@ public class PhotoUploadService extends IntentService {
         });
 
     }
-
+public static final String BROADCAST_UPLOADED = "com.boha.uploaded";
     private  void clearCache(List<ImageInterface> list) {
         for (ImageInterface i: list) {
             if (i instanceof ComplaintImageDTO) {

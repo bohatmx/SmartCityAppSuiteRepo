@@ -59,6 +59,10 @@ public class Util {
         return p;
     }
     public static Snackbar showSnackBar(View view,String message, String action, int color) {
+        if (view == null) {
+            Log.e("Util", "showSnackBar: view is null, exit..." );
+            return null;
+        }
         final Snackbar s = Snackbar.make(view,message, Snackbar.LENGTH_INDEFINITE);
         s.setActionTextColor(color);
         s.setAction(action, new View.OnClickListener() {
@@ -117,8 +121,8 @@ public class Util {
 
 
         ObjectAnimator scaleUp = ObjectAnimator.ofPropertyValuesHolder(view,
-                PropertyValuesHolder.ofFloat("scaleX", 0.6f, 1.0f),
-                PropertyValuesHolder.ofFloat("scaleY", 0.6f, 1.0f));
+                PropertyValuesHolder.ofFloat("scaleX", 0.1f, 1.0f),
+                PropertyValuesHolder.ofFloat("scaleY", 0.1f, 1.0f));
         scaleUp.setDuration(duration);
         scaleUp.setInterpolator(new AccelerateDecelerateInterpolator());
         scaleUp.start();

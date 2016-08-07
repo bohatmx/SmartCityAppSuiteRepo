@@ -718,6 +718,11 @@ public class MainDrawerActivity extends ActionBarActivity
     }
 
     @Override
+    public void onRefreshRequested() {
+
+    }
+
+    @Override
     public void onConnected(Bundle bundle) {
         Log.i(LOG,
                 "+++  GoogleApiClient onConnected() ...");

@@ -1,9 +1,11 @@
 package com.boha.library.activities;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -23,6 +25,7 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -144,6 +147,12 @@ public class PictureActivity extends AppCompatActivity
                 CityApplication.TrackerName.APP_TRACKER);
         t.setScreenName(PictureActivity.class.getSimpleName());
         t.send(new HitBuilders.ScreenViewBuilder().build());
+
+        UploadBroadcastReceiver receiver = new UploadBroadcastReceiver();
+        IntentFilter filter = new IntentFilter(PhotoUploadService.BROADCAST_UPLOADED);
+
+        LocalBroadcastManager bm = LocalBroadcastManager.getInstance(getApplicationContext());
+        bm.registerReceiver(receiver,filter);
 
     }
 
@@ -605,7 +614,7 @@ public class PictureActivity extends AppCompatActivity
                         options.inJustDecodeBounds = true;
                         BitmapFactory.decodeFile(photoFile.getAbsolutePath(), options);
 
-                        options.inSampleSize = calculateInSampleSize(options, 640, 800);
+                        options.inSampleSize = calculateInSampleSize(options, 1024, 1024);
                         options.inJustDecodeBounds = false;
                         Bitmap bm = BitmapFactory.decodeFile(photoFile.getAbsolutePath(), options);
 
@@ -614,6 +623,9 @@ public class PictureActivity extends AppCompatActivity
                         matrixThumbnail.postScale(0.6f, 0.6f);
                         if (rotate > 0f) {
                             matrixThumbnail.postRotate(rotate);
+                        }
+                        if (bm == null) {
+                            return 9;
                         }
                         Bitmap thumb = Bitmap.createBitmap
                                 (bm, 0, 0, bm.getWidth(),
@@ -849,5 +861,13 @@ public class PictureActivity extends AppCompatActivity
             orientation = Configuration.ORIENTATION_LANDSCAPE;
         }
         return orientation;
+    }
+
+    private class UploadBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Util.showSnackBar(txtType,"Photo has been uploaded to server", "OK", Color.parseColor("green"));
+        }
     }
 }

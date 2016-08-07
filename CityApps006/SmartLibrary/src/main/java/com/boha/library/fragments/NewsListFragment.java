@@ -3,6 +3,7 @@ package com.boha.library.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -122,11 +123,21 @@ public class NewsListFragment extends Fragment implements PageFragment {
                             Snackbar.LENGTH_LONG).show();
                     return;
                 }
-                Intent i = new Intent(ctx, NewsMapActivity.class);
-                ResponseDTO r = new ResponseDTO();
-                r.setNewsArticleList(newsList);
-                i.putExtra("newsArticleList", r);
-                startActivity(i);
+                int count = 0;
+                for (NewsArticleDTO m: newsList) {
+                    if (m.getLatitude() != null) {
+                        count++;
+                    }
+                }
+                if (count > 0) {
+                    Intent i = new Intent(ctx, NewsMapActivity.class);
+                    ResponseDTO r = new ResponseDTO();
+                    r.setNewsArticleList(newsList);
+                    i.putExtra("newsArticleList", r);
+                    startActivity(i);
+                } else {
+                    Util.showSnackBar(listView,"No located news to display on map", "OK", Color.parseColor("ORANGE"));
+                }
 
             }
         });

@@ -12,14 +12,13 @@
     <uses-permission android:name="com.boha.citizenapp.ethekwini.gcm.permission.C2D_MESSAGE" />
 
     <!--
-        DEV KEY: AIzaSyD_JN8utL0IAkTI4HKm_TkBX_xSvQbZbFU
-        88:04:DF:2B:68:40:60:A3:31:81:2F:71:1F:2D:71:FB:F7:71:F9:57;com.boha.citizenapp.ethekwini
+        DEV KEY: AIzaSyCCqxtRIo4epdejyic7PxWv5rZLcZp5J1w
+        3E:F3:AA:D7:B9:B4:71:22:A7:F0:CD:4F:89:74:84:6A:92:8C:99:E0;com.boha.citizenapp.ethekwini
     -->
     <!--
-        RELEASE_KEY: AIzaSyCi7zV2Tc8ItuEXho4Jda1Y-Xh4IyqlkG4
+        RELEASE_KEY: AIzaSyAqZZRA8nW_XmRqti8A2tqiXHvp6fy5bqw
         4F:72:A0:21:0F:AD:8D:6B:EC:B5:83:49:13:CB:64:75:74:62:1A:A7;com.boha.citizenapp.ethekwini
     -->
-    <!-- Machine Api key: AIzaSyBHqQLIZoSu4oZ5HR9E9629G6RVyeLUcBY -->
     <application
         android:name="com.boha.library.activities.CityApplication"
         android:allowBackup="true"
@@ -31,7 +30,7 @@
         <!-- Keys and metadata -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBHqQLIZoSu4oZ5HR9E9629G6RVyeLUcBY" />
+            android:value="AIzaSyCCqxtRIo4epdejyic7PxWv5rZLcZp5J1w" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

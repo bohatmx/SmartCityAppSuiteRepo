@@ -130,7 +130,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         w.setLongitude(location.getLongitude());
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
 
-        //
+        //todo remove when done testing
         w.setSpoof(true);
         disableFAB();
         mListener.setBusy(true);
@@ -367,6 +367,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         setHeader();
         txtCount = (TextView) view.findViewById(R.id.CAR_count);
         listView = (ListView) view.findViewById(R.id.CAR_listView);
+
 
         txtCount.setOnClickListener(new View.OnClickListener() {
             @Override
