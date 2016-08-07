@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.dto.ComplaintTypeDTO;
+import com.boha.library.util.Util;
 
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
                 mListener.onComplaintTypeClicked(p);
             }
         });
-
+        Util.scaleDownAndUp(holder.main, 300);
     }
 
     @Override

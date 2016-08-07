@@ -614,7 +614,7 @@ public class PictureActivity extends AppCompatActivity
                         options.inJustDecodeBounds = true;
                         BitmapFactory.decodeFile(photoFile.getAbsolutePath(), options);
 
-                        options.inSampleSize = calculateInSampleSize(options, 640, 800);
+                        options.inSampleSize = calculateInSampleSize(options, 1024, 1024);
                         options.inJustDecodeBounds = false;
                         Bitmap bm = BitmapFactory.decodeFile(photoFile.getAbsolutePath(), options);
 
@@ -623,6 +623,9 @@ public class PictureActivity extends AppCompatActivity
                         matrixThumbnail.postScale(0.6f, 0.6f);
                         if (rotate > 0f) {
                             matrixThumbnail.postRotate(rotate);
+                        }
+                        if (bm == null) {
+                            return 9;
                         }
                         Bitmap thumb = Bitmap.createBitmap
                                 (bm, 0, 0, bm.getWidth(),

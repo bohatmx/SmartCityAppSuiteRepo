@@ -15,6 +15,7 @@ public class Statics {
      * PECANWOOD BACKEND APP_URL'S - pecanwood back end endpoint on laptop
      */
 
+//    public static final String PREFIX = "http://icsmsdev1.oneconnectgroup.com:8585";
     public static final String PREFIX = "http://192.168.1.233:40405";
     public static final String URL = PREFIX + "/sc/";
     public static final String IMAGE_URL = PREFIX + "/";
@@ -23,10 +24,6 @@ public class Statics {
     /**
      * SmartCity Production Server
      */
-
-//    public static final String PREFIX  = "http://icsm1.oneconnectgroup.com:7070";
-//    public static final String URL = PREFIX + "/sc/";
-//    public static final String IMAGE_URL = PREFIX + "/";
 
 
     public static final String GATEWAY_SERVLET = "smart?";

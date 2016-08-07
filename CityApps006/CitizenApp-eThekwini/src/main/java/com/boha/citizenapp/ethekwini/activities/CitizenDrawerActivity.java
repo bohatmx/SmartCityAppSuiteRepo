@@ -1,9 +1,7 @@
 package com.boha.citizenapp.ethekwini.activities;
 
-import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Resources;
@@ -12,7 +10,9 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -303,6 +303,9 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
     }
 
+    private void refreshPictures() {
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main_pager, menu);
@@ -416,7 +419,6 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             pageFragmentList.add(complaintCreateFragment);
         }
         pageFragmentList.add(alertListFragment);
-
         pageFragmentList.add(newsListFragment);
         pageFragmentList.add(complaintsAroundMeFragment);
         pageFragmentList.add(faqFragment);
@@ -573,37 +575,10 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             public void run() {
                 currentPageIndex = 1;
                 Collections.sort(complaintList);
-                response.setComplaintList(complaintList);
+                response.getComplaintList().add(0, complaintList.get(0));
+                myComplaintsFragment.setComplaintList(response.getComplaintList());
+//                getLoginData();
 
-                Snackbar.make(mDrawerLayout, "Refreshing list of complaints, will take a second",
-                        Snackbar.LENGTH_LONG).show();
-                index = 0;
-                myComplaintsFragment.setComplaintList(complaintList);
-
-                String ref = "Reference Number: " + complaintList.get(0).getReferenceNumber();
-                AlertDialog.Builder d = new AlertDialog.Builder(activity);
-                d.setCancelable(false);
-                d.setTitle("Complaint Pictures")
-                        .setMessage(ref + "\n\nPictures may give the Municipality more information about your complaint.\n\nDo you want to take pictures for the complaint?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent x = new Intent(getApplicationContext(), PictureActivity.class);
-                                x.putExtra("complaint", complaintList.get(0));
-                                x.putExtra("imageType", PictureActivity.COMPLAINT_IMAGE);
-                                x.putExtra("logo", logo);
-
-                                startActivityForResult(x, REQUEST_COMPLAINT_PICTURES);
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //go to mycomplaints
-                                mPager.setCurrentItem(1, true);
-                            }
-                        })
-                        .show();
             }
         });
 
@@ -783,12 +758,8 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 //                checkGPS();
                 break;
             case REQUEST_COMPLAINT_PICTURES:
-                currentPageIndex = 1;
-                getLoginData();
-
-                if (result != RESULT_OK) {
-                    Util.showToast(ctx, "No complaint photos");
-                }
+                Log.d(LOG, "onActivityResult: REQUEST_COMPLAINT_PICTURES");
+                complaintCreateFragment.onCameraCompleted();
                 break;
             case CREATE_COMPLAINT_REQUESTED:
                 if (result == RESULT_OK) {
@@ -885,6 +856,11 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onRefreshRequested() {
+        getLoginData();
+    }
+
+    @Override
     public void onRefreshRequested(ComplaintDTO complaint) {
         mRefreshFromComplaint = true;
         getLoginData();
@@ -910,6 +886,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     }
 
     private void showAlertDetail(AlertDTO a) {
+
         Intent w = new Intent(this, AlertDetailActivity.class);
         w.putExtra("alert", a);
         startActivity(w);
@@ -1095,7 +1072,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-     /*   final Handler h = new Handler(Looper.getMainLooper());
+       final Handler h = new Handler(Looper.getMainLooper());
         final Runnable r = new Runnable() {
             public void run() {
                 int index = 0;
@@ -1128,7 +1105,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                         index = 7;
                         break;
                     case 9:
-                        index = 7;
+                        index = 8;
                         break;
                 }
                 mPager.setCurrentItem(index, true);
@@ -1136,7 +1113,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
             }
         };
-        r.run(); */
+        r.run();
 
     }
 }

@@ -10,7 +10,6 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -22,7 +21,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -35,7 +36,6 @@ import com.boha.library.dto.ComplaintCategoryDTO;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintTypeDTO;
 import com.boha.library.dto.ProfileInfoDTO;
-import com.boha.library.dto.UserDTO;
 import com.boha.library.services.PhotoUploadService;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
@@ -47,6 +47,7 @@ import com.boha.library.util.WebCheck;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 
@@ -79,14 +80,18 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     ResponseDTO response;
     Context ctx;
     View view;
-    TextView txtCategory;
+    TextView txtCategory, txtType;
     List<ComplaintTypeDTO> complaintTypeList;
     List<ComplaintCategoryDTO> complaintCategoryList;
     Activity activity;
-    ImageView hero, icon, iconBack;
-    FloatingActionButton fabSend;
+    ImageView hero, cameraIcon, iconBack;
     RecyclerView recyclerView;
     Spinner spinner;
+    AccountDTO account;
+    RadioButton radioAccount, radioAnywhere;
+
+    Snackbar snackbar;
+    boolean sendAccount;
 
 
     @Override
@@ -106,6 +111,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         activity = getActivity();
         setFields();
         getCachedLookups();
+        mListener.onComplaintLocationRequested();
         UploadBroadcastReceiver receiver = new UploadBroadcastReceiver();
         IntentFilter filter = new IntentFilter(PhotoUploadService.BROADCAST_UPLOADED);
 
@@ -136,10 +142,6 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         });
     }
 
-    AccountDTO account;
-
-    Snackbar snackbar;
-    boolean sendAccount;
 
     private void sendComplaint() {
 
@@ -151,11 +153,17 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             Util.showToast(ctx, "Please select complaint type");
             return;
         }
+        if (radioAccount.isChecked()) {
+            if (account == null) {
+                snackbar = showSnackBar(txtCategory, "Please select account", "OK",
+                        Color.parseColor("YELLOW"));
+                return;
+            }
+        }
 
         final RequestDTO w = new RequestDTO(RequestDTO.ADD_COMPLAINT);
-        final ComplaintDTO complaint = new ComplaintDTO();
 
-        UserDTO user = SharedUtil.getUser(ctx);
+        complaint = new ComplaintDTO();
         if (profile != null) {
             ProfileInfoDTO pi = new ProfileInfoDTO();
             pi.setCustomerID(profile.getCustomerID());
@@ -165,26 +173,21 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             pi.setLastName(profile.getLastName());
             pi.setPassword(profile.getPassword());
             complaint.setProfileInfo(pi);
-            if (sendAccount) {
-                if (account == null) {
-                    Log.e(LOG, "sendComplaint: account is null ");
-                    snackbar = showSnackBar(txtCategory, "Please select account", "OK",
-                            Color.parseColor("YELLOW"));
-                    return;
-                }
+            if (radioAccount.isChecked()) {
                 complaint.setAccountNumber(account.getAccountNumber());
             }
 
         }
-//        if (user != null) {
-//            user.setDateRegistered(null);
-//            user.setFirstName(null);
-//            user.setLastName(null);
-//            complaint.setUser(user);
-//
-//        }
+
         complaint.setCategory(complaintCategory.getComplaintCategoryName());
         complaint.setSubCategory(complaintType.getComplaintTypeName());
+        complaint.setComplaintDate(new Date().getTime());
+        if (radioAnywhere.isChecked()) {
+            if (location != null) {
+                complaint.setLatitude(location.getLatitude());
+                complaint.setLongitude(location.getLongitude());
+            }
+        }
 
         w.setComplaint(complaint);
         complaint.setComplaintType(complaintType);
@@ -192,7 +195,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         w.setMunicipalityID(complaint.getMunicipalityID());
 
         //todo remove when done testing
-        w.setSpoof(true);
+        w.setSpoof(false);
         //
 
         if (WebCheck.checkNetworkAvailability(ctx).isNetworkUnavailable()) {
@@ -201,6 +204,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         }
 
         mListener.setBusy(true);
+        snackbar = Util.showSnackBar(recyclerView, "Sending your complaint to the municipality ...", "OK", Color.parseColor("Cyan"));
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO response) {
@@ -209,21 +213,21 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                         @Override
                         public void run() {
                             mListener.setBusy(false);
+                            snackbar.dismiss();
                             if (response.isMunicipalityAccessFailed()) {
-                                showSnackBar(fabSend, getString(R.string.unable_complain), getString(R.string.close), Color.parseColor("RED"));
+                                showSnackBar(recyclerView, getString(R.string.unable_complain), getString(R.string.close), Color.parseColor("RED"));
                                 return;
                             } else {
                                 if (response.getComplaintList() != null && !response.getComplaintList().isEmpty()) {
-                                    showSnackBar(fabSend, getString(R.string.complaint_received), "OK", Color.parseColor("GREEN"));
-                                    showPictureDialog(response.getComplaintList().get(0));
+                                    showSnackBar(recyclerView, getString(R.string.complaint_received), "OK", Color.parseColor("GREEN"));
+                                    showCameraIcon(response.getComplaintList().get(0));
                                     mListener.onComplaintAdded(response.getComplaintList());
 
                                 } else {
-                                    showSnackBar(fabSend, getString(R.string.process_complaint_unable), "OK", Color.parseColor("YELLOW"));
+                                    showSnackBar(recyclerView, getString(R.string.process_complaint_unable), "OK", Color.parseColor("YELLOW"));
                                     return;
                                 }
                             }
-
 
                         }
                     });
@@ -238,7 +242,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                     @Override
                     public void run() {
                         mListener.setBusy(false);
-                        Util.showSnackBar(fabSend, message, "OK", Color.parseColor("RED"));
+                        Util.showSnackBar(recyclerView, message, "Not OK", Color.parseColor("RED"));
 
                     }
                 });
@@ -252,24 +256,10 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
     }
 
-    private void showPictureDialog(final ComplaintDTO complaint) {
-        pictureDialog = new AlertDialog.Builder(getActivity());
-        pictureDialog.setTitle("Confirm Complaint")
-                .setMessage("Do you want to take pictures this complaint?\n"
-                        + complaintCategory.getComplaintCategoryName() + " - " + complaintType.getComplaintTypeName())
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        mListener.onPictureRequired(complaint);
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).show();
+    private void showCameraIcon(final ComplaintDTO complaint) {
+        cameraIcon.setVisibility(View.VISIBLE);
+        this.complaint = complaint;
+        Util.scaleUp(cameraIcon, 300);
     }
 
     CategoryAdapter categoryAdapter;
@@ -280,6 +270,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             @Override
             public void onCategoryClicked(ComplaintCategoryDTO category) {
                 complaintCategory = category;
+                txtCategory.setText(category.getComplaintCategoryName());
                 setComplaintTypeList();
             }
         });
@@ -293,9 +284,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             @Override
             public void onComplaintTypeClicked(ComplaintTypeDTO type) {
                 complaintType = type;
-                fabSend.setEnabled(true);
-                fabSend.setAlpha(1.0f);
-                mListener.onComplaintLocationRequested();
+                txtType.setText(type.getComplaintTypeName());
                 showConfirmDialog();
             }
         });
@@ -303,18 +292,17 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     }
 
     AlertDialog.Builder confirmDialog;
-    AlertDialog.Builder pictureDialog;
 
     private void showConfirmDialog() {
         confirmDialog = new AlertDialog.Builder(getActivity());
         confirmDialog.setTitle("Confirm Complaint")
-                .setMessage("Do you want to send this complaint?\n"
+                .setMessage("Do you want to send this complaint?\n\n"
                         + complaintCategory.getComplaintCategoryName() + " - " + complaintType.getComplaintTypeName())
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        sendComplaint();
+                       sendComplaint();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -326,14 +314,46 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     }
 
     ProfileInfoDTO profile;
+    ComplaintDTO complaint;
+
+    public void onCameraCompleted() {
+        mListener.onRefreshRequested();
+    }
 
     private void setFields() {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         txtCategory = (TextView) view.findViewById(R.id.category);
-        fabSend = (FloatingActionButton) view.findViewById(R.id.fabSend);
+        txtType = (TextView) view.findViewById(R.id.complaintType);
         iconBack = (ImageView) view.findViewById(R.id.backIcon);
+        cameraIcon = (ImageView) view.findViewById(R.id.cameraIcon);
+        radioAccount = (RadioButton) view.findViewById(R.id.radioAccount);
+        radioAnywhere = (RadioButton) view.findViewById(R.id.radioAnywhere);
         hero = (ImageView) view.findViewById(R.id.CC_hero);
         spinner = (Spinner) view.findViewById(R.id.spinnerAccounts);
+        txtCategory.setText("");
+        txtType.setText("");
+        cameraIcon.setVisibility(View.GONE);
+        spinner.setVisibility(View.GONE);
+
+        radioAccount.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (profile.getAccountList().size() > 1) {
+                        spinner.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
+        radioAnywhere.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    spinner.setVisibility(View.GONE);
+                    mListener.onComplaintLocationRequested();
+                }
+            }
+        });
 
         LinearLayoutManager lm = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(lm);
@@ -344,7 +364,6 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             account = profile.getAccountList().get(0);
         }
         if (profile.getAccountList().size() > 1) {
-            spinner.setVisibility(View.VISIBLE);
             setSpinner();
         }
         iconBack.setOnClickListener(new View.OnClickListener() {
@@ -354,22 +373,38 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                 iconBack.setVisibility(View.GONE);
             }
         });
-
-        fabSend.setOnClickListener(new View.OnClickListener() {
+        cameraIcon.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v) {
-                if (account != null) {
-                    selectComplaintLocationDialog();
-                } else {
-                    showSnackBar(spinner, "Please select the account", "OK", Color.parseColor("GREEN"));
-                }
-
+            public void onClick(View v) {
+                if (complaint != null)
+                    mListener.onPictureRequired(complaint);
             }
         });
 
+
+//        fabSend.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(final View v) {
+//                if (complaintCategory == null) return;
+//
+//                if (complaintCategory.getComplaintCategoryName().equalsIgnoreCase("Road")
+//                        || complaintCategory.getComplaintCategoryName().equalsIgnoreCase("Pollution")
+//                        || complaintCategory.getComplaintCategoryName().equalsIgnoreCase("Traffic")
+//                        || complaintCategory.getComplaintCategoryName().equalsIgnoreCase("Waste Water")) {
+//                    sendAccount = false;
+//                    mListener.onComplaintLocationRequested();
+//                    return;
+//
+//                }
+//
+//                selectComplaintLocationDialog();
+//
+//
+//            }
+//        });
+
         animateSomething();
     }
-
 
     private void setSpinner() {
         List<String> list = new ArrayList<>();
@@ -399,41 +434,6 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     }
 
     AlertDialog.Builder locationDialog;
-    private void selectComplaintLocationDialog() {
-
-
-        if (complaintCategory.getComplaintCategoryName().equalsIgnoreCase("Road")
-                || complaintCategory.getComplaintCategoryName().equalsIgnoreCase("Pollution")
-                || complaintCategory.getComplaintCategoryName().equalsIgnoreCase("Traffic")
-                || complaintCategory.getComplaintCategoryName().equalsIgnoreCase("Waste Water")) {
-            sendAccount = false;
-            mListener.onComplaintLocationRequested();
-            return;
-
-        }
-        locationDialog = new AlertDialog.Builder(activity);
-        locationDialog.setTitle("Choose Complaint Location")
-                .setMessage("Is the complaint for your residential address?\n\nIf YES, the app will use your residential  address on the system, " +
-                        "\n\nif NO, the app will use GPS to find the location of the complaint.")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        location = null;
-                        sendAccount = true;
-                        dialog.dismiss();
-                        sendComplaint();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        sendAccount = false;
-                        mListener.onComplaintLocationRequested();
-                    }
-                })
-                .show();
-    }
 
     ComplaintCategoryDTO complaintCategory;
     ComplaintTypeDTO complaintType;
@@ -506,15 +506,16 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         void setBusy(boolean busy);
 
         void onPictureRequired(ComplaintDTO complaint);
+
+        void onRefreshRequested();
+
     }
 
     Location location;
 
     public void setLocation(Location location) {
-        Log.w(LOG, "$$$$ setLocation, acc: " + location.getAccuracy());
+        Log.w(LOG, "$$$$==============================>>  setLocation, acc: " + location.getAccuracy());
         this.location = location;
-
-        sendComplaint();
     }
 
     static final String LOG = ComplaintCreateFragment.class.getSimpleName();
@@ -530,11 +531,19 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         this.pageTitle = pageTitle;
     }
 
+    private void showSnack() {
+        try {
+            Util.showSnackBar(txtCategory, "Photo has been uploaded to server", "OK", Color.parseColor("green"));
+        } catch (Exception e) {
+            //ignore
+        }
+    }
+
     private class UploadBroadcastReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Util.showSnackBar(txtCategory, "Photo has been uploaded to server", "OK", Color.parseColor("green"));
+            showSnack();
         }
     }
 

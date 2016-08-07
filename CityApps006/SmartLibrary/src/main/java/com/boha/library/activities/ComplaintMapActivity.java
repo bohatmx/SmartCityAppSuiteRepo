@@ -22,7 +22,6 @@ import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.dto.AlertTypeDTO;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintTypeDTO;
 import com.boha.library.dto.MunicipalityDTO;
@@ -100,7 +99,7 @@ public class ComplaintMapActivity extends AppCompatActivity {
         inflater = getLayoutInflater();
         setFields();
         ResponseDTO r = (ResponseDTO) getIntent().getSerializableExtra("complaintList");
-        primaryColorDark = getIntent().getIntExtra("primaryColorDark",R.color.blue_gray_800);
+        primaryColorDark = getIntent().getIntExtra("primaryColorDark", R.color.blue_gray_800);
         if (r != null) {
             complaintList = r.getComplaintList();
             txtCount.setText("" + complaintList.size());
@@ -196,58 +195,39 @@ public class ComplaintMapActivity extends AppCompatActivity {
             point = pnt;
             BitmapDescriptor desc = null;
             Short color = null;
-            View dot = null;
-            TextView txtNumber;
-            if (comp.getComplaintType() != null) {
-                if (comp.getComplaintType().getColor() != null) {
-                    switch (comp.getComplaintType().getColor()) {
-                        case AlertTypeDTO.RED:
-                            dot = inflater.inflate(R.layout.dot_red, null);
-                            txtNumber = (TextView) dot.findViewById(R.id.DOT_text);
-                            txtNumber.setText("" + (index + 1));
-                            desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
-                            break;
-                        case AlertTypeDTO.GREEN:
-                            dot = inflater.inflate(R.layout.dot_green, null);
-                            txtNumber = (TextView) dot.findViewById(R.id.DOT_text);
-                            txtNumber.setText("" + (index + 1));
-                            desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
-                            break;
-                        case AlertTypeDTO.AMBER:
-                            dot = inflater.inflate(R.layout.dot_amber, null);
-                            txtNumber = (TextView) dot.findViewById(R.id.DOT_text);
-                            txtNumber.setText("" + (index + 1));
-                            desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
-                            break;
-                    }
+            View dot = inflater.inflate(R.layout.dot_red, null);
+            TextView txtNumber = (TextView) dot.findViewById(R.id.DOT_text);
+            txtNumber.setText("" + (index + 1));
+            desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
 
-                }
-                Marker m =
-                        googleMap.addMarker(new MarkerOptions()
-                                .title("" + comp.getComplaintID().intValue())
-                                .icon(desc)
-                                .position(pnt));
-                markers.add(m);
-                index++;
-            }
+            Marker m =
+                    googleMap.addMarker(new MarkerOptions()
+                            .title("" + comp.getReferenceNumber())
+                            .icon(desc)
+                            .position(pnt));
+            markers.add(m);
+            index++;
+
         }
         googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
                 //ensure that all markers in bounds
 
-                LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                for (Marker marker : markers) {
-                    builder.include(marker.getPosition());
+                if (markers != null && !markers.isEmpty()) {
+                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                    for (Marker marker : markers) {
+                        builder.include(marker.getPosition());
+                    }
+
+                    LatLngBounds bounds = builder.build();
+                    int padding = 60; // offset from edges of the map in pixels
+                    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+
+                    txtCount.setText("" + markers.size());
+//                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 1.0f));
+                    googleMap.animateCamera(cu);
                 }
-
-                LatLngBounds bounds = builder.build();
-                int padding = 60; // offset from edges of the map in pixels
-                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-
-                txtCount.setText("" + markers.size());
-                //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 1.0f));
-                googleMap.animateCamera(cu);
             }
         });
 

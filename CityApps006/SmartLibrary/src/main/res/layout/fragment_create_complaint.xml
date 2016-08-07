@@ -13,7 +13,7 @@
     <RelativeLayout
         android:id="@+id/CC_titleLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mon_hero_height_medium_lite"
+        android:layout_height="@dimen/mon_hero_height_small"
         android:layout_below="@id/CC_handle">
 
         <ImageView
@@ -41,55 +41,97 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/CC_title"
             android:layout_below="@id/CC_title"
+
             android:text="My sub title will occupy pride of place here"
             android:textColor="@color/white"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/layout1"
-        android:layout_below="@id/CC_titleLayout"
-        android:layout_margin="@dimen/mon_padding"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/category"
-            style="@style/Title3TextStyleGrey"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Complaint Category" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/CC_titleLayout"
+        android:layout_margin="@dimen/mon_padding">
+
+        <RelativeLayout
+            android:id="@+id/catlayout"
+            android:padding="@dimen/mon_padding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/category"
+                style="@style/Title3TextStyleBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Complaint Category" />
+            <TextView
+                android:id="@+id/complaintType"
+                android:layout_below="@id/category"
+                style="@style/Title2TextStyleBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Complaint Type" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/cameraIcon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/mon_16"
+            android:src="@drawable/ic_action_camera" />
 
         <ImageView
             android:id="@+id/backIcon"
-            android:src="@drawable/ic_action_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/mon_hero_height_small"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/mon_16"
+            android:src="@drawable/ic_action_back" />
+    </RelativeLayout>
+
+    <RadioGroup
+        android:id="@+id/layoutb"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/mon_16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout1" >
+
+        <RadioButton
+            android:id="@+id/radioAnywhere"
+            android:text="Anywhere"
+            android:layout_weight="1"
+            android:checked="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        </RelativeLayout>
+        <RadioButton
+            android:id="@+id/radioAccount"
+            android:text="Account Linked Address"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
+        </RadioGroup>
     <Spinner
         android:id="@+id/spinnerAccounts"
-        android:layout_below="@id/layout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_marginTop="@dimen/mon_padding"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutb" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_below="@id/spinnerAccounts"
+        android:layout_marginTop="@dimen/mon_padding"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinnerAccounts" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabSend"
-        android:src="@drawable/ic_near_me"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:elevation="@dimen/mon_16"
-        android:layout_margin="@dimen/mon_16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 
 </RelativeLayout>

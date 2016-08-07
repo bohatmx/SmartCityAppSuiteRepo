@@ -5,12 +5,12 @@
     <item
         android:id="@+id/action_help"
         android:title="Help"
-        android:icon="@drawable/ic_action_help"
+        android:icon="@drawable/ic_help"
         app:showAsAction="withText|ifRoom" />
     <item
         android:id="@+id/action_refresh"
         android:orderInCategory="100"
-        android:icon="@drawable/ic_action_refresh"
+        android:icon="@drawable/ic_refresh"
         android:title="Refresh"
         app:showAsAction="ifRoom" />
 </menu>
