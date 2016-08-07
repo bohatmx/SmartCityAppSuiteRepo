@@ -642,7 +642,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
         startActivityForResult(intent, CHECK_DESTINATION);
 
-
+//
     }
 
     static final int CHECK_DESTINATION = 9086;

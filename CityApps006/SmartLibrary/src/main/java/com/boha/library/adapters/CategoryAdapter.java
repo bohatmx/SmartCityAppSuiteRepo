@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.dto.ComplaintCategoryDTO;
+import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
 
 import java.util.List;
@@ -60,6 +61,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             }
         });
 
+        Statics.setRobotoFontLight(ctx,holder.categoryName);
         Util.scaleDownAndUp(holder.main, 200);
 
     }

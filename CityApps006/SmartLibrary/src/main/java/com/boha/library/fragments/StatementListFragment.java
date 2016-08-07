@@ -305,7 +305,8 @@ public class StatementListFragment extends Fragment implements PageFragment {
         }
 
         busyDownloading = true;
-        Snackbar.make(fab, "Statement download may take a few minutes", Snackbar.LENGTH_LONG).show();
+        snackbar = Util.showSnackBar(fab,"Municipality services downloading your "
+                + year + ":" + month + " statement ...", "OK", Color.parseColor("cyan"));
         if (year == 0 || month == 0) {
             DateTime dateTime = new DateTime();
             year = dateTime.getYear();
@@ -332,6 +333,7 @@ public class StatementListFragment extends Fragment implements PageFragment {
                         public void run() {
                             statementFragmentListener.setBusy(false);
                             busyDownloading = false;
+                            snackbar.dismiss();
                             enableFab();
                             if (response.getStatusCode() == 0) {
                                 Log.i(LOG, "+++ statement(s) from server, we cool, cool ...");

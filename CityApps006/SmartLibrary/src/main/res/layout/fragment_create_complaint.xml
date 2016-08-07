@@ -50,10 +50,12 @@
 
     <RelativeLayout
         android:id="@+id/layout1"
+        android:background="@color/grey_200"
+        android:paddingLeft="@dimen/mon_16"
+        android:paddingRight="@dimen/mon_16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/CC_titleLayout"
-        android:layout_margin="@dimen/mon_padding">
+        android:layout_below="@id/CC_titleLayout">
 
         <RelativeLayout
             android:id="@+id/catlayout"
@@ -97,7 +99,10 @@
     <RadioGroup
         android:id="@+id/layoutb"
         android:orientation="horizontal"
-        android:layout_margin="@dimen/mon_16"
+        android:background="@color/grey_200"
+        android:padding="@dimen/mon_padding"
+        android:paddingLeft="@dimen/mon_16"
+        android:paddingRight="@dimen/mon_16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/layout1" >

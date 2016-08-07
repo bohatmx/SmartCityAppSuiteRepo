@@ -195,7 +195,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         w.setMunicipalityID(complaint.getMunicipalityID());
 
         //todo remove when done testing
-        w.setSpoof(false);
+        w.setSpoof(true);
         //
 
         if (WebCheck.checkNetworkAvailability(ctx).isNetworkUnavailable()) {
@@ -219,12 +219,12 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                                 return;
                             } else {
                                 if (response.getComplaintList() != null && !response.getComplaintList().isEmpty()) {
-                                    showSnackBar(recyclerView, getString(R.string.complaint_received), "OK", Color.parseColor("GREEN"));
+                                    snackbar = Util.showSnackBar(recyclerView, getString(R.string.complaint_received), "OK", Color.parseColor("GREEN"));
                                     showCameraIcon(response.getComplaintList().get(0));
                                     mListener.onComplaintAdded(response.getComplaintList());
 
                                 } else {
-                                    showSnackBar(recyclerView, getString(R.string.process_complaint_unable), "OK", Color.parseColor("YELLOW"));
+                                    snackbar = Util.showSnackBar(recyclerView, getString(R.string.process_complaint_unable), "OK", Color.parseColor("YELLOW"));
                                     return;
                                 }
                             }
@@ -266,6 +266,9 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     SubCategoryAdapter subCategoryAdapter;
 
     private void setCategoryList() {
+        iconBack.setVisibility(View.GONE);
+        txtCategory.setText("");
+        txtType.setText("");
         categoryAdapter = new CategoryAdapter(complaintCategoryList, getActivity(), new CategoryAdapter.CategoryAdapterListener() {
             @Override
             public void onCategoryClicked(ComplaintCategoryDTO category) {
@@ -334,6 +337,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         txtType.setText("");
         cameraIcon.setVisibility(View.GONE);
         spinner.setVisibility(View.GONE);
+        iconBack.setVisibility(View.GONE);
 
         radioAccount.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

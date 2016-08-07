@@ -112,8 +112,10 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
             complaintList = new ArrayList<>();
         }
         if (!complaintList.isEmpty()) {
-            noCompImage.setVisibility(View.GONE);
-            txtNoComp.setVisibility(View.GONE);
+            if (noCompImage != null) {
+                noCompImage.setVisibility(View.GONE);
+                txtNoComp.setVisibility(View.GONE);
+            }
         }
         txtCount.setText("" + complaintList.size());
 
