@@ -193,12 +193,22 @@ public class AccountFragment extends Fragment implements PageFragment {
     int year, month;
     static final Locale LOCALE = Locale.getDefault();
     static final SimpleDateFormat sd = new SimpleDateFormat("EEEE dd MMMM yyyy", LOCALE);
-public static final String CURRENCY_SYMBOL = "R";
+    static final SimpleDateFormat sd1 = new SimpleDateFormat(" dd MMMM yyyy hh:mm a");
+    public static final String CURRENCY_SYMBOL = "R";
+
     private void setAccountFields() {
         txtAddress.setText(account.getPropertyAddress());
         txtArrears.setText(CURRENCY_SYMBOL + df.format(account.getCurrentArrears()));
         txtBalance.setText(CURRENCY_SYMBOL + df.format(account.getCurrentBalance()));
         txtLastBillAmount.setText(CURRENCY_SYMBOL + df.format(account.getLastBillAmount()));
+        if(account.getNextBillDate() != null){
+            txtNextBill.setText(sd1.format(account.getNextBillDate()));
+        } else{
+            txtNextBill.setText("Date not Set");
+        }
+        if (account.getDateLastUpdated() != null) {
+            txtLastUpdate.setText(sd1.format(account.getDateLastUpdated()));
+        }
 
         Util.expand(detailView, 1000, null);
 
