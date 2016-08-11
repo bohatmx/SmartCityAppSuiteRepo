@@ -194,13 +194,6 @@ public class SplashActivity extends AppCompatActivity {
         municipality = SharedUtil.getMunicipality(ctx);
 
         if (municipality == null) {
-//            municipality = new MunicipalityDTO();
-//            municipality.setMunicipalityID(1);
-//            municipality.setMunicipalityName("eThekwini");
-//            SharedUtil.saveMunicipality(ctx, municipality);
-//            checkVirginity();
-
-
             RequestDTO w = new RequestDTO(RequestDTO.GET_MUNICIPALITY_BY_NAME);
             w.setMunicipalityName(MUNICIPALITY_NAME);
             setProgressDialog();

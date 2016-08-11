@@ -55,11 +55,8 @@ public class FAQCommsUtil {
         ctx = context;
         final FaqStrings faqStrings = new FaqStrings();
         final StringBuilder xx = new StringBuilder();
-        //local dev
-        xx.append(Statics.IMAGE_URL).append("smartcity_images/municipality/faq/");
-        //for dev environment and production point here
-        //xx.append(Statics.IMAGE_URL).append("smartcity_images/");
-        //xx.append("municipality").append(municipalityID).append("/faq/");
+        xx.append(Statics.IMAGE_URL).append("smartcity_images/");
+        xx.append("municipality").append(municipalityID).append("/faq/");
 
         getSimpleData(xx.toString() + ACCOUNTS, new CommsListener() {
             @Override
