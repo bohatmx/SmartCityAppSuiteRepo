@@ -159,6 +159,7 @@ public class SigninActivity extends AppCompatActivity {
 
     public void sendSignInCitizen() {
 
+        final long start = System.currentTimeMillis();
         Snackbar.make(editPassword, "Downloading information; may take a minute or two",
                 Snackbar.LENGTH_LONG).show();
         if (editEmail.getText().toString().isEmpty()) {
@@ -192,6 +193,8 @@ public class SigninActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        long end = System.currentTimeMillis();
+                        Log.e(LOG, "sendSignInCitizen: elapsed seconds : " + ((end-start)/1000) + " seconds");
                         progressDialog.dismiss();
                         btnSend.setEnabled(true);
                         if (resp.isMunicipalityAccessFailed()) {

@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.boha.library.R;
@@ -54,7 +53,6 @@ public class AlertListFragment extends Fragment implements PageFragment {
         // Required empty public constructor
     }
 
-    ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -160,10 +158,6 @@ public class AlertListFragment extends Fragment implements PageFragment {
         LinearLayoutManager lm = new LinearLayoutManager(ctx,LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(lm);
         heroImage = (ImageView) view.findViewById(R.id.FAL_hero);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.GONE);
-       // txtTitle = (TextView) topView.findViewById(R.id.ALERT_LIST_title);
-       // txtTitle.setText(ctx.getResources().getText(R.string.active_alerts));
 
         ctx = getActivity();
         fab.setOnClickListener(new View.OnClickListener() {
@@ -236,16 +230,6 @@ public class AlertListFragment extends Fragment implements PageFragment {
         w.setLongitude(location.getLongitude());
         w.setRadius(radius);
 
-        if (getActivity() != null) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    progressBar.setVisibility(View.VISIBLE);
-                }
-            });
-        } else {
-            return;
-        }
 
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
@@ -275,7 +259,6 @@ public class AlertListFragment extends Fragment implements PageFragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                progressBar.setVisibility(View.GONE);
                                 setList();
 
                             }
@@ -290,7 +273,6 @@ public class AlertListFragment extends Fragment implements PageFragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            progressBar.setVisibility(View.GONE);
                             setList();
 
                         }

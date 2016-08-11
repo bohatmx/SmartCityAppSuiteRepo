@@ -131,7 +131,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
 
         //todo remove when done testing
-        w.setSpoof(true);
+        w.setSpoof(false);
         disableFAB();
         mListener.setBusy(true);
         snackbar = Util.showSnackBar(listView,"Searching for cases around you ...", "OK", Color.parseColor("TEAL"));

@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
@@ -241,6 +243,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         w.setSpoof(false);
         //
 
+        final long start = System.currentTimeMillis();
         setRefreshActionButtonState(true);
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
@@ -248,6 +251,8 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        final long end = System.currentTimeMillis();
+                        Log.w(LOG, "getLoginData: elapsed:  " + ((end -start)/1000) + " seconds" );
                         setRefreshActionButtonState(false);
                         response = resp;
                         boolean noProfile = false, noUser = false;
@@ -310,6 +315,13 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main_pager, menu);
         mMenu = menu;
+        MenuItem favoriteItem = menu.findItem(com.boha.library.R.id.action_refresh);
+        Drawable newIcon = (Drawable)favoriteItem.getIcon();
+        newIcon.mutate().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_IN);
+        favoriteItem.setIcon(newIcon);
+
+
+
         return true;
     }
 

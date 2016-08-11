@@ -13,7 +13,7 @@
     <RelativeLayout
         android:id="@+id/CC_titleLayout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/mon_hero_height_small"
         android:layout_below="@id/CC_handle">
 
         <ImageView
@@ -25,14 +25,26 @@
 
         <TextView
             android:id="@+id/CC_title"
-            style="@style/Title3TextStyleWhite"
+            style="@style/Title2TextStyleWhite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/mon_padding"
+            android:layout_margin="@dimen/mon_16"
             android:background="@color/transparent_black"
-            android:padding="@dimen/mon_padding"
+            android:padding="@dimen/mon_16"
             android:text="@string/make_complaint"
             android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/CC_subTitle"
+            style="@style/TextStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/CC_title"
+            android:layout_below="@id/CC_title"
+
+            android:text="My sub title will occupy pride of place here"
+            android:textColor="@color/white"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
@@ -109,18 +121,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        </RadioGroup>
+    </RadioGroup>
     <Spinner
         android:id="@+id/spinnerAccounts"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/mon_divider"
+        android:layout_marginTop="@dimen/mon_padding"
         android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_below="@id/layoutb" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_marginTop="@dimen/mon_divider"
+        android:layout_marginTop="@dimen/mon_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/spinnerAccounts" />

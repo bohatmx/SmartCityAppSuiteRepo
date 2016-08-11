@@ -195,7 +195,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         w.setMunicipalityID(complaint.getMunicipalityID());
 
         //todo remove when done testing
-        w.setSpoof(true);
+        w.setSpoof(false);
         //
 
         if (WebCheck.checkNetworkAvailability(ctx).isNetworkUnavailable()) {
@@ -375,6 +375,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             public void onClick(View v) {
                 setCategoryList();
                 iconBack.setVisibility(View.GONE);
+                cameraIcon.setVisibility(View.GONE);
             }
         });
         cameraIcon.setOnClickListener(new View.OnClickListener() {

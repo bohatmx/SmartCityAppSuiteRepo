@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="@dimen/mon_divider"
+    android:layout_margin="@dimen/mon_padding"
     app:cardElevation="@dimen/mon_divider"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:padding="@dimen/mon_divider"
+        android:padding="@dimen/mon_16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/icon"
-            android:src="@drawable/zwater"
-            android:tint="@color/black"
-            android:layout_width="24dp"
-            android:layout_height="24dp" />
+            android:src="@drawable/back15"
+            android:layout_width="32dp"
+            android:layout_height="32dp" />
         <TextView
             android:id="@+id/name"
             android:text="Category Name Here"
             android:layout_toRightOf="@id/icon"
-            android:layout_marginLeft="@dimen/mon_padding"
-            style="@style/Title3TextStyleBlack"
+            android:layout_marginLeft="@dimen/mon_16"
+            style="@style/Title2TextStyleBlack"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

@@ -34,12 +34,7 @@
         android:layout_centerInParent="true"
         android:text="@string/no_news" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/mon_wide" />
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -48,6 +43,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_gravity="bottom|end"
+        android:visibility="gone"
         android:layout_margin="@dimen/mon_padding"
         android:src="@android:drawable/ic_dialog_map"
         app:backgroundTint="@color/blue_600"

@@ -30,7 +30,7 @@
         <!-- Keys and metadata -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCCqxtRIo4epdejyic7PxWv5rZLcZp5J1w" />
+            android:value="AIzaSyAqZZRA8nW_XmRqti8A2tqiXHvp6fy5bqw" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

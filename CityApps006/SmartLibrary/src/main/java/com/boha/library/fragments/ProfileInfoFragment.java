@@ -75,7 +75,7 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(LOG,"****** onCreateView ....");
+        Log.d(LOG,"****** ...onCreateView ....");
         view = inflater.inflate(R.layout.fragment_citizen, container, false);
         ctx = getActivity();
         setFields();

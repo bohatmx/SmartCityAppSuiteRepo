@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/AI_main"
     app:cardElevation="@dimen/mon_divider"
-    android:layout_margin="@dimen/mon_padding"
+    android:layout_margin="@dimen/mon_16"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/mon_divider_small">
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:padding="@dimen/mon_padding">
+            android:padding="@dimen/mon_16">
 
             <RelativeLayout
                 android:id="@+id/AI_top"

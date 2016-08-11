@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.boha.library.R;
@@ -51,8 +50,6 @@ public class NewsListFragment extends Fragment implements PageFragment {
         // Required empty public constructor
     }
 
-    ProgressBar progressBar;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +78,6 @@ public class NewsListFragment extends Fragment implements PageFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_news_list, container, false);
-        //topView = inflater.inflate(R.layout.news_top, null);
         txtEmpty = (TextView)view.findViewById(R.id.NEWS_LIST_text);
         ctx = getActivity();
         setFields();
@@ -101,18 +97,6 @@ public class NewsListFragment extends Fragment implements PageFragment {
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         listView = (ListView) view.findViewById(R.id.NEWS_LIST_listView);
         heroImage = (ImageView) view.findViewById(R.id.FNL_hero);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.GONE);
-       // txtTitle = (TextView) topView.findViewById(R.id.NEWS_LIST_title);
-       // txtTitle.setText(ctx.getResources().getText(R.string.city_news));
-
-       /* topView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //refreshAlerts();
-            }
-        });*/
-
         ctx = getActivity();
 
         fab.setOnClickListener(new View.OnClickListener() {
