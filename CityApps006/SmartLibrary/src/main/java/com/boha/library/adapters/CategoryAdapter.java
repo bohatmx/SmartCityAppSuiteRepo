@@ -72,9 +72,58 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
         }
+        if (p.equalsIgnoreCase("Burst")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zburst_pipe));
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zburst_pipe);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
+        if (p.equalsIgnoreCase("Leaking Pipe")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zleaking_pipe));
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zleaking_pipe);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
+        if (p.equalsIgnoreCase("No Water")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zno_water));
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zno_water);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
+        if (p.equalsIgnoreCase("Water Pressure Problem")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zwater_pressure));
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zwater_pressure);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
         if (p.equalsIgnoreCase("Pollution")) {
             image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zpollution));
             Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zpollution);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
+        if (p.equalsIgnoreCase("Air")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zair_polluttion));
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zair_polluttion);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
+        if (p.equalsIgnoreCase("Beach")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zbeach_pollution));
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zbeach_pollution);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
+        if (p.equalsIgnoreCase("Land")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zland_pollution));
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zland_pollution);
             d.setColorFilter(new
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
@@ -85,14 +134,70 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
         }
+        if (p.equalsIgnoreCase("All Lights Out of Order")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zall_lights));
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zall_lights);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
+        if (p.equalsIgnoreCase("Flashing")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zflashing));
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zflashing);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
         if (p.equalsIgnoreCase("Road")) {
             Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zroad);
             d.setColorFilter(new
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
         }
+        if (p.equalsIgnoreCase("Missing ManHole cover")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zmanhole_covers));
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zmanhole_covers);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
+        if (p.equalsIgnoreCase("Over flowing")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zoverflow));
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zoverflow);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
+        if (p.equalsIgnoreCase("Pot Hole")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zpothole));
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zpothole);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
+        if (p.equalsIgnoreCase("Sink Hole")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zsinkhole));
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zsinkhole);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
         if (p.equalsIgnoreCase("Waste Water")) {
             Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zwaste_water);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
+        if (p.equalsIgnoreCase("Manhole Cover")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zmanhole_cover));
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zmanhole_cover);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
+        if (p.equalsIgnoreCase("Over Flaw")) {
+            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zoverflow));
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zoverflow);
             d.setColorFilter(new
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
