@@ -44,6 +44,8 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 import com.boha.library.util.WebCheck;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crash.FirebaseCrash;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
@@ -89,7 +91,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     Spinner spinner;
     AccountDTO account;
     RadioButton radioAccount, radioAnywhere;
-
+    FirebaseAnalytics mFirebaseAnalytics;
     Snackbar snackbar;
     boolean sendAccount;
 
@@ -106,7 +108,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_create_complaint, container, false);
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
         ctx = getActivity();
         activity = getActivity();
         setFields();
@@ -221,9 +223,11 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                                 if (response.getComplaintList() != null && !response.getComplaintList().isEmpty()) {
                                     snackbar = Util.showSnackBar(recyclerView, getString(R.string.complaint_received), "OK", Color.parseColor("GREEN"));
                                     showCameraIcon(response.getComplaintList().get(0));
+                                    setAnalyticsEvent("complaint1", "Complaint sent");
                                     mListener.onComplaintAdded(response.getComplaintList());
 
                                 } else {
+                                    setAnalyticsEvent("complaint0", "Error complaint");
                                     snackbar = Util.showSnackBar(recyclerView, getString(R.string.process_complaint_unable), "OK", Color.parseColor("YELLOW"));
                                     return;
                                 }
@@ -242,6 +246,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                     @Override
                     public void run() {
                         mListener.setBusy(false);
+                        FirebaseCrash.report(new Exception("Error complaint: " + message));
                         Util.showSnackBar(recyclerView, message, "Not OK", Color.parseColor("RED"));
 
                     }
@@ -256,6 +261,15 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
     }
 
+    private void setAnalyticsEvent(String id, String name) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        Log.w(LOG,"analytics event sent .....");
+
+
+    }
     private void showCameraIcon(final ComplaintDTO complaint) {
         cameraIcon.setVisibility(View.VISIBLE);
         this.complaint = complaint;

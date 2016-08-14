@@ -28,6 +28,8 @@ import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crash.FirebaseCrash;
 import com.squareup.leakcanary.RefWatcher;
 
 import org.joda.time.DateTime;
@@ -45,6 +47,8 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class StatementListFragment extends Fragment implements PageFragment {
 
@@ -91,6 +95,7 @@ public class StatementListFragment extends Fragment implements PageFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
         if (getArguments() != null) {
 //            response = (ResponseDTO) getArguments().getSerializable("response");
         }
@@ -337,6 +342,7 @@ public class StatementListFragment extends Fragment implements PageFragment {
                             enableFab();
                             if (response.getStatusCode() == 0) {
                                 Log.i(LOG, "+++ statement(s) from server, we cool, cool ...");
+
                                 if (response.getPdfHashMap() != null && !response.getPdfHashMap().isEmpty()) {
                                     Log.i(LOG, "Statements found on server: " + response.getPdfHashMap().size());
 
@@ -344,11 +350,13 @@ public class StatementListFragment extends Fragment implements PageFragment {
                                         byte[] data = response.getPdfHashMap().get(key);
                                         savePDF(key, data);
                                     }
+                                    setAnalyticsEvent("statement","StatementDownloaded");
 
                                 } else {
                                     if (response.isMunicipalityAccessFailed()) {
                                         Util.showSnackBar(txtTitle, ctx.getString(R.string.unable_connect_muni),"OK", Color.parseColor("RED"));
                                     } else {
+                                        FirebaseCrash.report(new Exception("No statements found for: " + year + ":" + month));
                                         Util.showSnackBar(txtTitle, "No statements found for the month selected","OK", Color.parseColor("YELLOW"));
                                     }
                                 }
@@ -366,6 +374,7 @@ public class StatementListFragment extends Fragment implements PageFragment {
                         @Override
                         public void run() {
                             statementFragmentListener.setBusy(false);
+                            FirebaseCrash.report(new Exception("Statement download failed: " + message));
                             enableFab();
                             snackbar = Util.showSnackBar(txtTitle, message, "OK", Color.parseColor("RED"));
                         }
@@ -402,6 +411,20 @@ public class StatementListFragment extends Fragment implements PageFragment {
 
     }
 
+    FirebaseAnalytics mFirebaseAnalytics;
+    private void setAnalyticsEvent(String id, String name) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+
+        if (mFirebaseAnalytics == null) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+        }
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        Log.w(LOG,"analytics event sent .....");
+
+
+    }
     Snackbar snackbar;
 
     private void enableFab() {

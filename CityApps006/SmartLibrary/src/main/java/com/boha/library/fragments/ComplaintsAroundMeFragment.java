@@ -31,6 +31,7 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
@@ -38,6 +39,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class ComplaintsAroundMeFragment extends Fragment implements PageFragment {
@@ -78,6 +81,8 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
+
         if (getArguments() != null) {
             response = (ResponseDTO) getArguments().getSerializable("complaintList");
            // complaintList = response.getComplaintList();
@@ -132,9 +137,11 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
 
         //todo remove when done testing
         w.setSpoof(false);
+        //
         disableFAB();
         mListener.setBusy(true);
         snackbar = Util.showSnackBar(listView,"Searching for cases around you ...", "OK", Color.parseColor("TEAL"));
+        setAnalyticsEvent("cases", "CasesAroundMe");
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO response) {
@@ -176,6 +183,20 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
 
     }
 
+    FirebaseAnalytics mFirebaseAnalytics;
+    private void setAnalyticsEvent(String id, String name) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+
+        if (mFirebaseAnalytics == null) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+        }
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        Log.w(LOG,"analytics event sent .....");
+
+
+    }
     private void enableFAB() {
         fab.setAlpha(1.0f);
         fab.setEnabled(true);

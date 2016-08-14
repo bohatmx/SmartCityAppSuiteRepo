@@ -37,6 +37,7 @@ import com.boha.library.fragments.PageFragment;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,7 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
     Context ctx;
     static final String LOG = AccountDetailActivity.class.getSimpleName();
 
+    FirebaseAnalytics mFirebaseAnalytics;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +65,7 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
         darkColor = getIntent().getIntExtra("darkColor", R.color.black);
         primaryColor = getIntent().getIntExtra("primaryColor", R.color.black);
         logo = getIntent().getIntExtra("logo", R.drawable.ic_action_globe);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
         setFields();
         MunicipalityDTO municipality = SharedUtil.getMunicipality(getApplicationContext());
         Drawable d = ContextCompat.getDrawable(ctx,logo);
@@ -77,6 +80,7 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
         }
         isDebuggable = 0 != (this.getApplicationInfo().flags
                 &= ApplicationInfo.FLAG_DEBUGGABLE);
+        setAnalyticsEvent("account","Accounts Check");
 
     }
 
@@ -85,6 +89,19 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
     ImageView icon;
     AccountDTO account;
 
+    private void setAnalyticsEvent(String id, String name) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+
+        if (mFirebaseAnalytics == null) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+        }
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        Log.w(LOG,"analytics event sent .....");
+
+
+    }
     private void setFields() {
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         name = (TextView) findViewById(R.id.TOP_title);
@@ -104,6 +121,7 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
                     }
                 });
                 snackbar.show();
+                setAnalyticsEvent("payment","PaymentClicked");
             }
         });
 

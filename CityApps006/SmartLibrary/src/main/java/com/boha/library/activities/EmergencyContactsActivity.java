@@ -4,10 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -19,6 +20,7 @@ import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -48,6 +50,7 @@ public class EmergencyContactsActivity extends AppCompatActivity {
         darkColor = getIntent().getIntExtra("primaryColor",R.color.teal_700);
         municipality = SharedUtil.getMunicipality(getApplicationContext());
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
         ActionBar actionBar = getSupportActionBar();
         if (logo != 0) {
             Drawable d = ctx.getResources().getDrawable(logo);
@@ -63,6 +66,7 @@ public class EmergencyContactsActivity extends AppCompatActivity {
 
         setFields();
         animateSomething();
+        setAnalyticsEvent("emergency","EmergencyContacts");
     }
     private void setFields(){
         EM_hero = (ImageView) findViewById(R.id.EM_hero);
@@ -102,6 +106,20 @@ public class EmergencyContactsActivity extends AppCompatActivity {
 
     }
 
+    FirebaseAnalytics mFirebaseAnalytics;
+    private void setAnalyticsEvent(String id, String name) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+
+        if (mFirebaseAnalytics == null) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+        }
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        Log.w("EmergencyContacts","analytics event sent .....");
+
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_emergency_contact, menu);

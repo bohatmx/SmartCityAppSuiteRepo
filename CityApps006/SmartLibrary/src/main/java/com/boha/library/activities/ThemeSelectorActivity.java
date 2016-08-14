@@ -2,10 +2,8 @@ package com.boha.library.activities;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -13,14 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.adapters.NewsListAdapter;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class ThemeSelectorActivity extends AppCompatActivity {
 
@@ -51,6 +48,7 @@ public class ThemeSelectorActivity extends AppCompatActivity {
             window.setStatusBarColor(themeDarkColor);
             window.setNavigationBarColor(themeDarkColor);
         }
+        setAnalyticsEvent("theme","ThemeSelection");
     }
 
 
@@ -296,5 +294,20 @@ public class ThemeSelectorActivity extends AppCompatActivity {
         } */
 
         return super.onOptionsItemSelected(item);
+    }
+
+    FirebaseAnalytics mFirebaseAnalytics;
+    private void setAnalyticsEvent(String id, String name) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+
+        if (mFirebaseAnalytics == null) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+        }
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        Log.w("ThemeSelectorActivity","analytics event sent .....");
+
+
     }
 }

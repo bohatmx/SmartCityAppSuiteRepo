@@ -1,9 +1,11 @@
 package com.boha.citizenapp.ethekwini.activities;
 
+import android.Manifest;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -18,6 +20,7 @@ import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -79,11 +82,15 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.acra.ACRA;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 
@@ -105,7 +112,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
 
     ActionBar ab;
-
+    private FirebaseAnalytics mFirebaseAnalytics;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,17 +130,22 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         themePrimaryColor = typedValue.data;
         logo = R.drawable.logo;
 
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "123");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, CitizenDrawerActivity.class.getSimpleName());
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
         ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
 
-//        checkAddress();
-
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navImage = (ImageView) findViewById(R.id.NAVHEADER_image);
-        navText = (TextView) findViewById(R.id.NAVHEADER_text);
+//        navImage = (ImageView) findViewById(R.id.NAVHEADER_image);
+//        navText = (TextView) findViewById(R.id.NAVHEADER_text);
 
 
         mPager = (ViewPager) findViewById(R.id.viewpager);
@@ -159,12 +171,18 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         profileInfo = SharedUtil.getProfile(ctx);
         Log.i(LOG, "accountList is: " + profileInfo.getAccountList().size());
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         if (profileInfo != null) {
-            navText.setText(profileInfo.getFirstName() + " " + profileInfo.getLastName());
+            if (navText != null)
+                navText.setText(profileInfo.getFirstName() + " " + profileInfo.getLastName());
+            else {
+                FirebaseCrash.report(new Exception("UI field navText is not initialized"));
+            }
         }
         user = SharedUtil.getUser(ctx);
         if (user != null) {
-            navText.setText(user.getFirstName() + " " + user.getLastName());
+            if (navText != null)
+                navText.setText(user.getFirstName() + " " + user.getLastName());
         }
 
 
@@ -181,19 +199,20 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             window.setStatusBarColor(themeDarkColor);
             window.setNavigationBarColor(themeDarkColor);
         }
+
         mDrawerLayout.openDrawer(GravityCompat.START);
+        setAnalyticsEvent("main", "Main Screen");
     }
 
 
-    //    private void checkAddress() {
-//        ResidentialAddress address = SharedUtil.getAddress(ctx);
-//        if (address == null) {
-//            Intent w = new Intent(ctx, AddressActivity.class);
-//            w.putExtra("type", AddressActivity.CALLED_FROM_DRAWER_ACTIVITY);
-//            startActivity(w);
-//            finish();
-//        }
-//    }
+    private void setAnalyticsEvent(String id, String name) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        Log.w(LOG,"analytics event sent .....");
+
+    }
     private void getCachedLoginData() {
 
         CacheUtil.getCacheLoginData(ctx, new CacheUtil.CacheRetrievalListener() {
@@ -252,7 +271,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                     @Override
                     public void run() {
                         final long end = System.currentTimeMillis();
-                        Log.w(LOG, "getLoginData: elapsed:  " + ((end -start)/1000) + " seconds" );
+                        Log.w(LOG, "getLoginData: elapsed:  " + ((end - start) / 1000) + " seconds");
                         setRefreshActionButtonState(false);
                         response = resp;
                         boolean noProfile = false, noUser = false;
@@ -311,15 +330,15 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     private void refreshPictures() {
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main_pager, menu);
         mMenu = menu;
         MenuItem favoriteItem = menu.findItem(com.boha.library.R.id.action_refresh);
-        Drawable newIcon = (Drawable)favoriteItem.getIcon();
+        Drawable newIcon = (Drawable) favoriteItem.getIcon();
         newIcon.mutate().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_IN);
         favoriteItem.setIcon(newIcon);
-
 
 
         return true;
@@ -331,7 +350,6 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == android.R.id.home) {
             mDrawerLayout.openDrawer(GravityCompat.START);
             return true;
@@ -356,6 +374,27 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             return true;
         }
         if (id == com.boha.library.R.id.action_emergency) {
+            //todo remove after test
+            RequestDTO w = new RequestDTO(RequestDTO.SEND_CLOUD_MESSAGE);
+            w.setMunicipalityID(municipality.getMunicipalityID());
+            w.setMessage("Test Message: " + sdf.format(new Date()));
+            NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
+                @Override
+                public void onResponse(ResponseDTO response) {
+
+                }
+
+                @Override
+                public void onError(String message) {
+
+                }
+
+                @Override
+                public void onWebSocketClose() {
+
+                }
+            });
+
             Intent intent = new Intent(CitizenDrawerActivity.this, EmergencyContactsActivity.class);
             startActivity(intent);
             return true;
@@ -374,12 +413,14 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("http://etmobileguide.oneconnectgroup.com/"));
             startActivity(intent);
+            setAnalyticsEvent("guide","AppGuide");
         }
 
 
         return super.onOptionsItemSelected(item);
     }
 
+    static final SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy HH:mm:ss");
     private void setupViewPager() {
 
         setMenuDestinations();
@@ -573,7 +614,6 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     }
 
 
-
     /**
      * A complaint has been added and a fresh list of complaints has been received from the server.
      * My
@@ -608,17 +648,46 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         Log.d(LOG, "### startLocationUpdates ....");
         if (googleApiClient.isConnected()) {
             mRequestingLocationUpdates = true;
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Log.d(LOG, "onConnected: Requesting location permission");
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        REQ_PERMISSION);
+                return;
+            }
+            mLocationRequest = LocationRequest.create();
+            mLocationRequest.setInterval(1000);
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            mLocationRequest.setFastestInterval(500);
+
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     googleApiClient, mLocationRequest, this);
             Log.d(LOG, "## GoogleApiClient connected, requesting location updates ...");
         } else {
             Log.e(LOG, "------- GoogleApiClient is NOT connected, not sure where we are...");
             googleApiClient.connect();
-            //startLocationUpdates = true;
 
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+
+        Log.w(LOG, "onRequestPermissionsResult: " + permissions + " result: " + grantResults);
+        switch (requestCode) {
+            case REQ_PERMISSION:
+                if (grantResults.length > 0) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        startLocationUpdates();
+                    }
+                }
+                break;
+        }
+    }
+
+    public static final int REQ_PERMISSION = 114;
     CitizenDrawerActivity activity;
 
 
@@ -663,6 +732,13 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     public void onConnected(Bundle bundle) {
         Log.i(LOG,
                 "+++  GoogleApiClient onConnected() ...");
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.d(LOG, "onConnected: Requesting location permission");
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQ_PERMISSION);
+            return;
+        }
         mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(
                 googleApiClient);
 
@@ -715,7 +791,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
     }
 
-    static final float ACCURACY_THRESHOLD = 20f;
+    static final float ACCURACY_THRESHOLD = 100f;
 
     @Override
     public void onLocationChanged(Location location) {
@@ -883,7 +959,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         Intent m = new Intent(getApplicationContext(), PictureActivity.class);
         m.putExtra("imageType", PictureActivity.COMPLAINT_IMAGE);
         m.putExtra("complaint", complaint);
-        m.putExtra("logo",logo);
+        m.putExtra("logo", logo);
         startActivity(m);
     }
 
@@ -1084,7 +1160,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-       final Handler h = new Handler(Looper.getMainLooper());
+        final Handler h = new Handler(Looper.getMainLooper());
         final Runnable r = new Runnable() {
             public void run() {
                 int index = 0;

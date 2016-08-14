@@ -1,5 +1,6 @@
 package com.boha.library.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -7,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,6 +27,7 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -60,6 +63,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crash.FirebaseCrash;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -104,7 +109,8 @@ public class PictureActivity extends AppCompatActivity
         ThemeChooser.setTheme(this);
         setContentView(R.layout.camera);
         setFields();
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+        setAnalyticsEvent("picture", "TakingPicture");
         imageType = getIntent().getIntExtra("imageType", MUNICIPALITY_IMAGE);
         logo = getIntent().getIntExtra("logo", R.drawable.ic_action_globe);
         switch (imageType) {
@@ -152,7 +158,23 @@ public class PictureActivity extends AppCompatActivity
         IntentFilter filter = new IntentFilter(PhotoUploadService.BROADCAST_UPLOADED);
 
         LocalBroadcastManager bm = LocalBroadcastManager.getInstance(getApplicationContext());
-        bm.registerReceiver(receiver,filter);
+        bm.registerReceiver(receiver, filter);
+
+    }
+
+    FirebaseAnalytics mFirebaseAnalytics;
+
+    private void setAnalyticsEvent(String id, String name) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+
+        if (mFirebaseAnalytics == null) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+        }
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        Log.w(LOG, "analytics event sent .....");
+
 
     }
 
@@ -231,13 +253,13 @@ public class PictureActivity extends AppCompatActivity
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         switch (requestCode) {
             case CAPTURE_IMAGE:
-                    if (resultCode == Activity.RESULT_OK) {
-                        if (photoFile != null) {
-                            Log.e(LOG, "++ hopefully photo file has a length: " + photoFile.length());
-                            pictureChanged = true;
-                            new PhotoTask().execute();
-                        }
+                if (resultCode == Activity.RESULT_OK) {
+                    if (photoFile != null) {
+                        Log.e(LOG, "++ hopefully photo file has a length: " + photoFile.length());
+                        pictureChanged = true;
+                        new PhotoTask().execute();
                     }
+                }
                 break;
             case REQUEST_VIDEO_CAPTURE:
 
@@ -321,6 +343,11 @@ public class PictureActivity extends AppCompatActivity
     public void onConnected(Bundle bundle) {
         Log.i(LOG,
                 "+++  onConnected() -  requestLocationUpdates ...");
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+        }
         location = LocationServices.FusedLocationApi.getLastLocation(
                 googleApiClient);
         Log.w(LOG, "## requesting location updates ....");
@@ -335,6 +362,11 @@ public class PictureActivity extends AppCompatActivity
     protected void startLocationUpdates() {
         if (googleApiClient.isConnected()) {
             mRequestingLocationUpdates = true;
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     googleApiClient, mLocationRequest, this);
         }
@@ -664,6 +696,7 @@ public class PictureActivity extends AppCompatActivity
         protected void onPostExecute(Integer result) {
             if (result > 0) {
                 Util.showErrorToast(ctx, ctx.getResources().getString(R.string.photo_err));
+                FirebaseCrash.report(new Exception("Photo taking fell down"));
                 return;
             }
             if (thumbUri != null) {
@@ -705,12 +738,13 @@ public class PictureActivity extends AppCompatActivity
 
                         @Override
                         public void onDataCached() {
-                            Util.showSnackBar(txtType,"Photo saved on device disk", "OK", Color.parseColor("CYAN"));
+                            Util.showSnackBar(txtType, "Photo saved on device disk", "OK", Color.parseColor("CYAN"));
                         }
 
                         @Override
                         public void onError() {
-                            Util.showSnackBar(txtType,getString(R.string.unable_save_photo), "OK", Color.parseColor("CYAN"));
+                            FirebaseCrash.report(new Exception("Unable to save photo on device disk"));
+                            Util.showSnackBar(txtType, getString(R.string.unable_save_photo), "OK", Color.parseColor("CYAN"));
                         }
                     });
 
@@ -867,7 +901,7 @@ public class PictureActivity extends AppCompatActivity
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Util.showSnackBar(txtType,"Photo has been uploaded to server", "OK", Color.parseColor("green"));
+            Util.showSnackBar(txtType, "Photo has been uploaded to server", "OK", Color.parseColor("green"));
         }
     }
 }

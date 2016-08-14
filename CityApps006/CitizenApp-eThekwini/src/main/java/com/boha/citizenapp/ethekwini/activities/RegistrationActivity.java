@@ -38,13 +38,12 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -87,11 +86,11 @@ public class RegistrationActivity extends AppCompatActivity {
         getEmail();
 
         //Track RegistrationActivity
-        CityApplication ca = (CityApplication) getApplication();
-        Tracker t = ca.getTracker(
-                CityApplication.TrackerName.APP_TRACKER);
-        t.setScreenName(RegistrationActivity.class.getSimpleName());
-        t.send(new HitBuilders.ScreenViewBuilder().build());
+//        CityApplication ca = (CityApplication) getApplication();
+//        Tracker t = ca.getTracker(
+//                CityApplication.TrackerName.APP_TRACKER);
+//        t.setScreenName(RegistrationActivity.class.getSimpleName());
+//        t.send(new HitBuilders.ScreenViewBuilder().build());
         //
 
         ActionBar actionBar = getSupportActionBar();

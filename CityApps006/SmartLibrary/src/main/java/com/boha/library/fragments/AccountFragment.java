@@ -26,11 +26,14 @@ import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class AccountFragment extends Fragment implements PageFragment {
 
@@ -97,6 +100,7 @@ public class AccountFragment extends Fragment implements PageFragment {
 
     private void startPayment() {
         Log.d(LOG, "########## startPayment ....");
+        setAnalyticsEvent("payment", "Payment clicked");
         AlertDialog.Builder d = new AlertDialog.Builder(getActivity());
         d.setTitle("Mobile Payment Survey")
                 .setMessage("The payment facility is not available yet. The municipality is conducting a survey to find the level of interest in paying your account on the app.\n\n" +
@@ -123,7 +127,20 @@ public class AccountFragment extends Fragment implements PageFragment {
 
 
     }
+    FirebaseAnalytics mFirebaseAnalytics;
+    private void setAnalyticsEvent(String id, String name) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
 
+        if (mFirebaseAnalytics == null) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+        }
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        Log.w(LOG,"analytics event sent .....");
+
+
+    }
     private void sendSurvey(boolean response) {
         PaymentSurveyDTO x = new PaymentSurveyDTO();
         x.setMunicipalityID(SharedUtil.getMunicipality(getActivity()).getMunicipalityID());

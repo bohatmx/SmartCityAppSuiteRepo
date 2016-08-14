@@ -1,8 +1,10 @@
 package com.boha.library.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -33,13 +35,12 @@ import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Statics;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -56,7 +57,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class AlertMapActivity extends AppCompatActivity {
+import static com.facebook.FacebookSdk.getApplicationContext;
+
+public class AlertMapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     GoogleMap googleMap;
     GoogleApiClient mGoogleApiClient;
@@ -114,22 +117,11 @@ public class AlertMapActivity extends AppCompatActivity {
             title.setText(alert.getDescription());
         }
 
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.MAP_map);
 
-        try {
-            googleMap = mapFragment.getMap();
-            if (googleMap == null) {
-                Util.showToast(ctx, getString(R.string.map_not_avail));
-                finish();
-                return;
-            }
-            setGoogleMap();
-        } catch (Exception e) {
-            Log.e(LOG, "Map failed", e);
-            finish();
-            return;
-        }
+        mapFragment.getMapAsync(this);
 
 
         logo = getIntent().getIntExtra("logo", R.drawable.elogo);
@@ -149,17 +141,33 @@ public class AlertMapActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(municipality.getMunicipalityName());
         }
         //Track AlertMapActivity
-        CityApplication ca = (CityApplication) getApplication();
-        Tracker t = ca.getTracker(
-                CityApplication.TrackerName.APP_TRACKER);
-        t.setScreenName(AlertMapActivity.class.getSimpleName());
-        t.send(new HitBuilders.ScreenViewBuilder().build());
+//        CityApplication ca = (CityApplication) getApplication();
+//        Tracker t = ca.getTracker(
+//                CityApplication.TrackerName.APP_TRACKER);
+//        t.setScreenName(AlertMapActivity.class.getSimpleName());
+//        t.send(new HitBuilders.ScreenViewBuilder().build());
         //
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
+        setGoogleMap();
     }
 
     Marker marker;
 
     private void setGoogleMap() {
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    Activity#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for Activity#requestPermissions for more details.
+            return;
+        }
         googleMap.setMyLocationEnabled(true);
         googleMap.setBuildingsEnabled(true);
         location = googleMap.getMyLocation();

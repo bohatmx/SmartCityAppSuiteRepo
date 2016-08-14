@@ -1,9 +1,9 @@
 package com.boha.library.activities;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.StrictMode;
+import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.boha.library.R;
@@ -11,6 +11,7 @@ import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.util.LocaleUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Statics;
+import com.firebase.client.Firebase;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.squareup.leakcanary.LeakCanary;
@@ -43,7 +44,7 @@ import java.util.HashMap;
  * needed services, such as image loading and cache configuration, analytics
  * setup and ACRA to trap exceptions.
  */
-public class CityApplication extends Application {
+public class CityApplication extends MultiDexApplication {
     public enum TrackerName {
         APP_TRACKER, // Tracker used only in this app.
         GLOBAL_TRACKER, // Tracker used by all the apps from a company. eg: roll-up tracking.
@@ -88,6 +89,8 @@ public class CityApplication extends Application {
         sb.append("#######################################\n\n");
 
         Log.d(LOG, sb.toString());
+
+        Firebase.setAndroidContext(getApplicationContext());
         refWatcher = LeakCanary.install(this);
         MunicipalityDTO m = SharedUtil.getMunicipality(getApplicationContext());
         boolean isDebuggable = 0 != (getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE);
