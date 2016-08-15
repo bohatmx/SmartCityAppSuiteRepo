@@ -222,10 +222,12 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
         switch (type) {
             case MY_COMPLAINTS:
                  item.followBox.setVisibility(View.GONE);
+                 item.statusBox.setVisibility(View.GONE);
                  item.cameraBox.setVisibility(View.VISIBLE);
                 break;
             case AROUND_ME:
                 item.followBox.setVisibility(View.VISIBLE);
+                item.statusBox.setVisibility(View.GONE);
                 item.cameraBox.setVisibility(View.GONE);
                 break;
 
