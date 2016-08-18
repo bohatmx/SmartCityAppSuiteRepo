@@ -80,7 +80,7 @@
 
     <string name="enter_complaint_address">Enter Complaint Address</string>
     <string name="sel_complaint_type">Select Complaint Type</string>
-    <string name="make_complaint">Make a Complaint</string>
+    <string name="make_complaint">Log a Complaint</string>
     <string name="unable_connect_muni">Unable to reach your Municipality. Data may be out of date.</string>
     <string name="complaints_history">Complaints History</string>
     <string name="city_news">City News</string>
