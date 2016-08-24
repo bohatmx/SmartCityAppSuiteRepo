@@ -83,6 +83,8 @@ public class AccountFragment extends Fragment implements PageFragment {
 
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -173,6 +175,7 @@ public class AccountFragment extends Fragment implements PageFragment {
         txtNextBill = (TextView) view.findViewById(R.id.ACCT_nextBillDate);
         txtLastBillAmount = (TextView) view.findViewById(R.id.ACCT_lastBillAmount);
 
+
         txtArrears.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -190,6 +193,7 @@ public class AccountFragment extends Fragment implements PageFragment {
     }
 
 
+
     int year, month;
     static final Locale LOCALE = Locale.getDefault();
     static final SimpleDateFormat sd = new SimpleDateFormat("EEEE dd MMMM yyyy", LOCALE);
@@ -202,12 +206,12 @@ public class AccountFragment extends Fragment implements PageFragment {
         txtBalance.setText(CURRENCY_SYMBOL + df.format(account.getCurrentBalance()));
         txtLastBillAmount.setText(CURRENCY_SYMBOL + df.format(account.getLastBillAmount()));
         if(account.getNextBillDate() != null){
-            txtNextBill.setText(sd1.format(account.getNextBillDate()));
+            txtNextBill.setText(sd.format(account.getNextBillDate()));
         } else{
             txtNextBill.setText("Date not Set");
         }
         if (account.getDateLastUpdated() != null) {
-            txtLastUpdate.setText(sd1.format(account.getDateLastUpdated()));
+            txtLastUpdate.setText(sd.format(account.getDateLastUpdated()));
         }
 
         Util.expand(detailView, 1000, null);
