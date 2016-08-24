@@ -18,12 +18,22 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/mon_divider">
 
+                <me.relex.circleindicator.CircleIndicator
+                    android:id="@+id/indicator"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="48dp"
+                    android:background="@color/black"
+                    android:layout_below="@+id/TOP_titleLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"/>
+
                 <RelativeLayout
                     android:id="@+id/layout1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/title"
                     android:layout_marginLeft="@dimen/mon_16">
+
 
                     <TextView
                         android:id="@+id/label2"
@@ -41,6 +51,13 @@
                         android:layout_toRightOf="@id/label2"
                         android:text="12345276s"
                         android:textColor="@color/black" />
+                    <ImageView
+                        android:id="@+id/S_AD2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_action_search"
+                        android:layout_toRightOf="@+id/accountNumber"
+                        android:layout_marginLeft="@dimen/mon_16"/>
 
                 </RelativeLayout>
 
@@ -101,8 +118,12 @@
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/card" />
+            android:layout_below="@id/card"
+            android:layout_weight="1"/>
+
+
     </RelativeLayout>
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabButton"
