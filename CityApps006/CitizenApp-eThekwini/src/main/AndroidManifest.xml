@@ -7,8 +7,6 @@
         android:name="com.boha.citizenapp.ethekwini.gcm.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-
-
     <uses-permission android:name="com.boha.citizenapp.ethekwini.gcm.permission.C2D_MESSAGE" />
 
     <!--
@@ -35,7 +33,6 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-
         <!-- Activities -->
         <activity
             android:name=".activities.SplashActivity"
@@ -50,7 +47,6 @@
         <activity
             android:name=".activities.CitizenDrawerActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name="com.boha.library.activities.PaymentStartActivity"
             android:parentActivityName="com.boha.library.activities.AccountDetailActivity"
@@ -104,7 +100,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.boha.library.activities.AccountDetailActivity"
-            android:parentActivityName=".activities.CitizenDrawerActivity" />
+            android:parentActivityName=".activities.CitizenDrawerActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.boha.library.activities.AlertDetailActivity"
             android:parentActivityName=".activities.CitizenDrawerActivity" />
@@ -163,7 +160,8 @@
         <activity
             android:name="com.boha.library.activities.SIDPaymentsActivity"
             android:parentActivityName="com.boha.library.activities.AccountDetailActivity" />
-        <activity
+        <!--
+            <activity
             android:name=".activities.AddressActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
@@ -174,7 +172,9 @@
         <activity
             android:name=".activities.TouristAddressActivity"
             android:label="@string/title_activity_tourist_address"></activity>
+        -->
 
+        <activity android:name=".activities.TouristDrawerActivity"></activity>
     </application>
 
 </manifest>
