@@ -174,7 +174,8 @@
             android:label="@string/title_activity_tourist_address"></activity>
         -->
 
-        <activity android:name=".activities.TouristDrawerActivity"></activity>
+        <activity android:name=".activities.TouristDrawerActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
