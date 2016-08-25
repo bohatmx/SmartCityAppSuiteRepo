@@ -3,6 +3,7 @@ package com.boha.citizenapp.ethekwini.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -58,7 +59,7 @@ public class SigninActivity extends AppCompatActivity {
     RadioButton radioYes, radioNo, radioTourist;
     Context ctx;
     Activity activity;
-    Button btnSend;
+    Button btnSend, btnTourist;
     EditText editEmail, editPassword;
     static final String LOG = SigninActivity.class.getSimpleName();
     ResponseDTO response;
@@ -116,6 +117,9 @@ public class SigninActivity extends AppCompatActivity {
         heroImage = (ImageView) findViewById(R.id.SIGNIN_heroImage);
         handle = findViewById(R.id.SIGNIN_handle);
 
+        btnTourist = (Button) findViewById(R.id.SIGNIN_btnTourist);
+        btnTourist.setVisibility(View.GONE);
+
         btnSend.setOnClickListener(new View.OnClickListener() {
                                        @Override
                                        public void onClick(View v) {
@@ -135,9 +139,16 @@ public class SigninActivity extends AppCompatActivity {
                                    }
 
         );
+        btnTourist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SigninActivity.this, TouristDrawerActivity.class);
+                startActivity(intent);
+            }
+        });
         userType = SharedUtil.CITIZEN_WITH_ACCOUNT;
         editEmail.setHint(R.string.enter_email);
-        editPassword.setVisibility(View.VISIBLE);
+      // editPassword.setVisibility(View.VISIBLE);
         radioNo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -149,11 +160,26 @@ public class SigninActivity extends AppCompatActivity {
         radioYes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                userType = SharedUtil.CITIZEN_WITH_ACCOUNT;
-                editEmail.setHint(R.string.enter_email);
-                editPassword.setVisibility(View.VISIBLE);
+                editEmail.setVisibility(View.GONE);
+                editPassword.setVisibility(View.GONE);
+                btnSend.setVisibility(View.GONE);
+                btnTourist.setVisibility(View.VISIBLE);
+               // userType = SharedUtil.CITIZEN_WITH_ACCOUNT;
+
+                //editEmail.setHint(R.string.enter_email);
             }
         });
+        radioTourist.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                editEmail.setVisibility(View.VISIBLE);
+                editPassword.setVisibility(View.VISIBLE);
+                btnTourist.setVisibility(View.GONE);
+                btnSend.setVisibility(View.VISIBLE);
+
+            }
+        });
+
 
     }
 
@@ -319,6 +345,14 @@ public class SigninActivity extends AppCompatActivity {
             }
         });
     }
+
+    //Tourist Test
+    public void sendSignInTourist() {
+        Intent intent = new Intent(SigninActivity.this, TouristDrawerActivity.class);
+        startActivity(intent);
+
+    }
+
     void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) ctx
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
