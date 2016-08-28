@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -20,9 +22,16 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.boha.citizenapp.ethekwini.R;
+import com.boha.citizenapp.ethekwini.rssreader.FeedItem;
+import com.boha.citizenapp.ethekwini.rssreader.MainActivity;
+import com.boha.citizenapp.ethekwini.rssreader.MyAdapter;
+import com.boha.citizenapp.ethekwini.rssreader.NewReadRss;
+import com.boha.citizenapp.ethekwini.rssreader.ReadRss;
 import com.boha.library.activities.CityApplication;
+import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.UserDTO;
@@ -37,11 +46,13 @@ import com.boha.library.util.Util;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity  {
 
     ProfileInfoDTO profile;
     Timer timer;
@@ -63,6 +74,11 @@ public class SplashActivity extends AppCompatActivity {
      */
     static final String MUNICIPALITY_NAME = "eThekwini";
     int themeDarkColor, themePrimaryColor;
+    RecyclerView recyclerView;
+    TextView news_txt;
+    NewReadRss newReadRss;
+    ReadRss readRss;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +94,16 @@ public class SplashActivity extends AppCompatActivity {
         themeDarkColor = typedValue.data;
         theme.resolveAttribute(com.boha.library.R.attr.colorPrimary, typedValue, true);
         themePrimaryColor = typedValue.data;
+
+        //
+
+
+        readRss = new ReadRss(this, recyclerView);
+        readRss.execute();
+         //  newReadRss = new NewReadRss();
+        // newReadRss.getNews(ctx, recyclerView);
+
+
 
 
         //eThekwini logo - will be different for each municipality
@@ -107,16 +133,21 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void setFields() {
-        actionsView = findViewById(R.id.SPLASH_actions);
-        actionsView.setVisibility(View.GONE);
+     //   actionsView = findViewById(R.id.SPLASH_actions);
+    //    actionsView.setVisibility(View.GONE);
+        news_txt = (TextView) findViewById(R.id.latest_news_title);
         heroImage = (ImageView) findViewById(R.id.SPLASH_image);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         logo = (ImageView) findViewById(R.id.SPLASH_logo);
-        btnRegister = (Button) findViewById(R.id.SPLASH_btnRegister);
+  //      btnRegister = (Button) findViewById(R.id.SPLASH_btnRegister);
         btnSignIn = (Button) findViewById(R.id.SPLASH_btnSignin);
         progressBar.setVisibility(View.GONE);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewSplash);
+        LinearLayoutManager lm = new LinearLayoutManager(ctx,LinearLayoutManager.VERTICAL,false);
+        recyclerView.setLayoutManager(lm);
 
-        btnRegister.setVisibility(View.GONE);
+
+     /*   btnRegister.setVisibility(View.GONE);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +162,7 @@ public class SplashActivity extends AppCompatActivity {
                 });
 
             }
-        });
+        }); */
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,6 +179,7 @@ public class SplashActivity extends AppCompatActivity {
         });
 
 
+
         heroImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,13 +189,14 @@ public class SplashActivity extends AppCompatActivity {
 
         if (SharedUtil.getProfile(ctx) != null) {
             btnSignIn.setVisibility(View.GONE);
-            btnRegister.setVisibility(View.GONE);
+       //     btnRegister.setVisibility(View.GONE);
         }
 
         if (SharedUtil.getUser(ctx) != null) {
             btnSignIn.setVisibility(View.GONE);
-            btnRegister.setVisibility(View.GONE);
+      //      btnRegister.setVisibility(View.GONE);
         }
+
 
     }
 
@@ -255,7 +288,7 @@ public class SplashActivity extends AppCompatActivity {
             return;
         }
 
-        Util.expand(actionsView, ONE_SECOND, null);
+    //    Util.expand(actionsView, ONE_SECOND, null);
     }
 
 
