@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../CitizenApp-Msunduzi/CitizenApp-Msunduzi.iml" filepath="$PROJECT_DIR$/../CitizenApp-Msunduzi/CitizenApp-Msunduzi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../CitizenApp-eThekwini/CitizenApp-eThekwini.iml" filepath="$PROJECT_DIR$/../CitizenApp-eThekwini/CitizenApp-eThekwini.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../CityApps006.iml" filepath="$PROJECT_DIR$/../CityApps006.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../SmartLibrary/SmartLibrary.iml" filepath="$PROJECT_DIR$/../SmartLibrary/SmartLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../StaffApp-eThekwini/StaffApp-eThekwini.iml" filepath="$PROJECT_DIR$/../StaffApp-eThekwini/StaffApp-eThekwini.iml" />
+      <module fileurl="file://$PROJECT_DIR$/circleindicator.iml" filepath="$PROJECT_DIR$/circleindicator.iml" />
+    </modules>
+  </component>
+</project>
