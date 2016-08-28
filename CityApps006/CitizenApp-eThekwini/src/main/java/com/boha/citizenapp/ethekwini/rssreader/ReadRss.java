@@ -54,7 +54,7 @@ public class ReadRss extends AsyncTask<Void,Void,Void>  {
         super.onPostExecute(aVoid);
 
         progressDialog.dismiss();
-        MyAdapter adapter = new MyAdapter(context, feedItems, new MyAdapter.NewsListListener() {
+        ReadRssAdapter adapter = new ReadRssAdapter(context, feedItems, new ReadRssAdapter.NewsListListener() {
             @Override
             public void onNewsClicked(int position) {
 
