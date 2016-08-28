@@ -25,13 +25,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.boha.citizenapp.ethekwini.R;
-import com.boha.citizenapp.ethekwini.rssreader.FeedItem;
-import com.boha.citizenapp.ethekwini.rssreader.MainActivity;
-import com.boha.citizenapp.ethekwini.rssreader.MyAdapter;
 import com.boha.citizenapp.ethekwini.rssreader.NewReadRss;
 import com.boha.citizenapp.ethekwini.rssreader.ReadRss;
 import com.boha.library.activities.CityApplication;
-import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.UserDTO;
@@ -46,8 +42,6 @@ import com.boha.library.util.Util;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
