@@ -1,4 +1,4 @@
-package com.boha.citizenapp.ethekwini.rssreader;
+package com.boha.library.rssreader;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;

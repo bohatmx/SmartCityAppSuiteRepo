@@ -177,7 +177,7 @@
         <activity android:name=".activities.TouristDrawerActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".rssreader.FullArticleViewActivity"
+        <activity android:name="com.boha.library.rssreader.FullArticleViewActivity"
             android:screenOrientation="portrait"
             android:parentActivityName=".activities.SplashActivity"/>
     </application>

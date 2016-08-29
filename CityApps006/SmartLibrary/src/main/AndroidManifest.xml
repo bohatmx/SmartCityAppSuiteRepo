@@ -22,6 +22,7 @@
         <activity
             android:name=".activities.ThemeSelectorActivity"
             android:label="@string/title_activity_theme_selector" />
+        <activity android:name="com.boha.citizenapp.ethekwini.activities.LandingPageActivity" />
 
         <service
             android:name=".services.RequestService"
