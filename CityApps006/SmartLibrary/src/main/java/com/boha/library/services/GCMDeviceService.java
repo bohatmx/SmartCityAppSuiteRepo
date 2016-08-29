@@ -52,7 +52,7 @@ public class GCMDeviceService extends IntentService {
                 Log.i(LOG, "############# GCM - STAFF device registered: we cool, cool.....: " + id);
                 GcmDeviceDTO gcmDevice = getDevice(id);
                 gcmDevice.setMunicipalityID(staff.getMunicipalityID());
-                gcmDevice.setMunicipalityStaffID(staff.getMunicipalityStaffID());
+//                gcmDevice.setMunicipalityStaffID(staff.getMunicipalityStaffID());
 
                 RequestDTO w = new RequestDTO(RequestDTO.ADD_GCM_DEVICE);
                 w.setGcmDevice(gcmDevice);

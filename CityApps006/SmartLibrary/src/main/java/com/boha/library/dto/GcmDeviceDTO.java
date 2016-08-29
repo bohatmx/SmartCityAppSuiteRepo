@@ -9,12 +9,28 @@ import java.io.Serializable;
  */
 public class GcmDeviceDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Integer gcmDeviceID;
+    private Integer gcmDeviceID, profileInfoID, municipalityStaffID;
     private String manufacturer, model,serialNumber,gcmRegistrationID, email;
     private Long dateRegistered;
     private String androidVersion;
     private Integer municipalityID;
     private Boolean activeFlag;
+
+    public Integer getProfileInfoID() {
+        return profileInfoID;
+    }
+
+    public void setProfileInfoID(Integer profileInfoID) {
+        this.profileInfoID = profileInfoID;
+    }
+
+    public Integer getMunicipalityStaffID() {
+        return municipalityStaffID;
+    }
+
+    public void setMunicipalityStaffID(Integer municipalityStaffID) {
+        this.municipalityStaffID = municipalityStaffID;
+    }
 
     public Integer getGcmDeviceID() {
         return gcmDeviceID;

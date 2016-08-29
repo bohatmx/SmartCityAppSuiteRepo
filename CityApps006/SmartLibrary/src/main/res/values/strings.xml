@@ -192,6 +192,7 @@ The application has emergency numbers from the municipality, such as ambulance n
     <string name="missing_manhole_covers">- Missing manhole covers</string>
     <string name="potholes">- Potholes</string>
     <string name="broken_traffic_lights">- Broken traffic lights</string>
+    <string name="news">News</string>
     <string name="noise">- Noise</string>
     <string name="burst_water_pipe">- Burst water pipe</string>
     <string name="high_bill">- High bill</string>

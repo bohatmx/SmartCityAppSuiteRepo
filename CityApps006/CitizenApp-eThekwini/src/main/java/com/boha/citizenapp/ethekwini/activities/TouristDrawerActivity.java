@@ -123,7 +123,7 @@ public class TouristDrawerActivity extends AppCompatActivity implements
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navImage = (ImageView) findViewById(R.id.NAVHEADER_image);
+//        navImage = (ImageView) findViewById(R.id.NAVHEADER_image);
         navText = (TextView) findViewById(R.id.NAVHEADER_text);
 
 
