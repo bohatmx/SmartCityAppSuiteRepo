@@ -2,14 +2,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.boha.citizenapp.activities.SplashActivity">
 
     <ImageView
         android:id="@+id/SPLASH_image"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         android:src="@drawable/c1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
+
+  <!--  <android.support.v7.widget.CardView
+        android:id="@+id/card"
+        app:cardElevation="@dimen/mon_divider"
+        android:layout_margin="@dimen/mon_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <RelativeLayout
+        android:padding="@dimen/mon_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/latest_news_title"
+            android:text="News Headlines"
+            android:layout_centerHorizontal="true"
+            style="@style/Title3TextStyleBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    </android.support.v7.widget.CardView> -->
+
+   <!-- <Button
+        android:id="@+id/SPLASH_btnSignin"
+        android:text="@string/signin"
+        android:padding="@dimen/mon_padding"
+        android:textColor="@color/white"
+        android:elevation="@dimen/mon_padding"
+        android:drawableLeft="@android:drawable/ic_menu_send"
+        android:background="@color/red_800"
+        android:layout_marginRight="@dimen/mon_16"
+        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recyclerViewSplash"/> -->
+
+      <!--      <android.support.v7.widget.RecyclerView
+                android:layout_below="@+id/card"
+                android:id="@+id/recyclerViewSplash"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:orientation="horizontal"/> -->
+
+
 
     <RelativeLayout
         android:id="@+id/SPLASH_actions"
@@ -19,8 +63,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <Button
+            android:id="@+id/SPLASH_btnNews"
+            android:text="@string/news"
+            android:padding="@dimen/mon_padding"
+            android:textColor="@color/white"
+            android:elevation="@dimen/mon_padding"
+            android:drawableLeft="@android:drawable/ic_menu_send"
+            android:background="@color/blue_800"
+            android:layout_marginLeft="@dimen/mon_16"
+            android:layout_marginRight="@dimen/mon_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
 
         <Button
+            android:layout_below="@+id/SPLASH_btnNews"
             android:id="@+id/SPLASH_btnSignin"
             android:text="@string/signin"
             android:padding="@dimen/mon_padding"
@@ -30,6 +88,7 @@
             android:background="@color/red_800"
             android:layout_marginLeft="@dimen/mon_16"
             android:layout_marginRight="@dimen/mon_16"
+            android:layout_alignParentRight="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
