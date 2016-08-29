@@ -92,8 +92,8 @@ public class SplashActivity extends AppCompatActivity  {
         //
 
 
-        readRss = new ReadRss(this, recyclerView);
-        readRss.execute();
+       // readRss = new ReadRss(this, recyclerView);
+      //  readRss.execute();
          //  newReadRss = new NewReadRss();
         // newReadRss.getNews(ctx, recyclerView);
 
@@ -127,21 +127,21 @@ public class SplashActivity extends AppCompatActivity  {
     }
 
     private void setFields() {
-     //   actionsView = findViewById(R.id.SPLASH_actions);
-    //    actionsView.setVisibility(View.GONE);
-        news_txt = (TextView) findViewById(R.id.latest_news_title);
+        actionsView = findViewById(R.id.SPLASH_actions);
+        actionsView.setVisibility(View.GONE);
+        //news_txt = (TextView) findViewById(R.id.latest_news_title);
         heroImage = (ImageView) findViewById(R.id.SPLASH_image);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         logo = (ImageView) findViewById(R.id.SPLASH_logo);
-  //      btnRegister = (Button) findViewById(R.id.SPLASH_btnRegister);
+        btnRegister = (Button) findViewById(R.id.SPLASH_btnRegister);
         btnSignIn = (Button) findViewById(R.id.SPLASH_btnSignin);
         progressBar.setVisibility(View.GONE);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewSplash);
-        LinearLayoutManager lm = new LinearLayoutManager(ctx,LinearLayoutManager.VERTICAL,false);
-        recyclerView.setLayoutManager(lm);
+      //  recyclerView = (RecyclerView) findViewById(R.id.recyclerViewSplash);
+      //  LinearLayoutManager lm = new LinearLayoutManager(ctx,LinearLayoutManager.VERTICAL,false);
+      //  recyclerView.setLayoutManager(lm);
 
 
-     /*   btnRegister.setVisibility(View.GONE);
+        btnRegister.setVisibility(View.GONE);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,7 +156,7 @@ public class SplashActivity extends AppCompatActivity  {
                 });
 
             }
-        }); */
+        });
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,12 +183,12 @@ public class SplashActivity extends AppCompatActivity  {
 
         if (SharedUtil.getProfile(ctx) != null) {
             btnSignIn.setVisibility(View.GONE);
-       //     btnRegister.setVisibility(View.GONE);
+            btnRegister.setVisibility(View.GONE);
         }
 
         if (SharedUtil.getUser(ctx) != null) {
             btnSignIn.setVisibility(View.GONE);
-      //      btnRegister.setVisibility(View.GONE);
+            btnRegister.setVisibility(View.GONE);
         }
 
 
@@ -282,7 +282,7 @@ public class SplashActivity extends AppCompatActivity  {
             return;
         }
 
-    //    Util.expand(actionsView, ONE_SECOND, null);
+        Util.expand(actionsView, ONE_SECOND, null);
     }
 
 
