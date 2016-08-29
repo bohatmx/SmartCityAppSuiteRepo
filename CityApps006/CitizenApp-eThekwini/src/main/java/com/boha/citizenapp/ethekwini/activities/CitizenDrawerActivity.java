@@ -113,12 +113,15 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
     ActionBar ab;
     private FirebaseAnalytics mFirebaseAnalytics;
+    String page;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ThemeChooser.setTheme(this);
 
         setContentView(R.layout.activity_main2);
+        page = getIntent().getStringExtra("page");
         ctx = getApplicationContext();
         activity = this;
         //change topVIEW TO MATCH APP THEME
@@ -210,9 +213,10 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
-        Log.w(LOG,"analytics event sent .....");
+        Log.w(LOG, "analytics event sent .....");
 
     }
+
     private void getCachedLoginData() {
 
         CacheUtil.getCacheLoginData(ctx, new CacheUtil.CacheRetrievalListener() {
@@ -413,7 +417,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("http://etmobileguide.oneconnectgroup.com/"));
             startActivity(intent);
-            setAnalyticsEvent("guide","AppGuide");
+            setAnalyticsEvent("guide", "AppGuide");
         }
 
 
@@ -421,6 +425,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     }
 
     static final SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy HH:mm:ss");
+
     private void setupViewPager() {
 
         setMenuDestinations();
@@ -462,15 +467,8 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         newsListFragment.setPageTitle(ctx.getString(R.string.city_news));
         faqFragment.setPageTitle(getString(R.string.faq));
 
-        if (profileInfoFragment != null) {
-            if (user == null) {
-                pageFragmentList.add(profileInfoFragment);
-            }
-        }
-        if (user == null) {
-            pageFragmentList.add(myComplaintsFragment);
-            pageFragmentList.add(complaintCreateFragment);
-        }
+
+        pageFragmentList.add(profileInfoFragment);
         pageFragmentList.add(alertListFragment);
         pageFragmentList.add(newsListFragment);
         pageFragmentList.add(complaintsAroundMeFragment);
@@ -512,6 +510,15 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                 Intent w = new Intent(this, CitizenDrawerActivity.class);
                 startActivity(w);
             } catch (Exception e2) {
+            }
+        }
+
+        if (page != null) {
+            if (page.equalsIgnoreCase("Alerts")) {
+                mPager.setCurrentItem(1);
+            }
+            if (page.equalsIgnoreCase("News")) {
+                mPager.setCurrentItem(2);
             }
         }
     }
