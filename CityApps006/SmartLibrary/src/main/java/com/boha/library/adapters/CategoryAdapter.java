@@ -72,31 +72,35 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
         }
-        if (p.equalsIgnoreCase("Pollution")) {
-            image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.zpollution));
+
+        if (p.equalsIgnoreCase("Pollution ")) {
             Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zpollution);
             d.setColorFilter(new
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
         }
+
         if (p.equalsIgnoreCase("Traffic")) {
             Drawable d = ContextCompat.getDrawable(ctx, R.drawable.ztraffic);
             d.setColorFilter(new
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
         }
+
         if (p.equalsIgnoreCase("Road")) {
             Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zroad);
             d.setColorFilter(new
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
         }
-        if (p.equalsIgnoreCase("Waste Water")) {
+
+        if (p.equalsIgnoreCase("Waste Water ")) {
             Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zwaste_water);
             d.setColorFilter(new
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
         }
+
 
     }
     @Override

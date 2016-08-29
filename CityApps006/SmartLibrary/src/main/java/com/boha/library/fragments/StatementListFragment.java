@@ -60,7 +60,7 @@ public class StatementListFragment extends Fragment implements PageFragment {
 
     StatementFragmentListener statementFragmentListener;
     ResponseDTO response;
-    TextView txtTitle, txtDate, txtCount, txtAccount;
+    TextView txtTitle, txtDate, txtCount, txtAccount, txtLabel;
     View view, fab, topView, handle;
     Context ctx;
     ImageView heroImage;
@@ -204,6 +204,13 @@ public class StatementListFragment extends Fragment implements PageFragment {
         heroImage = (ImageView) view.findViewById(R.id.ST_hero);
         txtTitle = (TextView) view.findViewById(R.id.ST_title);
         recyclerView = (RecyclerView) view.findViewById(R.id.ST_list);
+        txtLabel = (TextView) view.findViewById(R.id.ST_label);
+
+        if (filePathList != null) {
+            txtLabel.setText(R.string.downloaded_statement);
+        } else {
+            txtLabel.setText(R.string.download_statement);
+        }
 
 
         txtDate.setText("Not Downloaded");

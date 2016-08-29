@@ -1,11 +1,13 @@
 package com.boha.library.activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -20,15 +22,19 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
 import com.boha.library.R;
+import com.boha.library.adapters.PopupAccountListAdapter;
 import com.boha.library.dto.AccountDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.ProfileInfoDTO;
@@ -44,11 +50,12 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class AccountDetailActivity extends AppCompatActivity implements AccountFragment.AccountFragmentListener{
+import me.relex.circleindicator.CircleIndicator;
+
+public class AccountDetailActivity extends AppCompatActivity implements AccountFragment.AccountFragmentListener {
 
     private ProfileInfoDTO profileInfo;
     private ViewPager viewPager;
-
     int darkColor, primaryColor, logo;
     Context ctx;
     static final String LOG = AccountDetailActivity.class.getSimpleName();
@@ -82,12 +89,18 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
                 &= ApplicationInfo.FLAG_DEBUGGABLE);
         setAnalyticsEvent("account","Accounts Check");
 
+
+        profileInfo = SharedUtil.getProfile(ctx);
+        Log.i(LOG, "accountList is: " + profileInfo.getAccountList().size());
+
+
     }
 
     PagerAdapter adapter;
     TextView name, acctNumber;
-    ImageView icon;
+    ImageView icon, popUp;
     AccountDTO account;
+    CircleIndicator indicator;
 
     private void setAnalyticsEvent(String id, String name) {
         Bundle bundle = new Bundle();
@@ -108,7 +121,16 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
         acctNumber = (TextView) findViewById(R.id.accountNumber);
         fab = (FloatingActionButton) findViewById(R.id.fabButton);
         icon = (ImageView) findViewById(R.id.TOP_icon);
+        popUp = (ImageView) findViewById(R.id.S_AD2);
+        view = name;
+        popUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAccountPopup();
+            }
+        });
 
+        indicator = (CircleIndicator) findViewById(R.id.indicator);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,7 +157,9 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
             }
         });
         adapter = new PagerAdapter(getSupportFragmentManager());
+        adapter.registerDataSetObserver(indicator.getDataSetObserver());
         viewPager.setAdapter(adapter);
+        indicator.setViewPager(viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -148,6 +172,7 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
                     account = profileInfo.getAccountList().get(position);
                     name.setText(account.getCustomerAccountName());
                     acctNumber.setText(account.getAccountNumber());
+
                 }
             }
 
@@ -158,6 +183,51 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
         });
         createFragments();
     }
+
+
+    ListPopupWindow  accountPopup;
+    View view;
+    int primaryDarkColor;
+
+    public void showAccountPopup() {
+        if (accountPopup != null) {
+            accountPopup.dismiss();
+        }
+        accountPopup = new ListPopupWindow(this);
+        LayoutInflater inf = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inf.inflate(R.layout.hero_image_popup, null);
+        TextView txt = (TextView) v.findViewById(R.id.HERO_caption);
+        txt.setText("My Accounts");
+        ImageView img = (ImageView) v.findViewById(R.id.HERO_image);
+        img.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+
+        accountPopup.setPromptView(v);
+        accountPopup.setPromptPosition(ListPopupWindow.POSITION_PROMPT_ABOVE);
+        accountPopup.setAdapter(new PopupAccountListAdapter(ctx,
+                R.layout.xspinner_item, profileInfo.getAccountList()/*, primaryDarkColor*/));
+        accountPopup.setAnchorView(view);
+        accountPopup.setHorizontalOffset(Util.getPopupHorizontalOffset(this));
+        accountPopup.setModal(true);
+        accountPopup.setWidth(Util.getPopupWidth(this));
+        accountPopup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                accountPopup.dismiss();
+                account = profileInfo.getAccountList().get(position);
+                Util.setComplaintCategoryIcon(account.getAccountNumber(), popUp, ctx);
+                if (position < profileInfo.getAccountList().size()) {
+                    account = profileInfo.getAccountList().get(position);
+                    name.setText(account.getCustomerAccountName());
+                    acctNumber.setText(account.getAccountNumber());
+                    viewPager.setCurrentItem(position);
+
+                }
+            }
+        });
+        accountPopup.show();
+    }
+
+
 
     private void createFragments() {
         profileInfo = SharedUtil.getProfile(this);
@@ -172,6 +242,7 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
                 account = profileInfo.getAccountList().get(0);
                 name.setText(account.getCustomerAccountName());
                 acctNumber.setText(account.getAccountNumber());
+
             }
             adapter.notifyDataSetChanged();
         }
@@ -210,7 +281,7 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
         }
     }
 
-    int index;
+    int index = 0;
     Timer timer;
     TimerTask timerTask;
     final Handler handler = new Handler();
@@ -259,12 +330,7 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
 
-
-            finish();
-    }
 
 
 
@@ -307,7 +373,8 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
 
     }
 
-    private static class PagerAdapter extends FragmentStatePagerAdapter {
+
+    private /*static*/ class PagerAdapter extends FragmentStatePagerAdapter {
 
         public PagerAdapter(FragmentManager fm) {
             super(fm);
@@ -327,11 +394,14 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
         @Override
         public CharSequence getPageTitle(int position) {
             PageFragment pf = pageFragmentList.get(position);
+
             return pf.getPageTitle();
         }
     }
 
-    static List<PageFragment> pageFragmentList = new ArrayList<>();
+   // remove static to see if the list still duplicates
+   /* static*/ List<PageFragment> pageFragmentList= new ArrayList<>();
+
     public void startTimer() {
         //set a new Timer
         timer = new Timer();
@@ -350,8 +420,9 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
         }
     }
 
-    public void initializeTimerTask() {
 
+    public void initializeTimerTask() {
+        startTimer();
         timerTask = new TimerTask() {
             public void run() {
                 //use a handler to run a toast that shows the current timestamp

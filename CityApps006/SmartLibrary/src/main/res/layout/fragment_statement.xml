@@ -14,8 +14,7 @@
         <RelativeLayout
             android:id="@+id/ST_top"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/mon_hero_height_small">
-
+            android:layout_height="@dimen/mon_120">
             <RelativeLayout
                 android:id="@+id/ST_handle"
                 android:layout_width="match_parent"
@@ -28,7 +27,6 @@
                 android:scaleType="centerCrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-
             <TextView
                 android:id="@+id/ST_title"
                 android:text="Statements"
@@ -57,23 +55,21 @@
                     style="@style/Title2TextStyleWhite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/ST_label"
+                    android:layout_below="@id/ST_account"
+                    android:text="Latest Statement Available"
+                    android:layout_marginTop="@dimen/mon_divider"
+                    android:layout_marginLeft="@dimen/mon_16"
+                    style="@style/TextStyleSmall"
+                    android:textColor="@color/grey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </RelativeLayout>
 
 
             <TextView
-                android:id="@+id/ST_label"
-                android:layout_below="@id/acctLayout"
-                android:text="Latest Statement Available"
-                android:layout_marginTop="@dimen/mon_divider"
-                android:layout_marginLeft="@dimen/mon_16"
-                style="@style/TextStyleSmall"
-                android:textColor="@color/grey"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
                 android:id="@+id/ST_subtitle"
-                android:layout_below="@id/ST_label"
                 android:text="February 2015"
                 android:layout_marginLeft="@dimen/mon_16"
                 style="@style/Title3TextStyleWhite"
@@ -81,6 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </RelativeLayout>
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/ST_list"

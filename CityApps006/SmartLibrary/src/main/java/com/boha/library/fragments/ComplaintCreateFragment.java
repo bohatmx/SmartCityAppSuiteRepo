@@ -225,6 +225,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                                     showCameraIcon(response.getComplaintList().get(0));
                                     setAnalyticsEvent("complaint1", "Complaint sent");
                                     mListener.onComplaintAdded(response.getComplaintList());
+                                    showReferenceDialog();
 
                                 } else {
                                     setAnalyticsEvent("complaint0", "Error complaint");
@@ -237,7 +238,11 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                     });
                 }
 
+
             }
+
+
+
 
             @Override
             public void onError(final String message) {
@@ -323,6 +328,21 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
+    }
+
+    AlertDialog.Builder referenceDialog;
+
+    private void showReferenceDialog() {
+        referenceDialog = new AlertDialog.Builder(getActivity());
+        referenceDialog.setTitle("Reference Number")
+                .setMessage("Your complaint has been successfully submitted, your reference number is: \n\n"
+                        + complaint.getReferenceNumber())
+                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

@@ -3,7 +3,7 @@ package com.boha.citizenapp.ethekwini.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -22,6 +22,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.boha.citizenapp.ethekwini.R;
+import com.boha.library.activities.CityApplication;
 import com.boha.library.dto.GcmDeviceDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.ProfileInfoDTO;
@@ -34,8 +35,8 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
-import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.crash.FirebaseCrash;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.gson.Gson;
 
 import java.util.Timer;
@@ -58,7 +59,7 @@ public class SigninActivity extends AppCompatActivity {
     RadioButton radioYes, radioNo, radioTourist;
     Context ctx;
     Activity activity;
-    Button btnSend;
+    Button btnSend, btnTourist;
     EditText editEmail, editPassword;
     static final String LOG = SigninActivity.class.getSimpleName();
     ResponseDTO response;
@@ -76,7 +77,6 @@ public class SigninActivity extends AppCompatActivity {
         ctx = getApplicationContext();
         activity = this;
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
         municipality = SharedUtil.getMunicipality(ctx);
         int logo = getIntent().getIntExtra("logo", R.drawable.ic_action_globe);
         registerGCMDevice();
@@ -88,7 +88,13 @@ public class SigninActivity extends AppCompatActivity {
                 municipality.getMunicipalityName(),
                 ctx.getResources().getDrawable(R.drawable.logo), logo);
         getSupportActionBar().setTitle("");
-        setAnalyticsEvent("signIn","SignInActivity");
+        //Track Signin
+        CityApplication ca = (CityApplication) getApplication();
+        Tracker t = ca.getTracker(
+                CityApplication.TrackerName.APP_TRACKER);
+        t.setScreenName(SigninActivity.class.getSimpleName());
+        t.send(new HitBuilders.ScreenViewBuilder().build());
+        //
     }
 
     @Override
@@ -110,12 +116,9 @@ public class SigninActivity extends AppCompatActivity {
         editPassword = (EditText) findViewById(R.id.SIGNIN_editPIN);
         heroImage = (ImageView) findViewById(R.id.SIGNIN_heroImage);
         handle = findViewById(R.id.SIGNIN_handle);
-        //todo remove
-        // ########################################
-        editEmail.setText("grosvenor@iafrica.com");
-        editPassword.setText("gift123");
-        // ########################################
 
+        btnTourist = (Button) findViewById(R.id.SIGNIN_btnTourist);
+        btnTourist.setVisibility(View.GONE);
 
         btnSend.setOnClickListener(new View.OnClickListener() {
                                        @Override
@@ -136,9 +139,16 @@ public class SigninActivity extends AppCompatActivity {
                                    }
 
         );
+        btnTourist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SigninActivity.this, TouristDrawerActivity.class);
+                startActivity(intent);
+            }
+        });
         userType = SharedUtil.CITIZEN_WITH_ACCOUNT;
         editEmail.setHint(R.string.enter_email);
-        editPassword.setVisibility(View.VISIBLE);
+      // editPassword.setVisibility(View.VISIBLE);
         radioNo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -150,22 +160,34 @@ public class SigninActivity extends AppCompatActivity {
         radioYes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                userType = SharedUtil.CITIZEN_WITH_ACCOUNT;
-                editEmail.setHint(R.string.enter_email);
+                editEmail.setVisibility(View.GONE);
+                editPassword.setVisibility(View.GONE);
+                btnSend.setVisibility(View.GONE);
+                btnTourist.setVisibility(View.VISIBLE);
+               // userType = SharedUtil.CITIZEN_WITH_ACCOUNT;
+
+                //editEmail.setHint(R.string.enter_email);
+            }
+        });
+        radioTourist.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                editEmail.setVisibility(View.VISIBLE);
                 editPassword.setVisibility(View.VISIBLE);
+                btnTourist.setVisibility(View.GONE);
+                btnSend.setVisibility(View.VISIBLE);
+
             }
         });
 
+
     }
 
-    Snackbar snackbar;
     public void sendSignInCitizen() {
 
         final long start = System.currentTimeMillis();
         Snackbar.make(editPassword, "Downloading information; may take a minute or two",
                 Snackbar.LENGTH_LONG).show();
-
-
         if (editEmail.getText().toString().isEmpty()) {
             Util.showErrorToast(ctx, getString(R.string.enter_email));
             return;
@@ -190,8 +212,6 @@ public class SigninActivity extends AppCompatActivity {
         //
 
         btnSend.setEnabled(false);
-
-        snackbar = Util.showSnackBar(editPassword,"You are being signed in ...","OK", Color.parseColor("CYAN"));
         setProgressDialog();
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
@@ -202,21 +222,20 @@ public class SigninActivity extends AppCompatActivity {
                         long end = System.currentTimeMillis();
                         Log.e(LOG, "sendSignInCitizen: elapsed seconds : " + ((end-start)/1000) + " seconds");
                         progressDialog.dismiss();
-                        snackbar.dismiss();
-
+                        btnSend.setEnabled(true);
                         if (resp.isMunicipalityAccessFailed()) {
                             if (resp.getProfileInfoList() == null || resp.getProfileInfoList().isEmpty()) {
                                 Util.showErrorToast(ctx, getString(R.string.services_not_available));
-                                FirebaseCrash.report(new Exception("Services not available or have error"));
                                 return;
                             } else {
-                                FirebaseCrash.report(new Exception("Services not available"));
                                 Util.showErrorToast(ctx, getString(com.boha.library.R.string.unable_connect_muni));
                             }
                         }
                         response = resp;
                         if (response.getProfileInfoList() != null && !response.getProfileInfoList().isEmpty()) {
                             profileInfo = response.getProfileInfoList().get(0);
+
+
                             SharedUtil.saveProfile(ctx, profileInfo);
                             SharedUtil.setUserType(ctx, userType);
                             SharedUtil.saveGCMDevice(ctx, gcmDevice);
@@ -234,7 +253,6 @@ public class SigninActivity extends AppCompatActivity {
                                 }
                             });
                         } else {
-                            btnSend.setEnabled(true);
                             Gson gson = new Gson();
                             Log.e(LOG, "-- sendSignInCitizen - some kind of error, json from server: " + gson.toJson(resp));
                         }
@@ -250,9 +268,6 @@ public class SigninActivity extends AppCompatActivity {
                     public void run() {
                         progressDialog.dismiss();
                         btnSend.setEnabled(true);
-                        snackbar.dismiss();
-                        Util.showSnackBar(editPassword,message,"Not OK", Color.parseColor("RED"));
-                        FirebaseCrash.report(new Exception("Sign In Error: " + message));
                         Util.showErrorToast(ctx, message);
                     }
                 });
@@ -330,6 +345,14 @@ public class SigninActivity extends AppCompatActivity {
             }
         });
     }
+
+    //Tourist Test
+    public void sendSignInTourist() {
+        Intent intent = new Intent(SigninActivity.this, TouristDrawerActivity.class);
+        startActivity(intent);
+
+    }
+
     void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) ctx
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -362,20 +385,7 @@ public class SigninActivity extends AppCompatActivity {
     }
 
     Menu mMenu;
-    FirebaseAnalytics mFirebaseAnalytics;
-    private void setAnalyticsEvent(String id, String name) {
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
 
-        if (mFirebaseAnalytics == null) {
-            mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
-        }
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
-        Log.w(LOG,"analytics event sent .....");
-
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

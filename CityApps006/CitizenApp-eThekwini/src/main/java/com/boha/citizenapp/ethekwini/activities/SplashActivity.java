@@ -4,13 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -21,8 +22,12 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.boha.citizenapp.ethekwini.R;
+import com.boha.citizenapp.ethekwini.rssreader.NewReadRss;
+import com.boha.citizenapp.ethekwini.rssreader.ReadRss;
+import com.boha.library.activities.CityApplication;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.UserDTO;
@@ -34,13 +39,14 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
-import com.google.firebase.crash.FirebaseCrash;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity  {
 
     ProfileInfoDTO profile;
     Timer timer;
@@ -62,6 +68,11 @@ public class SplashActivity extends AppCompatActivity {
      */
     static final String MUNICIPALITY_NAME = "eThekwini";
     int themeDarkColor, themePrimaryColor;
+    RecyclerView recyclerView;
+    TextView news_txt;
+    NewReadRss newReadRss;
+    ReadRss readRss;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +88,16 @@ public class SplashActivity extends AppCompatActivity {
         themeDarkColor = typedValue.data;
         theme.resolveAttribute(com.boha.library.R.attr.colorPrimary, typedValue, true);
         themePrimaryColor = typedValue.data;
+
+        //
+
+
+       // readRss = new ReadRss(this, recyclerView);
+      //  readRss.execute();
+         //  newReadRss = new NewReadRss();
+        // newReadRss.getNews(ctx, recyclerView);
+
+
 
 
         //eThekwini logo - will be different for each municipality
@@ -96,11 +117,11 @@ public class SplashActivity extends AppCompatActivity {
         }
         getMunicipality();
         //Track analytics
-//        CityApplication ca = (CityApplication) getApplication();
-//        Tracker t = ca.getTracker(
-//                CityApplication.TrackerName.APP_TRACKER);
-//        t.setScreenName(SplashActivity.class.getSimpleName());
-//        t.send(new HitBuilders.ScreenViewBuilder().build());
+        CityApplication ca = (CityApplication) getApplication();
+        Tracker t = ca.getTracker(
+                CityApplication.TrackerName.APP_TRACKER);
+        t.setScreenName(SplashActivity.class.getSimpleName());
+        t.send(new HitBuilders.ScreenViewBuilder().build());
 
 
     }
@@ -108,12 +129,17 @@ public class SplashActivity extends AppCompatActivity {
     private void setFields() {
         actionsView = findViewById(R.id.SPLASH_actions);
         actionsView.setVisibility(View.GONE);
+        //news_txt = (TextView) findViewById(R.id.latest_news_title);
         heroImage = (ImageView) findViewById(R.id.SPLASH_image);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         logo = (ImageView) findViewById(R.id.SPLASH_logo);
         btnRegister = (Button) findViewById(R.id.SPLASH_btnRegister);
         btnSignIn = (Button) findViewById(R.id.SPLASH_btnSignin);
         progressBar.setVisibility(View.GONE);
+      //  recyclerView = (RecyclerView) findViewById(R.id.recyclerViewSplash);
+      //  LinearLayoutManager lm = new LinearLayoutManager(ctx,LinearLayoutManager.VERTICAL,false);
+      //  recyclerView.setLayoutManager(lm);
+
 
         btnRegister.setVisibility(View.GONE);
 
@@ -147,6 +173,7 @@ public class SplashActivity extends AppCompatActivity {
         });
 
 
+
         heroImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,6 +190,7 @@ public class SplashActivity extends AppCompatActivity {
             btnSignIn.setVisibility(View.GONE);
             btnRegister.setVisibility(View.GONE);
         }
+
 
     }
 
@@ -205,11 +233,10 @@ public class SplashActivity extends AppCompatActivity {
                             progressBar.setVisibility(View.GONE);
                             progressDialog.dismiss();
                             if (response.getStatusCode() == 0) {
+
                                 municipality = response.getMunicipalityList().get(0);
                                 SharedUtil.saveMunicipality(ctx, municipality);
                                 Util.expand(actionsView, ONE_SECOND, null);
-                            } else {
-                                FirebaseCrash.report(new Exception("Municipality cannot be determined"));
                             }
                         }
                     });
@@ -220,8 +247,7 @@ public class SplashActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            FirebaseCrash.report(new Exception("Municipality cannot be determined"));
-                            Util.showSnackBar(heroImage,message,"OK", Color.parseColor("RED"));
+                            Util.showErrorToast(ctx, message);
                         }
                     });
                 }

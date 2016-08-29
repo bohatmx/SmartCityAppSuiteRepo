@@ -97,7 +97,7 @@
 
         <RadioButton
             android:id="@+id/radioAnywhere"
-            android:text="Anywhere"
+            android:text="Current Location"
             android:layout_weight="1"
             android:checked="true"
             android:layout_width="wrap_content"

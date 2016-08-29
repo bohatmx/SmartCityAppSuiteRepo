@@ -147,6 +147,17 @@
                 android:text="Sign In"
                 android:textColor="@color/white" />
 
+            <Button
+                android:id="@+id/SIGNIN_btnTourist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/SIGNIN_btnSignin"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/mon_16"
+                android:background="@color/red_800"
+                android:text="Tourist View"
+                android:textColor="@color/white" />
+
         </RelativeLayout>
 
     </RelativeLayout>

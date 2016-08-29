@@ -43,8 +43,8 @@
         android:orderInCategory="100"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/action_logoff"
-        android:title="Log Off"
+        android:id="@+id/action_exit"
+        android:title="Exit View"
         android:icon="@drawable/ic_action_event"
         android:orderInCategory="100"
         app:showAsAction="never" />
