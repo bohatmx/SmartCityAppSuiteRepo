@@ -1,14 +1,12 @@
-package com.boha.citizenapp.ethekwini.rssreader;
+package com.boha.library.rssreader;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
+import com.boha.library.R;
 
-import com.boha.citizenapp.ethekwini.R;
+
 
 public class FullArticleViewActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.boha.citizenapp.ethekwini.rssreader;
+package com.boha.library.rssreader;
 
 import android.app.ProgressDialog;
 import android.content.Context;

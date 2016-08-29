@@ -1,4 +1,4 @@
-package com.boha.citizenapp.ethekwini.rssreader;
+package com.boha.library.rssreader;
 
 /**
  * Created by Nkululeko on 2016/08/24.

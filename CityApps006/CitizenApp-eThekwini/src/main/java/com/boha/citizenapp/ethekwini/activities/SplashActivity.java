@@ -10,8 +10,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -19,14 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.boha.citizenapp.ethekwini.R;
-import com.boha.citizenapp.ethekwini.rssreader.NewReadRss;
-import com.boha.citizenapp.ethekwini.rssreader.ReadRss;
 import com.boha.library.activities.CityApplication;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.ProfileInfoDTO;
@@ -50,15 +43,13 @@ public class SplashActivity extends AppCompatActivity  {
 
     ProfileInfoDTO profile;
     Timer timer;
-    ImageView heroImage, logo;
-    View actionsView;
-    Button btnSignIn, btnRegister;
+    ImageView heroImage;
+
     static Context ctx;
-    ProgressBar progressBar;
     UserDTO user;
     MunicipalityDTO municipality;
     static final Random RANDOM = new Random(System.currentTimeMillis());
-    static final int ONE_SECOND = 1000, QUICK = 200, SECONDS_TO_WAIT = ONE_SECOND * 4;
+    static final int ONE_SECOND = 1000, QUICK = 200, SECONDS_TO_WAIT = ONE_SECOND * 2;
     static final String TAG = SplashActivity.class.getSimpleName();
     //TODO - customize the app for each Municipality
     /**
@@ -68,10 +59,7 @@ public class SplashActivity extends AppCompatActivity  {
      */
     static final String MUNICIPALITY_NAME = "eThekwini";
     int themeDarkColor, themePrimaryColor;
-    RecyclerView recyclerView;
-    TextView news_txt;
-    NewReadRss newReadRss;
-    ReadRss readRss;
+
 
 
     @Override
@@ -88,20 +76,6 @@ public class SplashActivity extends AppCompatActivity  {
         themeDarkColor = typedValue.data;
         theme.resolveAttribute(com.boha.library.R.attr.colorPrimary, typedValue, true);
         themePrimaryColor = typedValue.data;
-
-        //
-
-
-       // readRss = new ReadRss(this, recyclerView);
-      //  readRss.execute();
-         //  newReadRss = new NewReadRss();
-        // newReadRss.getNews(ctx, recyclerView);
-
-
-
-
-        //eThekwini logo - will be different for each municipality
-        logo.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.logo));
         setTitle(MUNICIPALITY_NAME + " SmartCity");
         ActionBar actionBar = getSupportActionBar();
         Util.setCustomActionBar(ctx,
@@ -127,52 +101,8 @@ public class SplashActivity extends AppCompatActivity  {
     }
 
     private void setFields() {
-        actionsView = findViewById(R.id.SPLASH_actions);
-        actionsView.setVisibility(View.GONE);
-        //news_txt = (TextView) findViewById(R.id.latest_news_title);
+
         heroImage = (ImageView) findViewById(R.id.SPLASH_image);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        logo = (ImageView) findViewById(R.id.SPLASH_logo);
-        btnRegister = (Button) findViewById(R.id.SPLASH_btnRegister);
-        btnSignIn = (Button) findViewById(R.id.SPLASH_btnSignin);
-        progressBar.setVisibility(View.GONE);
-      //  recyclerView = (RecyclerView) findViewById(R.id.recyclerViewSplash);
-      //  LinearLayoutManager lm = new LinearLayoutManager(ctx,LinearLayoutManager.VERTICAL,false);
-      //  recyclerView.setLayoutManager(lm);
-
-
-        btnRegister.setVisibility(View.GONE);
-
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Util.flashOnce(btnRegister, QUICK, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        Intent intent = new Intent(ctx, RegistrationActivity.class);
-                        intent.putExtra("logo", R.drawable.logo);
-                        startActivityForResult(intent, REQUEST_SIGN_IN);
-                    }
-                });
-
-            }
-        });
-        btnSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Util.flashOnce(btnSignIn, QUICK, new Util.UtilAnimationListener() {
-                    @Override
-                    public void onAnimationEnded() {
-                        Intent intent = new Intent(ctx, SigninActivity.class);
-                        intent.putExtra("logo", R.drawable.logo);
-
-                        startActivityForResult(intent, REQUEST_SIGN_IN);
-                    }
-                });
-            }
-        });
-
-
 
         heroImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,16 +110,6 @@ public class SplashActivity extends AppCompatActivity  {
                 checkVirginity();
             }
         });
-
-        if (SharedUtil.getProfile(ctx) != null) {
-            btnSignIn.setVisibility(View.GONE);
-            btnRegister.setVisibility(View.GONE);
-        }
-
-        if (SharedUtil.getUser(ctx) != null) {
-            btnSignIn.setVisibility(View.GONE);
-            btnRegister.setVisibility(View.GONE);
-        }
 
 
     }
@@ -230,13 +150,11 @@ public class SplashActivity extends AppCompatActivity  {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            progressBar.setVisibility(View.GONE);
                             progressDialog.dismiss();
                             if (response.getStatusCode() == 0) {
 
                                 municipality = response.getMunicipalityList().get(0);
                                 SharedUtil.saveMunicipality(ctx, municipality);
-                                Util.expand(actionsView, ONE_SECOND, null);
                             }
                         }
                     });
@@ -282,7 +200,6 @@ public class SplashActivity extends AppCompatActivity  {
             return;
         }
 
-        Util.expand(actionsView, ONE_SECOND, null);
     }
 
 
@@ -293,7 +210,7 @@ public class SplashActivity extends AppCompatActivity  {
             public void run() {
                 timer.purge();
                 timer.cancel();
-                Intent m = new Intent(getApplicationContext(), CitizenDrawerActivity.class);
+                Intent m = new Intent(getApplicationContext(), LandingPageActivity.class);
                 startActivity(m);
                 finish();
             }
@@ -370,14 +287,7 @@ public class SplashActivity extends AppCompatActivity  {
     public void onResume() {
         super.onResume();
         Log.e("SplashActivity", "### onResume");
-        if (SharedUtil.getProfile(ctx) != null) {
-            btnSignIn.setVisibility(View.GONE);
-            btnRegister.setVisibility(View.GONE);
-        }
-        if (SharedUtil.getUser(ctx) != null) {
-            btnSignIn.setVisibility(View.GONE);
-            btnRegister.setVisibility(View.GONE);
-        }
+
 
     }
 
