@@ -64,31 +64,34 @@ public class LandingPageFragment extends Fragment implements PageFragment {
 
     private void setFields() {
         iconAlerts = (ImageView) view.findViewById(R.id.iconAlerts);
+        //iconLogin = (ImageView) view.findViewById(R.id.iconlAlerts);
         iconAlerts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                mListener.onAlertIconClicked();
             }
         });
-        iconLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onLogin();
-            }
-        });
+
+//        iconLogin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mListener.onLogin();
+//            }
+//        });
 
         if (SharedUtil.getProfile(getActivity()) != null) {
-            iconLogin.setVisibility(View.GONE);
+//            iconLogin.setVisibility(View.GONE);
         }
 
     }
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if (activity instanceof FaqListener) {
+
+        if (activity instanceof LandingPageListener) {
             mListener = (LandingPageListener) activity;
         } else {
-            throw new ClassCastException("Activty " + activity.getLocalClassName() +
+            throw new ClassCastException("Activity " + activity.getLocalClassName() +
                     " must implement  LandingPageListener");
         }
 

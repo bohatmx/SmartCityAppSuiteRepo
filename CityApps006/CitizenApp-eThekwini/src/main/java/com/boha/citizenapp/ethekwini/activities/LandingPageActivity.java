@@ -14,7 +14,8 @@ import com.boha.library.util.ThemeChooser;
  * Created by aubreymalabie on 8/29/16.
  */
 
-public class LandingPageActivity extends AppCompatActivity implements LandingPageFragment.LandingPageListener{
+public class LandingPageActivity extends AppCompatActivity
+        implements LandingPageFragment.LandingPageListener{
 
     LandingPageFragment landingPageFragment;
     ProfileInfoDTO profile;
