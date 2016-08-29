@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +25,13 @@ import com.boha.library.util.FAQCommsUtil;
 import com.boha.library.util.FaqStrings;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Fragment manages FAQ UI. Downloads html FAQ files from the server
@@ -67,6 +71,7 @@ public class FaqFragment extends Fragment implements PageFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
         if (getArguments() != null) {
             response = (ResponseDTO) getArguments().getSerializable("response");
             faqTypeList = response.getFaqTypeList();
@@ -139,7 +144,7 @@ public class FaqFragment extends Fragment implements PageFragment {
 //
 //    }
 
-   private void getCachedFAQs() {
+    private void getCachedFAQs() {
         mListener.setBusy(true);
         CacheUtil.getCachedFAQ(ctx, new CacheUtil.FAQCacheRetrievalListener() {
             @Override
@@ -191,10 +196,11 @@ public class FaqFragment extends Fragment implements PageFragment {
 
             @Override
             public void onFaqTypeClicked(int position) {
-               Intent intent = new Intent(ctx, FaqTypeActivity.class);
+                setAnalyticsEvent("faq", "FrequentlyAsked");
+                Intent intent = new Intent(ctx, FaqTypeActivity.class);
                 intent.putExtra("position", position);
                 startActivity(intent);
-                
+
             }
 
         });
@@ -203,7 +209,23 @@ public class FaqFragment extends Fragment implements PageFragment {
 
     }
 
-    TextView txtTitle,Faq_text ;
+    FirebaseAnalytics mFirebaseAnalytics;
+
+    private void setAnalyticsEvent(String id, String name) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+
+        if (mFirebaseAnalytics == null) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+        }
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        Log.w(LOG, "analytics event sent .....");
+
+
+    }
+
+    TextView txtTitle, Faq_text;
 
     private void setFields() {
 
@@ -212,7 +234,7 @@ public class FaqFragment extends Fragment implements PageFragment {
         icon = (ImageView) view.findViewById(R.id.FAQ_icon);
         heroImage = (ImageView) view.findViewById(R.id.FAQ_hero);
         txtTitle = (TextView) view.findViewById(R.id.FAQ_title);
-        Faq_text = (TextView)view.findViewById(R.id.NEWS_LIST_text);
+        Faq_text = (TextView) view.findViewById(R.id.NEWS_LIST_text);
         fab = view.findViewById(R.id.FAB);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
@@ -254,7 +276,7 @@ public class FaqFragment extends Fragment implements PageFragment {
                 });
             }
         });*/
-      //  setIcon();
+        //  setIcon();
     }
 
     FreqQuestionTypeDTO faqType;

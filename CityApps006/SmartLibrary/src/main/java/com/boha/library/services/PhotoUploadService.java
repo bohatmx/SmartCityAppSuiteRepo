@@ -3,6 +3,7 @@ package com.boha.library.services;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -17,6 +18,8 @@ import com.boha.library.util.PhotoCacheUtil;
 import com.boha.library.util.Util;
 import com.boha.library.util.WebCheck;
 import com.boha.library.util.WebCheckResult;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crash.FirebaseCrash;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,6 +52,7 @@ public class PhotoUploadService extends IntentService {
     public int getCount() {
         return uploadedList.size();
     }
+
     public void uploadCachedPhotos(UploadListener listener) {
         uploadListener = listener;
         Log.d(LOG, "#### uploadCachedPhotos, getting cached photos - will start uploads");
@@ -61,7 +65,8 @@ public class PhotoUploadService extends IntentService {
                 .append(cache.getPhotoUploadList().size()).append("\n");
         for (PhotoUploadDTO p : cache.getPhotoUploadList()) {
             if (p.getAlertImage() != null) {
-                if (p.getAlertImage().getDateTaken() == null) p.getAlertImage().setDateTaken(new Date().getTime());
+                if (p.getAlertImage().getDateTaken() == null)
+                    p.getAlertImage().setDateTaken(new Date().getTime());
                 sb.append("+++ Alert: ").append(p.getAlertImage().getDateTaken().toString());
 //                        .append(" lat: ").append(p.getAlertImage().getLatitude());
 //                sb.append(" lng: ").append(p.getAlertImage().getLatitude());
@@ -71,7 +76,8 @@ public class PhotoUploadService extends IntentService {
                     sb.append(" NOT UPLOADED\n");
             }
             if (p.getComplaintImage() != null) {
-                if (p.getComplaintImage().getDateTaken() == null) p.getComplaintImage().setDateTaken(new Date().getTime());
+                if (p.getComplaintImage().getDateTaken() == null)
+                    p.getComplaintImage().setDateTaken(new Date().getTime());
                 sb.append("+++ Complaint: ").append(p.getComplaintImage().getDateTaken().toString());
 //                        .append(" lat: ").append(p.getAlertImage().getLatitude());
 //                sb.append(" lng: ").append(p.getComplaintImage().getLatitude());
@@ -93,7 +99,7 @@ public class PhotoUploadService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         WebCheckResult wcr = WebCheck.checkNetworkAvailability(getApplicationContext());
         if (wcr.isNetworkUnavailable()) {
-            Log.d(LOG,"--- no network available, photoService quittin");
+            Log.d(LOG, "--- no network available, photoService quittin");
             return;
         }
         Log.w(LOG, "## onHandleIntent .... starting service");
@@ -124,7 +130,6 @@ public class PhotoUploadService extends IntentService {
         });
 
 
-
     }
 
     static List<PhotoUploadDTO> list;
@@ -136,7 +141,7 @@ public class PhotoUploadService extends IntentService {
         final long start = System.currentTimeMillis();
 
         final List<ImageInterface> list = new ArrayList<>();
-        for (PhotoUploadDTO dto: dtoList) {
+        for (PhotoUploadDTO dto : dtoList) {
             ImageInterface image = null;
             if (dto.getAlertImage() != null) {
                 image = dto.getAlertImage();
@@ -161,7 +166,7 @@ public class PhotoUploadService extends IntentService {
 
         CDNUploader.uploadImages(getApplicationContext(), list, true, new CDNUploader.CDNUploaderListener() {
             @Override
-            public void onFilesUploaded(List<ImageInterface> okList,List<ImageInterface> badList) {
+            public void onFilesUploaded(List<ImageInterface> okList, List<ImageInterface> badList) {
                 long end = System.currentTimeMillis();
                 Log.i(LOG, "---- photos uploaded: " + okList.size()
                         + " failed: " + badList.size() +
@@ -172,6 +177,7 @@ public class PhotoUploadService extends IntentService {
                 } else {
                     clearCache(okList);
                 }
+                setAnalyticsEvent("photo1", "Photo Uploaded");
                 //broadcast to activities
                 LocalBroadcastManager bm = LocalBroadcastManager.getInstance(getApplicationContext());
                 Intent m = new Intent(BROADCAST_UPLOADED);
@@ -182,29 +188,47 @@ public class PhotoUploadService extends IntentService {
             @Override
             public void onError(String message) {
                 Log.w(LOG, "--- onPhotoUploadFailed -  " + message);
+                FirebaseCrash.report(new Exception("Photo upload Error"));
             }
         });
 
     }
-public static final String BROADCAST_UPLOADED = "com.boha.uploaded";
-    private  void clearCache(List<ImageInterface> list) {
-        for (ImageInterface i: list) {
+    FirebaseAnalytics mFirebaseAnalytics;
+
+    private void setAnalyticsEvent(String id, String name) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+
+        if (mFirebaseAnalytics == null) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+        }
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        Log.w(LOG,"analytics event sent .....");
+
+
+    }
+    public static final String BROADCAST_UPLOADED = "com.boha.uploaded";
+
+    private void clearCache(List<ImageInterface> list) {
+        for (ImageInterface i : list) {
             if (i instanceof ComplaintImageDTO) {
-                ComplaintImageDTO x = (ComplaintImageDTO)i;
-                PhotoUploadDTO photoUpload  = new PhotoUploadDTO();
+                ComplaintImageDTO x = (ComplaintImageDTO) i;
+                PhotoUploadDTO photoUpload = new PhotoUploadDTO();
                 photoUpload.setComplaintImage(x);
                 photoUpload.setDateUploaded(new Date().getTime());
                 PhotoCacheUtil.removeUploadedPhoto(getApplicationContext(), photoUpload);
             }
             if (i instanceof AlertImageDTO) {
-                AlertImageDTO x = (AlertImageDTO)i;
-                PhotoUploadDTO photoUpload  = new PhotoUploadDTO();
+                AlertImageDTO x = (AlertImageDTO) i;
+                PhotoUploadDTO photoUpload = new PhotoUploadDTO();
                 photoUpload.setAlertImage(x);
                 photoUpload.setDateUploaded(new Date().getTime());
                 PhotoCacheUtil.removeUploadedPhoto(getApplicationContext(), photoUpload);
             }
         }
     }
+
     private static
     List<PhotoUploadDTO> failedUploads = new ArrayList<>();
     static final String LOG = PhotoUploadService.class.getSimpleName();

@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 24
     buildToolsVersion '24'
 
 
@@ -14,10 +14,10 @@ android {
     }
     defaultConfig {
         applicationId "com.boha.staffapp.ethekwini"
-        minSdkVersion 16
+        minSdkVersion 18
         targetSdkVersion 22
-        versionCode 12
-        versionName "1.0"
+        versionCode 15
+        versionName "1.1"
         multiDexEnabled true
 //        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -33,3 +33,4 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':SmartLibrary')
 }
+apply plugin: 'com.google.gms.google-services'

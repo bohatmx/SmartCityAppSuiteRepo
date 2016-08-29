@@ -1,12 +1,16 @@
 package com.boha.library.util;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.boha.library.R;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.volley.BaseVolley;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crash.FirebaseCrash;
 
 /**
  * Utility class to manage server communications via HTTP or WebSocket protocols
@@ -56,8 +60,13 @@ public class NetUtil {
                 if (response == null) {
                     listener.onError("Corrupted, null response from server. Please try again.");
                 } else {
+                    if (response.isMunicipalityAccessFailed()) {
+                        FirebaseCrash.report(new Exception("Municipality Service failed or unavailable"));
+                    }
                     if (response.getStatusCode() > 0) {
                         listener.onError(response.getMessage());
+                        setAnalyticsEvent(ctx,"app", "Unsuccessful");
+                        FirebaseCrash.report(new Exception("Application Error, status code: " + response.getMessage()));
                     } else {
                         listener.onResponse(response);
                     }
@@ -67,10 +76,25 @@ public class NetUtil {
             @Override
             public void onVolleyError(VolleyError error) {
                 listener.onError("Error communicating with server");
+                setAnalyticsEvent(ctx,"network", "Error");
+                FirebaseCrash.report(new Exception("Server Network Error: " + error.getMessage()));
             }
         });
     }
+    static FirebaseAnalytics mFirebaseAnalytics;
+    private static void setAnalyticsEvent(Context ctx,String id, String name) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
 
+        if (mFirebaseAnalytics == null) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(ctx);
+        }
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        Log.w("NetUtil","network analytics event sent .....");
+
+
+    }
     private static void sendCachedRequestsViaHttp(final Context ctx, RequestDTO request) {
         BaseVolley.getRemoteData(Statics.CACHED_REQUESTS_SERVLET, request, ctx, new BaseVolley.BohaVolleyListener() {
             @Override

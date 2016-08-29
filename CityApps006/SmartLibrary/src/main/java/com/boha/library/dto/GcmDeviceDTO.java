@@ -9,59 +9,19 @@ import java.io.Serializable;
  */
 public class GcmDeviceDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Integer gcmDeviceID, userID;
-    private String manufacturer,  gcmRegistrationID;
-    private String model;
-    private Integer messageCount;
+    private Integer gcmDeviceID;
+    private String manufacturer, model,serialNumber,gcmRegistrationID, email;
     private Long dateRegistered;
-    private String serialNumber;
     private String androidVersion;
     private Integer municipalityID;
-    private Integer municipalityStaffID;
-    private Integer profileInfoID;
     private Boolean activeFlag;
-
-    public GcmDeviceDTO() {
-    }
-
-    public GcmDeviceDTO(Integer gcmDeviceID) {
-        this.gcmDeviceID = gcmDeviceID;
-    }
 
     public Integer getGcmDeviceID() {
         return gcmDeviceID;
     }
 
-    public String getGcmRegistrationID() {
-        return gcmRegistrationID;
-    }
-
-    public void setGcmRegistrationID(String gcmRegistrationID) {
-        this.gcmRegistrationID = gcmRegistrationID;
-    }
-
-    public Integer getUserID() {
-        return userID;
-    }
-
-    public void setUserID(Integer userID) {
-        this.userID = userID;
-    }
-
-    public Boolean getActiveFlag() {
-        return activeFlag;
-    }
-
     public void setGcmDeviceID(Integer gcmDeviceID) {
         this.gcmDeviceID = gcmDeviceID;
-    }
-
-    public Boolean isActiveFlag() {
-        return activeFlag;
-    }
-
-    public void setActiveFlag(Boolean activeFlag) {
-        this.activeFlag = activeFlag;
     }
 
     public String getManufacturer() {
@@ -80,12 +40,28 @@ public class GcmDeviceDTO implements Serializable {
         this.model = model;
     }
 
-    public Integer getMessageCount() {
-        return messageCount;
+    public String getSerialNumber() {
+        return serialNumber;
     }
 
-    public void setMessageCount(Integer messageCount) {
-        this.messageCount = messageCount;
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
+    public String getGcmRegistrationID() {
+        return gcmRegistrationID;
+    }
+
+    public void setGcmRegistrationID(String gcmRegistrationID) {
+        this.gcmRegistrationID = gcmRegistrationID;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Long getDateRegistered() {
@@ -94,14 +70,6 @@ public class GcmDeviceDTO implements Serializable {
 
     public void setDateRegistered(Long dateRegistered) {
         this.dateRegistered = dateRegistered;
-    }
-
-    public String getSerialNumber() {
-        return serialNumber;
-    }
-
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
     }
 
     public String getAndroidVersion() {
@@ -120,20 +88,12 @@ public class GcmDeviceDTO implements Serializable {
         this.municipalityID = municipalityID;
     }
 
-    public Integer getMunicipalityStaffID() {
-        return municipalityStaffID;
+    public Boolean getActiveFlag() {
+        return activeFlag;
     }
 
-    public void setMunicipalityStaffID(Integer municipalityStaffID) {
-        this.municipalityStaffID = municipalityStaffID;
-    }
-
-    public Integer getProfileInfoID() {
-        return profileInfoID;
-    }
-
-    public void setProfileInfoID(Integer profileInfoID) {
-        this.profileInfoID = profileInfoID;
+    public void setActiveFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
     }
 
     @Override

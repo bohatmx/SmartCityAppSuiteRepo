@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 24
     buildToolsVersion '24'
     packagingOptions {
         exclude 'META-INF/ASL2.0'
@@ -14,9 +14,9 @@ android {
     defaultConfig {
         applicationId "com.boha.citizenapp.ethekwini"
         minSdkVersion 16
-        targetSdkVersion 22
-        versionCode 31
-        versionName "1.0"
+        targetSdkVersion 24
+        versionCode 33
+        versionName "1.1"
         multiDexEnabled true
     }
     buildTypes {
@@ -29,17 +29,22 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-//    compile 'com.android.support:appcompat-v7:22.2.0'
-//    androidTestCompile 'com.android.support.test:runner:0.2'
-//    // Set this dependency to use JUnit 4 rules
-//    androidTestCompile 'com.android.support.test:rules:0.2'
-//    // Set this dependency to build and run Espresso tests
-//    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.1'
-//    // Set this dependency to build and run UI Automator tests
-//    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.0'
-//    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.0');
-//    androidTestCompile 'com.android.support:support-annotations:22.1.1'
-
     compile project(':SmartLibrary')
+    //firebase
+    compile 'com.google.firebase:firebase-core:9.4.0'
+    compile 'com.google.firebase:firebase-database:9.4.0'
+    compile 'com.google.firebase:firebase-auth:9.4.0'
+    compile 'com.google.firebase:firebase-storage:9.4.0'
+    compile 'com.google.firebase:firebase-crash:9.4.0'
+    compile 'com.google.firebase:firebase-messaging:9.4.0'
+    compile 'com.google.firebase:firebase-invites:9.4.0'
+    compile 'com.google.firebase:firebase-ads:9.4.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha4'
+
+//    compile 'com.firebase:firebase-ui:0.1.0'
+    compile 'com.firebaseui:firebase-ui:0.4.3'
+
+    compile 'com.firebase:firebase-client-android:2.5.2'
 
 }
+apply plugin: 'com.google.gms.google-services'

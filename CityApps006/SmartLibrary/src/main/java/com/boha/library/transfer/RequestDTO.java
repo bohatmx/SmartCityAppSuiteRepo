@@ -56,6 +56,8 @@ public class RequestDTO {
 
     private Integer requestType, radius,
             municipalityID;
+    private String message;
+    private List<String> emailList;
     private Integer year, month, count;
     private String userName, password, referenceNumber,
             gcmRegistrationID, email,municipalityName, accountNumber, dataURL;
@@ -101,6 +103,22 @@ public class RequestDTO {
     private RequestList requestList;
     private GISAddressDTO address;
     private PaymentSurveyDTO paymentSurvey;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public List<String> getEmailList() {
+        return emailList;
+    }
+
+    public void setEmailList(List<String> emailList) {
+        this.emailList = emailList;
+    }
 
     public Integer getCount() {
         return count;
@@ -206,8 +224,10 @@ public class RequestDTO {
             ADD_SURVEY = 10,
             SEND_PAYMENT = 11,
             SEND_SID_PAYMENT = 12,
+            SEND_CLOUD_MESSAGE = 13,
             GET_SID_PAYMENT_RESPONSES = 14,
-            GET_CARD_PAYMENT_RESPONSES = 15;
+            GET_CARD_PAYMENT_RESPONSES = 15,
+            SEND_CLOUD_MESSAGE_TO_LIST = 16;
 
     //Create new data
     public static final int 

@@ -40,6 +40,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -56,7 +57,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class NewsMapActivity extends AppCompatActivity {
+import static com.facebook.FacebookSdk.getApplicationContext;
+
+public class NewsMapActivity extends AppCompatActivity implements OnMapReadyCallback{
 
     GoogleMap googleMap;
     GoogleApiClient mGoogleApiClient;
@@ -117,20 +120,8 @@ public class NewsMapActivity extends AppCompatActivity {
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.MAP_map);
+        mapFragment.getMapAsync(this);
 
-        try {
-            googleMap = mapFragment.getMap();
-            if (googleMap == null) {
-                Util.showToast(ctx, getString(R.string.map_not_avail));
-                finish();
-                return;
-            }
-            setGoogleMap();
-        } catch (Exception e) {
-            Log.e(LOG, "Map failed", e);
-            finish();
-            return;
-        }
 
         logo = getIntent().getIntExtra("logo",R.drawable.elogo);
         primaryColor = getIntent().getIntExtra("primaryColor",R.color.teal_500);
@@ -159,6 +150,11 @@ public class NewsMapActivity extends AppCompatActivity {
 
     Marker marker;
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
+        setGoogleMap();
+    }
     private void setGoogleMap() {
         googleMap.setMyLocationEnabled(true);
         googleMap.setBuildingsEnabled(true);
