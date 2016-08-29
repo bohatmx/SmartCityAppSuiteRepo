@@ -57,7 +57,7 @@ public class RequestDTO {
     private Integer requestType, radius,
             municipalityID;
     private String message;
-    private List<String> customerIDs;
+    private List<String> emailList;
     private Integer year, month, count;
     private String userName, password, referenceNumber,
             gcmRegistrationID, email,municipalityName, accountNumber, dataURL;
@@ -112,12 +112,12 @@ public class RequestDTO {
         this.message = message;
     }
 
-    public List<String> getCustomerIDs() {
-        return customerIDs;
+    public List<String> getEmailList() {
+        return emailList;
     }
 
-    public void setCustomerIDs(List<String> customerIDs) {
-        this.customerIDs = customerIDs;
+    public void setEmailList(List<String> emailList) {
+        this.emailList = emailList;
     }
 
     public Integer getCount() {
@@ -226,7 +226,8 @@ public class RequestDTO {
             SEND_SID_PAYMENT = 12,
             SEND_CLOUD_MESSAGE = 13,
             GET_SID_PAYMENT_RESPONSES = 14,
-            GET_CARD_PAYMENT_RESPONSES = 15;
+            GET_CARD_PAYMENT_RESPONSES = 15,
+            SEND_CLOUD_MESSAGE_TO_LIST = 16;
 
     //Create new data
     public static final int 
