@@ -19,15 +19,16 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Small Text"
             android:layout_alignParentTop="true"
+            android:id="@+id/date_text"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/blue_400"
-            android:id="@+id/date_text"/>
+            android:textColor="@color/blue_400"/>
         <ImageView
+
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:id="@+id/thumb_img"
             android:scaleType="fitCenter"
-            android:layout_below="@+id/date_text"
+            android:layout_below="@+id/title_text"
             android:layout_centerHorizontal="true"
             android:src="@drawable/news"/>
         <TextView
@@ -39,19 +40,19 @@
             android:text="Large Text"
             android:id="@+id/title_text"
             android:textColor="@color/white"
-            android:layout_alignBottom="@+id/thumb_img"
+            android:layout_below="@+id/date_text"
             android:layout_centerHorizontal="true"
             android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-      <!--  <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
-            android:id="@+id/description_text"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/thumb_img"/> -->
+        <!--  <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textAppearance="?android:attr/textAppearanceMedium"
+              android:text="Medium Text"
+              android:id="@+id/description_text"
+              android:layout_alignParentLeft="true"
+              android:layout_alignParentRight="true"
+              android:layout_below="@+id/thumb_img"/> -->
         <WebView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,16 +61,16 @@
             android:id="@+id/description_text"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/thumb_img"/>
-   <!--     <TextView
-            android:layout_margin="10dp"
-            android:id="@+id/more_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="read more.."
-            android:layout_alignBottom="@+id/description_text"
-            android:layout_alignParentRight="true"
-            android:textSize="20dp"/> -->
+            android:visibility="gone"/>
+        <!--     <TextView
+                 android:layout_margin="10dp"
+                 android:id="@+id/more_txt"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="read more.."
+                 android:layout_alignBottom="@+id/description_text"
+                 android:layout_alignParentRight="true"
+                 android:textSize="20dp"/> -->
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

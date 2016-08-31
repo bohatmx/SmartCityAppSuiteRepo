@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
@@ -18,6 +19,7 @@ import com.boha.library.R;
 import com.boha.library.dto.FreqQuestionTypeDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.fragments.FaqFragment;
+import com.boha.library.rssreader.FaqTest;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.FAQCommsUtil;
@@ -25,6 +27,7 @@ import com.boha.library.util.FaqStrings;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class FaqTypeActivity extends AppCompatActivity implements FaqFragment.FaqListener{
 
@@ -72,7 +75,8 @@ public class FaqTypeActivity extends AppCompatActivity implements FaqFragment.Fa
         }
 
 
-        getFaqTypes();
+        setWebView(position);
+      //  getFaqTypes();
 
     }
 
@@ -151,44 +155,93 @@ public class FaqTypeActivity extends AppCompatActivity implements FaqFragment.Fa
     }
 
 
+    String AccountFAQ =  "http://icsmnewsdev.oneconnectgroup.com/et/faq/AccountsPayments.html";
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+
+    private FirebaseAnalytics mFirebaseAnalytics;
+    private void setAnalyticsEvent(String id, String name) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        Log.w(LOG, "analytics event sent .....");
+
+    }
+
     private void setWebView(int position) {
 
-        txtTitle.setText(response.getFaqTypeList().get(position).getFaqTypeName());
+//        txtTitle.setText("Faq Title"/*response.getFaqTypeList().get(position).getFaqTypeName()*/);
         switch (position) {
             case 0:
-                webView.loadData(faqStrings.getAccountsFAQ(), TEXT, UTF);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/AccountsPayments.html"));
+                startActivity(intent);
+               // setAnalyticsEvent("guide", "AppGuide");
+              //  webView.loadData(AccountFAQ, TEXT, UTF);
             //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.accounts_statement));
                 break;
             case 1:
-                webView.loadData(faqStrings.getBuildingPlansFAQ(), TEXT, UTF);
+                Intent intent1 = new Intent(Intent.ACTION_VIEW);
+                intent1.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/WaterSanitation.html"));
+                startActivity(intent1);
+               // webView.loadData(faqStrings.getBuildingPlansFAQ(), TEXT, UTF);
              //   icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.building_plans));
                 break;
             case 2:
-                webView.loadData(faqStrings.getCleaningWasteFAQ(), TEXT, UTF);
+                Intent intent2 = new Intent(Intent.ACTION_VIEW);
+                intent2.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/CleansingSolidWaste.html"));
+                startActivity(intent2);
+               // webView.loadData(faqStrings.getCleaningWasteFAQ(), TEXT, UTF);
              //   icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.cleaning_solid_waste));
                 break;
             case 3:
-                webView.loadData(faqStrings.getElectricityFAQ(), TEXT, UTF);
+                Intent intent3 = new Intent(Intent.ACTION_VIEW);
+                intent3.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/RatesTaxes.html"));
+                startActivity(intent3);
+                //webView.loadData(faqStrings.getElectricityFAQ(), TEXT, UTF);
              //   icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.electricity));
                 break;
             case 4:
-                webView.loadData(faqStrings.getHealthFAQ(), TEXT, UTF);
+                Intent intent4 = new Intent(Intent.ACTION_VIEW);
+                intent4.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/BuildingPlans.html"));
+                startActivity(intent4);
+             //   webView.loadData(faqStrings.getHealthFAQ(), TEXT, UTF);
             //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.health));
                 break;
             case 5:
-                webView.loadData(faqStrings.getMetroPoliceFAQ(), TEXT, UTF);
+                Intent intent5 = new Intent(Intent.ACTION_VIEW);
+                intent5.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/Electricity.html"));
+                startActivity(intent5);
+               // webView.loadData(faqStrings.getMetroPoliceFAQ(), TEXT, UTF);
             //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.metro_police));
                 break;
             case 6:
-                webView.loadData(faqStrings.getRatesTaxesFAQ(), TEXT, UTF);
+                Intent intent6 = new Intent(Intent.ACTION_VIEW);
+                intent6.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/SocialServices.html"));
+                startActivity(intent6);
+              //  webView.loadData(faqStrings.getRatesTaxesFAQ(), TEXT, UTF);
             //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.rates_taxes));
                 break;
             case 7:
-                webView.loadData(faqStrings.getSocialServicesFAQ(), TEXT, UTF);
+                Intent intent7 = new Intent(Intent.ACTION_VIEW);
+                intent7.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/Health.html"));
+                startActivity(intent7);
+              //  webView.loadData(faqStrings.getSocialServicesFAQ(), TEXT, UTF);
             //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.social_services));
                 break;
             case 8:
-                webView.loadData(faqStrings.getWaterSanitationFAQ(), TEXT, UTF);
+                Intent intent8 = new Intent(Intent.ACTION_VIEW);
+
+                intent8.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/MetroPolice.html"));
+                startActivity(intent8);
+              //  webView.loadData(faqStrings.getWaterSanitationFAQ(), TEXT, UTF);
             //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.water_sanitation));
                 break;
         }
@@ -233,4 +286,6 @@ public class FaqTypeActivity extends AppCompatActivity implements FaqFragment.Fa
 
         return super.onOptionsItemSelected(item);
     }
+
+    private static final String LOG = FaqTypeActivity.class.getSimpleName();
 }

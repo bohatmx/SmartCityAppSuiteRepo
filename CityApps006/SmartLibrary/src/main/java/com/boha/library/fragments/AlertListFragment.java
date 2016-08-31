@@ -23,6 +23,9 @@ import com.boha.library.activities.AlertMapActivity;
 import com.boha.library.activities.CityApplication;
 import com.boha.library.adapters.AlertRecyclerAdapter;
 import com.boha.library.dto.AlertDTO;
+import com.boha.library.rssreader.AlertReadRss;
+import com.boha.library.rssreader.ReadRss;
+import com.boha.library.rssreader.ReadRssAdapter;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
@@ -59,7 +62,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             ResponseDTO r = (ResponseDTO) getArguments().getSerializable("response");
-            alertList = r.getAlertList();
+          //  alertList = r.getAlertList();
         }
     }
 
@@ -80,9 +83,11 @@ public class AlertListFragment extends Fragment implements PageFragment {
     public void setLocation(Location location) {
         this.location = location;
         Log.w(LOG, "### setLocation: will refresh alerts");
-        refreshAlerts();
+      //  refreshAlerts();
 
     }
+
+    AlertReadRss alertReadRss;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -90,11 +95,14 @@ public class AlertListFragment extends Fragment implements PageFragment {
         view = inflater.inflate(R.layout.fragment_alert_list, container, false);
         ctx = getActivity();
         setFields();
-        if (alertList != null) {
+        txtEmpty.setVisibility(View.GONE);
+       /* if (alertList != null) {
             setList();
         } else {
             getCachedAlerts();
-        }
+        } */
+        alertReadRss = new AlertReadRss(ctx, recyclerView);
+        alertReadRss.execute();
 
         switch(primaryColor) {
             case CityApplication.THEME_INDIGO:
@@ -152,6 +160,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
 
     private void setFields() {
         txtEmpty = (TextView)view.findViewById(R.id.ALERT_LIST_text);
+
         Statics.setRobotoFontLight(ctx, txtEmpty);
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         recyclerView = (RecyclerView) view.findViewById(R.id.ALERT_LIST_listView);
@@ -160,10 +169,13 @@ public class AlertListFragment extends Fragment implements PageFragment {
         heroImage = (ImageView) view.findViewById(R.id.FAL_hero);
 
         ctx = getActivity();
+        /*if (alertReadRss.feedItems.isEmpty()) {
+            txtEmpty.setVisibility(View.VISIBLE);
+        }*/
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (alertList == null || alertList.isEmpty()) {
+           /*     if (alertList == null || alertList.isEmpty()) {
                     Util.showSnackBar(recyclerView,"No alerts for display","OK", Color.parseColor("CYAN"));
                     return;
                 }
@@ -183,7 +195,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
                 } else {
                     Util.showSnackBar(recyclerView,"No located alerts for display","OK", Color.parseColor("CYAN"));
                 }
-
+*/
             }
         });
         animateSomething();
@@ -210,9 +222,9 @@ public class AlertListFragment extends Fragment implements PageFragment {
             alertList = new ArrayList<>();
         }
         alertList.add(0, alert);
-        if (alertListAdapter != null) {
+       /* if (alertListAdapter != null) {
             alertListAdapter.notifyDataSetChanged();
-        }
+        }    */
 
         ResponseDTO r = new ResponseDTO();
         r.setAlertList(alertList);
@@ -288,10 +300,10 @@ public class AlertListFragment extends Fragment implements PageFragment {
 
     }
 
-    AlertRecyclerAdapter alertListAdapter;
+  //  AlertRecyclerAdapter alertListAdapter;
     static final long THREE_DAYS = 1000 * 60 * 60 * 24 * 3;
 
-    private void setList() {
+   /* private void setList() {
         if (alertList == null) {
             alertList = new ArrayList<>();
         }
@@ -310,6 +322,18 @@ public class AlertListFragment extends Fragment implements PageFragment {
         }
 
         recyclerView.setAdapter(alertListAdapter);
+    } */
+
+    ReadRssAdapter readRssAdapter;
+    private void setList(){
+        readRssAdapter = new ReadRssAdapter(ctx, alertReadRss.feedItems , new ReadRssAdapter.NewsListListener() {
+            @Override
+            public void onNewsClicked() {
+
+            }
+        });
+        recyclerView.setAdapter(readRssAdapter);
+
     }
 
     @Override

@@ -3,8 +3,11 @@ package com.boha.library.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +22,8 @@ import com.boha.library.activities.CityApplication;
 import com.boha.library.activities.FaqTypeActivity;
 import com.boha.library.adapters.FaqTypeAdapter;
 import com.boha.library.dto.FreqQuestionTypeDTO;
+import com.boha.library.rssreader.FaqAdapter;
+import com.boha.library.rssreader.FaqTest;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.FAQCommsUtil;
@@ -42,6 +47,7 @@ public class FaqFragment extends Fragment implements PageFragment {
 
     public interface FaqListener {
         void setBusy(boolean busy);
+        //void onFaqCLicked();
     }
 
     ResponseDTO response;
@@ -71,12 +77,16 @@ public class FaqFragment extends Fragment implements PageFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+//        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
         if (getArguments() != null) {
             response = (ResponseDTO) getArguments().getSerializable("response");
-            faqTypeList = response.getFaqTypeList();
+        //    faqTypeList = response.getFaqTypeList();
         }
     }
+    String [] FAQ = {"Account Payments", "Water Sanitation", "Cleaning & Solid Waste",
+            "Rates & Taxes", "Building Plans", "Electricity", "Social Services",
+            "Health", "Metro Police"};
+    String [] FAQ_NUMBER = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,17 +96,22 @@ public class FaqFragment extends Fragment implements PageFragment {
         activity = getActivity();
         setFields();
 
+
+
+
         animateSomething();
-        if (faqTypeList != null) {
+       /* if (faqTypeList != null) {
             setList();
         } else {
             faqTypeList = new ArrayList<>();
             setList();
 
         }
-        getCachedFAQs();
+        getCachedFAQs(); */
         return view;
     }
+
+
 
     private static final String TEXT = "text/html", UTF = "UTF-8";
 
@@ -144,6 +159,7 @@ public class FaqFragment extends Fragment implements PageFragment {
 //
 //    }
 
+
     private void getCachedFAQs() {
         mListener.setBusy(true);
         CacheUtil.getCachedFAQ(ctx, new CacheUtil.FAQCacheRetrievalListener() {
@@ -187,12 +203,15 @@ public class FaqFragment extends Fragment implements PageFragment {
     ListView FAQ_LIST;
     FaqTypeAdapter faqTypeAdapter;
     List<FreqQuestionTypeDTO> faqTypeList;
+    ArrayList<FaqStrings> faqStringsList;
 
+
+    private RecyclerView recyclerView;
     private void setList() {
         if (faqTypeList == null) {
             faqTypeList = new ArrayList<>();
         }
-        faqTypeAdapter = new FaqTypeAdapter(ctx, R.layout.faqtype_item, darkColor, faqTypeList, new FaqTypeAdapter.FaqTypeListListener() {
+       /* faqTypeAdapter = new FaqTypeAdapter(ctx, R.layout.faqtype_item, darkColor, faqTypeList, new FaqTypeAdapter.FaqTypeListListener() {
 
             @Override
             public void onFaqTypeClicked(int position) {
@@ -203,11 +222,15 @@ public class FaqFragment extends Fragment implements PageFragment {
 
             }
 
-        });
+        }); */
+       // faqAdapter = new FaqAdapter(ctx, faqList);
 
-        FAQ_LIST.setAdapter(faqTypeAdapter);
+
+     //   FAQ_LIST.setAdapter(faqAdapter/*faqTypeAdapter*/);
 
     }
+
+    FaqAdapter faqAdapter;
 
     FirebaseAnalytics mFirebaseAnalytics;
 
@@ -226,19 +249,40 @@ public class FaqFragment extends Fragment implements PageFragment {
     }
 
     TextView txtTitle, Faq_text;
+    ArrayList<FaqTest> faqList;
+    RecyclerView.Adapter adapter;
+    RecyclerView.LayoutManager layoutManager;
 
     private void setFields() {
 
         topView = view.findViewById(R.id.FAQ_handle);
         txtFaqType = (TextView) view.findViewById(R.id.FAQ_faqType);
+        txtFaqType.setVisibility(View.GONE);
         icon = (ImageView) view.findViewById(R.id.FAQ_icon);
+        icon.setVisibility(View.GONE);
         heroImage = (ImageView) view.findViewById(R.id.FAQ_hero);
         txtTitle = (TextView) view.findViewById(R.id.FAQ_title);
         Faq_text = (TextView) view.findViewById(R.id.NEWS_LIST_text);
         fab = view.findViewById(R.id.FAB);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
-        FAQ_LIST = (ListView) view.findViewById(R.id.FAQ_LIST);
+        //FAQ_LIST = (ListView) view.findViewById(R.id.FAQ_LIST);
+        recyclerView = (RecyclerView) view.findViewById(R.id.faqRecyclerView);
+       // LinearLayoutManager lm = new LinearLayoutManager(ctx,LinearLayoutManager.VERTICAL,false);
+       // recyclerView.setLayoutManager(lm);
+
+        adapter = new FaqAdapter(ctx, FAQ, FAQ_NUMBER, new FaqAdapter.FaqListListener() {
+            @Override
+            public void onFaqClicked(int position) {
+                setWebView(position);
+            }
+        });
+        layoutManager = new LinearLayoutManager(ctx);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+        //faqAdapter = new FaqAdapter(ctx, faqList);
+        //recyclerView.setAdapter(faqAdapter);
 
         fab.setVisibility(View.GONE);
       /*  fab.setOnClickListener(new View.OnClickListener() {
@@ -277,6 +321,78 @@ public class FaqFragment extends Fragment implements PageFragment {
             }
         });*/
         //  setIcon();
+    }
+
+    private void setWebView(int position) {
+
+//        txtTitle.setText("Faq Title"/*response.getFaqTypeList().get(position).getFaqTypeName()*/);
+        switch (position) {
+            case 0:
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/AccountsPayments.html"));
+                startActivity(intent);
+                // setAnalyticsEvent("guide", "AppGuide");
+                //  webView.loadData(AccountFAQ, TEXT, UTF);
+                //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.accounts_statement));
+                break;
+            case 1:
+                Intent intent1 = new Intent(Intent.ACTION_VIEW);
+                intent1.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/WaterSanitation.html"));
+                startActivity(intent1);
+                // webView.loadData(faqStrings.getBuildingPlansFAQ(), TEXT, UTF);
+                //   icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.building_plans));
+                break;
+            case 2:
+                Intent intent2 = new Intent(Intent.ACTION_VIEW);
+                intent2.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/CleansingSolidWaste.html"));
+                startActivity(intent2);
+                // webView.loadData(faqStrings.getCleaningWasteFAQ(), TEXT, UTF);
+                //   icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.cleaning_solid_waste));
+                break;
+            case 3:
+                Intent intent3 = new Intent(Intent.ACTION_VIEW);
+                intent3.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/RatesTaxes.html"));
+                startActivity(intent3);
+                //webView.loadData(faqStrings.getElectricityFAQ(), TEXT, UTF);
+                //   icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.electricity));
+                break;
+            case 4:
+                Intent intent4 = new Intent(Intent.ACTION_VIEW);
+                intent4.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/BuildingPlans.html"));
+                startActivity(intent4);
+                //   webView.loadData(faqStrings.getHealthFAQ(), TEXT, UTF);
+                //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.health));
+                break;
+            case 5:
+                Intent intent5 = new Intent(Intent.ACTION_VIEW);
+                intent5.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/Electricity.html"));
+                startActivity(intent5);
+                // webView.loadData(faqStrings.getMetroPoliceFAQ(), TEXT, UTF);
+                //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.metro_police));
+                break;
+            case 6:
+                Intent intent6 = new Intent(Intent.ACTION_VIEW);
+                intent6.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/SocialServices.html"));
+                startActivity(intent6);
+                //  webView.loadData(faqStrings.getRatesTaxesFAQ(), TEXT, UTF);
+                //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.rates_taxes));
+                break;
+            case 7:
+                Intent intent7 = new Intent(Intent.ACTION_VIEW);
+                intent7.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/Health.html"));
+                startActivity(intent7);
+                //  webView.loadData(faqStrings.getSocialServicesFAQ(), TEXT, UTF);
+                //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.social_services));
+                break;
+            case 8:
+                Intent intent8 = new Intent(Intent.ACTION_VIEW);
+                intent8.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/MetroPolice.html"));
+                startActivity(intent8);
+                //  webView.loadData(faqStrings.getWaterSanitationFAQ(), TEXT, UTF);
+                //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.water_sanitation));
+                break;
+        }
+
     }
 
     FreqQuestionTypeDTO faqType;

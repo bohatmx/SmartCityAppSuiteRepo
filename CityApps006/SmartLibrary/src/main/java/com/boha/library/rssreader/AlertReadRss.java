@@ -4,13 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -26,22 +22,17 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
- * Created by Nkululeko on 2016/08/24.
+ * Created by Nkululeko on 2016/08/28.
  */
-public class ReadRss extends AsyncTask<Void,Void,Void>  {
+public class AlertReadRss extends AsyncTask<Void,Void,Void>  {
     Context context;
     ProgressDialog progressDialog;
-    public ImageView image;
-    public TextView title;
-
-   // String address = "http://www.sciencemag.org/rss/news_current.xml";
-   String address = "http://icsmnewsdev.oneconnectgroup.com/et/news/rss/News.xml";
+    String address = "http://icsmnewsdev.oneconnectgroup.com/et/alerts/rss/Alerts.xml";
     URL url;
-    AlertReadRss alertReadRss;
 
     public ArrayList<FeedItem> feedItems;
     RecyclerView recyclerView;
-    public  ReadRss(Context context, RecyclerView recyclerView){
+    public AlertReadRss(Context context, RecyclerView recyclerView){
         this.context = context;
         this.recyclerView = recyclerView;
         progressDialog = new ProgressDialog(context);
@@ -64,6 +55,8 @@ public class ReadRss extends AsyncTask<Void,Void,Void>  {
             public void onNewsClicked() {
 
             }
+
+
         });
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -119,7 +112,7 @@ public class ReadRss extends AsyncTask<Void,Void,Void>  {
                     Log.d("itemThumbnailUrl", item.getThumbnailUrl());
                 }
             }
-          //  Log.d("ReadRSS", data.getDocumentElement().getNodeName());
+            //  Log.d("ReadRSS", data.getDocumentElement().getNodeName());
         }
         Log.i(LOG, "feed items: " + feedItems.size());
     }
@@ -133,8 +126,6 @@ public class ReadRss extends AsyncTask<Void,Void,Void>  {
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = builderFactory.newDocumentBuilder();
             Document xmlDoc = builder.parse(inputStream);
-            inputStream.close();
-            connection.disconnect();
             return xmlDoc;
         } catch (Exception e) {
             e.printStackTrace();
@@ -146,3 +137,4 @@ public class ReadRss extends AsyncTask<Void,Void,Void>  {
     public static final String LOG = ReadRss.class.getSimpleName();
 
 }
+

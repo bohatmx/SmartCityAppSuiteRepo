@@ -10,28 +10,28 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.boha.library.R;
 
+import com.boha.library.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 /**
- * Created by Nkululeko on 2016/08/24.
+ * Created by Nkululeko on 2016/08/30.
  */
-public class ReadRssAdapter extends RecyclerView.Adapter<ReadRssAdapter.MyViewHolder> {
+public class LandingPageAdapter extends RecyclerView.Adapter<LandingPageAdapter.MyViewHolder> {
 
     NewsListListener listener;
     ArrayList<FeedItem> feedItems;
     Context context;
-    public ReadRssAdapter(Context context, ArrayList<FeedItem> feedItems, NewsListListener listener) {
+    public LandingPageAdapter(Context context, ArrayList<FeedItem> feedItems, NewsListListener listener) {
         this.feedItems = feedItems;
         this.context = context;
         this.listener = listener;
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.custum_row_news_item,parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.landing_page_row_news_itm,parent, false);
         MyViewHolder holder = new MyViewHolder(view);
 
         return holder;
@@ -43,9 +43,10 @@ public class ReadRssAdapter extends RecyclerView.Adapter<ReadRssAdapter.MyViewHo
 
         final FeedItem current = feedItems.get(position);
         holder.Title.setText(current.getTitle());
+        listener.onNewsClicked();
         holder.webViewDescription.loadData(current.description, TEXT, UTF);
 
-      //  holder.Description.setText(current.getDescription());
+        //  holder.Description.setText(current.getDescription());
         holder.Date.setText(current.getPubDate().substring(0, Math.min(current.getPubDate().length(), 16)));
         if (current.getThumbnailUrl().isEmpty()){
             holder.Thumbnail.setImageDrawable(ContextCompat.getDrawable( context, R.drawable.news));
@@ -53,8 +54,8 @@ public class ReadRssAdapter extends RecyclerView.Adapter<ReadRssAdapter.MyViewHo
         } else {
             Picasso.with(context).load(current.getThumbnailUrl()).into(holder.Thumbnail);
         }
-      //  holder.readMore.setText("Read More");
-     //   holder.MoreIMG.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.more));
+        //  holder.readMore.setText("Read More");
+        //   holder.MoreIMG.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.more));
 
 
     }
@@ -76,39 +77,32 @@ public class ReadRssAdapter extends RecyclerView.Adapter<ReadRssAdapter.MyViewHo
             Title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                  //  iListener.onItemClicked();
                     listener.onNewsClicked();
                 }
             });
             webViewDescription = (WebView) itemView.findViewById(R.id.description_text);
 
-          //  Description = (TextView) itemView.findViewById(R.id.description_text);
+            //  Description = (TextView) itemView.findViewById(R.id.description_text);
             Date = (TextView) itemView.findViewById(R.id.date_text);
             Thumbnail = (ImageView) itemView.findViewById(R.id.thumb_img);
             Thumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                   // iListener.onItemClicked();
                     listener.onNewsClicked();
                 }
             });
 
             cardView = (CardView) itemView.findViewById(R.id.cardView);
-          //  readMore = (TextView) itemView.findViewById(R.id.more_txt);
-          //  readMore.setVisibility(View.GONE);
+            //  readMore = (TextView) itemView.findViewById(R.id.more_txt);
+            //  readMore.setVisibility(View.GONE);
             //MoreIMG = (ImageView) itemView.findViewById(R.id.more_img);
-           // MoreIMG.setVisibility(View.GONE);
+            // MoreIMG.setVisibility(View.GONE);
 
         }
     }
-    ItemListener iListener;
 
     public interface NewsListListener {
-     //   public void onNewsClicked(FeedItem feedItem);
-     public void onNewsClicked();
-    }
-
-    public interface ItemListener {
-        void onItemClicked();
+        //   public void onNewsClicked(FeedItem feedItem);
+        public void onNewsClicked();
     }
 }

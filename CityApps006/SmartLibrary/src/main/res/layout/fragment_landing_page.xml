@@ -4,68 +4,172 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.boha.library.fragments.LandingPageFragment">
+    <!--  <ImageView
+          android:id="@+id/LP_image"
+          android:scaleType="centerCrop"
+          android:src="@drawable/traffic1"
+          android:layout_width="match_parent"
+          android:layout_height="100dp"/> -->
+
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.CardView
         android:id="@+id/card"
         android:layout_margin="@dimen/mon_padding"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" >
+        android:text="@string/hello_blank_fragment">
+
 
         <RelativeLayout
+            android:layout_below="@+id/card3"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/white">
 
-            <ImageView
-                android:id="@+id/image"
-                android:src="@drawable/back13"
+            <!--   <ImageView
+                   android:id="@+id/image"
+                   android:src="@drawable/back13"
+                   android:layout_width="match_parent"
+                   android:layout_height="360dp" /> -->
+            <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="360dp" />
+                android:layout_height="360dp"
+                android:id="@+id/recyclerview"
+                android:layout_below="@+id/title"/>
 
-            <TextView
-                android:id="@+id/title"
-                android:text="Title of News or Alert"
-                style="@style/Title2TextStyleBlack"
-                android:layout_below="@id/image"
-                android:layout_centerHorizontal="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+               <TextView
+                   android:id="@+id/title"
+                   android:text="News Headlines"
+                   style="@style/Title2TextStyleBlack"
+                   android:layout_above="@id/image"
+                   android:layout_centerHorizontal="true"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content" />
 
             <android.support.v7.widget.CardView
                 android:id="@+id/card2"
-                android:layout_below="@id/title"
+                android:layout_below="@id/recyclerview"
                 android:layout_marginTop="@dimen/mon_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <RelativeLayout
                     android:padding="@dimen/mon_padding"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+                 <!--   <Button
+                        android:id="@+id/flp_btnSignin"
+                        android:text="@string/signin"
+                        android:padding="@dimen/mon_padding"
+                        android:textColor="@color/white"
+                        android:elevation="@dimen/mon_padding"
+                        android:drawableLeft="@drawable/ic_action_secure"
+                        android:background="@color/red_800"
+                        android:layout_marginRight="@dimen/mon_16"
+                        android:layout_alignParentLeft="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <Button
+                        android:id="@+id/flp_btnNews"
+                        android:text="@string/news"
+                        android:textColor="@color/white"
+                        android:elevation="@dimen/mon_padding"
+                        android:drawableLeft="@drawable/ic_action_news"
+                        android:layout_marginRight="@dimen/mon_16"
+                        android:background="@color/red_800"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/mon_padding"/>
 
-                    <ImageView
-                        android:id="@+id/iconNews"
-                        android:src="@drawable/ic_action_news"
+                    <Button
+                        android:layout_below="@+id/flp_btnSignin"
+                        android:id="@+id/flp_btnAlerts"
+                        android:text="@string/alerts"
+                        android:textColor="@color/white"
+                        android:elevation="@dimen/mon_padding"
+                        android:drawableLeft="@drawable/ic_action_warning"
+                        android:layout_marginRight="@dimen/mon_16"
+                        android:background="@color/red_800"
+                        android:layout_alignParentLeft="true"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/mon_padding"
+                        android:layout_marginTop="10dp"/>
+
+                    <Button
+                        android:id="@+id/flp_btnfaq"
+                        android:text="@string/short_faq"
+                        android:textColor="@color/white"
+                        android:elevation="@dimen/mon_padding"
+                        android:drawableLeft="@drawable/ic_action_help"
+                        android:layout_marginRight="@dimen/mon_16"
+                        android:background="@color/red_800"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/mon_padding"
+                        android:layout_below="@+id/flp_btnNews"
+                        android:layout_marginTop="10dp"
+                        /> -->
+
+                       <ImageView
+                           android:id="@+id/iconLogin"
+                           android:src="@drawable/ic_action_secure"
+                           android:layout_width="48dp"
+                           android:layout_height="48dp"
+                           android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
+
+                       <ImageView
+                           android:layout_toRightOf="@+id/iconLogin"
+                           android:id="@+id/iconNews"
+                           android:src="@drawable/ic_action_news"
+                           android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                           android:layout_width="48dp"
+                           android:layout_height="48dp" />
+                       <ImageView
+                           android:id="@+id/iconAlerts"
+                           android:src="@drawable/ic_action_bell"
+                           android:layout_toRightOf="@id/iconNews"
+                           android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                           android:layout_width="48dp"
+                           android:layout_height="48dp" />
+                       <ImageView
+                           android:id="@+id/iconFAQ"
+                           android:src="@drawable/ic_action_help"
+                           android:layout_toRightOf="@id/iconAlerts"
+                           android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                           android:layout_width="48dp"
+                           android:layout_height="48dp" />
                     <ImageView
-                        android:id="@+id/iconAlerts"
-                        android:src="@drawable/ic_action_bell"
-                        android:layout_toRightOf="@id/iconNews"
+                        android:id="@+id/iconContact"
+                        android:src="@drawable/ic_info_black_24dp"
+                        android:layout_toRightOf="@id/iconFAQ"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <ImageView
-                        android:id="@+id/iconFAQ"
-                        android:src="@drawable/ic_action_search"
-                        android:layout_toRightOf="@id/iconAlerts"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_width="48dp"
+                        android:layout_height="48dp" />
 
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
+
+            <TextView
+                android:layout_below="@+id/card2"
+                android:id="@+id/SPLASH_caption"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/white"
+                android:text="@string/welcome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#80000000"
+                android:visibility="gone"/>
         </RelativeLayout>
 
-        </android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>
+</ScrollView>
+
 
 </RelativeLayout>

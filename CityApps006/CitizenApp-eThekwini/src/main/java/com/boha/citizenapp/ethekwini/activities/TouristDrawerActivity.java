@@ -1,10 +1,12 @@
 package com.boha.citizenapp.ethekwini.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -19,6 +21,7 @@ import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -75,7 +78,9 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
+import com.firebase.ui.auth.ui.email.SignInActivity;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -91,18 +96,22 @@ import java.util.Timer;
 public class TouristDrawerActivity extends AppCompatActivity implements
         AlertListFragment.AlertListener,
         NewsListFragment.NewsListFragmentListener,
-        ComplaintsAroundMeFragment.ComplaintAroundMeListener,
-        LocationListener,
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
         FaqFragment.FaqListener {
+      //  ComplaintsAroundMeFragment.ComplaintAroundMeListener,
+      //  LocationListener,
+      //  GoogleApiClient.ConnectionCallbacks,
+      //  GoogleApiClient.OnConnectionFailedListener,
+
+
 
     ActionBar ab;
+    String page;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_tourist_drawer);
+        page = getIntent().getStringExtra("page");
         ctx = getApplicationContext();
         activity = this;
         //change topVIEW TO MATCH APP THEME
@@ -123,6 +132,7 @@ public class TouristDrawerActivity extends AppCompatActivity implements
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setVisibility(View.GONE);
 //        navImage = (ImageView) findViewById(R.id.NAVHEADER_image);
         navText = (TextView) findViewById(R.id.NAVHEADER_text);
 
@@ -141,11 +151,11 @@ public class TouristDrawerActivity extends AppCompatActivity implements
             }
         });
 
-        googleApiClient = new GoogleApiClient.Builder(this)
+      /*  googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
-                .build();
+                .build(); */
         municipality = SharedUtil.getMunicipality(ctx);
       //  profileInfo = SharedUtil.getProfile(ctx);
      //   Log.i(LOG, "accountList is: " + profileInfo.getAccountList().size());
@@ -155,7 +165,7 @@ public class TouristDrawerActivity extends AppCompatActivity implements
      //   }
       //  user = SharedUtil.getUser(ctx);
       //  if (user != null) {
-            navText.setText("eThekwini" + " " + "Visitor");
+      //      navText.setText("eThekwini" + " " + "Visitor");
       //  }
 
 
@@ -165,9 +175,9 @@ public class TouristDrawerActivity extends AppCompatActivity implements
                 municipality.getMunicipalityName(),
                 ContextCompat.getDrawable(ctx, R.drawable.logo), logo);
 
-        getLoginData();
+     //   getLoginData();
         //getCachedLoginData();
-      //  setupViewPager();
+        setupViewPager();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -327,12 +337,13 @@ public class TouristDrawerActivity extends AppCompatActivity implements
 
         if (id == android.R.id.home) {
             mDrawerLayout.openDrawer(GravityCompat.START);
+            navigationView.setVisibility(View.VISIBLE);
             return true;
         }
 
         if (id == com.boha.library.R.id.action_exit) {
             SharedUtil.clearProfile(ctx);
-            Intent intent = new Intent(TouristDrawerActivity.this, SigninActivity.class);
+            Intent intent = new Intent(TouristDrawerActivity.this, LandingPageActivity.class);
             startActivity(intent);
             logOff = true;
             finish();
@@ -374,15 +385,10 @@ public class TouristDrawerActivity extends AppCompatActivity implements
         setMenuDestinations();
 
         pageFragmentList = new ArrayList<>();
-       /* if (response.getProfileInfoList() != null && !response.getProfileInfoList().isEmpty()) {
-            profileInfoFragment = ProfileInfoFragment.newInstance(response);
-            profileInfoFragment.setThemeColors(themePrimaryColor, themeDarkColor);
-            profileInfoFragment.setLogo(logo);
-            profileInfoFragment.setPageTitle(ctx.getString(R.string.my_accounts));
-        } */
+
 
        alertListFragment = AlertListFragment.newInstance(response);
-        complaintsAroundMeFragment = ComplaintsAroundMeFragment.newInstance();
+      //  complaintsAroundMeFragment = ComplaintsAroundMeFragment.newInstance();
         newsListFragment = NewsListFragment.newInstance(response);
        faqFragment = FaqFragment.newInstance(response);
 
@@ -390,31 +396,22 @@ public class TouristDrawerActivity extends AppCompatActivity implements
         alertListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         faqFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 
-        complaintsAroundMeFragment.setThemeColors(themePrimaryColor, themeDarkColor);
+     //   complaintsAroundMeFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         newsListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 
-        complaintsAroundMeFragment.setLogo(logo);
+    //    complaintsAroundMeFragment.setLogo(logo);
         alertListFragment.setLogo(logo);
         newsListFragment.setLogo(logo);
 
         alertListFragment.setPageTitle(ctx.getString(R.string.city_alerts));
 //        complaintCreateFragment.setPageTitle(ctx.getString(R.string.make_complaint));
-        complaintsAroundMeFragment.setPageTitle(ctx.getString(R.string.complaints_around_me));
+      //  complaintsAroundMeFragment.setPageTitle(ctx.getString(R.string.complaints_around_me));
         newsListFragment.setPageTitle(ctx.getString(R.string.city_news));
         faqFragment.setPageTitle(getString(R.string.faq));
 
-     /*   if (profileInfoFragment != null) {
-            if (user == null) {
-                pageFragmentList.add(profileInfoFragment);
-            }
-        }
-        if (user == null) {
-            pageFragmentList.add(myComplaintsFragment);
-            pageFragmentList.add(complaintCreateFragment);
-        }*/
         pageFragmentList.add(alertListFragment);
         pageFragmentList.add(newsListFragment);
-        pageFragmentList.add(complaintsAroundMeFragment);
+        //pageFragmentList.add(complaintsAroundMeFragment);
         pageFragmentList.add(faqFragment);
 
         try {
@@ -455,6 +452,17 @@ public class TouristDrawerActivity extends AppCompatActivity implements
             } catch (Exception e2) {
             }
         }
+        if (page != null) {
+            if (page.equalsIgnoreCase("Alerts")) {
+                mPager.setCurrentItem(0);
+            }
+            if (page.equalsIgnoreCase("News")) {
+                mPager.setCurrentItem(1);
+            }
+            if (page.equalsIgnoreCase("Faqs")) {
+                mPager.setCurrentItem(2);
+            }
+        }
     }
 
     Timer timer;
@@ -473,25 +481,30 @@ public class TouristDrawerActivity extends AppCompatActivity implements
 
                 mDrawerLayout.closeDrawers();
                 if (menuItem.getItemId() == R.id.nav_alerts) {
-                    mPager.setCurrentItem(1, true);
+                    mPager.setCurrentItem(0, true);
                     return true;
                 }
                 if (menuItem.getItemId() == R.id.nav_news) {
-                    mPager.setCurrentItem(2, true);
-                    return true;
-                }
-                if (menuItem.getItemId() == R.id.nav_complaintsAroundMe) {
-                    mPager.setCurrentItem(3, true);
+                    mPager.setCurrentItem(1, true);
                     return true;
                 }
                 if (menuItem.getItemId() == R.id.nav_faq) {
-                    mPager.setCurrentItem(4, true);
+                    mPager.setCurrentItem(2, true);
+                    return true;
+                }
+                if(menuItem.getItemId() == R.id.nav_signin) {
+                    Intent intent = new Intent(TouristDrawerActivity.this, SigninActivity.class);
+                    startActivity(intent);
                     return true;
                 }
                 if (menuItem.getItemId() == R.id.nav_gallery) {
 //                    mPager.setCurrentItem(6,true);
 //                        return true;
                 }
+               /* if (menuItem.getItemId() == R.id.nav_complaintsAroundMe) {
+                    mPager.setCurrentItem(3, true);
+                    return true;
+                } */
 
                 return false;
             }
@@ -499,8 +512,23 @@ public class TouristDrawerActivity extends AppCompatActivity implements
 
     }
 
+            @Override
+            public void onAlertClicked(AlertDTO alert) {
 
-    /**
+            }
+
+            @Override
+            public void onCreateAlertRequested() {
+
+            }
+
+            @Override
+            public void onFreshLocationRequested() {
+
+            }
+
+
+            /**
      * Adapter to manage fragments in view pager
      */
     private static class PagerAdapter extends FragmentStatePagerAdapter {
@@ -547,38 +575,50 @@ public class TouristDrawerActivity extends AppCompatActivity implements
 
     boolean isLocationForSearch;
 
-    @Override
+  /*  @Override
     public void onLocationForComplaintsAroundMe() {
         isLocationForSearch = true;
-        startLocationUpdates();
+  //      startLocationUpdates();
     }
 
     protected void startLocationUpdates() {
         Log.d(LOG, "### startLocationUpdates ....");
         if (googleApiClient.isConnected()) {
             mRequestingLocationUpdates = true;
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Log.d(LOG, "onConnected: Requesting location permission");
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        REQ_PERMISSION);
+                return;
+            }
+            mLocationRequest = LocationRequest.create();
+            mLocationRequest.setInterval(1000);
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            mLocationRequest.setFastestInterval(500);
+
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     googleApiClient, mLocationRequest, this);
             Log.d(LOG, "## GoogleApiClient connected, requesting location updates ...");
         } else {
             Log.e(LOG, "------- GoogleApiClient is NOT connected, not sure where we are...");
             googleApiClient.connect();
-            //startLocationUpdates = true;
 
         }
     }
-
+*/
     TouristDrawerActivity activity;
 
 
-    protected void stopLocationUpdates() {
+  /*  protected void stopLocationUpdates() {
         Log.e(LOG, "### stopLocationUpdates ...");
         if (googleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(
                     googleApiClient, this);
             mRequestingLocationUpdates = false;
         }
-    }
+    } */
 
     @Override
     public void onNewsClicked(NewsArticleDTO newsArticleDTO) {
@@ -593,7 +633,7 @@ public class TouristDrawerActivity extends AppCompatActivity implements
 
     static final int CHECK_DESTINATION = 9086;
 
-    @Override
+/*    @Override
     public void onConnected(Bundle bundle) {
         Log.i(LOG,
                 "+++  GoogleApiClient onConnected() ...");
@@ -607,7 +647,7 @@ public class TouristDrawerActivity extends AppCompatActivity implements
 
 //        startLocationUpdates();
 
-    }
+    } */
 
     @Override
     public void onStart() {
@@ -644,7 +684,7 @@ public class TouristDrawerActivity extends AppCompatActivity implements
 
     }
 
-    @Override
+   /* @Override
     public void onConnectionSuspended(int i) {
 
     }
@@ -674,15 +714,15 @@ public class TouristDrawerActivity extends AppCompatActivity implements
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
-    }
+    } */
 
     @Override
     public void onResume() {
         super.onResume();
         Log.d(LOG, "##onResume connecting GoogleApiClient ...if needed");
-        if (!googleApiClient.isConnected()) {
+       /* if (!googleApiClient.isConnected()) {
             googleApiClient.connect();
-        }
+        } */
 
 
     }
@@ -690,7 +730,7 @@ public class TouristDrawerActivity extends AppCompatActivity implements
     @Override
     public void onActivityResult(int reqCode, int result, Intent data) {
         Log.e(LOG, "### onActivityResult reqCode: " + reqCode + " result: " + result);
-        switch (reqCode) {
+       /* switch (reqCode) {
 
             case THEME_REQUESTED:
                 if (result == RESULT_OK) {
@@ -720,7 +760,7 @@ public class TouristDrawerActivity extends AppCompatActivity implements
                 }
 
                 break;
-        }
+        } */
     }
 
     boolean mBound, rBound, mRefreshFromComplaint;
@@ -794,14 +834,14 @@ public class TouristDrawerActivity extends AppCompatActivity implements
     }
 
 
-    @Override
+  /*  @Override
     public void onAlertClicked(final AlertDTO alert) {
 
 
         showAlertDetail(alert);
 
 
-    }
+    } */
 
     private void showAlertDetail(AlertDTO a) {
 
@@ -810,7 +850,7 @@ public class TouristDrawerActivity extends AppCompatActivity implements
         startActivity(w);
     }
 
-    @Override
+  /*  @Override
     public void onCreateAlertRequested() {
 
     }
@@ -818,8 +858,8 @@ public class TouristDrawerActivity extends AppCompatActivity implements
     @Override
     public void onFreshLocationRequested() {
         Log.d(LOG, "##### onFreshLocationRequested");
-        startLocationUpdates();
-    }
+    //    startLocationUpdates();
+    } */
 
     static final int ONE_MINUTE = 1000 * 60 * 60,
             TWO_MINUTES = ONE_MINUTE * 2, REQUEST_COMPLAINT_PICTURES = 1123,
@@ -972,7 +1012,9 @@ public class TouristDrawerActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        final Handler h = new Handler(Looper.getMainLooper());
+        Intent intent = new Intent(TouristDrawerActivity.this, LandingPageActivity.class);
+        startActivity(intent);
+       /* final Handler h = new Handler(Looper.getMainLooper());
         final Runnable r = new Runnable() {
             public void run() {
                 int index = 0;
@@ -1013,7 +1055,7 @@ public class TouristDrawerActivity extends AppCompatActivity implements
 
             }
         };
-        r.run();
+        r.run(); */
 
     }
 }

@@ -4,17 +4,28 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.CityApplication;
+import com.boha.library.rssreader.FeedItem;
+import com.boha.library.rssreader.LandingPageReadRss;
+import com.boha.library.rssreader.ReadRss;
+import com.boha.library.rssreader.ReadRssAdapter;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.SharedUtil;
 import com.squareup.leakcanary.RefWatcher;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 /**
  * Fragment manages FAQ UI. Downloads html FAQ files from the server
@@ -28,14 +39,16 @@ public class LandingPageFragment extends Fragment implements PageFragment {
     }
 
     ResponseDTO response;
-    TextView txtFaqType;
+    TextView txtFaqType, txtCaption;
     View view, fab, topView;
     Context ctx;
-    ImageView image, iconLogin, iconNews, iconAlerts, iconFAQ;
+    ImageView image, iconLogin, iconNews, iconAlerts, iconFAQ, iconContact;
+    Button btnFaq, btnNews, btnSignIn, btnAlerts;
     TextView txtTitle;
     Activity activity;
     String pageTitle;
     int primaryColor, darkColor, position;
+    RecyclerView recyclerView;
 
     static final String LOG = LandingPageFragment.class.getSimpleName();
 
@@ -46,8 +59,13 @@ public class LandingPageFragment extends Fragment implements PageFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
     }
 
+    LandingPageReadRss landingPageReadRss;
+
+    ImageView imageView;
+    TextView txtHeadlines;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,14 +75,88 @@ public class LandingPageFragment extends Fragment implements PageFragment {
         setFields();
 
         //todo get your rss feeds
+        landingPageReadRss = new LandingPageReadRss(ctx, recyclerView);
+        landingPageReadRss.execute();
+
+     //   setList();
 
         return view;
     }
+    ReadRssAdapter readRssAdapter;
+    ReadRss readRss;
+
 
 
     private void setFields() {
         iconAlerts = (ImageView) view.findViewById(R.id.iconAlerts);
-        //iconLogin = (ImageView) view.findViewById(R.id.iconlAlerts);
+        iconContact = (ImageView) view.findViewById(R.id.iconContact);
+       /* btnAlerts = (Button) view.findViewById(R.id.flp_btnAlerts);
+        btnFaq = (Button) view.findViewById(R.id.flp_btnfaq);
+        btnSignIn = (Button) view.findViewById(R.id.flp_btnSignin);
+      *///  imageView = (ImageView) view.findViewById(R.id.LP_image);
+       // txtHeadlines = (TextView) view.findViewById(R.id.latest_news_title);
+       // image = (ImageView) view.findViewById(R.id.image);
+        txtTitle = (TextView) view.findViewById(R.id.title);
+      //  btnNews = (Button) view.findViewById(R.id.flp_btnNews);
+        txtCaption = (TextView) view.findViewById(R.id.SPLASH_caption);
+      /*  image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onImageClicked();
+            }
+        });*/
+       /* txtTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onTitleClicked();
+            }
+        });
+        btnAlerts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onAlertIconClicked();
+            }
+        });
+        btnFaq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onFAQIconClicked();
+            }
+        });
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onLogin();
+            }
+        });
+        btnNews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onNewsIconClicked();
+            }
+        });
+        *///image.setImageDrawable(ContextCompat.getDrawable(ctx, R.class.ReadRss.image));
+
+
+
+      //  txtTitle.setText(readRss.title.getText().toString());
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
+        LinearLayoutManager lm = new LinearLayoutManager(ctx,LinearLayoutManager.VERTICAL,false);
+        recyclerView.setLayoutManager(lm);
+
+        iconNews = (ImageView) view.findViewById(R.id.iconNews);
+
+        iconFAQ = (ImageView) view.findViewById(R.id.iconFAQ);
+
+
+        iconLogin = (ImageView) view.findViewById(R.id.iconLogin);
+        iconContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onContactClicked();
+            }
+        });
         iconAlerts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,18 +164,44 @@ public class LandingPageFragment extends Fragment implements PageFragment {
             }
         });
 
-//        iconLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mListener.onLogin();
-//            }
-//        });
+        iconNews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onNewsIconClicked();
+            }
+        });
+        iconFAQ.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onFAQIconClicked();
+            }
+        });
 
+        iconLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onLogin();
+            }
+        });
         if (SharedUtil.getProfile(getActivity()) != null) {
-//            iconLogin.setVisibility(View.GONE);
+        //    iconLogin.setVisibility(View.GONE);
         }
 
+
+
     }
+/*
+    private void setList(){
+//        txtTitle.setText(landingPageReadRss.feedItems.get(0).getTitle());
+        readRssAdapter = new ReadRssAdapter(ctx, readRss.feedItems , new ReadRssAdapter.NewsListListener() {
+            @Override
+            public void onNewsClicked(int position) {
+
+            }
+        });
+        recyclerView.setAdapter(readRssAdapter);
+
+    } */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -161,5 +279,6 @@ public class LandingPageFragment extends Fragment implements PageFragment {
         void onNewsIconClicked();
         void onFAQIconClicked();
         void onLogin();
+        void onContactClicked();
     }
 }

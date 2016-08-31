@@ -51,7 +51,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(final CategoryyViewHolder holder, final int position) {
 
         final ComplaintCategoryDTO p = categories.get(position);
-        holder.categoryName.setText(p.getComplaintCategoryName());
+        holder.categoryName.setText(p.getComplaintCategoryName().trim());
         setComplaintCategoryIcon(p.getComplaintCategoryName(),holder.icon );
 
         holder.main.setOnClickListener(new View.OnClickListener() {

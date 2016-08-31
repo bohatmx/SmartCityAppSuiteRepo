@@ -190,6 +190,7 @@ public class SplashActivity extends AppCompatActivity  {
             startService(intent);
         }
         profile = SharedUtil.getProfile(ctx);
+        startTimer();
         user = SharedUtil.getUser(ctx);
         if (profile != null) {
             startTimer();

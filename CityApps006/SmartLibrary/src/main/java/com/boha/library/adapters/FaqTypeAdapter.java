@@ -1,19 +1,26 @@
 package com.boha.library.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.CityApplication;
+import com.boha.library.activities.FaqActivity;
+import com.boha.library.activities.FaqTypeActivity;
 import com.boha.library.dto.FreqQuestionTypeDTO;
+import com.boha.library.rssreader.FaqTest;
+import com.boha.library.util.FaqStrings;
 import com.boha.library.util.Statics;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FaqTypeAdapter extends ArrayAdapter<FreqQuestionTypeDTO> {
@@ -21,16 +28,22 @@ public class FaqTypeAdapter extends ArrayAdapter<FreqQuestionTypeDTO> {
     private final LayoutInflater mInflater;
     private final int mLayoutRes;
     private List<FreqQuestionTypeDTO> mList;
+    ArrayList <FaqTest> arrayList;
+    List<FaqTest> faqStringsList;
+
     private Context ctx;
     static final String LOG = FaqTypeAdapter.class.getSimpleName();
     FaqTypeListListener listener;
+    String [] FAQ;
     private int darkColor;
+
 
     public FaqTypeAdapter(Context context, int textViewResourceId, int darkColor,
                           List<FreqQuestionTypeDTO> list, FaqTypeListListener listener) {
         super(context, textViewResourceId, list);
         this.mLayoutRes = textViewResourceId;
         this.darkColor = darkColor;
+        this.arrayList = new ArrayList<FaqTest>();
         mList = list;
         ctx = context;
         this.mInflater = (LayoutInflater) context
@@ -49,6 +62,11 @@ public class FaqTypeAdapter extends ArrayAdapter<FreqQuestionTypeDTO> {
         protected TextView txtFaqType, txtNumber;
         protected View mainView;
         protected ImageView FTYPE_ICON;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
@@ -78,40 +96,58 @@ public class FaqTypeAdapter extends ArrayAdapter<FreqQuestionTypeDTO> {
         }
 
 
-        final FreqQuestionTypeDTO p = mList.get(position);
+       // final FreqQuestionTypeDTO p = mList.get(position);
+        //final FaqStrings fs = faqStringsList.get(position);
         item.txtNumber.setText("" + (position + 1));
 
-        item.txtFaqType.setText(p.getFaqTypeName());
+        // http://icsmnewsdev.oneconnectgroup.com/et/faq/AccountsPayments.html
+        // http://icsmnewsdev.oneconnectgroup.com/et/faq/WaterSanitation.html
+        // http://icsmnewsdev.oneconnectgroup.com/et/faq/CleansingSolidWaste.html
+        // http://icsmnewsdev.oneconnectgroup.com/et/faq/RatesTaxes.html
+        // http://icsmnewsdev.oneconnectgroup.com/et/faq/BuildingPlans.html
+        // http://icsmnewsdev.oneconnectgroup.com/et/faq/Electricity.html
+        // http://icsmnewsdev.oneconnectgroup.com/et/faq/SocialServices.html
+        // http://icsmnewsdev.oneconnectgroup.com/et/faq/Health.html
+        // http://icsmnewsdev.oneconnectgroup.com/et/faq/MetroPolice.html
 
 
         Statics.setRobotoFontLight(ctx, item.txtFaqType);
 
         switch(position) {
             case CityApplication.THEME_INDIGO:
+                item.txtFaqType.setText("Accounts & Payments");
                 item.txtNumber.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xindigo_oval_small));
                 break;
             case CityApplication.THEME_GREEN:
+                item.txtFaqType.setText("Water & Sanitation");
                 item.txtNumber.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xgreen_oval_small));
                 break;
             case CityApplication.THEME_BROWN:
+                item.txtFaqType.setText("Cleansing & Solid Waste");
                 item.txtNumber.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xbrown_oval_small));
                 break;
             case CityApplication.THEME_AMBER:
+                item.txtFaqType.setText("Rates & Taxes");
                 item.txtNumber.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xamber_oval_small));
                 break;
             case CityApplication.THEME_PURPLE:
+                item.txtFaqType.setText("Building Plans");
                 item.txtNumber.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xpurple_oval_small));
                 break;
             case CityApplication.THEME_LIME:
+                item.txtFaqType.setText("Electricity");
                 item.txtNumber.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xlime_oval_small));
                 break;
             case CityApplication.THEME_GREY:
+                item.txtFaqType.setText("Social Services");
                 item.txtNumber.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xgrey_oval_small));
                 break;
             case CityApplication.THEME_BLUE:
+                item.txtFaqType.setText("Health");
                 item.txtNumber.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xblue_oval_small));
                 break;
             case CityApplication.THEME_BLUE_GRAY:
+                item.txtFaqType.setText("Metro Police");
                 item.txtNumber.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xblue_gray_oval_small));
                 break;
             case CityApplication.THEME_TEAL:

@@ -181,7 +181,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
         }
 
-        complaint.setCategory(complaintCategory.getComplaintCategoryName());
+        complaint.setCategory(complaintCategory.getComplaintCategoryName().trim());
         complaint.setSubCategory(complaintType.getComplaintTypeName());
         complaint.setComplaintDate(new Date().getTime());
         if (radioAnywhere.isChecked()) {

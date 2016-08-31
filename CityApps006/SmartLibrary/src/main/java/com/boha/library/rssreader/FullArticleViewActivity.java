@@ -13,7 +13,7 @@ public class FullArticleViewActivity extends AppCompatActivity {
     TextView title_txt;
     WebView webView;
     ReadRss readRss;
-    NewReadRss newReadRss;
+    AlertReadRss alertReadRss;
     int position;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -41,11 +41,11 @@ public class FullArticleViewActivity extends AppCompatActivity {
     private void setWebView(int position) {
 
         title_txt.setText(readRss.feedItems.get(position).getTitle());
-       // title_txt.setText(newReadRss.feedItems.get(position).getTitle());
+       // title_txt.setText(alertReadRss.feedItems.get(position).getTitle());
         switch (position) {
             case 0:
                 webView.loadData(readRss.feedItems.get(position).getDescription(), TEXT, UTF);
-         //       webView.loadData(newReadRss.feedItems.get(position).getDescription(), TEXT, UTF);
+         //       webView.loadData(alertReadRss.feedItems.get(position).getDescription(), TEXT, UTF);
                 break;
 
         }

@@ -110,6 +110,7 @@ public class SigninActivity extends AppCompatActivity {
         radioNo.setVisibility(View.GONE);
         radioYes = (RadioButton) findViewById(R.id.SIGNIN_radioYes);
         radioTourist = (RadioButton) findViewById(R.id.SIGNIN_radioTourist);
+        radioTourist.setVisibility(View.GONE);
         btnSend = (Button) findViewById(R.id.SIGNIN_btnSignin);
         editEmail = (EditText) findViewById(R.id.SIGNIN_editEmail);
 
@@ -147,7 +148,7 @@ public class SigninActivity extends AppCompatActivity {
             }
         });
         userType = SharedUtil.CITIZEN_WITH_ACCOUNT;
-        editEmail.setHint(R.string.enter_email);
+       // editEmail.setHint(R.string.enter_email);
       // editPassword.setVisibility(View.VISIBLE);
         radioNo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -243,7 +244,13 @@ public class SigninActivity extends AppCompatActivity {
                                 @Override
                                 public void onDataCached() {
                                     Log.e(LOG, "cacheLoginData..... onDataCached: " + profileInfo.getFirstName() + " " + profileInfo.getLastName());
-                                    onBackPressed();
+                                  //  onBackPressed();
+                                    profileInfo = SharedUtil.getProfile(ctx);
+                                    UserDTO user = SharedUtil.getUser(ctx);
+                                    if (profileInfo != null) {
+                                        Intent intent = new Intent(SigninActivity.this, CitizenDrawerActivity.class);
+                                        startActivity(intent);
+                                    }
                                     //  check();
                                 }
 

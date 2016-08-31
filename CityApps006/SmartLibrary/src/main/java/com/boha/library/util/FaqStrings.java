@@ -13,6 +13,7 @@ public class FaqStrings implements Serializable {
             metroPoliceFAQ, ratesTaxesFAQ,
             socialServicesFAQ, waterSanitationFAQ;
 
+
     public String getAccountsFAQ() {
         return accountsFAQ;
     }

@@ -469,6 +469,8 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
 
         pageFragmentList.add(profileInfoFragment);
+        pageFragmentList.add(complaintCreateFragment);
+        pageFragmentList.add(myComplaintsFragment);
         pageFragmentList.add(alertListFragment);
         pageFragmentList.add(newsListFragment);
         pageFragmentList.add(complaintsAroundMeFragment);
@@ -520,6 +522,9 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             if (page.equalsIgnoreCase("News")) {
                 mPager.setCurrentItem(2);
             }
+            if (page.equalsIgnoreCase("Faqs")) {
+                mPager.setCurrentItem(3);
+            }
         }
     }
 
@@ -542,13 +547,13 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                     mPager.setCurrentItem(0, true);
                     return true;
                 }
-                if (menuItem.getItemId() == R.id.nav_mycompl) {
-                    mPager.setCurrentItem(1, true);
-                    return true;
-                }
                 if (menuItem.getItemId() == R.id.nav_createComplaint) {
-                    mPager.setCurrentItem(2, true);
+                    mPager.setCurrentItem(1, true);
 
+                }
+                if (menuItem.getItemId() == R.id.nav_mycompl) {
+                    mPager.setCurrentItem(2, true);
+                    return true;
                 }
                 if (menuItem.getItemId() == R.id.nav_alerts) {
                     mPager.setCurrentItem(3, true);

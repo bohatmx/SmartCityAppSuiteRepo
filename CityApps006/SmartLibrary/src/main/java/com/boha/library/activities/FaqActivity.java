@@ -104,4 +104,9 @@ public class FaqActivity extends AppCompatActivity implements FaqFragment.FaqLis
     public void setBusy(boolean busy) {
         setRefreshActionButtonState(busy);
     }
+
+    /*@Override
+    public void onFaqCLicked() {
+
+    }*/
 }

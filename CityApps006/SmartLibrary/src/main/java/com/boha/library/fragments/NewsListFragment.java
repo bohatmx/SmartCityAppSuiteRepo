@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,9 @@ import com.boha.library.activities.NewsDetailActivity;
 import com.boha.library.activities.NewsMapActivity;
 import com.boha.library.adapters.NewsListAdapter;
 import com.boha.library.dto.NewsArticleDTO;
+import com.boha.library.rssreader.FeedItem;
+import com.boha.library.rssreader.ReadRss;
+import com.boha.library.rssreader.ReadRssAdapter;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.Statics;
@@ -55,7 +60,7 @@ public class NewsListFragment extends Fragment implements PageFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             ResponseDTO r = (ResponseDTO) getArguments().getSerializable("response");
-            newsList = r.getNewsArticleList();
+     //       newsList = r.getNewsArticleList();
         }
     }
 
@@ -66,6 +71,7 @@ public class NewsListFragment extends Fragment implements PageFragment {
     Context ctx;
     List<NewsArticleDTO> newsList;
     Location location;
+    RecyclerView newsRecyclerView;
 
     ImageView heroImage;
     int logo;
@@ -79,15 +85,20 @@ public class NewsListFragment extends Fragment implements PageFragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_news_list, container, false);
         txtEmpty = (TextView)view.findViewById(R.id.NEWS_LIST_text);
+        txtEmpty.setVisibility(View.GONE);
         ctx = getActivity();
         setFields();
-        if (newsList != null) {
+
+        readRss = new ReadRss(ctx, newsRecyclerView);
+        readRss.execute();
+
+      /*  if (newsList != null) {
             setList();
         } else {
             newsList = new ArrayList<>();
             setList();
             getCachedNews();
-        }
+        } */
 
         return view;
     }
@@ -95,14 +106,21 @@ public class NewsListFragment extends Fragment implements PageFragment {
     private void setFields() {
 
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        listView = (ListView) view.findViewById(R.id.NEWS_LIST_listView);
+        //listView = (ListView) view.findViewById(R.id.NEWS_LIST_listView);
+        newsRecyclerView = (RecyclerView) view.findViewById(R.id.news_RecyclerView);
+        LinearLayoutManager lm = new LinearLayoutManager(ctx,LinearLayoutManager.VERTICAL,false);
+        newsRecyclerView.setLayoutManager(lm);
+
+        /*if (readRss.feedItems.isEmpty()) {
+            txtEmpty.setVisibility(View.VISIBLE);
+        }*/
         heroImage = (ImageView) view.findViewById(R.id.FNL_hero);
         ctx = getActivity();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (newsList == null || newsList.isEmpty()) {
+             /*   if (newsList == null || newsList.isEmpty()) {
                     Snackbar.make(listView,ctx.getString(R.string.nonews_map),
                             Snackbar.LENGTH_LONG).show();
                     return;
@@ -121,7 +139,7 @@ public class NewsListFragment extends Fragment implements PageFragment {
                     startActivity(i);
                 } else {
                     Util.showSnackBar(listView,"No located news to display on map", "OK", Color.parseColor("ORANGE"));
-                }
+                } */
 
             }
         });
@@ -149,9 +167,9 @@ public class NewsListFragment extends Fragment implements PageFragment {
             newsList = new ArrayList<>();
         }
         newsList.add(0, newsArticle);
-        if (newsListAdapter != null) {
+       /* if (newsListAdapter != null) {
             newsListAdapter.notifyDataSetChanged();
-        }
+        } */
 
         ResponseDTO r = new ResponseDTO();
         r.setNewsArticleList(newsList);
@@ -160,7 +178,7 @@ public class NewsListFragment extends Fragment implements PageFragment {
     }
 
 
-    NewsListAdapter newsListAdapter;
+   /* NewsListAdapter newsListAdapter;
 
     private void setList() {
         if (newsList == null) {
@@ -186,7 +204,20 @@ public class NewsListFragment extends Fragment implements PageFragment {
         //    recyclerView.addHeaderView(topView);
         }
         listView.setAdapter(newsListAdapter);
+    } */
+    ReadRssAdapter readRssAdapter;
+    ReadRss readRss;
+    private void setList(){
+        readRssAdapter = new ReadRssAdapter(ctx, readRss.feedItems , new ReadRssAdapter.NewsListListener() {
+            @Override
+            public void onNewsClicked() {
+
+            }
+        });
+        newsRecyclerView.setAdapter(readRssAdapter);
+
     }
+
 
     @Override
     public void onAttach(Activity activity) {

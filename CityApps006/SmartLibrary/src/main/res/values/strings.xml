@@ -4,11 +4,10 @@
     <string name="gcm_sender_id">635788281460</string>
     <string name="title_activity_maps">Alert Map</string>
     <string name="select_language">Choose Language</string>
-    <string name="welcome">Welcome Aboard!</string>
+    <string name="welcome_aboard">Welcome Aboard!</string>
     <string name="languages">Languages</string>
 
     <string name="signin">Sign In</string>
-    <string name="news">News</string>
     <string name="browse">Browse</string>
     <string name="action_settings">Settings</string>
     <string name="create_alert">Create Alert</string>
@@ -44,6 +43,7 @@
     <string name="select_email">Please select email account</string>
     <string name="no_accts">No Accounts found. Please create one and try again</string>
     <string name="title_activity_account">AccountActivity</string>
+    <string name="welcome">eThekwini welcomes you to our Smart Community App</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -62,10 +62,12 @@
     <string name="action_example">Example action</string>
     <string name="payments">Payments</string>
     <string name="city_alerts">City Alerts</string>
+    <string name="alerts">Alerts</string>
     <string name="my_complaints">My Complaints</string>
     <string name="my_accounts">My Accounts</string>
     <string name="comps_around_me">Complaints Around Me</string>
     <string name="faq">Frequently Asked Questions</string>
+    <string name="short_faq">FAQ</string>
     <string name="comp_types">Complaint Types</string>
     <string name="get_distance">Distance from You</string>
     <string name="dist_calc">"Distance calculated is: "</string>
