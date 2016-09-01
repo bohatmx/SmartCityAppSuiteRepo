@@ -182,7 +182,7 @@
 
         <activity android:name="com.boha.library.rssreader.FullArticleViewActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName=".activities.SplashActivity"/>
+            android:parentActivityName=".activities.LandingPageActivity"/>
     </application>
 
 </manifest>

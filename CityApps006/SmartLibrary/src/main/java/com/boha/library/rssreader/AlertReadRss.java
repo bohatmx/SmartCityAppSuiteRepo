@@ -17,6 +17,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -59,7 +61,7 @@ public class AlertReadRss extends AsyncTask<Void,Void,Void>  {
 
         });
         recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+      //  adapter.notifyDataSetChanged();
     }
 
 
@@ -74,6 +76,7 @@ public class AlertReadRss extends AsyncTask<Void,Void,Void>  {
     private void ProcessXml(Document data){
         if (data != null) {
             feedItems = new ArrayList<>();
+
             Element root = data.getDocumentElement();
             Node channel = root.getChildNodes().item(1);
             NodeList items = channel.getChildNodes();

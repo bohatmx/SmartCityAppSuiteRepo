@@ -2,6 +2,7 @@ package com.boha.library.rssreader;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,6 +16,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -51,13 +54,14 @@ public class LandingPageReadRss extends AsyncTask<Void,Void,Void> {
         LandingPageAdapter adapter = new LandingPageAdapter(context, feedItems, new LandingPageAdapter.NewsListListener() {
             @Override
             public void onNewsClicked() {
-
+        //    Intent intent = new Intent(context, FullArticleViewActivity.class);
+         //       context.startActivity(intent);
             }
 
 
         });
         recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+       // adapter.notifyDataSetChanged();
     }
 
 
@@ -71,6 +75,12 @@ public class LandingPageReadRss extends AsyncTask<Void,Void,Void> {
     private void ProcessXml(Document data){
         if (data != null) {
             feedItems = new ArrayList<>();
+            /*Collections.sort(feedItems, new Comparator<FeedItem>() {
+                @Override
+                public int compare(FeedItem feedItem, FeedItem t1) {
+                    return feedItem.getPubDate().compareToIgnoreCase(t1.getPubDate());
+                }
+            });*/
             Element root = data.getDocumentElement();
             Node channel = root.getChildNodes().item(1);
             NodeList items = channel.getChildNodes();

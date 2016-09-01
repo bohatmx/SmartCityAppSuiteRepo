@@ -216,6 +216,7 @@ public class NewsListFragment extends Fragment implements PageFragment {
         });
         newsRecyclerView.setAdapter(readRssAdapter);
 
+
     }
 
 

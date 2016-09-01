@@ -5,7 +5,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_myaccts"
-            android:icon="@drawable/ic_my_library_books_black_36dp"
+            android:icon="@drawable/account_2x"
             android:title="@string/my_accounts" />
         <item
             android:id="@+id/nav_mycompl"
@@ -17,11 +17,11 @@
             android:title="@string/make_complaint" />
         <item
             android:id="@+id/nav_alerts"
-            android:icon="@android:drawable/ic_dialog_alert"
+            android:icon="@drawable/alert_2x"
             android:title="@string/city_alerts" />
         <item
             android:id="@+id/nav_news"
-            android:icon="@drawable/ic_action_news"
+            android:icon="@drawable/news1_2x"
             android:title="@string/city_news" />
         <item
             android:id="@+id/nav_complaintsAroundMe"
@@ -29,7 +29,7 @@
             android:title="@string/complaints_around_me" />
         <item
             android:id="@+id/nav_faq"
-            android:icon="@drawable/ic_action_help"
+            android:icon="@drawable/faq_2x"
             android:title="@string/faq" />
         <item
             android:id="@+id/nav_gallery"

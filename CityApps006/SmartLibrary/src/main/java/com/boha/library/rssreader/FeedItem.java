@@ -1,10 +1,21 @@
 package com.boha.library.rssreader;
 
+import java.util.Date;
+
 /**
  * Created by Nkululeko on 2016/08/24.
  */
 public class FeedItem {
     String title, link, description, pubDate, thumbnailUrl;
+    Date today = new Date();
+
+    public Date getToday() {
+        return today;
+    }
+
+    public void setToday(Date today) {
+        this.today = today;
+    }
 
     public String getTitle() {
         return title;

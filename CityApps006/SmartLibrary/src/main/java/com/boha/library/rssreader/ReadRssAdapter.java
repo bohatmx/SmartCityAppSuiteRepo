@@ -15,6 +15,9 @@ import com.boha.library.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 /**
  * Created by Nkululeko on 2016/08/24.
@@ -38,10 +41,21 @@ public class ReadRssAdapter extends RecyclerView.Adapter<ReadRssAdapter.MyViewHo
     }
 
     private static final String TEXT = "text/html", UTF = "UTF-8";
+    private Date date = new Date();
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         final FeedItem current = feedItems.get(position);
+        //Collections.reverse(feedItems);
+
+           Collections.sort(feedItems, new Comparator<FeedItem>() {
+                @Override
+                public int compare(FeedItem feedItem, FeedItem t1) {
+                    if (feedItem.getPubDate() == null || t1.getPubDate() == null)
+                        return 0;
+                    return feedItem.getPubDate().compareToIgnoreCase(t1.getPubDate());
+                }
+            });
         holder.Title.setText(current.getTitle());
         holder.webViewDescription.loadData(current.description, TEXT, UTF);
 

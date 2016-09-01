@@ -21,6 +21,10 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -66,7 +70,7 @@ public class ReadRss extends AsyncTask<Void,Void,Void>  {
             }
         });
         recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+       // adapter.notifyDataSetChanged();
     }
 
 
@@ -81,6 +85,7 @@ public class ReadRss extends AsyncTask<Void,Void,Void>  {
     private void ProcessXml(Document data){
         if (data != null) {
             feedItems = new ArrayList<>();
+
             Element root = data.getDocumentElement();
             Node channel = root.getChildNodes().item(1);
             NodeList items = channel.getChildNodes();
@@ -117,6 +122,7 @@ public class ReadRss extends AsyncTask<Void,Void,Void>  {
                     Log.d("itemLink", item.getLink());
                     Log.d("itemPubDate", item.getPubDate());
                     Log.d("itemThumbnailUrl", item.getThumbnailUrl());
+
                 }
             }
           //  Log.d("ReadRSS", data.getDocumentElement().getNodeName());
