@@ -78,12 +78,12 @@ public class LandingPageAdapter extends RecyclerView.Adapter<LandingPageAdapter.
         public MyViewHolder(View itemView) {
             super(itemView);
             Title = (TextView) itemView.findViewById(R.id.title_text);
-            Title.setOnClickListener(new View.OnClickListener() {
+            /*Title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     listener.onNewsClicked();
                 }
-            });
+            });*/
             webViewDescription = (WebView) itemView.findViewById(R.id.description_text);
 
             //  Description = (TextView) itemView.findViewById(R.id.description_text);
