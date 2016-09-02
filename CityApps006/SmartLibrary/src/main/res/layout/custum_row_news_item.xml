@@ -61,6 +61,24 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/thumb_img"/>
+        <android.support.v7.widget.CardView
+            android:layout_below="@+id/description_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/more_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+            android:text="SHOW MORE"
+            android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_gravity="center"
+                android:id="@+id/less_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SHOW LESS"/>
+        </android.support.v7.widget.CardView>
    <!--     <TextView
             android:layout_margin="10dp"
             android:id="@+id/more_txt"

@@ -51,8 +51,8 @@ public class ReadRssAdapter extends RecyclerView.Adapter<ReadRssAdapter.MyViewHo
            Collections.sort(feedItems, new Comparator<FeedItem>() {
                 @Override
                 public int compare(FeedItem feedItem, FeedItem t1) {
-                    if (feedItem.getPubDate() == null || t1.getPubDate() == null)
-                        return 0;
+                    /*if (feedItem.getPubDate() == null || t1.getPubDate() == null)
+                        return 0;*/
                     return feedItem.getPubDate().compareToIgnoreCase(t1.getPubDate());
                 }
             });
@@ -65,7 +65,7 @@ public class ReadRssAdapter extends RecyclerView.Adapter<ReadRssAdapter.MyViewHo
             holder.Thumbnail.setImageDrawable(ContextCompat.getDrawable( context, R.drawable.news));
 
         } else {
-            Picasso.with(context).load(current.getThumbnailUrl()).into(holder.Thumbnail);
+             Picasso.with(context).load(current.getThumbnailUrl()).into(holder.Thumbnail);
         }
       //  holder.readMore.setText("Read More");
      //   holder.MoreIMG.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.more));
@@ -80,7 +80,7 @@ public class ReadRssAdapter extends RecyclerView.Adapter<ReadRssAdapter.MyViewHo
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView Title, Description, Date, readMore;
+        TextView Title, Description, Date, readMore, readLess;
         ImageView Thumbnail, MoreIMG;
         CardView cardView;
         WebView webViewDescription;
@@ -95,6 +95,7 @@ public class ReadRssAdapter extends RecyclerView.Adapter<ReadRssAdapter.MyViewHo
                 }
             });
             webViewDescription = (WebView) itemView.findViewById(R.id.description_text);
+            webViewDescription.setVisibility(View.GONE);
 
           //  Description = (TextView) itemView.findViewById(R.id.description_text);
             Date = (TextView) itemView.findViewById(R.id.date_text);
@@ -108,7 +109,26 @@ public class ReadRssAdapter extends RecyclerView.Adapter<ReadRssAdapter.MyViewHo
             });
 
             cardView = (CardView) itemView.findViewById(R.id.cardView);
-          //  readMore = (TextView) itemView.findViewById(R.id.more_txt);
+            readMore = (TextView) itemView.findViewById(R.id.more_text);
+            readMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    webViewDescription.setVisibility(View.VISIBLE);
+                    readLess.setVisibility(View.VISIBLE);
+                    readMore.setVisibility(View.GONE);
+                }
+            });
+            readLess = (TextView) itemView.findViewById(R.id.less_text);
+            readLess.setVisibility(View.GONE);
+            readLess.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    readMore.setVisibility(View.VISIBLE);
+                    webViewDescription.setVisibility(View.GONE);
+                    readLess.setVisibility(View.GONE);
+
+                }
+            });
           //  readMore.setVisibility(View.GONE);
             //MoreIMG = (ImageView) itemView.findViewById(R.id.more_img);
            // MoreIMG.setVisibility(View.GONE);
@@ -120,9 +140,11 @@ public class ReadRssAdapter extends RecyclerView.Adapter<ReadRssAdapter.MyViewHo
     public interface NewsListListener {
      //   public void onNewsClicked(FeedItem feedItem);
      public void onNewsClicked();
+    //    void onMoreClicked();
     }
 
     public interface ItemListener {
         void onItemClicked();
+
     }
 }
