@@ -132,7 +132,6 @@ public class TouristDrawerActivity extends AppCompatActivity implements
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setVisibility(View.GONE);
 //        navImage = (ImageView) findViewById(R.id.NAVHEADER_image);
         navText = (TextView) findViewById(R.id.NAVHEADER_text);
 
@@ -184,7 +183,8 @@ public class TouristDrawerActivity extends AppCompatActivity implements
             window.setStatusBarColor(themeDarkColor);
             window.setNavigationBarColor(themeDarkColor);
         }
-        mDrawerLayout.openDrawer(GravityCompat.START);
+       // mDrawerLayout.openDrawer(GravityCompat.START);
+        mDrawerLayout.closeDrawer(GravityCompat.START);
     }
 
 
