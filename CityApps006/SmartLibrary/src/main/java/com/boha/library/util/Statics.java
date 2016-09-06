@@ -15,8 +15,8 @@ public class Statics {
      * PECANWOOD BACKEND APP_URL'S - pecanwood back end endpoint on laptop
      */
 
-   // public static final String PREFIX = "http://icsmsdev1.oneconnectgroup.com:8585";
-    public static final String PREFIX = "http://10.0.0.124:8080";
+    public static final String PREFIX = "http://icsmsdev1.oneconnectgroup.com:8585";
+  //  public static final String PREFIX = "http://10.0.0.102:8080";
     public static final String URL = PREFIX + "/sc/";
     public static final String IMAGE_URL = PREFIX + "/";
 

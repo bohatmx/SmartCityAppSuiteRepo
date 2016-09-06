@@ -72,6 +72,7 @@ public class AlertReadRss extends AsyncTask<Void,Void,Void>  {
         ProcessXml(getData());
         return null;
     }
+    public String latitude, longitude;
 
     private void ProcessXml(Document data){
         if (data != null) {
@@ -104,7 +105,16 @@ public class AlertReadRss extends AsyncTask<Void,Void,Void>  {
                         } else if (current.getNodeName().equalsIgnoreCase("media:thumbnail")) {
                             String url = current.getAttributes().item(0).getTextContent();
                             item.setThumbnailUrl(url);
+                        } else if (current.getNodeName().equalsIgnoreCase("georss:point")) {
+                            item.setPoint(current.getTextContent());
+                            String [] parts = current.getTextContent().split(" ");
+                            longitude = parts[0].substring(0, parts[0].length());
+                             latitude = parts[1].substring(0, parts[1].length());
+                        } else if (current.getNodeName().equalsIgnoreCase("category")) {
+                            item.setCategory(current.getTextContent());
                         }
+
+
 
                     }
                     feedItems.add(item);
@@ -113,6 +123,10 @@ public class AlertReadRss extends AsyncTask<Void,Void,Void>  {
                     Log.d("itemLink", item.getLink());
                     Log.d("itemPubDate", item.getPubDate());
                     Log.d("itemThumbnailUrl", item.getThumbnailUrl());
+                    Log.d("itemGeoRss", item.getPoint());
+                    Log.i(LOG,  "Latitude: " + latitude);
+                    Log.i(LOG, "Longitude: " + longitude);
+                    Log.d("itemCategory", item.getCategory());
                 }
             }
             //  Log.d("ReadRSS", data.getDocumentElement().getNodeName());

@@ -25,9 +25,9 @@
         <ImageView
 
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="300dp"
             android:id="@+id/thumb_img"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             android:layout_below="@+id/title_text"
             android:layout_centerHorizontal="true"
             android:src="@drawable/news"/>
