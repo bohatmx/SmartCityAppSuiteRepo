@@ -58,10 +58,11 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
+    <string name="contacts">Contacts</string>
     <string name="action_example">Example action</string>
     <string name="payments">Payments</string>
     <string name="city_alerts">City Alerts</string>
+    <string name="headlines">Headlines</string>
     <string name="alerts">Alerts</string>
     <string name="my_complaints">My Complaints</string>
     <string name="my_accounts">My Accounts</string>

@@ -62,6 +62,7 @@ import com.boha.library.fragments.ComplaintCreateFragment;
 import com.boha.library.fragments.ComplaintsAroundMeFragment;
 import com.boha.library.fragments.CreateAlertFragment;
 import com.boha.library.fragments.FaqFragment;
+import com.boha.library.fragments.LandingPageFragment;
 import com.boha.library.fragments.MyComplaintsFragment;
 import com.boha.library.fragments.NavigationDrawerFragment;
 import com.boha.library.fragments.NewsListFragment;
@@ -96,7 +97,7 @@ import java.util.Timer;
 public class TouristDrawerActivity extends AppCompatActivity implements
         AlertListFragment.AlertListener,
         NewsListFragment.NewsListFragmentListener,
-        FaqFragment.FaqListener {
+        FaqFragment.FaqListener, LandingPageFragment.LandingPageListener {
       //  ComplaintsAroundMeFragment.ComplaintAroundMeListener,
       //  LocationListener,
       //  GoogleApiClient.ConnectionCallbacks,
@@ -184,7 +185,7 @@ public class TouristDrawerActivity extends AppCompatActivity implements
             window.setNavigationBarColor(themeDarkColor);
         }
        // mDrawerLayout.openDrawer(GravityCompat.START);
-        mDrawerLayout.closeDrawer(GravityCompat.START);
+     //   mDrawerLayout.closeDrawer(GravityCompat.START);
     }
 
 
@@ -341,14 +342,14 @@ public class TouristDrawerActivity extends AppCompatActivity implements
             return true;
         }
 
-        if (id == com.boha.library.R.id.action_exit) {
+      /*  if (id == com.boha.library.R.id.action_exit) {
             SharedUtil.clearProfile(ctx);
             Intent intent = new Intent(TouristDrawerActivity.this, LandingPageActivity.class);
             startActivity(intent);
             logOff = true;
             finish();
             return true;
-        }
+        } */
         if (id == com.boha.library.R.id.action_refresh) {
             index = 0;
             getLoginData();
@@ -380,6 +381,8 @@ public class TouristDrawerActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    LandingPageFragment landingPageFragment;
+
     private void setupViewPager() {
 
         setMenuDestinations();
@@ -388,27 +391,28 @@ public class TouristDrawerActivity extends AppCompatActivity implements
 
 
        alertListFragment = AlertListFragment.newInstance(response);
-      //  complaintsAroundMeFragment = ComplaintsAroundMeFragment.newInstance();
         newsListFragment = NewsListFragment.newInstance(response);
        faqFragment = FaqFragment.newInstance(response);
+      //  landingPageFragment = LandingPageFragment.newInstance(response);
 
 
         alertListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         faqFragment.setThemeColors(themePrimaryColor, themeDarkColor);
+//        landingPageFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 
-     //   complaintsAroundMeFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         newsListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 
-    //    complaintsAroundMeFragment.setLogo(logo);
         alertListFragment.setLogo(logo);
         newsListFragment.setLogo(logo);
+        //landingPageFragment.setLogo(logo);
 
         alertListFragment.setPageTitle(ctx.getString(R.string.city_alerts));
-//        complaintCreateFragment.setPageTitle(ctx.getString(R.string.make_complaint));
-      //  complaintsAroundMeFragment.setPageTitle(ctx.getString(R.string.complaints_around_me));
-        newsListFragment.setPageTitle(ctx.getString(R.string.city_news));
+       /* newsListFragment.setPageTitle(ctx.getString(R.string.city_news));*/
+        newsListFragment.setPageTitle(ctx.getString(R.string.headlines));
         faqFragment.setPageTitle(getString(R.string.faq));
+//        landingPageFragment.setPageTitle(getString(R.string.headlines));
 
+       // pageFragmentList.add(landingPageFragment);
         pageFragmentList.add(alertListFragment);
         pageFragmentList.add(newsListFragment);
         //pageFragmentList.add(complaintsAroundMeFragment);
@@ -480,6 +484,10 @@ public class TouristDrawerActivity extends AppCompatActivity implements
             public boolean onNavigationItemSelected(MenuItem menuItem) {
 
                 mDrawerLayout.closeDrawers();
+               /* if (menuItem.getItemId() ==  R.id.nav_headlines) {
+                    mPager.setCurrentItem(0);
+                    return true;
+                }*/
                 if (menuItem.getItemId() == R.id.nav_alerts) {
                     mPager.setCurrentItem(0, true);
                     return true;
@@ -494,6 +502,12 @@ public class TouristDrawerActivity extends AppCompatActivity implements
                 }
                 if(menuItem.getItemId() == R.id.nav_signin) {
                     Intent intent = new Intent(TouristDrawerActivity.this, SigninActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+
+                if (menuItem.getItemId() == R.id.nav_contacts) {
+                    Intent intent = new Intent(TouristDrawerActivity.this, EmergencyContactsActivity.class);
                     startActivity(intent);
                     return true;
                 }
@@ -527,8 +541,43 @@ public class TouristDrawerActivity extends AppCompatActivity implements
 
             }
 
+    @Override
+    public void onImageClicked() {
 
-            /**
+    }
+
+    @Override
+    public void onTitleClicked() {
+
+    }
+
+    @Override
+    public void onAlertIconClicked() {
+
+    }
+
+    @Override
+    public void onNewsIconClicked() {
+
+    }
+
+    @Override
+    public void onFAQIconClicked() {
+
+    }
+
+    @Override
+    public void onLogin() {
+
+    }
+
+    @Override
+    public void onContactClicked() {
+
+    }
+
+
+    /**
      * Adapter to manage fragments in view pager
      */
     private static class PagerAdapter extends FragmentStatePagerAdapter {

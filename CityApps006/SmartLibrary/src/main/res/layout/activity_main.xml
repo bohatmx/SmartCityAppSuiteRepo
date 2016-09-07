@@ -36,8 +36,8 @@
                     android:layout_below="@+id/news_title"
                     android:id="@+id/NEWSIMG"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:scaleType="fitCenter"
+                    android:layout_height="300dp"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/news"/>
                 <WebView
                     android:id="@+id/NEWS_webView"

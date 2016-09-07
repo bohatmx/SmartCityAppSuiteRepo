@@ -31,6 +31,7 @@ public class LandingPageAdapter extends RecyclerView.Adapter<LandingPageAdapter.
         this.feedItems = feedItems;
         this.context = context;
         this.listener = listener;
+
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

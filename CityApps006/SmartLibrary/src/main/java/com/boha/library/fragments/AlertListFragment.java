@@ -166,7 +166,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.ALERT_LIST_listView);
         LinearLayoutManager lm = new LinearLayoutManager(ctx,LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(lm);
-        heroImage = (ImageView) view.findViewById(R.id.FAL_hero);
+       // heroImage = (ImageView) view.findViewById(R.id.FAL_hero);
 
         ctx = getActivity();
         /*if (alertReadRss.feedItems.isEmpty()) {

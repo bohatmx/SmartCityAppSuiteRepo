@@ -211,7 +211,7 @@ public class SplashActivity extends AppCompatActivity  {
             public void run() {
                 timer.purge();
                 timer.cancel();
-                Intent m = new Intent(getApplicationContext(), LandingPageActivity.class);
+                Intent m = new Intent(getApplicationContext(), /*LandingPageActivity*/TouristDrawerActivity.class);
                 startActivity(m);
                 finish();
             }

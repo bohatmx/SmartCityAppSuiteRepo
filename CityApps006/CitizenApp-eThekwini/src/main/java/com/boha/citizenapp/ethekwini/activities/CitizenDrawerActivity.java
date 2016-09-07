@@ -513,6 +513,18 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                 startActivity(w);
             } catch (Exception e2) {
             }
+
+            if (page != null) {
+                if (page.equalsIgnoreCase("Alerts")) {
+                    mPager.setCurrentItem(4);
+                }
+                if (page.equalsIgnoreCase("News")) {
+                    mPager.setCurrentItem(5);
+                }
+                if (page.equalsIgnoreCase("Faqs")) {
+                    mPager.setCurrentItem(7);
+                }
+            }
         }
 
         if (page != null) {

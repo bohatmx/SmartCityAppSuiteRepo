@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.EmergencyContactsActivity;
@@ -108,11 +106,11 @@ public class LandingPageActivity extends AppCompatActivity
 
     @Override
     public void onLogin() {
-      //  if (profile != null) {
+        if (profile != null) {
             //todo go to signInactivity
             Intent m = new Intent(getApplicationContext(), SigninActivity.class);
             startActivity(m);
-       // }
+        }
     }
 
     @Override

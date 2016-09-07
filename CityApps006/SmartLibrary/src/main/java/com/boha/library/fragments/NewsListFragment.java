@@ -114,7 +114,7 @@ public class NewsListFragment extends Fragment implements PageFragment {
         /*if (readRss.feedItems.isEmpty()) {
             txtEmpty.setVisibility(View.VISIBLE);
         }*/
-        heroImage = (ImageView) view.findViewById(R.id.FNL_hero);
+       // heroImage = (ImageView) view.findViewById(R.id.FNL_hero);
         ctx = getActivity();
 
         fab.setOnClickListener(new View.OnClickListener() {

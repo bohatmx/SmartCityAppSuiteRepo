@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/grey"
     android:padding="@dimen/mon_padding">
-    <RelativeLayout
+   <!-- <RelativeLayout
         android:id="@+id/FNL_LAY"
         android:layout_width="match_parent"
         android:layout_height="@dimen/mon_hero_height_small">
@@ -15,11 +15,10 @@
             android:layout_height="@dimen/mon_hero_height_small"
             android:background="@drawable/back1"
             android:scaleType="centerCrop"/>
-    </RelativeLayout>
+    </RelativeLayout> -->
 
     <!-- The List here-->
     <android.support.v7.widget.RecyclerView
-        android:layout_below="@+id/FNL_LAY"
         android:id="@+id/news_RecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

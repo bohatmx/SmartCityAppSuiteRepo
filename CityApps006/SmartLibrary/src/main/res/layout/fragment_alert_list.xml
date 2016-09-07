@@ -5,19 +5,18 @@
     android:padding="@dimen/mon_divider">
 
 
-    <ImageView
+  <!--  <ImageView
         android:id="@+id/FAL_hero"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@drawable/back8"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop" /> -->
 
     <!-- The List here-->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ALERT_LIST_listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/FAL_hero"
         android:layout_marginTop="@dimen/mon_padding"
         app:layout_anchor="@id/fab"
         android:visibility="visible" />
@@ -44,7 +43,7 @@
         android:visibility="gone"
 
         app:elevation="@dimen/mon_16"
-        app:layout_anchor="@id/FAL_hero"
+        app:layout_anchor="@id/ALERT_LIST_listView"
         app:layout_anchorGravity="bottom|right|end"
         app:pressedTranslationZ="@dimen/mon_wide"
         app:rippleColor="@color/blue_200" />

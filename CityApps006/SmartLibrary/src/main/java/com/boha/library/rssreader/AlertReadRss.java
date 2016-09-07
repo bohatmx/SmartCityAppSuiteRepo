@@ -43,7 +43,7 @@ public class AlertReadRss extends AsyncTask<Void,Void,Void>  {
 
     @Override
     protected void onPreExecute() {
-        progressDialog.show();
+//        progressDialog.show();
         super.onPreExecute();
     }
 
@@ -51,7 +51,7 @@ public class AlertReadRss extends AsyncTask<Void,Void,Void>  {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
-        progressDialog.dismiss();
+   //     progressDialog.dismiss();
         ReadRssAdapter adapter = new ReadRssAdapter(context, feedItems, new ReadRssAdapter.NewsListListener() {
             @Override
             public void onNewsClicked() {
@@ -100,9 +100,9 @@ public class AlertReadRss extends AsyncTask<Void,Void,Void>  {
 
                         } else if (current.getNodeName().equalsIgnoreCase("pubDate")) {
                             item.setPubDate(current.getTextContent());
-                        } else  if (current.getNodeName().equalsIgnoreCase("link")) {
+                        }/* else  if (current.getNodeName().equalsIgnoreCase("link")) {
                             item.setLink(current.getTextContent());
-                        } else if (current.getNodeName().equalsIgnoreCase("media:thumbnail")) {
+                        }*/ else if (current.getNodeName().equalsIgnoreCase("media:thumbnail")) {
                             String url = current.getAttributes().item(0).getTextContent();
                             item.setThumbnailUrl(url);
                         } else if (current.getNodeName().equalsIgnoreCase("georss:point")) {
@@ -120,10 +120,19 @@ public class AlertReadRss extends AsyncTask<Void,Void,Void>  {
                     feedItems.add(item);
                     Log.d("itemTitle", item.getTitle());
                     Log.d("itemDescription", item.getDescription());
-                    Log.d("itemLink", item.getLink());
+
+                    /*if (item.getLink() != null || !item.getLink().isEmpty()) {
+
+                        Log.d("itemLink", item.getLink());
+                    }*/
                     Log.d("itemPubDate", item.getPubDate());
                     Log.d("itemThumbnailUrl", item.getThumbnailUrl());
-                    Log.d("itemGeoRss", item.getPoint());
+                    if (item.getPoint() !=null){
+                        Log.d("itemGeoRss", item.getPoint());
+                    } else{
+                        Log.d("itemGeoRss", "empty");
+                    }
+
                     Log.i(LOG,  "Latitude: " + latitude);
                     Log.i(LOG, "Longitude: " + longitude);
                     Log.d("itemCategory", item.getCategory());
@@ -151,7 +160,7 @@ public class AlertReadRss extends AsyncTask<Void,Void,Void>  {
     }
 
 
-    public static final String LOG = ReadRss.class.getSimpleName();
+    public static final String LOG = AlertReadRss.class.getSimpleName();
 
 }
 
