@@ -52,14 +52,20 @@ public class AlertReadRss extends AsyncTask<Void,Void,Void>  {
         super.onPostExecute(aVoid);
 
    //     progressDialog.dismiss();
-        ReadRssAdapter adapter = new ReadRssAdapter(context, feedItems, new ReadRssAdapter.NewsListListener() {
+        AlertReadRssAdapter adapter = new AlertReadRssAdapter(context, feedItems, new AlertReadRssAdapter.NewsListListener() {
+            @Override
+            public void onNewsClicked() {
+
+            }
+        });
+        /*ReadRssAdapter adapter = new ReadRssAdapter(context, feedItems, new ReadRssAdapter.NewsListListener() {
             @Override
             public void onNewsClicked() {
 
             }
 
 
-        });
+        });*/
         recyclerView.setAdapter(adapter);
       //  adapter.notifyDataSetChanged();
     }
