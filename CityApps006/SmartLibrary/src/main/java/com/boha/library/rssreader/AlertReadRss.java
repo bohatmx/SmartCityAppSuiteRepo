@@ -29,7 +29,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 public class AlertReadRss extends AsyncTask<Void,Void,Void>  {
     Context context;
     ProgressDialog progressDialog;
-    String address = "http://icsmnewsdev.oneconnectgroup.com/et/alerts/rss/Alerts.xml";
+    String address = "http://icsmnewsdev.oneconnectgroup.com/et/alerts/json/Alerts.json";
     URL url;
 
     public ArrayList<FeedItem> feedItems;

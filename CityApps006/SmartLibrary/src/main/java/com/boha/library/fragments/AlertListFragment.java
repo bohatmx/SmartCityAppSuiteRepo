@@ -23,6 +23,7 @@ import com.boha.library.activities.AlertMapActivity;
 import com.boha.library.activities.CityApplication;
 import com.boha.library.adapters.AlertRecyclerAdapter;
 import com.boha.library.dto.AlertDTO;
+import com.boha.library.jsonreader.AlertsRead;
 import com.boha.library.rssreader.AlertReadRss;
 import com.boha.library.rssreader.ReadRss;
 import com.boha.library.rssreader.ReadRssAdapter;
@@ -88,6 +89,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
     }
 
     AlertReadRss alertReadRss;
+    AlertsRead alertsRead;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,8 +103,16 @@ public class AlertListFragment extends Fragment implements PageFragment {
         } else {
             getCachedAlerts();
         } */
-        alertReadRss = new AlertReadRss(ctx, recyclerView);
-        alertReadRss.execute();
+       // alertReadRss = new AlertReadRss(ctx, recyclerView);
+       // alertReadRss.execute();
+        alertsRead = new AlertsRead(ctx, recyclerView);
+        alertsRead.execute();
+        /*AlertsRead.DownloadNews.execute(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });*/
 
         switch(primaryColor) {
             case CityApplication.THEME_INDIGO:

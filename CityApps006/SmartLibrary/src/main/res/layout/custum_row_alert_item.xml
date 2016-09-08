@@ -14,6 +14,8 @@
         android:layout_height="match_parent"
         android:background="@color/white">
         <TextView
+            android:layout_marginLeft="@dimen/mon_16"
+            android:layout_toRightOf="@+id/thumb_img"
             android:lines="2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,7 +27,7 @@
 
         <TextView
             android:layout_below="@+id/title_text"
-            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_margin="@dimen/mon_divider_small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -36,11 +38,11 @@
         <ImageView
             android:layout_alignParentTop="true"
             android:layout_below="@+id/date_text"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:id="@+id/thumb_img"
             android:scaleType="centerCrop"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
             android:layout_centerHorizontal="true"
             android:src="@drawable/news"/>
 

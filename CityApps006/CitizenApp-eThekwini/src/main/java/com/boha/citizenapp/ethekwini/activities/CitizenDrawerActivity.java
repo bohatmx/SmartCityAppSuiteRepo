@@ -207,7 +207,6 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         setAnalyticsEvent("main", "Main Screen");
     }
 
-
     private void setAnalyticsEvent(String id, String name) {
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
@@ -464,7 +463,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         alertListFragment.setPageTitle(ctx.getString(R.string.city_alerts));
         complaintCreateFragment.setPageTitle(ctx.getString(R.string.make_complaint));
         complaintsAroundMeFragment.setPageTitle(ctx.getString(R.string.complaints_around_me));
-        newsListFragment.setPageTitle(ctx.getString(R.string.city_news));
+        newsListFragment.setPageTitle(ctx.getString(R.string.headlines));
         faqFragment.setPageTitle(getString(R.string.faq));
 
 

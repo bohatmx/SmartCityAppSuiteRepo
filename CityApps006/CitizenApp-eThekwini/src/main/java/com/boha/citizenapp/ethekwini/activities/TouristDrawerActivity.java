@@ -1061,8 +1061,8 @@ public class TouristDrawerActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(TouristDrawerActivity.this, LandingPageActivity.class);
-        startActivity(intent);
+       /* Intent intent = new Intent(TouristDrawerActivity.this, LandingPageActivity.class);
+        startActivity(intent);*/
        /* final Handler h = new Handler(Looper.getMainLooper());
         final Runnable r = new Runnable() {
             public void run() {

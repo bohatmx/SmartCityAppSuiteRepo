@@ -177,8 +177,7 @@
         -->
 
         <activity android:name=".activities.TouristDrawerActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".activities.LandingPageActivity"/>
+            android:screenOrientation="portrait"/>
 
         <activity android:name="com.boha.library.rssreader.FullArticleViewActivity"
             android:screenOrientation="portrait"

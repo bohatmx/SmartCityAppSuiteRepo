@@ -1,4 +1,4 @@
-package com.boha.library.rssreader;
+package com.boha.library.jsonreader;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.FullDetailActivity;
-import com.boha.library.jsonreader.AlertsFeedItems;
+import com.boha.library.rssreader.FeedItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -23,15 +23,15 @@ import java.util.Comparator;
 import java.util.Date;
 
 /**
- * Created by Nkululeko on 2016/09/07.
+ * Created by Nkululeko on 2016/09/08.
  */
-public class AlertReadRssAdapter extends RecyclerView.Adapter<AlertReadRssAdapter.MyViewHolder> {
+public class AlertsReadAdapter extends RecyclerView.Adapter<AlertsReadAdapter.MyViewHolder> {
 
     NewsListListener listener;
-    ArrayList<FeedItem> feedItems;
+    ArrayList<AlertsFeedItems> alertsFeedItems;
     Context context;
-    public AlertReadRssAdapter(Context context, ArrayList<FeedItem> feedItems, NewsListListener listener) {
-        this.feedItems = feedItems;
+    public AlertsReadAdapter(Context context, ArrayList<AlertsFeedItems> alertsFeedItems, NewsListListener listener) {
+        this.alertsFeedItems = alertsFeedItems;
         this.context = context;
         this.listener = listener;
     }
@@ -48,15 +48,15 @@ public class AlertReadRssAdapter extends RecyclerView.Adapter<AlertReadRssAdapte
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        final FeedItem current = feedItems.get(position);
+        final AlertsFeedItems current = alertsFeedItems.get(position);
         //Collections.reverse(feedItems);
 
-        Collections.sort(feedItems, new Comparator<FeedItem>() {
+        Collections.sort(alertsFeedItems, new Comparator<AlertsFeedItems>() {
             @Override
-            public int compare(FeedItem feedItem, FeedItem t1) {
+            public int compare(AlertsFeedItems alertFeedItem, AlertsFeedItems t1) {
                     /*if (feedItem.getPubDate() == null || t1.getPubDate() == null)
                         return 0;*/
-                return feedItem.getPubDate().compareToIgnoreCase(t1.getPubDate());
+                return alertFeedItem.getPubDate().compareToIgnoreCase(t1.getPubDate());
             }
         });
         if (current.getTitle().isEmpty() || current.getTitle()== null){
@@ -66,7 +66,7 @@ public class AlertReadRssAdapter extends RecyclerView.Adapter<AlertReadRssAdapte
         }
 
 
-        holder.webViewDescription.loadData(current.description, TEXT, UTF);
+     //   holder.webViewDescription.loadData(current.description, TEXT, UTF);
 
         //  holder.Description.setText(current.getDescription());
         holder.Date.setText(current.getPubDate().substring(0, Math.min(current.getPubDate().length(), 16)));
@@ -85,7 +85,7 @@ public class AlertReadRssAdapter extends RecyclerView.Adapter<AlertReadRssAdapte
     @Override
     public int getItemCount() {
 
-        return feedItems.size();
+        return alertsFeedItems.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -147,9 +147,9 @@ public class AlertReadRssAdapter extends RecyclerView.Adapter<AlertReadRssAdapte
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, FullDetailActivity.class);
-                    intent.putExtra("newsTitle", feedItems.get(getAdapterPosition()).getTitle());
-                    intent.putExtra("newsArticle", feedItems.get(getAdapterPosition()).getDescription());
-                    intent.putExtra("newsImage", feedItems.get(getAdapterPosition()).getThumbnailUrl());
+                    intent.putExtra("newsTitle", alertsFeedItems.get(getAdapterPosition()).getTitle());
+                 //   intent.putExtra("newsArticle", alertsFeedItems.get(getAdapterPosition()).getDescription());
+                    intent.putExtra("newsImage", alertsFeedItems.get(getAdapterPosition()).getThumbnailUrl());
                     context.startActivity(intent);
                 }
             });

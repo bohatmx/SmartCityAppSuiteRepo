@@ -24,6 +24,7 @@ import com.boha.library.activities.NewsDetailActivity;
 import com.boha.library.activities.NewsMapActivity;
 import com.boha.library.adapters.NewsListAdapter;
 import com.boha.library.dto.NewsArticleDTO;
+import com.boha.library.jsonreader.NewsRead;
 import com.boha.library.rssreader.FeedItem;
 import com.boha.library.rssreader.ReadRss;
 import com.boha.library.rssreader.ReadRssAdapter;
@@ -80,6 +81,8 @@ public class NewsListFragment extends Fragment implements PageFragment {
         this.location = location;
     }
 
+    NewsRead newsRead;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -89,8 +92,10 @@ public class NewsListFragment extends Fragment implements PageFragment {
         ctx = getActivity();
         setFields();
 
-        readRss = new ReadRss(ctx, newsRecyclerView);
-        readRss.execute();
+       // readRss = new ReadRss(ctx, newsRecyclerView);
+       // readRss.execute();
+        newsRead = new NewsRead(ctx, newsRecyclerView);
+        newsRead.execute();
 
       /*  if (newsList != null) {
             setList();

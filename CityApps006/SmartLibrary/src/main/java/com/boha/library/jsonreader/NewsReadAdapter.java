@@ -1,4 +1,4 @@
-package com.boha.library.rssreader;
+package com.boha.library.jsonreader;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.FullDetailActivity;
-import com.boha.library.jsonreader.AlertsFeedItems;
+import com.boha.library.rssreader.FeedItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -23,21 +23,21 @@ import java.util.Comparator;
 import java.util.Date;
 
 /**
- * Created by Nkululeko on 2016/09/07.
+ * Created by Nkululeko on 2016/09/08.
  */
-public class AlertReadRssAdapter extends RecyclerView.Adapter<AlertReadRssAdapter.MyViewHolder> {
+public class NewsReadAdapter extends RecyclerView.Adapter<NewsReadAdapter.MyViewHolder> {
 
     NewsListListener listener;
-    ArrayList<FeedItem> feedItems;
+    ArrayList<NewsFeedItems> newsFeedItems;
     Context context;
-    public AlertReadRssAdapter(Context context, ArrayList<FeedItem> feedItems, NewsListListener listener) {
-        this.feedItems = feedItems;
+    public NewsReadAdapter(Context context, ArrayList<NewsFeedItems> newsFeedItems, NewsListListener listener) {
+        this.newsFeedItems = newsFeedItems;
         this.context = context;
         this.listener = listener;
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.custum_row_alert_item,parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.custum_row_news_item,parent, false);
         MyViewHolder holder = new MyViewHolder(view);
 
         return holder;
@@ -48,15 +48,15 @@ public class AlertReadRssAdapter extends RecyclerView.Adapter<AlertReadRssAdapte
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        final FeedItem current = feedItems.get(position);
+        final NewsFeedItems current = newsFeedItems.get(position);
         //Collections.reverse(feedItems);
 
-        Collections.sort(feedItems, new Comparator<FeedItem>() {
+        Collections.sort(newsFeedItems, new Comparator<NewsFeedItems>() {
             @Override
-            public int compare(FeedItem feedItem, FeedItem t1) {
+            public int compare(NewsFeedItems newsFeedItem, NewsFeedItems t1) {
                     /*if (feedItem.getPubDate() == null || t1.getPubDate() == null)
                         return 0;*/
-                return feedItem.getPubDate().compareToIgnoreCase(t1.getPubDate());
+                return newsFeedItem.getPubDate().compareToIgnoreCase(t1.getPubDate());
             }
         });
         if (current.getTitle().isEmpty() || current.getTitle()== null){
@@ -85,7 +85,7 @@ public class AlertReadRssAdapter extends RecyclerView.Adapter<AlertReadRssAdapte
     @Override
     public int getItemCount() {
 
-        return feedItems.size();
+        return newsFeedItems.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -108,7 +108,6 @@ public class AlertReadRssAdapter extends RecyclerView.Adapter<AlertReadRssAdapte
 
             //  Description = (TextView) itemView.findViewById(R.id.description_text);
             Date = (TextView) itemView.findViewById(R.id.date_text);
-            Date.setVisibility(View.GONE);
             Thumbnail = (ImageView) itemView.findViewById(R.id.thumb_img);
             /*Thumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -147,9 +146,9 @@ public class AlertReadRssAdapter extends RecyclerView.Adapter<AlertReadRssAdapte
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, FullDetailActivity.class);
-                    intent.putExtra("newsTitle", feedItems.get(getAdapterPosition()).getTitle());
-                    intent.putExtra("newsArticle", feedItems.get(getAdapterPosition()).getDescription());
-                    intent.putExtra("newsImage", feedItems.get(getAdapterPosition()).getThumbnailUrl());
+                    intent.putExtra("newsTitle", newsFeedItems.get(getAdapterPosition()).getTitle());
+                    intent.putExtra("newsArticle", newsFeedItems.get(getAdapterPosition()).getDescription());
+                    intent.putExtra("newsImage", newsFeedItems.get(getAdapterPosition()).getThumbnailUrl());
                     context.startActivity(intent);
                 }
             });
