@@ -121,6 +121,7 @@
     <string name="start_complaint">Start Complaint</string>
     <string name="history">A history of my complaints to the City</string>
     <string name="no_news">No Current News</string>
+    <string name="no_alerts">No Current Alerts</string>
     <string name="nonews_map">No news to display on map</string>
     <string name="noalerts_map">No alerts to display on map</string>
     <string name="payment_not_available">The payment facility is not available yet. The facility will be made available in the next version of the app.</string>

@@ -9,7 +9,8 @@
         android:title="Refresh Data"
         android:icon="@drawable/ic_action_refresh"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:visible="false"/>
     <item android:id="@+id/action_app_guide"
         android:title="Smartcity Guide"
         android:orderInCategory="100"
@@ -19,7 +20,8 @@
         android:title="Help"
         android:icon="@drawable/ic_action_help"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:visible="false"/>
     <item
         android:id="@+id/action_theme"
         android:title="Set Appearance Colours"

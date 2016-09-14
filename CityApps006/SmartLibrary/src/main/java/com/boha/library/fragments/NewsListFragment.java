@@ -24,6 +24,7 @@ import com.boha.library.activities.NewsDetailActivity;
 import com.boha.library.activities.NewsMapActivity;
 import com.boha.library.adapters.NewsListAdapter;
 import com.boha.library.dto.NewsArticleDTO;
+import com.boha.library.jsonreader.NewsFeedItems;
 import com.boha.library.jsonreader.NewsRead;
 import com.boha.library.rssreader.FeedItem;
 import com.boha.library.rssreader.ReadRss;
@@ -68,7 +69,7 @@ public class NewsListFragment extends Fragment implements PageFragment {
     View view, topView, emptyLayout;
     ListView listView;
     FloatingActionButton fab;
-    TextView txtTitle, txtEmpty;
+   public TextView txtTitle, txtEmpty;
     Context ctx;
     List<NewsArticleDTO> newsList;
     Location location;
@@ -87,8 +88,8 @@ public class NewsListFragment extends Fragment implements PageFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_news_list, container, false);
-        txtEmpty = (TextView)view.findViewById(R.id.NEWS_LIST_text);
-        txtEmpty.setVisibility(View.GONE);
+
+        //txtEmpty.setVisibility(View.GONE);
         ctx = getActivity();
         setFields();
 
@@ -108,13 +109,24 @@ public class NewsListFragment extends Fragment implements PageFragment {
         return view;
     }
 
-    private void setFields() {
+    ArrayList<NewsFeedItems> newsFeedItems;
 
+
+
+    private void setFields() {
+        txtEmpty = (TextView)view.findViewById(R.id.NEWS_LIST_text);
+        txtEmpty.setVisibility(View.GONE);
+        /*if (newsFeedItems != null) {
+            txtEmpty.setVisibility(View.GONE);
+        } else {
+            txtEmpty.setVisibility(View.VISIBLE);
+        }*/
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         //listView = (ListView) view.findViewById(R.id.NEWS_LIST_listView);
         newsRecyclerView = (RecyclerView) view.findViewById(R.id.news_RecyclerView);
         LinearLayoutManager lm = new LinearLayoutManager(ctx,LinearLayoutManager.VERTICAL,false);
         newsRecyclerView.setLayoutManager(lm);
+
 
         /*if (readRss.feedItems.isEmpty()) {
             txtEmpty.setVisibility(View.VISIBLE);
@@ -166,6 +178,8 @@ public class NewsListFragment extends Fragment implements PageFragment {
             }
         });
     }
+
+
 
     public void onNewNewsArticleSent(NewsArticleDTO newsArticle) {
         if (newsList == null) {

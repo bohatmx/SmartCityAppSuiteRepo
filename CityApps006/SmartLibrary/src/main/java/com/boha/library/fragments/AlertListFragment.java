@@ -23,7 +23,10 @@ import com.boha.library.activities.AlertMapActivity;
 import com.boha.library.activities.CityApplication;
 import com.boha.library.adapters.AlertRecyclerAdapter;
 import com.boha.library.dto.AlertDTO;
+import com.boha.library.jsonreader.AlertsFeedItems;
 import com.boha.library.jsonreader.AlertsRead;
+import com.boha.library.jsonreader.AlertsReadAdapter;
+import com.boha.library.jsonreader.NewsRead;
 import com.boha.library.rssreader.AlertReadRss;
 import com.boha.library.rssreader.ReadRss;
 import com.boha.library.rssreader.ReadRssAdapter;
@@ -35,8 +38,23 @@ import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
 import com.squareup.leakcanary.RefWatcher;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+
+import khandroid.ext.apache.http.HttpEntity;
+import khandroid.ext.apache.http.HttpResponse;
+import khandroid.ext.apache.http.client.ClientProtocolException;
+import khandroid.ext.apache.http.client.methods.HttpPost;
+import khandroid.ext.apache.http.impl.client.DefaultHttpClient;
 
 /**
  * Fragment to house local pictures
@@ -56,6 +74,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
     public AlertListFragment() {
         // Required empty public constructor
     }
+
 
 
     @Override
@@ -90,6 +109,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
 
     AlertReadRss alertReadRss;
     AlertsRead alertsRead;
+    ArrayList<AlertsFeedItems> alertsFeedItems;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,7 +117,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
         view = inflater.inflate(R.layout.fragment_alert_list, container, false);
         ctx = getActivity();
         setFields();
-        txtEmpty.setVisibility(View.GONE);
+      //  txtEmpty.setVisibility(View.GONE);
        /* if (alertList != null) {
             setList();
         } else {
@@ -107,6 +127,8 @@ public class AlertListFragment extends Fragment implements PageFragment {
        // alertReadRss.execute();
         alertsRead = new AlertsRead(ctx, recyclerView);
         alertsRead.execute();
+
+
         /*AlertsRead.DownloadNews.execute(new Runnable() {
             @Override
             public void run() {
@@ -168,9 +190,15 @@ public class AlertListFragment extends Fragment implements PageFragment {
         setList();
     }
 
+AlertsReadAdapter alertsReadAdapter;
     private void setFields() {
         txtEmpty = (TextView)view.findViewById(R.id.ALERT_LIST_text);
-
+        txtEmpty.setVisibility(View.GONE);
+       /* if (alertsFeedItems != null) {
+            txtEmpty.setVisibility(View.GONE);
+        } else {
+            txtEmpty.setVisibility(View.VISIBLE);
+        }*/
         Statics.setRobotoFontLight(ctx, txtEmpty);
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         recyclerView = (RecyclerView) view.findViewById(R.id.ALERT_LIST_listView);
@@ -178,6 +206,13 @@ public class AlertListFragment extends Fragment implements PageFragment {
         recyclerView.setLayoutManager(lm);
        // heroImage = (ImageView) view.findViewById(R.id.FAL_hero);
 
+       /* alertsReadAdapter = new AlertsReadAdapter(ctx, alertsFeedItems, new AlertsReadAdapter.NewsListListener() {
+            @Override
+            public void onNewsClicked() {
+
+            }
+        });
+        recyclerView.setAdapter(alertsReadAdapter);*/
         ctx = getActivity();
         /*if (alertReadRss.feedItems.isEmpty()) {
             txtEmpty.setVisibility(View.VISIBLE);
@@ -209,6 +244,17 @@ public class AlertListFragment extends Fragment implements PageFragment {
             }
         });
         animateSomething();
+    }
+
+    public void refresh() {
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                alertsRead = new AlertsRead(ctx, recyclerView);
+                alertsRead.execute();
+
+            }
+        };
     }
 
     private void getCachedAlerts() {

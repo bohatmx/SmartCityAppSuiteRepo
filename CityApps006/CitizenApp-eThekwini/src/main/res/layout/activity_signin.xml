@@ -1,12 +1,14 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/mon_divider">
+        android:padding="@dimen/mon_divider"
+        android:background="@color/white">
 
         <RelativeLayout
             android:id="@+id/SIGNIN_heroLayout"
@@ -18,7 +20,7 @@
                 android:id="@+id/SIGNIN_handle"
                 android:layout_width="match_parent"
                 android:layout_height="1dp" />
-
+<!--
             <TextView
                 android:id="@+id/REG_label0"
                 style="@style/Title2TextStyleBlack"
@@ -26,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/mon_16"
-                android:text="Sign In" />
+                android:text="Sign In" />-->
 
             <ImageView
                 android:id="@+id/SIGNIN_heroImage"
@@ -34,8 +36,7 @@
                 android:layout_height="@dimen/mon_hero_height_small"
                 android:layout_below="@id/SIGNIN_handle"
                 android:scaleType="centerCrop"
-                android:src="@drawable/under_construction"
-                android:visibility="gone" />
+                android:src="@drawable/dbn12"/>
 
 
         </RelativeLayout>
@@ -45,8 +46,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/SIGNIN_heroLayout"
-            android:layout_margin="@dimen/mon_16"
-            app:cardElevation="@dimen/mon_padding">
+            app:cardElevation="@dimen/mon_padding"
+            android:padding="@dimen/mon_divider">
+
 
 
             <RelativeLayout
@@ -54,10 +56,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/SIGNIN_heroLayout"
-                android:background="@color/beige_pale"
-                android:padding="@dimen/mon_padding">
+                android:background="@color/white">
+                <TextView
+                    android:id="@+id/REG_label0"
+                    style="@style/Title2TextStyleBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="Sign In" />
 
                 <TextView
+                    android:layout_below="@+id/REG_label0"
                     android:id="@+id/REG_labelx"
                     style="@style/Title3TextStyleBlue"
                     android:layout_width="wrap_content"

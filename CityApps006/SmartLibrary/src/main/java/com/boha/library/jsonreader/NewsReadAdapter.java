@@ -2,9 +2,13 @@ package com.boha.library.jsonreader;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +19,7 @@ import android.widget.TextView;
 import com.boha.library.R;
 import com.boha.library.activities.FullDetailActivity;
 import com.boha.library.rssreader.FeedItem;
+import com.boha.library.util.Util;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -37,10 +42,19 @@ public class NewsReadAdapter extends RecyclerView.Adapter<NewsReadAdapter.MyView
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.custum_row_news_item,parent, false);
-        MyViewHolder holder = new MyViewHolder(view);
+       /* if (newsFeedItems == null) {
+            View v = LayoutInflater.from(context).inflate(R.layout.no_news, parent, false);
+            MyViewHolder1 holder1 = new MyViewHolder1(v);
+            return holder1;
+        } */
 
+        View view = LayoutInflater.from(context).inflate(R.layout.custum_row_news_item, parent, false);
+        MyViewHolder holder = new MyViewHolder(view);
         return holder;
+
+
+
+
     }
 
     private static final String TEXT = "text/html", UTF = "UTF-8";
@@ -50,7 +64,6 @@ public class NewsReadAdapter extends RecyclerView.Adapter<NewsReadAdapter.MyView
 
         final NewsFeedItems current = newsFeedItems.get(position);
         //Collections.reverse(feedItems);
-
         Collections.sort(newsFeedItems, new Comparator<NewsFeedItems>() {
             @Override
             public int compare(NewsFeedItems newsFeedItem, NewsFeedItems t1) {
@@ -81,21 +94,26 @@ public class NewsReadAdapter extends RecyclerView.Adapter<NewsReadAdapter.MyView
 
 
     }
-
+    Snackbar snackbar;
     @Override
     public int getItemCount() {
 
-        return newsFeedItems.size();
+        return  newsFeedItems == null ? 0 : newsFeedItems.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView Title, Description, Date, readMore, readLess;
+        TextView noNews;
         ImageView Thumbnail, MoreIMG;
         CardView cardView;
         WebView webViewDescription;
         public MyViewHolder(View itemView) {
             super(itemView);
             Title = (TextView) itemView.findViewById(R.id.title_text);
+            noNews = (TextView) itemView.findViewById(R.id.txtEmptyNews);
+            /*if (newsFeedItems == null) {
+                noNews.setVisibility(View.VISIBLE);
+            }*/
            /* Title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -170,4 +188,6 @@ public class NewsReadAdapter extends RecyclerView.Adapter<NewsReadAdapter.MyView
         void onItemClicked();
 
     }
+
+    static final String LOG = NewsReadAdapter.class.getSimpleName();
 }

@@ -2,12 +2,17 @@ package com.boha.library.jsonreader;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
+import com.boha.library.R;
 import com.boha.library.rssreader.AlertReadRssAdapter;
 import com.boha.library.rssreader.FeedItem;
+import com.boha.library.util.Util;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,24 +69,31 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
 
     @Override
     protected void onPreExecute() {
-//        progressDialog.show();
+        progressDialog.show();
         super.onPreExecute();
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+             progressDialog.dismiss();
+        if (alertsFeedItems != null) {
+            Log.i(LOG, "" + alertsFeedItems.size());
 
-        //     progressDialog.dismiss();
-        AlertsReadAdapter adapter = new AlertsReadAdapter(context, alertsFeedItems, new AlertsReadAdapter.NewsListListener() {
-            @Override
-            public void onNewsClicked() {
+            AlertsReadAdapter adapter = new AlertsReadAdapter(context, alertsFeedItems, new AlertsReadAdapter.NewsListListener() {
+                @Override
+                public void onNewsClicked() {
 
-            }
-        });
+                }
+            });
 
-        recyclerView.setAdapter(adapter);
+            recyclerView.setAdapter(adapter);
+        } else {
+            Log.i(LOG, "alertsFeedItems is null" );
+        }
+
     }
+    Snackbar snackbar;
 
     public static final String LOG = AlertsRead.class.getSimpleName();
 
@@ -127,41 +139,68 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
 
     public void parseJson(JSONObject json) {
         Log.i(LOG, "ParseJson");
-        try{
-                JSONArray posts = json.getJSONArray("feedItems");
+        try {
 
-                alertsFeedItems = new ArrayList<>();
+             if (json.has("feedItems")) {
+            JSONArray posts = json.getJSONArray("feedItems");
 
-                for (int i = 0; i < posts.length(); i++) {
-                    JSONObject post = (JSONObject) posts.getJSONObject(i);
-                    AlertsFeedItems item = new AlertsFeedItems();
-                    item.setCategory(post.getString("category"));
-                    Log.i(LOG, post.getString("category"));
-                    item.setExpiryDate(post.getString("expiryDate"));
-                    Log.i(LOG, post.getString("expiryDate"));
-                    item.setGuid(post.getString("guid"));
-                    Log.i(LOG, post.getString("guid"));
+            alertsFeedItems = new ArrayList<>();
+
+            for (int i = 0; i < posts.length(); i++) {
+                JSONObject post = (JSONObject) posts.getJSONObject(i);
+                AlertsFeedItems item = new AlertsFeedItems();
+                item.setCategory(post.getString("category"));
+                Log.i(LOG, post.getString("category"));
+                item.setExpiryDate(post.getString("expiryDate"));
+                Log.i(LOG, post.getString("expiryDate"));
+                item.setGuid(post.getString("guid"));
+                Log.i(LOG, post.getString("guid"));
+                item.setThumbnailUrl(post.getString("thumbnailUrl"));
+                Log.i(LOG, post.getString("thumbnailUrl"));
+                item.setTitle(post.getString("title"));
+                Log.i(LOG, post.getString("title"));
+                if (post.has("latitude")) {
                     item.setLatitude(post.getString("latitude"));
                     Log.i(LOG, post.getString("latitude"));
+
+                } else {
+                    Log.i(LOG, "no latitude");
+                }
+                if (post.has("longitude")) {
                     item.setLongitude(post.getString("longitude"));
                     Log.i(LOG, post.getString("longitude"));
-                    item.setPubDate(post.getString("pubDate"));
-                    Log.i(LOG, post.getString("pubDate"));
-                    item.setThumbnailUrl(post.getString("thumbnailUrl"));
-                    Log.i(LOG, post.getString("thumbnailUrl"));
-                    item.setTitle(post.getString("title"));
-                    Log.i(LOG, post.getString("title"));
-
-                    alertsFeedItems.add(item);
-                    Log.i("itemCategory: ", item.getCategory());
-                    Log.i("itemExpiryDate: ", item.getExpiryDate());
-                    Log.i("itemGuid: ", item.getGuid());
-                    Log.i("itemLatitude: ", item.getLatitude());
-                    Log.i("itemLongitude: ", item.getLongitude());
-                    Log.i("itemPubDate: ", item.getPubDate());
-                    Log.i("itemThumbnailUrl: ", item.getThumbnailUrl());
-                    Log.i("itemTitle: ", item.getTitle());
+                } else {
+                    Log.i(LOG, "no longitude");
                 }
+
+                item.setPubDate(post.getString("pubDate"));
+                Log.i(LOG, post.getString("pubDate"));
+
+
+                alertsFeedItems.add(item);
+                Log.i("itemCategory: ", item.getCategory());
+                Log.i("itemExpiryDate: ", item.getExpiryDate());
+                Log.i("itemGuid: ", item.getGuid());
+                if (item.getLatitude() != null) {
+                    Log.i("itemLatitude: ", item.getLatitude());
+                } else {
+                    Log.i("itemLatitude: ", "was not included with this item");
+                }
+                if (item.getLongitude() != null) {
+                    Log.i("itemLongitude: ", item.getLongitude());
+                } else {
+                    Log.i("itemLongitude: ", "was not included with this item");
+                }
+                Log.i("itemPubDate: ", item.getPubDate());
+                Log.i("itemThumbnailUrl: ", item.getThumbnailUrl());
+                Log.i("itemTitle: ", item.getTitle());
+                Log.i(LOG, "alerts feed items: " + alertsFeedItems.size());
+            }
+        } else {
+                 Log.i(LOG, "no alerts from alerts feed");
+                 snackbar = Util.showSnackBar(recyclerView, context.getString(R.string.no_alerts), "Dismiss",
+                         Color.parseColor("Cyan"));
+             }
 
         } catch (JSONException e){
             Log.e(LOG, e.getMessage());

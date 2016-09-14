@@ -9,14 +9,23 @@
     app:cardBackgroundColor="@color/cardview_dark_background"
     android:layout_marginBottom="2dp">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="No Alerts to display"
+        android:id="@+id/txtEmptyAlerts"
+        android:textSize="24dp"
+        android:gravity="center"
+        android:textColor="@color/black"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
+
         <TextView
             android:layout_marginLeft="@dimen/mon_16"
             android:layout_toRightOf="@+id/thumb_img"
-            android:lines="2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"

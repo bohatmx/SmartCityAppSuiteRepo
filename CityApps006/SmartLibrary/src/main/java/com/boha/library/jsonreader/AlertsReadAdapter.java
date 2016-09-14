@@ -43,13 +43,18 @@ public class AlertsReadAdapter extends RecyclerView.Adapter<AlertsReadAdapter.My
         return holder;
     }
 
+
+
     private static final String TEXT = "text/html", UTF = "UTF-8";
     private Date date = new Date();
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
+
+
         final AlertsFeedItems current = alertsFeedItems.get(position);
         //Collections.reverse(feedItems);
+
 
         Collections.sort(alertsFeedItems, new Comparator<AlertsFeedItems>() {
             @Override
@@ -69,6 +74,9 @@ public class AlertsReadAdapter extends RecyclerView.Adapter<AlertsReadAdapter.My
      //   holder.webViewDescription.loadData(current.description, TEXT, UTF);
 
         //  holder.Description.setText(current.getDescription());
+        if (alertsFeedItems == null) {
+
+        }
         holder.Date.setText(current.getPubDate().substring(0, Math.min(current.getPubDate().length(), 16)));
         if (current.getThumbnailUrl().isEmpty() || current.getThumbnailUrl() == null){
             holder.Thumbnail.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.news));
@@ -85,17 +93,21 @@ public class AlertsReadAdapter extends RecyclerView.Adapter<AlertsReadAdapter.My
     @Override
     public int getItemCount() {
 
-        return alertsFeedItems.size();
+        return alertsFeedItems == null ? 0 : alertsFeedItems.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView Title, Description, Date, readMore, readLess;
+         TextView noAlert;
         ImageView Thumbnail, MoreIMG;
         CardView cardView;
         WebView webViewDescription;
         public MyViewHolder(View itemView) {
             super(itemView);
             Title = (TextView) itemView.findViewById(R.id.title_text);
+            noAlert = (TextView) itemView.findViewById(R.id.txtEmptyAlerts);
+            noAlert.setVisibility(View.GONE);
+
            /* Title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
