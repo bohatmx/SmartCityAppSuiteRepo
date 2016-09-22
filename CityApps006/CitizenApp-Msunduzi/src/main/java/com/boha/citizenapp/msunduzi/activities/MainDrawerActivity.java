@@ -525,7 +525,7 @@ public class MainDrawerActivity extends ActionBarActivity
 
             mPager.setCurrentItem(currentPageIndex);
         } catch (Exception e) {
-            Log.e(LOG, "Fuck!", e);
+            Log.e(LOG, "PagerAdapter failed", e);
             try {
                 Util.showErrorToast(ctx, e.getMessage());
                 ACRA.getErrorReporter().handleException(e, false);

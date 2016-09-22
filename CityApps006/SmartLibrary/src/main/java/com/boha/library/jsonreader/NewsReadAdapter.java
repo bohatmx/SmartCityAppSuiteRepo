@@ -64,14 +64,14 @@ public class NewsReadAdapter extends RecyclerView.Adapter<NewsReadAdapter.MyView
 
         final NewsFeedItems current = newsFeedItems.get(position);
         //Collections.reverse(feedItems);
-        Collections.sort(newsFeedItems, new Comparator<NewsFeedItems>() {
+        /*Collections.sort(newsFeedItems, new Comparator<NewsFeedItems>() {
             @Override
             public int compare(NewsFeedItems newsFeedItem, NewsFeedItems t1) {
-                    /*if (feedItem.getPubDate() == null || t1.getPubDate() == null)
-                        return 0;*/
+                    *//*if (feedItem.getPubDate() == null || t1.getPubDate() == null)
+                        return 0;*//*
                 return newsFeedItem.getPubDate().compareToIgnoreCase(t1.getPubDate());
             }
-        });
+        });*/
         if (current.getTitle().isEmpty() || current.getTitle()== null){
             holder.Title.setText("No Title");
         } else {

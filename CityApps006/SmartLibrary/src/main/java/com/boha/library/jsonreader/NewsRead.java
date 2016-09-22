@@ -85,26 +85,8 @@ public class NewsRead extends AsyncTask<Void,Void,Void> {
             recyclerView.setAdapter(adapter);
         } else {
             Log.i(LOG, "newsFeedItems is null" );
-            NoNewsAdapter adapter1 = new NoNewsAdapter(context);
-             recyclerView.setAdapter(adapter1);
+            /* */
         }
-       /* NoNewsAdapter noNewsAdapter = new NoNewsAdapter(context, newsFeedItems, new NoNewsAdapter.NewsListListener() {
-            @Override
-            public void onNewsClicked() {
-
-            }
-        });
-        recyclerView.setAdapter(noNewsAdapter);*/
-
-
-       /*
-         if (newsFeedItems == null){
-
-        }*/
-        /*if (newsFeedItems == null) {
-            NoNewsAdapter noNewsAdapter = new NoNewsAdapter(context);
-            recyclerView.setAdapter(noNewsAdapter);
-        }*/
 
     }
     Snackbar snackbar;
@@ -232,8 +214,6 @@ public class NewsRead extends AsyncTask<Void,Void,Void> {
             Log.e(LOG, e.getMessage());
         }
     }
-
-    NewsListFragment newsListFragment;
 
     public static final String LOG = NewsRead.class.getSimpleName();
 }

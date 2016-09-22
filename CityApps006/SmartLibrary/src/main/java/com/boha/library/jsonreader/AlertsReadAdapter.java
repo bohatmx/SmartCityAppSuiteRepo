@@ -56,14 +56,14 @@ public class AlertsReadAdapter extends RecyclerView.Adapter<AlertsReadAdapter.My
         //Collections.reverse(feedItems);
 
 
-        Collections.sort(alertsFeedItems, new Comparator<AlertsFeedItems>() {
+      /*  Collections.sort(alertsFeedItems, new Comparator<AlertsFeedItems>() {
             @Override
             public int compare(AlertsFeedItems alertFeedItem, AlertsFeedItems t1) {
-                    /*if (feedItem.getPubDate() == null || t1.getPubDate() == null)
-                        return 0;*/
+                    *//*if (feedItem.getPubDate() == null || t1.getPubDate() == null)
+                        return 0;*//*
                 return alertFeedItem.getPubDate().compareToIgnoreCase(t1.getPubDate());
             }
-        });
+        });*/
         if (current.getTitle().isEmpty() || current.getTitle()== null){
             holder.Title.setText("No Title");
         } else {
