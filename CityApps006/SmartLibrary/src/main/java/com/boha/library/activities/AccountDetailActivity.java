@@ -94,6 +94,11 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
         Log.i(LOG, "accountList is: " + profileInfo.getAccountList().size());
 
 
+        if (profileInfo.getAccountList().size() > 1) {
+            popUp.setVisibility(View.VISIBLE);
+        } else {
+            popUp.setVisibility(View.GONE);
+        }
     }
 
     PagerAdapter adapter;
