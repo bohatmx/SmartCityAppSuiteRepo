@@ -59,11 +59,21 @@
                 android:text="Complaint Category" />
             <TextView
                 android:id="@+id/complaintType"
-                android:layout_below="@id/category"
+                android:layout_below="@+id/backIcon"
                 style="@style/Title2TextStyleBlack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Complaint Type" />
+
+            <ImageView
+                android:layout_below="@+id/category"
+                android:id="@+id/backIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/mon_hero_height_small"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_action_back" />
         </RelativeLayout>
 
         <ImageView
@@ -74,14 +84,7 @@
             android:layout_marginRight="@dimen/mon_16"
             android:src="@drawable/ic_action_camera" />
 
-        <ImageView
-            android:id="@+id/backIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/mon_hero_height_small"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/ic_action_back" />
+
     </RelativeLayout>
 
     <RadioGroup

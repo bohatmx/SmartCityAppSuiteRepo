@@ -276,7 +276,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
     }
     private void showCameraIcon(final ComplaintDTO complaint) {
-        cameraIcon.setVisibility(View.VISIBLE);
+        cameraIcon.setVisibility(View.GONE);
         this.complaint = complaint;
         Util.scaleUp(cameraIcon, 300);
     }

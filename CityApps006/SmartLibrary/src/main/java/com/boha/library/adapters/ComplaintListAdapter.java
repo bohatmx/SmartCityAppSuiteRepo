@@ -223,7 +223,7 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
             case MY_COMPLAINTS:
                  item.followBox.setVisibility(View.GONE);
                  item.statusBox.setVisibility(View.VISIBLE);
-                 item.cameraBox.setVisibility(View.VISIBLE);
+                 item.cameraBox.setVisibility(View.GONE);
                 break;
             case AROUND_ME:
                 item.followBox.setVisibility(View.VISIBLE);

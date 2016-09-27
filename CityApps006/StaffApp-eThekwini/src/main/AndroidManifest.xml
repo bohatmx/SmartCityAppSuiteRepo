@@ -78,6 +78,9 @@
 
         <service android:name="com.boha.staffapp.ethekwini.services.GcmIntentService" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="8419153fba562e57532d0502ff0e71266daa9d2b" />
     </application>
     <permission
         android:name="com.boha.staffapp.ethekwini.gcm.permission.C2D_MESSAGE"
@@ -86,4 +89,5 @@
     <uses-permission android:name="com.boha.staffapp.ethekwini.gcm.permission.C2D_MESSAGE" />
 
 
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

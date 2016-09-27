@@ -30,9 +30,10 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Large Text"
+            style="@style/TextStyle"
+            android:textStyle="bold"
             android:id="@+id/title_text"
-            android:layout_centerHorizontal="true"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
+            android:layout_centerHorizontal="true"/>
 
         <TextView
             android:layout_below="@+id/title_text"
@@ -41,8 +42,9 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Small Text"
+            android:textStyle="bold"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/blue_400"
+            android:textColor="@color/red_800"
             android:id="@+id/date_text"/>
         <ImageView
             android:layout_alignParentTop="true"

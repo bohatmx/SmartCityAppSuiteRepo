@@ -34,6 +34,8 @@ import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+//import com.crashlytics.android.Crashlytics;
+//import io.fabric.sdk.android.Fabric;
 
 import java.util.Random;
 import java.util.Timer;
@@ -65,7 +67,7 @@ public class SplashActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+       // Fabric.with(this, new Crashlytics());
         ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_splash);
         ctx = getApplicationContext();

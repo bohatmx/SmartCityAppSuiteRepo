@@ -77,7 +77,7 @@ public class AlertsReadAdapter extends RecyclerView.Adapter<AlertsReadAdapter.My
         if (alertsFeedItems == null) {
 
         }
-        holder.Date.setText(current.getPubDate().substring(0, Math.min(current.getPubDate().length(), 16)));
+        holder.Date.setText(current.getPubDate().substring(0, Math.min(current.getPubDate().length(), 25)));
         if (current.getThumbnailUrl().isEmpty() || current.getThumbnailUrl() == null){
             holder.Thumbnail.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.news));
 
@@ -120,7 +120,7 @@ public class AlertsReadAdapter extends RecyclerView.Adapter<AlertsReadAdapter.My
 
             //  Description = (TextView) itemView.findViewById(R.id.description_text);
             Date = (TextView) itemView.findViewById(R.id.date_text);
-            Date.setVisibility(View.GONE);
+
             Thumbnail = (ImageView) itemView.findViewById(R.id.thumb_img);
             /*Thumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -155,7 +155,7 @@ public class AlertsReadAdapter extends RecyclerView.Adapter<AlertsReadAdapter.My
 
                 }
             });
-            itemView.setOnClickListener(new View.OnClickListener() {
+            /*itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, FullDetailActivity.class);
@@ -164,7 +164,7 @@ public class AlertsReadAdapter extends RecyclerView.Adapter<AlertsReadAdapter.My
                     intent.putExtra("newsImage", alertsFeedItems.get(getAdapterPosition()).getThumbnailUrl());
                     context.startActivity(intent);
                 }
-            });
+            });*/
             //  readMore.setVisibility(View.GONE);
             //MoreIMG = (ImageView) itemView.findViewById(R.id.more_img);
             // MoreIMG.setVisibility(View.GONE);
