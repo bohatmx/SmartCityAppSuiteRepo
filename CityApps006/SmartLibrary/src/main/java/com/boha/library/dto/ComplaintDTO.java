@@ -14,7 +14,7 @@ public class ComplaintDTO implements Serializable, Comparable<ComplaintDTO> {
             subCategoryID;
     private Integer id, numberOfFollowers;
     private String referenceNumber, href;
-    private String accountNumber, category, subCategory;
+    private String accountNumber, category, subCategory, description;
     private Long complaintDate;
     private Double latitude, distance;
     private Double longitude;
@@ -23,6 +23,14 @@ public class ComplaintDTO implements Serializable, Comparable<ComplaintDTO> {
     private ComplaintTypeDTO complaintType;
     private UserDTO user;
     private int index;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     private List<ComplaintImageDTO> complaintImageList;
     private List<ComplaintUpdateStatusDTO> complaintUpdateStatusList;
