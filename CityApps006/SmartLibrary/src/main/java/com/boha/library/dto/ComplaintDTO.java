@@ -24,6 +24,7 @@ public class ComplaintDTO implements Serializable, Comparable<ComplaintDTO> {
     private UserDTO user;
     private int index;
 
+    //added late to the party :)
     public String getDescription() {
         return description;
     }
