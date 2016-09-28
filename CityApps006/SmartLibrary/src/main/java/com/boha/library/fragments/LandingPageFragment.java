@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.CityApplication;
+import com.boha.library.rssreader.AlertReadRss;
 import com.boha.library.rssreader.FeedItem;
 import com.boha.library.rssreader.LandingPageReadRss;
 import com.boha.library.rssreader.ReadRss;
@@ -55,6 +56,14 @@ public class LandingPageFragment extends Fragment implements PageFragment {
     public LandingPageFragment() {
     }
 
+    public static LandingPageFragment newInstance(ResponseDTO response) {
+        LandingPageFragment fragment = new LandingPageFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("response", response);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +84,11 @@ public class LandingPageFragment extends Fragment implements PageFragment {
         setFields();
 
         //todo get your rss feeds
-        landingPageReadRss = new LandingPageReadRss(ctx, recyclerView);
-        landingPageReadRss.execute();
+     //   landingPageReadRss = new LandingPageReadRss(ctx, recyclerView);
+     //   landingPageReadRss.execute();
+
+        alertReadRss = new AlertReadRss(ctx, recyclerView);
+        alertReadRss.execute();
 
      //   setList();
 
@@ -84,6 +96,7 @@ public class LandingPageFragment extends Fragment implements PageFragment {
     }
     ReadRssAdapter readRssAdapter;
     ReadRss readRss;
+    AlertReadRss alertReadRss;
 
 
 
@@ -97,6 +110,7 @@ public class LandingPageFragment extends Fragment implements PageFragment {
        // txtHeadlines = (TextView) view.findViewById(R.id.latest_news_title);
        // image = (ImageView) view.findViewById(R.id.image);
         txtTitle = (TextView) view.findViewById(R.id.title);
+        txtTitle.setVisibility(View.GONE);
       //  btnNews = (Button) view.findViewById(R.id.flp_btnNews);
         txtCaption = (TextView) view.findViewById(R.id.SPLASH_caption);
       /*  image.setOnClickListener(new View.OnClickListener() {
@@ -184,7 +198,7 @@ public class LandingPageFragment extends Fragment implements PageFragment {
             }
         });
         if (SharedUtil.getProfile(getActivity()) != null) {
-        //    iconLogin.setVisibility(View.GONE);
+            iconLogin.setVisibility(View.GONE);
         }
 
 
@@ -262,6 +276,7 @@ public class LandingPageFragment extends Fragment implements PageFragment {
         return pageTitle;
     }
 
+
     @Override
     public void setPageTitle(String pageTitle) {
         this.pageTitle = pageTitle;
@@ -280,5 +295,10 @@ public class LandingPageFragment extends Fragment implements PageFragment {
         void onFAQIconClicked();
         void onLogin();
         void onContactClicked();
+    }
+
+    int logo;
+    public void setLogo(int logo) {
+        this.logo = logo;
     }
 }

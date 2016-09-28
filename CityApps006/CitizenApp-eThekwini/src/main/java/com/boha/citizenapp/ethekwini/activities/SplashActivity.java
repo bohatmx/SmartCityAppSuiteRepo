@@ -32,9 +32,11 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
+import io.fabric.sdk.android.Fabric;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -65,7 +67,7 @@ public class SplashActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Fabric.with(this, new Crashlytics());
         ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_splash);
         ctx = getApplicationContext();
@@ -211,9 +213,17 @@ public class SplashActivity extends AppCompatActivity  {
             public void run() {
                 timer.purge();
                 timer.cancel();
-                Intent m = new Intent(getApplicationContext(), LandingPageActivity.class);
-                startActivity(m);
-                finish();
+                profile = SharedUtil.getProfile(ctx);
+                if(profile != null) {
+                    Intent m = new Intent(getApplicationContext(), /*LandingPageActivity*/CitizenDrawerActivity.class);
+                    startActivity(m);
+                    finish();
+                } else {
+                    Intent i = new Intent(getApplicationContext(), TouristDrawerActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+
             }
         }, SECONDS_TO_WAIT);
 

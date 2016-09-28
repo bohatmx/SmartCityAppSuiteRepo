@@ -207,7 +207,6 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         setAnalyticsEvent("main", "Main Screen");
     }
 
-
     private void setAnalyticsEvent(String id, String name) {
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
@@ -440,7 +439,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
         complaintCreateFragment = ComplaintCreateFragment.newInstance();
         alertListFragment = AlertListFragment.newInstance(response);
-        complaintsAroundMeFragment = ComplaintsAroundMeFragment.newInstance();
+        //complaintsAroundMeFragment = ComplaintsAroundMeFragment.newInstance();
         newsListFragment = NewsListFragment.newInstance(response);
         myComplaintsFragment = MyComplaintsFragment.newInstance(response);
         faqFragment = FaqFragment.newInstance(response);
@@ -451,10 +450,10 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         faqFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         myComplaintsFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 
-        complaintsAroundMeFragment.setThemeColors(themePrimaryColor, themeDarkColor);
+        //complaintsAroundMeFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         newsListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 
-        complaintsAroundMeFragment.setLogo(logo);
+       // complaintsAroundMeFragment.setLogo(logo);
         alertListFragment.setLogo(logo);
         newsListFragment.setLogo(logo);
 
@@ -463,8 +462,8 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
         alertListFragment.setPageTitle(ctx.getString(R.string.city_alerts));
         complaintCreateFragment.setPageTitle(ctx.getString(R.string.make_complaint));
-        complaintsAroundMeFragment.setPageTitle(ctx.getString(R.string.complaints_around_me));
-        newsListFragment.setPageTitle(ctx.getString(R.string.city_news));
+       // complaintsAroundMeFragment.setPageTitle(ctx.getString(R.string.complaints_around_me));
+        newsListFragment.setPageTitle(ctx.getString(R.string.headlines));
         faqFragment.setPageTitle(getString(R.string.faq));
 
 
@@ -473,7 +472,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         pageFragmentList.add(myComplaintsFragment);
         pageFragmentList.add(alertListFragment);
         pageFragmentList.add(newsListFragment);
-        pageFragmentList.add(complaintsAroundMeFragment);
+       // pageFragmentList.add(complaintsAroundMeFragment);
         pageFragmentList.add(faqFragment);
 
         try {
@@ -512,6 +511,18 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                 Intent w = new Intent(this, CitizenDrawerActivity.class);
                 startActivity(w);
             } catch (Exception e2) {
+            }
+
+            if (page != null) {
+                if (page.equalsIgnoreCase("Alerts")) {
+                    mPager.setCurrentItem(4);
+                }
+                if (page.equalsIgnoreCase("News")) {
+                    mPager.setCurrentItem(5);
+                }
+                if (page.equalsIgnoreCase("Faqs")) {
+                    mPager.setCurrentItem(7);
+                }
             }
         }
 
@@ -563,12 +574,12 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                     mPager.setCurrentItem(4, true);
                     return true;
                 }
-                if (menuItem.getItemId() == R.id.nav_complaintsAroundMe) {
+               /* if (menuItem.getItemId() == R.id.nav_complaintsAroundMe) {
                     mPager.setCurrentItem(5, true);
                     return true;
-                }
+                }*/
                 if (menuItem.getItemId() == R.id.nav_faq) {
-                    mPager.setCurrentItem(6, true);
+                    mPager.setCurrentItem(5, true);
                     return true;
                 }
                 if (menuItem.getItemId() == R.id.nav_gallery) {

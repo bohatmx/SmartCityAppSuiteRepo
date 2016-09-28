@@ -8,21 +8,23 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
         <RelativeLayout
             android:id="@+id/CAR_titleLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/mon_hero_height_small"
-            android:background="@color/grey"
-            android:visibility="visible">
+            android:background="@color/white"
+            android:visibility="gone">
 
-            <ImageView
+          <!--  <ImageView
                 android:id="@+id/CAR_hero"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/mon_hero_height_small"
                 android:scaleType="centerCrop"
-                android:src="@drawable/back6" />
+                android:src="@drawable/back6"
+                android:visibility="gone"/>-->
 
             <TextView
                 android:id="@+id/CAR_title"
@@ -81,9 +83,9 @@
             android:layout_height="56dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/mon_16"
-            android:layout_marginTop="70dp"
             android:elevation="@dimen/mon_16"
             android:src="@android:drawable/ic_menu_search"
+            android:layout_alignBottom="@+id/CAR_seekLayout"
             app:backgroundTint="@color/blue_800"
             app:borderWidth="0dp"
             app:rippleColor="@color/blue_200" />

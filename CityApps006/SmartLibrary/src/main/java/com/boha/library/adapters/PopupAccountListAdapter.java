@@ -1,7 +1,10 @@
 package com.boha.library.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,8 +82,14 @@ public class PopupAccountListAdapter extends ArrayAdapter<AccountDTO> {
         final AccountDTO p = mList.get(position);
         item.txtString.setText(p.getAccountNumber() + " " +
                 p.getCustomerAccountName().substring(0, Math.min(p.getCustomerAccountName().length(), 20)));
-        item.image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.accounts_statement));
-        item.image.setColorFilter(primaryColorDark, PorterDuff.Mode.SRC_IN);
+
+        Drawable d = ContextCompat.getDrawable(ctx, R.drawable.account_2x);
+        d.setColorFilter(new
+                PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+        item.image.setImageDrawable(d);
+
+       // item.image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.accounts_statement));
+        //item.image.setColorFilter(primaryColorDark, PorterDuff.Mode.SRC_IN);
         Statics.setRobotoFontLight(ctx, item.txtString);
         return (convertView);
     }

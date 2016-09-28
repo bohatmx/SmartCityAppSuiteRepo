@@ -255,13 +255,13 @@ public class FaqFragment extends Fragment implements PageFragment {
 
     private void setFields() {
 
-        topView = view.findViewById(R.id.FAQ_handle);
-        txtFaqType = (TextView) view.findViewById(R.id.FAQ_faqType);
-        txtFaqType.setVisibility(View.GONE);
-        icon = (ImageView) view.findViewById(R.id.FAQ_icon);
-        icon.setVisibility(View.GONE);
-        heroImage = (ImageView) view.findViewById(R.id.FAQ_hero);
-        txtTitle = (TextView) view.findViewById(R.id.FAQ_title);
+      //  topView = view.findViewById(R.id.FAQ_handle);
+       // txtFaqType = (TextView) view.findViewById(R.id.FAQ_faqType);
+       // txtFaqType.setVisibility(View.GONE);
+      //  icon = (ImageView) view.findViewById(R.id.FAQ_icon);
+       // icon.setVisibility(View.GONE);
+       // heroImage = (ImageView) view.findViewById(R.id.FAQ_hero);
+      //  txtTitle = (TextView) view.findViewById(R.id.FAQ_title);
         Faq_text = (TextView) view.findViewById(R.id.NEWS_LIST_text);
         fab = view.findViewById(R.id.FAB);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);

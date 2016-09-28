@@ -11,9 +11,10 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.boha.library.R;
 
+import com.boha.library.R;
 import com.boha.library.activities.FullDetailActivity;
+import com.boha.library.jsonreader.AlertsFeedItems;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -22,21 +23,21 @@ import java.util.Comparator;
 import java.util.Date;
 
 /**
- * Created by Nkululeko on 2016/08/24.
+ * Created by Nkululeko on 2016/09/07.
  */
-public class ReadRssAdapter extends RecyclerView.Adapter<ReadRssAdapter.MyViewHolder> {
+public class AlertReadRssAdapter extends RecyclerView.Adapter<AlertReadRssAdapter.MyViewHolder> {
 
     NewsListListener listener;
     ArrayList<FeedItem> feedItems;
     Context context;
-    public ReadRssAdapter(Context context, ArrayList<FeedItem> feedItems, NewsListListener listener) {
+    public AlertReadRssAdapter(Context context, ArrayList<FeedItem> feedItems, NewsListListener listener) {
         this.feedItems = feedItems;
         this.context = context;
         this.listener = listener;
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.custum_row_news_item,parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.custum_row_alert_item,parent, false);
         MyViewHolder holder = new MyViewHolder(view);
 
         return holder;
@@ -50,14 +51,14 @@ public class ReadRssAdapter extends RecyclerView.Adapter<ReadRssAdapter.MyViewHo
         final FeedItem current = feedItems.get(position);
         //Collections.reverse(feedItems);
 
-           Collections.sort(feedItems, new Comparator<FeedItem>() {
-                @Override
-                public int compare(FeedItem feedItem, FeedItem t1) {
+        Collections.sort(feedItems, new Comparator<FeedItem>() {
+            @Override
+            public int compare(FeedItem feedItem, FeedItem t1) {
                     /*if (feedItem.getPubDate() == null || t1.getPubDate() == null)
                         return 0;*/
-                    return feedItem.getPubDate().compareToIgnoreCase(t1.getPubDate());
-                }
-            });
+                return feedItem.getPubDate().compareToIgnoreCase(t1.getPubDate());
+            }
+        });
         if (current.getTitle().isEmpty() || current.getTitle()== null){
             holder.Title.setText("No Title");
         } else {
@@ -67,16 +68,16 @@ public class ReadRssAdapter extends RecyclerView.Adapter<ReadRssAdapter.MyViewHo
 
         holder.webViewDescription.loadData(current.description, TEXT, UTF);
 
-      //  holder.Description.setText(current.getDescription());
+        //  holder.Description.setText(current.getDescription());
         holder.Date.setText(current.getPubDate().substring(0, Math.min(current.getPubDate().length(), 16)));
         if (current.getThumbnailUrl().isEmpty() || current.getThumbnailUrl() == null){
             holder.Thumbnail.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.news));
 
         } else {
-             Picasso.with(context).load(current.getThumbnailUrl()).into(holder.Thumbnail);
+            Picasso.with(context).load(current.getThumbnailUrl()).into(holder.Thumbnail);
         }
-      //  holder.readMore.setText("Read More");
-     //   holder.MoreIMG.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.more));
+        //  holder.readMore.setText("Read More");
+        //   holder.MoreIMG.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.more));
 
 
     }
@@ -105,8 +106,9 @@ public class ReadRssAdapter extends RecyclerView.Adapter<ReadRssAdapter.MyViewHo
             webViewDescription = (WebView) itemView.findViewById(R.id.description_text);
             webViewDescription.setVisibility(View.GONE);
 
-          //  Description = (TextView) itemView.findViewById(R.id.description_text);
+            //  Description = (TextView) itemView.findViewById(R.id.description_text);
             Date = (TextView) itemView.findViewById(R.id.date_text);
+            Date.setVisibility(View.GONE);
             Thumbnail = (ImageView) itemView.findViewById(R.id.thumb_img);
             /*Thumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -151,18 +153,18 @@ public class ReadRssAdapter extends RecyclerView.Adapter<ReadRssAdapter.MyViewHo
                     context.startActivity(intent);
                 }
             });
-          //  readMore.setVisibility(View.GONE);
+            //  readMore.setVisibility(View.GONE);
             //MoreIMG = (ImageView) itemView.findViewById(R.id.more_img);
-           // MoreIMG.setVisibility(View.GONE);
+            // MoreIMG.setVisibility(View.GONE);
 
         }
     }
     ItemListener iListener;
 
     public interface NewsListListener {
-     //   public void onNewsClicked(FeedItem feedItem);
-     public void onNewsClicked();
-    //    void onMoreClicked();
+        //   public void onNewsClicked(FeedItem feedItem);
+        public void onNewsClicked();
+        //    void onMoreClicked();
     }
 
     public interface ItemListener {

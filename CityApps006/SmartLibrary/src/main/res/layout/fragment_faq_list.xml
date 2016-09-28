@@ -5,7 +5,7 @@
     android:background="@color/grey"
     android:id="@+id/faq_Fragment">
 
-    <RelativeLayout
+   <!-- <RelativeLayout
         android:id="@+id/FAQ_top"
         android:layout_width="match_parent"
         android:layout_height="@dimen/mon_hero_height_small">
@@ -56,12 +56,11 @@
                 android:layout_marginLeft="@dimen/mon_16"
                 android:text="FAQ Type" />
         </RelativeLayout>
-    </RelativeLayout>
+    </RelativeLayout> -->
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/FAQ_top"
         android:background="@color/grey"
         android:padding="@dimen/mon_divider">
 

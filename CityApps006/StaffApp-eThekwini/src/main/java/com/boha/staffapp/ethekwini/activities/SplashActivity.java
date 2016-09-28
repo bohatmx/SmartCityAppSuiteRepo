@@ -32,6 +32,8 @@ import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 import com.boha.staffapp.ethekwini.R;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -61,6 +63,7 @@ public class SplashActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         Log.w("Splash", "## onCreate");
         ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_splash);

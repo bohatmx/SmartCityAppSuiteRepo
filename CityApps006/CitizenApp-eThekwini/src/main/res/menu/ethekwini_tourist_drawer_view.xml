@@ -7,14 +7,18 @@
             android:id="@+id/nav_createComplaint"
             android:icon="@android:drawable/ic_menu_edit"
             android:title="@string/make_complaint" /> -->
+       <!-- <item
+            android:id="@+id/nav_headlines"
+            android:icon="@android:drawable/ic_menu_today"
+            android:title="@string/headlines"/> -->
         <item
             android:id="@+id/nav_alerts"
             android:icon="@drawable/alert_2x"
-            android:title="@string/city_alerts" />
+            android:title="@string/city_alerts"/>
         <item
             android:id="@+id/nav_news"
             android:icon="@drawable/news1_2x"
-            android:title="@string/city_news" />
+            android:title="@string/headlines" />
       <!--  <item
             android:id="@+id/nav_complaintsAroundMe"
             android:icon="@android:drawable/ic_menu_myplaces"
@@ -27,6 +31,10 @@
             android:id="@+id/nav_signin"
             android:icon="@drawable/lock_2x"
             android:title="@string/sign_in"/>
+        <item
+            android:id="@+id/nav_contacts"
+            android:icon="@android:drawable/ic_menu_call"
+            android:title="@string/contacts"/>
        <!-- <item
             android:id="@+id/nav_gallery"
             android:visible="false"

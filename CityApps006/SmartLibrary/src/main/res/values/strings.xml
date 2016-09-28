@@ -58,10 +58,11 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
+    <string name="contacts">Contacts</string>
     <string name="action_example">Example action</string>
     <string name="payments">Payments</string>
     <string name="city_alerts">City Alerts</string>
+    <string name="headlines">Headlines</string>
     <string name="alerts">Alerts</string>
     <string name="my_complaints">My Complaints</string>
     <string name="my_accounts">My Accounts</string>
@@ -120,6 +121,7 @@
     <string name="start_complaint">Start Complaint</string>
     <string name="history">A history of my complaints to the City</string>
     <string name="no_news">No Current News</string>
+    <string name="no_alerts">No Current Alerts</string>
     <string name="nonews_map">No news to display on map</string>
     <string name="noalerts_map">No alerts to display on map</string>
     <string name="payment_not_available">The payment facility is not available yet. The facility will be made available in the next version of the app.</string>
@@ -207,6 +209,7 @@ The application has emergency numbers from the municipality, such as ambulance n
     <string name="general_info_title">eThekwini Municipality Mobile Application</string>
     <string name="unable_complain">Unable to send complaint. Service not available. Please try again</string>
     <string name="close">Close</string>
-    <string name="complaint_received">Complaint received. Add pictures to the complaint if you need to.</string>
+    <string name="complaint_received">Complaint received</string>
+    <string name="complaint_received_add_pictures">Complaint received. Add pictures to the complaint if you need to.</string>
     <string name="process_complaint_unable">Unable to process the complaint at this time. Please try later</string>
 </resources>

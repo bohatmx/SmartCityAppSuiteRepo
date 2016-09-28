@@ -216,7 +216,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         header = getActivity().getLayoutInflater().inflate(R.layout.complaints_header,null);
         handle = header.findViewById(R.id.CAR_handle);
 
-        hero = (ImageView) header.findViewById(R.id.CAR_hero);
+      //  hero = (ImageView) header.findViewById(R.id.CAR_hero);
         seekBar = (SeekBar) header.findViewById(R.id.CAR_seekBar);
         txtRadius = (TextView) header.findViewById(R.id.CAR_labelKM);
         txtTitle = (TextView) header.findViewById(R.id.CAR_title);
@@ -466,8 +466,8 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
                     @Override
                     public void run() {
                         timer.cancel();
-                        hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-                        Util.flashSeveralTimes(fab, 100, 2, null);
+                        /*hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+                        Util.flashSeveralTimes(fab, 100, 2, null);*/
                     }
                 });
             }

@@ -29,7 +29,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 public class AlertReadRss extends AsyncTask<Void,Void,Void>  {
     Context context;
     ProgressDialog progressDialog;
-    String address = "http://icsmnewsdev.oneconnectgroup.com/et/alerts/rss/Alerts.xml";
+    String address = "http://icsmnewsdev.oneconnectgroup.com/et/alerts/json/Alerts.json";
     URL url;
 
     public ArrayList<FeedItem> feedItems;
@@ -43,7 +43,7 @@ public class AlertReadRss extends AsyncTask<Void,Void,Void>  {
 
     @Override
     protected void onPreExecute() {
-        progressDialog.show();
+//        progressDialog.show();
         super.onPreExecute();
     }
 
@@ -51,15 +51,21 @@ public class AlertReadRss extends AsyncTask<Void,Void,Void>  {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
-        progressDialog.dismiss();
-        ReadRssAdapter adapter = new ReadRssAdapter(context, feedItems, new ReadRssAdapter.NewsListListener() {
+   //     progressDialog.dismiss();
+        AlertReadRssAdapter adapter = new AlertReadRssAdapter(context, feedItems, new AlertReadRssAdapter.NewsListListener() {
+            @Override
+            public void onNewsClicked() {
+
+            }
+        });
+        /*ReadRssAdapter adapter = new ReadRssAdapter(context, feedItems, new ReadRssAdapter.NewsListListener() {
             @Override
             public void onNewsClicked() {
 
             }
 
 
-        });
+        });*/
         recyclerView.setAdapter(adapter);
       //  adapter.notifyDataSetChanged();
     }
@@ -72,6 +78,7 @@ public class AlertReadRss extends AsyncTask<Void,Void,Void>  {
         ProcessXml(getData());
         return null;
     }
+    public String latitude, longitude;
 
     private void ProcessXml(Document data){
         if (data != null) {
@@ -99,20 +106,42 @@ public class AlertReadRss extends AsyncTask<Void,Void,Void>  {
 
                         } else if (current.getNodeName().equalsIgnoreCase("pubDate")) {
                             item.setPubDate(current.getTextContent());
-                        } else  if (current.getNodeName().equalsIgnoreCase("link")) {
+                        }/* else  if (current.getNodeName().equalsIgnoreCase("link")) {
                             item.setLink(current.getTextContent());
-                        } else if (current.getNodeName().equalsIgnoreCase("media:thumbnail")) {
+                        }*/ else if (current.getNodeName().equalsIgnoreCase("media:thumbnail")) {
                             String url = current.getAttributes().item(0).getTextContent();
                             item.setThumbnailUrl(url);
+                        } else if (current.getNodeName().equalsIgnoreCase("georss:point")) {
+                            item.setPoint(current.getTextContent());
+                            String [] parts = current.getTextContent().split(" ");
+                            longitude = parts[0].substring(0, parts[0].length());
+                             latitude = parts[1].substring(0, parts[1].length());
+                        } else if (current.getNodeName().equalsIgnoreCase("category")) {
+                            item.setCategory(current.getTextContent());
                         }
+
+
 
                     }
                     feedItems.add(item);
                     Log.d("itemTitle", item.getTitle());
                     Log.d("itemDescription", item.getDescription());
-                    Log.d("itemLink", item.getLink());
+
+                    /*if (item.getLink() != null || !item.getLink().isEmpty()) {
+
+                        Log.d("itemLink", item.getLink());
+                    }*/
                     Log.d("itemPubDate", item.getPubDate());
                     Log.d("itemThumbnailUrl", item.getThumbnailUrl());
+                    if (item.getPoint() !=null){
+                        Log.d("itemGeoRss", item.getPoint());
+                    } else{
+                        Log.d("itemGeoRss", "empty");
+                    }
+
+                    Log.i(LOG,  "Latitude: " + latitude);
+                    Log.i(LOG, "Longitude: " + longitude);
+                    Log.d("itemCategory", item.getCategory());
                 }
             }
             //  Log.d("ReadRSS", data.getDocumentElement().getNodeName());
@@ -137,7 +166,7 @@ public class AlertReadRss extends AsyncTask<Void,Void,Void>  {
     }
 
 
-    public static final String LOG = ReadRss.class.getSimpleName();
+    public static final String LOG = AlertReadRss.class.getSimpleName();
 
 }
 

@@ -22,11 +22,11 @@
         <item
             android:id="@+id/nav_news"
             android:icon="@drawable/news1_2x"
-            android:title="@string/city_news" />
-        <item
+            android:title="@string/headlines" />
+        <!--<item
             android:id="@+id/nav_complaintsAroundMe"
             android:icon="@android:drawable/ic_menu_myplaces"
-            android:title="@string/complaints_around_me" />
+            android:title="@string/complaints_around_me" />-->
         <item
             android:id="@+id/nav_faq"
             android:icon="@drawable/faq_2x"

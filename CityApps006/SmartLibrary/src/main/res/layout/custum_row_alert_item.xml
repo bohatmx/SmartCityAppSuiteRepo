@@ -9,50 +9,63 @@
     app:cardBackgroundColor="@color/cardview_dark_background"
     android:layout_marginBottom="2dp">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="No Alerts to display"
+        android:id="@+id/txtEmptyAlerts"
+        android:textSize="24dp"
+        android:gravity="center"
+        android:textColor="@color/black"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
 
         <TextView
-            android:lines="2"
+            android:layout_marginLeft="@dimen/mon_16"
+            android:layout_toRightOf="@+id/thumb_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Large Text"
+            style="@style/TextStyle"
+            android:textStyle="bold"
             android:id="@+id/title_text"
-            android:layout_centerHorizontal="true"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
+            android:layout_centerHorizontal="true"/>
 
         <TextView
             android:layout_below="@+id/title_text"
-            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_margin="@dimen/mon_divider_small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Small Text"
+            android:textStyle="bold"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/blue_400"
+            android:textColor="@color/red_800"
             android:id="@+id/date_text"/>
         <ImageView
+            android:layout_alignParentTop="true"
             android:layout_below="@+id/date_text"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:id="@+id/thumb_img"
             android:scaleType="centerCrop"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
             android:layout_centerHorizontal="true"
             android:src="@drawable/news"/>
 
-      <!--  <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
-            android:id="@+id/description_text"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/thumb_img"/> -->
+        <!--  <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:textAppearance="?android:attr/textAppearanceMedium"
+              android:text="Medium Text"
+              android:id="@+id/description_text"
+              android:layout_alignParentLeft="true"
+              android:layout_alignParentRight="true"
+              android:layout_below="@+id/thumb_img"/> -->
         <WebView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,12 +79,12 @@
             android:layout_below="@+id/description_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/more_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-            android:text="SHOW MORE"
-            android:layout_gravity="center"/>
+            <TextView
+                android:id="@+id/more_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SHOW MORE"
+                android:layout_gravity="center"/>
 
             <TextView
                 android:layout_gravity="center"
@@ -80,15 +93,15 @@
                 android:layout_height="wrap_content"
                 android:text="SHOW LESS"/>
         </android.support.v7.widget.CardView>
-   <!--     <TextView
-            android:layout_margin="10dp"
-            android:id="@+id/more_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="read more.."
-            android:layout_alignBottom="@+id/description_text"
-            android:layout_alignParentRight="true"
-            android:textSize="20dp"/> -->
+        <!--     <TextView
+                 android:layout_margin="10dp"
+                 android:id="@+id/more_txt"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="read more.."
+                 android:layout_alignBottom="@+id/description_text"
+                 android:layout_alignParentRight="true"
+                 android:textSize="20dp"/> -->
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>
