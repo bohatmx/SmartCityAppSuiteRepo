@@ -130,6 +130,8 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                 if (response.getComplaintCategoryList() != null) {
                     complaintCategoryList = response.getComplaintCategoryList();
                     setCategoryList();
+                } else {
+                    Util.showErrorToast(ctx, "No available complaint categories currently");
                 }
                 if (response.getComplaintTypeList() != null) {
                     complaintTypeList = response.getComplaintTypeList();
@@ -441,7 +443,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 //
 //            }
 //        });
-
+        setCategoryList();
         animateSomething();
     }
 
