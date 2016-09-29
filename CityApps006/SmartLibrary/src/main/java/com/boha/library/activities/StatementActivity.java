@@ -25,8 +25,6 @@ import com.boha.library.fragments.StatementListFragment;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 public class StatementActivity extends AppCompatActivity
         implements StatementListFragment.StatementFragmentListener {
@@ -64,11 +62,11 @@ public class StatementActivity extends AppCompatActivity
             window.setNavigationBarColor(darkColor);
         }
         //Track analytics
-        CityApplication ca = (CityApplication) getApplication();
-        Tracker t = ca.getTracker(
-                CityApplication.TrackerName.APP_TRACKER);
-        t.setScreenName(StatementActivity.class.getSimpleName());
-        t.send(new HitBuilders.ScreenViewBuilder().build());
+//        CityApplication ca = (CityApplication) getApplication();
+//        Tracker t = ca.getTracker(
+//                CityApplication.TrackerName.APP_TRACKER);
+//        t.setScreenName(StatementActivity.class.getSimpleName());
+//        t.send(new HitBuilders.ScreenViewBuilder().build());
         checkPermission();
 
     }

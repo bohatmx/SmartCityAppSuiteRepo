@@ -2,12 +2,9 @@ package com.boha.library.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,21 +16,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.activities.CityApplication;
-import com.boha.library.activities.NewsDetailActivity;
-import com.boha.library.activities.NewsMapActivity;
-import com.boha.library.adapters.NewsListAdapter;
 import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.jsonreader.NewsFeedItems;
 import com.boha.library.jsonreader.NewsRead;
-import com.boha.library.rssreader.FeedItem;
 import com.boha.library.rssreader.ReadRss;
 import com.boha.library.rssreader.ReadRssAdapter;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
-import com.boha.library.util.Statics;
-import com.boha.library.util.Util;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -259,8 +248,8 @@ public class NewsListFragment extends Fragment implements PageFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+//        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
     }
 
     @Override

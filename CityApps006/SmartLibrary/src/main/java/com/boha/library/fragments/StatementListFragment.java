@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.activities.CityApplication;
 import com.boha.library.adapters.StatementRecyclerAdapter;
 import com.boha.library.dto.AccountDTO;
 import com.boha.library.transfer.RequestDTO;
@@ -30,7 +29,6 @@ import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crash.FirebaseCrash;
-import com.squareup.leakcanary.RefWatcher;
 
 import org.joda.time.DateTime;
 
@@ -261,8 +259,8 @@ public class StatementListFragment extends Fragment implements PageFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+//        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
     }
 
     @Override

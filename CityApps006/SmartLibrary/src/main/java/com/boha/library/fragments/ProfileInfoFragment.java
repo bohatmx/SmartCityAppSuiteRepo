@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.activities.CityApplication;
 import com.boha.library.dto.AccountDTO;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ProfileInfoDTO;
@@ -21,7 +20,6 @@ import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -269,8 +267,8 @@ public static final String TAG = ProfileInfoFragment.class.getSimpleName();
 
     @Override public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+//        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
     }
     static final String LOG = ProfileInfoFragment.class.getSimpleName();
 

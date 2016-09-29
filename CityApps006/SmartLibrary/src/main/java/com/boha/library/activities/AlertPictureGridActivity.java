@@ -27,8 +27,6 @@ import com.boha.library.util.DividerItemDecoration;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -94,11 +92,11 @@ public class AlertPictureGridActivity extends AppCompatActivity {
 
         setGrid();
         //Track AlertPictureGridActivity
-        CityApplication ca = (CityApplication) getApplication();
-        Tracker t = ca.getTracker(
-                CityApplication.TrackerName.APP_TRACKER);
-        t.setScreenName(AlertPictureGridActivity.class.getSimpleName());
-        t.send(new HitBuilders.ScreenViewBuilder().build());
+//        CityApplication ca = (CityApplication) getApplication();
+//        Tracker t = ca.getTracker(
+//                CityApplication.TrackerName.APP_TRACKER);
+//        t.setScreenName(AlertPictureGridActivity.class.getSimpleName());
+//        t.send(new HitBuilders.ScreenViewBuilder().build());
         //
 
     }

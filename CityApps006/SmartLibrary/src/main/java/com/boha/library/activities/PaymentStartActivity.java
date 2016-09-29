@@ -21,8 +21,6 @@ import com.boha.library.fragments.PaymentStartFragment;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 public class PaymentStartActivity extends AppCompatActivity
         implements PaymentStartFragment.PaymentStartListener{
@@ -57,11 +55,11 @@ public class PaymentStartActivity extends AppCompatActivity
             getSupportActionBar().setTitle("");
 
         //Track PaymentStartActivity
-        CityApplication ca = (CityApplication) getApplication();
-        Tracker t = ca.getTracker(
-                CityApplication.TrackerName.APP_TRACKER);
-        t.setScreenName(PaymentStartActivity.class.getSimpleName());
-        t.send(new HitBuilders.ScreenViewBuilder().build());
+//        CityApplication ca = (CityApplication) getApplication();
+//        Tracker t = ca.getTracker(
+//                CityApplication.TrackerName.APP_TRACKER);
+//        t.setScreenName(PaymentStartActivity.class.getSimpleName());
+//        t.send(new HitBuilders.ScreenViewBuilder().build());
         //
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();

@@ -10,11 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.activities.CityApplication;
 import com.boha.library.dto.AlertTypeDTO;
 import com.boha.library.dto.NewsArticleDTO;
-import com.boha.library.fragments.NewsListFragment;
-import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 import com.squareup.picasso.Picasso;
 
