@@ -22,7 +22,6 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.boha.citizenapp.ethekwini.R;
-import com.boha.library.activities.CityApplication;
 import com.boha.library.dto.GcmDeviceDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.ProfileInfoDTO;
@@ -35,8 +34,6 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.google.gson.Gson;
 
 import java.util.Timer;
@@ -89,11 +86,11 @@ public class SigninActivity extends AppCompatActivity {
                 ctx.getResources().getDrawable(R.drawable.logo), logo);
         getSupportActionBar().setTitle("");
         //Track Signin
-        CityApplication ca = (CityApplication) getApplication();
-        Tracker t = ca.getTracker(
-                CityApplication.TrackerName.APP_TRACKER);
-        t.setScreenName(SigninActivity.class.getSimpleName());
-        t.send(new HitBuilders.ScreenViewBuilder().build());
+//        CityApplication ca = (CityApplication) getApplication();
+//        Tracker t = ca.getTracker(
+//                CityApplication.TrackerName.APP_TRACKER);
+//        t.setScreenName(SigninActivity.class.getSimpleName());
+//        t.send(new HitBuilders.ScreenViewBuilder().build());
         //
     }
 

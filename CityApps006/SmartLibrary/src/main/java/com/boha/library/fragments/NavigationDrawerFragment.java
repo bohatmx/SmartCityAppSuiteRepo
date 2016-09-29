@@ -27,7 +27,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.activities.CityApplication;
 import com.boha.library.adapters.DrawerListAdapter;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.MunicipalityStaffDTO;
@@ -35,7 +34,6 @@ import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.UserDTO;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -283,8 +281,8 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+//        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
     }
 
     @Override

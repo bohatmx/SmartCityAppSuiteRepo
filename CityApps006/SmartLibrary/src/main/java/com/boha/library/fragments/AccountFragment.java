@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.activities.CityApplication;
 import com.boha.library.activities.PaymentStartActivity;
 import com.boha.library.dto.AccountDTO;
 import com.boha.library.dto.PaymentSurveyDTO;
@@ -27,7 +26,6 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -255,8 +253,8 @@ public class AccountFragment extends Fragment implements PageFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+//        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
     }
 
     /**

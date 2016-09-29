@@ -20,7 +20,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.boha.citizenapp.ethekwini.R;
-import com.boha.library.activities.CityApplication;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.UserDTO;
@@ -33,13 +32,12 @@ import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
-import io.fabric.sdk.android.Fabric;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import io.fabric.sdk.android.Fabric;
 
 public class SplashActivity extends AppCompatActivity  {
 
@@ -92,12 +90,12 @@ public class SplashActivity extends AppCompatActivity  {
             window.setNavigationBarColor(themeDarkColor);
         }
         getMunicipality();
-        //Track analytics
-        CityApplication ca = (CityApplication) getApplication();
-        Tracker t = ca.getTracker(
-                CityApplication.TrackerName.APP_TRACKER);
-        t.setScreenName(SplashActivity.class.getSimpleName());
-        t.send(new HitBuilders.ScreenViewBuilder().build());
+//        //Track analytics
+//        CityApplication ca = (CityApplication) getApplication();
+//        Tracker t = ca.getTracker(
+//                CityApplication.TrackerName.APP_TRACKER);
+//        t.setScreenName(SplashActivity.class.getSimpleName());
+//        t.send(new HitBuilders.ScreenViewBuilder().build());
 
 
     }

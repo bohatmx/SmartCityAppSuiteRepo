@@ -18,8 +18,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.activities.CityApplication;
-import com.boha.library.activities.FaqTypeActivity;
 import com.boha.library.adapters.FaqTypeAdapter;
 import com.boha.library.dto.FreqQuestionTypeDTO;
 import com.boha.library.rssreader.FaqAdapter;
@@ -31,7 +29,6 @@ import com.boha.library.util.FaqStrings;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -420,8 +417,8 @@ public class FaqFragment extends Fragment implements PageFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+//        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
     }
 
     @Override

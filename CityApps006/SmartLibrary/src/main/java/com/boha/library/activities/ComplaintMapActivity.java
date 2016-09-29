@@ -131,11 +131,11 @@ public class ComplaintMapActivity extends AppCompatActivity implements OnMapRead
             getSupportActionBar().setTitle(municipality.getMunicipalityName());
         }
         //Track ComplaintMapActivity
-        CityApplication ca = (CityApplication) getApplication();
-        Tracker t = ca.getTracker(
-                CityApplication.TrackerName.APP_TRACKER);
-        t.setScreenName(ComplaintMapActivity.class.getSimpleName());
-        t.send(new HitBuilders.ScreenViewBuilder().build());
+//        CityApplication ca = (CityApplication) getApplication();
+//        Tracker t = ca.getTracker(
+//                CityApplication.TrackerName.APP_TRACKER);
+//        t.setScreenName(ComplaintMapActivity.class.getSimpleName());
+//        t.send(new HitBuilders.ScreenViewBuilder().build());
         //
     }
 

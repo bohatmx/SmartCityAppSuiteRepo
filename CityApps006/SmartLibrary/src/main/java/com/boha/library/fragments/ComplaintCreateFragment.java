@@ -28,7 +28,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.activities.CityApplication;
 import com.boha.library.adapters.CategoryAdapter;
 import com.boha.library.adapters.SubCategoryAdapter;
 import com.boha.library.dto.AccountDTO;
@@ -46,7 +45,6 @@ import com.boha.library.util.Util;
 import com.boha.library.util.WebCheck;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crash.FirebaseCrash;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -499,8 +497,8 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+//        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
     }
 
     Timer timer;

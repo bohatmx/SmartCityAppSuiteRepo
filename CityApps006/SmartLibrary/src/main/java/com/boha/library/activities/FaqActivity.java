@@ -18,8 +18,6 @@ import com.boha.library.fragments.FaqFragment;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 public class FaqActivity extends AppCompatActivity implements FaqFragment.FaqListener {
 
@@ -51,11 +49,11 @@ public class FaqActivity extends AppCompatActivity implements FaqFragment.FaqLis
         getSupportActionBar().setTitle("");
 
         //Track analytics
-        CityApplication ca = (CityApplication) getApplication();
-        Tracker t = ca.getTracker(
-                CityApplication.TrackerName.APP_TRACKER);
-        t.setScreenName(FaqActivity.class.getSimpleName());
-        t.send(new HitBuilders.ScreenViewBuilder().build());
+//        CityApplication ca = (CityApplication) getApplication();
+//        Tracker t = ca.getTracker(
+//                CityApplication.TrackerName.APP_TRACKER);
+//        t.setScreenName(FaqActivity.class.getSimpleName());
+//        t.send(new HitBuilders.ScreenViewBuilder().build());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);

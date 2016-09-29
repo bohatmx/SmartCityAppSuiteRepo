@@ -140,11 +140,11 @@ public class NewsMapActivity extends AppCompatActivity implements OnMapReadyCall
             getSupportActionBar().setTitle(municipality.getMunicipalityName());
         }
         //Track AlertMapActivity
-        CityApplication ca = (CityApplication) getApplication();
-        Tracker t = ca.getTracker(
-                CityApplication.TrackerName.APP_TRACKER);
-        t.setScreenName(NewsMapActivity.class.getSimpleName());
-        t.send(new HitBuilders.ScreenViewBuilder().build());
+//        CityApplication ca = (CityApplication) getApplication();
+//        Tracker t = ca.getTracker(
+//                CityApplication.TrackerName.APP_TRACKER);
+//        t.setScreenName(NewsMapActivity.class.getSimpleName());
+//        t.send(new HitBuilders.ScreenViewBuilder().build());
         //
     }
 

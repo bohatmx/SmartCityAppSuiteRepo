@@ -2,8 +2,6 @@ package com.boha.library.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -19,42 +17,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.activities.AlertMapActivity;
 import com.boha.library.activities.CityApplication;
-import com.boha.library.adapters.AlertRecyclerAdapter;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.jsonreader.AlertsFeedItems;
 import com.boha.library.jsonreader.AlertsRead;
 import com.boha.library.jsonreader.AlertsReadAdapter;
-import com.boha.library.jsonreader.NewsRead;
 import com.boha.library.rssreader.AlertReadRss;
-import com.boha.library.rssreader.ReadRss;
 import com.boha.library.rssreader.ReadRssAdapter;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.Statics;
-import com.boha.library.util.Util;
-import com.squareup.leakcanary.RefWatcher;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-
-import khandroid.ext.apache.http.HttpEntity;
-import khandroid.ext.apache.http.HttpResponse;
-import khandroid.ext.apache.http.client.ClientProtocolException;
-import khandroid.ext.apache.http.client.methods.HttpPost;
-import khandroid.ext.apache.http.impl.client.DefaultHttpClient;
 
 /**
  * Fragment to house local pictures
@@ -412,8 +389,8 @@ AlertsReadAdapter alertsReadAdapter;
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+//        RefWatcher refWatcher = CityApplication.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
     }
 
     @Override

@@ -56,8 +56,6 @@ import com.boha.library.util.PhotoCacheUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -148,11 +146,11 @@ public class PictureActivity extends AppCompatActivity
         dispatchTakePictureIntent();
 
         //Track analytics
-        CityApplication ca = (CityApplication) getApplication();
-        Tracker t = ca.getTracker(
-                CityApplication.TrackerName.APP_TRACKER);
-        t.setScreenName(PictureActivity.class.getSimpleName());
-        t.send(new HitBuilders.ScreenViewBuilder().build());
+//        CityApplication ca = (CityApplication) getApplication();
+//        Tracker t = ca.getTracker(
+//                CityApplication.TrackerName.APP_TRACKER);
+//        t.setScreenName(PictureActivity.class.getSimpleName());
+//        t.send(new HitBuilders.ScreenViewBuilder().build());
 
         UploadBroadcastReceiver receiver = new UploadBroadcastReceiver();
         IntentFilter filter = new IntentFilter(PhotoUploadService.BROADCAST_UPLOADED);
@@ -295,11 +293,11 @@ public class PictureActivity extends AppCompatActivity
             startService(x);
         }
         //Track PictureActivity
-        CityApplication ca = (CityApplication) getApplication();
-        Tracker t = ca.getTracker(
-                CityApplication.TrackerName.APP_TRACKER);
-        t.setScreenName(PictureActivity.class.getSimpleName());
-        t.send(new HitBuilders.ScreenViewBuilder().build());
+//        CityApplication ca = (CityApplication) getApplication();
+//        Tracker t = ca.getTracker(
+//                CityApplication.TrackerName.APP_TRACKER);
+//        t.setScreenName(PictureActivity.class.getSimpleName());
+//        t.send(new HitBuilders.ScreenViewBuilder().build());
 
 
     }
