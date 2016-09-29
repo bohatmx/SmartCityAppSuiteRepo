@@ -163,7 +163,6 @@
                 android:id="@+id/CI_referenceLabel"
                 style="@style/TextStyle"
                 android:layout_width="wrap_content"
-
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/mon_16"
@@ -178,7 +177,12 @@
                 android:layout_marginLeft="@dimen/mon_16"
                 android:layout_toRightOf="@id/CI_referenceLabel"
                 android:text="6568586865876" />
+
+
         </RelativeLayout>
+
+
+
 
         <LinearLayout
             android:id="@+id/CI_statusLayout"
@@ -191,6 +195,7 @@
             <include layout="@layout/status_layout" />
         </LinearLayout>
     </RelativeLayout>
+
 
     <RelativeLayout
         android:id="@+id/CI_detailsView"
@@ -244,6 +249,26 @@
         android:padding="@dimen/mon_16">
 
         <TextView
+            android:padding="@dimen/mon_divider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/description_label"
+            android:text="Comment: "
+            android:layout_marginLeft="@dimen/mon_16"
+            style="@style/TextStyle"/>
+
+        <TextView
+            android:padding="@dimen/mon_divider_small"
+            android:layout_toRightOf="@+id/description_label"
+            android:id="@+id/description"
+            style="@style/Title3TextStyleRed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add complaint description"/>
+
+
+        <TextView
+            android:layout_below="@+id/description"
             android:id="@+id/CI_followers"
             style="@style/Title2TextStyleRed"
             android:layout_width="wrap_content"
@@ -253,6 +278,7 @@
             android:text="0" />
 
         <TextView
+            android:layout_below="@+id/description"
             android:id="@+id/CI_label"
             style="@style/TextStyleBoldBlueSmall"
             android:layout_width="wrap_content"

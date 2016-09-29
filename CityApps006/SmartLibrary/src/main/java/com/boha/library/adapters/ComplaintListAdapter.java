@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -50,8 +51,8 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
         ctx = context;
         this.mInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.arrayList = new ArrayList<>();
-        this.arrayList.addAll(mList);
+        /*this.arrayList = new ArrayList<>();
+        this.arrayList.addAll(mList);*/
     }
 
     View view;
@@ -59,7 +60,8 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
     static class ViewHolderItem {
         protected ImageView image, iconDetails, iconFollow, iconCamera, iconRoll;
         protected TextView txtComplaintType, txtColor, txtDate,
-                txtComment, txtAddress, txtRef, txtStatusDate, txtRemarks, txtAck;
+                txtComment, txtAddress, txtRef, txtStatusDate, txtRemarks, txtAck, txtDescription, txtDescriptionLabel;
+
         protected View detailsView, followBox, cameraBox, statusBox;
         protected LinearLayout statusLayout;
         protected int position;
@@ -100,6 +102,9 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
             item.txtAck = (TextView) convertView.findViewById(R.id.SL_ack);
             item.txtRemarks = (TextView) convertView.findViewById(R.id.SL_statusText);
 
+            item.txtDescription = (TextView) convertView.findViewById(R.id.description);
+            item.txtDescriptionLabel = (TextView) convertView.findViewById(R.id.description_label);
+
             item.followBox = convertView.findViewById(R.id.iconBoxFollow);
             item.cameraBox = convertView.findViewById(R.id.iconBoxCamera);
             item.statusBox = convertView.findViewById(R.id.iconBoxStatus);
@@ -120,6 +125,15 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
             item.txtDate.setText(sdfDate.format(new Date(p.getComplaintDate())));
         } else {
             item.txtDate.setText("Date Unavailable");
+        }
+        if (p.getDescription() != null ) {
+            item.txtDescription.setText(p.getDescription());
+
+        } else {
+            //item.txtDescription.setText("");
+            item.txtDescription.setVisibility(View.GONE);
+            //item.txtDescription.setText("No description to display");
+          //  item.txtDescription.setText(p.getDescription());
         }
         item.txtRef.setText(p.getReferenceNumber());
         item.position = position;

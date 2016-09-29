@@ -110,13 +110,29 @@
             android:layout_height="wrap_content" />
 
         </RadioGroup>
+
+    <!--<android.support.design.widget.TextInputLayout
+        android:layout_below="@+id/layoutb"
+        android:id="@+id/descriptionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"> -->
+
+        <EditText
+            android:layout_below="@+id/layoutb"
+            android:id="@+id/add_complaint_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Add description to complaint"
+            android:inputType="text"/>
+    <!--</android.support.design.widget.TextInputLayout>-->
+
     <Spinner
         android:id="@+id/spinnerAccounts"
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/mon_divider"
         android:visibility="gone"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layoutb" />
+        android:layout_below="@+id/add_complaint_description"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"

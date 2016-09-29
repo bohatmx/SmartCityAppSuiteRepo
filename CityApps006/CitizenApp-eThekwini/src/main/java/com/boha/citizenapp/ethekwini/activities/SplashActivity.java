@@ -67,7 +67,7 @@ public class SplashActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
+       // Fabric.with(this, new Crashlytics());
         ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_splash);
         ctx = getApplicationContext();

@@ -212,4 +212,5 @@ The application has emergency numbers from the municipality, such as ambulance n
     <string name="complaint_received">Complaint received</string>
     <string name="complaint_received_add_pictures">Complaint received. Add pictures to the complaint if you need to.</string>
     <string name="process_complaint_unable">Unable to process the complaint at this time. Please try later</string>
+    <string name="complaint_description">Add description to complaint</string>
 </resources>

@@ -47,6 +47,7 @@
             android:textColor="@color/red_800"
             android:id="@+id/date_text"/>
         <ImageView
+            android:padding="@dimen/mon_divider"
             android:layout_alignParentTop="true"
             android:layout_below="@+id/date_text"
             android:layout_width="50dp"

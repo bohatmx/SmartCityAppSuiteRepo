@@ -133,6 +133,7 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
                     listener.onRefreshRequested(complaint);
                 } else {
                     getCaseDetails(complaint.getHref(), position);
+
                 }
             }
 
@@ -358,6 +359,8 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
 
                 if (response.getComplaintCategoryList() != null) {
                     complaintCategoryList = response.getComplaintCategoryList();
+                } else {
+                    Log.i(LOG, "Complaint Category List is null" + complaintCategoryList.size());
                 }
                 if (response.getComplaintTypeList() != null) {
                     complaintTypeList = response.getComplaintTypeList();

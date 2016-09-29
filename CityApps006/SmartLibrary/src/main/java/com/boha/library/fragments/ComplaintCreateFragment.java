@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -53,6 +54,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 
+import static com.boha.library.util.Util.showErrorToast;
 import static com.boha.library.util.Util.showSnackBar;
 
 /**
@@ -88,6 +90,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     Activity activity;
     ImageView hero, cameraIcon, iconBack;
     RecyclerView recyclerView;
+     EditText complaintDescription;
     Spinner spinner;
     AccountDTO account;
     RadioButton radioAccount, radioAnywhere;
@@ -101,6 +104,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             response = (ResponseDTO) getArguments().getSerializable("complaintList");
+            complaintCategoryList = response.getComplaintCategoryList();
         }
     }
 
@@ -135,7 +139,9 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                 }
                 if (response.getComplaintTypeList() != null) {
                     complaintTypeList = response.getComplaintTypeList();
-                }
+                }/* else {
+                    showErrorToast(ctx, "No available complaint types");
+                }*/
 
             }
 
@@ -148,6 +154,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
 
     private void sendComplaint() {
+
 
         if (complaintCategory == null) {
             Util.showToast(ctx, "Please select category of complaint");
@@ -181,11 +188,17 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                 complaint.setAccountNumber(account.getAccountNumber());
             }
 
-        }
 
+        }
+        if (complaintDescription.getText().toString().isEmpty()) {
+            Log.i(LOG, "complaint description is empty");
+        } else {
+            complaint.setDescription(complaintDescription.getText().toString());
+        }
         complaint.setCategory(complaintCategory.getComplaintCategoryName().trim());
         complaint.setSubCategory(complaintType.getComplaintTypeName());
         complaint.setComplaintDate(new Date().getTime());
+
         if (radioAnywhere.isChecked()) {
             if (location != null) {
                 complaint.setLatitude(location.getLatitude());
@@ -317,6 +330,29 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
     AlertDialog.Builder confirmDialog;
 
+    private void addDescriptionDialog() {
+        confirmDialog = new AlertDialog.Builder(getActivity());
+        final EditText input = new EditText(getActivity());
+        confirmDialog.setView(input);
+        confirmDialog.setTitle("Add Complaint Description/Comment")
+                .setMessage(complaintDescription.getText().toString())
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        complaintDescription.setText(input.getText().toString().trim());
+                        dialog.dismiss();
+                        sendComplaint();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        sendComplaint();
+                    }
+                }).show();
+    }
+
     private void showConfirmDialog() {
         confirmDialog = new AlertDialog.Builder(getActivity());
         confirmDialog.setTitle("Confirm Complaint")
@@ -326,7 +362,8 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                       sendComplaint();
+                        addDescriptionDialog();
+                       //sendComplaint();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -361,6 +398,8 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
     private void setFields() {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        complaintDescription = (EditText) view.findViewById(R.id.add_complaint_description);
+        complaintDescription.setVisibility(View.GONE);
         txtCategory = (TextView) view.findViewById(R.id.category);
         txtType = (TextView) view.findViewById(R.id.complaintType);
         iconBack = (ImageView) view.findViewById(R.id.backIcon);
@@ -395,6 +434,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             }
         });
 
+
         LinearLayoutManager lm = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(lm);
 
@@ -412,6 +452,8 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                 setCategoryList();
                 iconBack.setVisibility(View.GONE);
                 cameraIcon.setVisibility(View.GONE);
+             //   complaintDescription.setHint(R.string.complaint_description);
+                complaintDescription.setText("");
             }
         });
         cameraIcon.setOnClickListener(new View.OnClickListener() {
