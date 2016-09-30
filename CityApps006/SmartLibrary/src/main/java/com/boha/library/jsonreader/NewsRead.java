@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -52,6 +53,7 @@ public class NewsRead extends AsyncTask<Void,Void,Void> {
     ProgressDialog progressDialog;
     public ImageView image;
     public TextView title;
+    LayoutInflater inflater;
 
     public ArrayList<NewsFeedItems> newsFeedItems;
     RecyclerView recyclerView;

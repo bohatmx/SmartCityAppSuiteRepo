@@ -50,6 +50,7 @@ public class NewsReadAdapter extends RecyclerView.Adapter<NewsReadAdapter.MyView
 
         View view = LayoutInflater.from(context).inflate(R.layout.custum_row_news_item, parent, false);
         MyViewHolder holder = new MyViewHolder(view);
+
         return holder;
 
 
