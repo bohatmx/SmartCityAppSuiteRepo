@@ -102,7 +102,6 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             response = (ResponseDTO) getArguments().getSerializable("complaintList");
-            complaintCategoryList = response.getComplaintCategoryList();
         }
     }
 
@@ -137,9 +136,9 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                 }
                 if (response.getComplaintTypeList() != null) {
                     complaintTypeList = response.getComplaintTypeList();
-                }/* else {
-                    showErrorToast(ctx, "No available complaint types");
-                }*/
+                } else {
+                    Log.i(LOG, "Complaint Type List is null" + complaintCategoryList.size());
+                }
 
             }
 
@@ -301,7 +300,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         iconBack.setVisibility(View.GONE);
         txtCategory.setText("");
         txtType.setText("");
-        categoryAdapter = new CategoryAdapter(complaintCategoryList, getActivity(), new CategoryAdapter.CategoryAdapterListener() {
+        categoryAdapter = new CategoryAdapter(complaintCategoryList, ctx, new CategoryAdapter.CategoryAdapterListener() {
             @Override
             public void onCategoryClicked(ComplaintCategoryDTO category) {
                 complaintCategory = category;
@@ -332,8 +331,8 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         confirmDialog = new AlertDialog.Builder(getActivity());
         final EditText input = new EditText(getActivity());
         confirmDialog.setView(input);
-        confirmDialog.setTitle("Add Complaint Description/Comment")
-                .setMessage(complaintDescription.getText().toString())
+        confirmDialog.setTitle("Complaint Comment")
+                .setMessage("Add a comment to this complaint below\n\n" + complaintDescription.getText().toString())
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -347,6 +346,12 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         sendComplaint();
+                    }
+                })
+                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
                     }
                 }).show();
     }
@@ -435,6 +440,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
         LinearLayoutManager lm = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(lm);
+
 
         profile = SharedUtil.getProfile(getActivity());
         if (profile.getAccountList().size() == 1) {
