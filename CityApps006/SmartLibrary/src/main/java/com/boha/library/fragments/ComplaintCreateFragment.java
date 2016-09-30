@@ -52,7 +52,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 
-import static com.boha.library.util.Util.showErrorToast;
 import static com.boha.library.util.Util.showSnackBar;
 
 /**
@@ -88,14 +87,13 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     Activity activity;
     ImageView hero, cameraIcon, iconBack;
     RecyclerView recyclerView;
-     EditText complaintDescription;
+    EditText complaintDescription;
     Spinner spinner;
     AccountDTO account;
     RadioButton radioAccount, radioAnywhere;
     FirebaseAnalytics mFirebaseAnalytics;
     Snackbar snackbar;
     boolean sendAccount;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,12 +106,12 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.e(LOG, "onCreateView: +++++++++++++++++++++++++++++++++++++");
         view = inflater.inflate(R.layout.fragment_create_complaint, container, false);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
         ctx = getActivity();
         activity = getActivity();
         setFields();
-        getCachedLookups();
         mListener.onComplaintLocationRequested();
         UploadBroadcastReceiver receiver = new UploadBroadcastReceiver();
         IntentFilter filter = new IntentFilter(PhotoUploadService.BROADCAST_UPLOADED);
@@ -121,6 +119,13 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         LocalBroadcastManager bm = LocalBroadcastManager.getInstance(getActivity());
         bm.registerReceiver(receiver, filter);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.w(LOG, "onResume: ****************************** getting getCachedLookups");
+        getCachedLookups();
     }
 
     private void getCachedLookups() {
@@ -254,8 +259,6 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             }
 
 
-
-
             @Override
             public void onError(final String message) {
 
@@ -283,10 +286,11 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
-        Log.w(LOG,"analytics event sent .....");
+        Log.w(LOG, "analytics event sent .....");
 
 
     }
+
     private void showCameraIcon(final ComplaintDTO complaint) {
         cameraIcon.setVisibility(View.GONE);
         this.complaint = complaint;
@@ -297,6 +301,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     SubCategoryAdapter subCategoryAdapter;
 
     private void setCategoryList() {
+        Log.d(LOG, "setCategoryList: sss s------------------------------");
         iconBack.setVisibility(View.GONE);
         txtCategory.setText("");
         txtType.setText("");
@@ -312,6 +317,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     }
 
     private void setComplaintTypeList() {
+        Log.d(LOG, "setComplaintTypeList: -----------------------------");
         iconBack.setVisibility(View.VISIBLE);
         complaintTypeList = complaintCategory.getComplaintTypeList();
         subCategoryAdapter = new SubCategoryAdapter(complaintTypeList, getActivity(), new SubCategoryAdapter.ComplaintTypeListener() {
@@ -366,7 +372,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         addDescriptionDialog();
-                       //sendComplaint();
+                        //sendComplaint();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -456,7 +462,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                 setCategoryList();
                 iconBack.setVisibility(View.GONE);
                 cameraIcon.setVisibility(View.GONE);
-             //   complaintDescription.setHint(R.string.complaint_description);
+                //   complaintDescription.setHint(R.string.complaint_description);
                 complaintDescription.setText("");
             }
         });

@@ -34,6 +34,7 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 
 import java.util.Timer;
@@ -64,6 +65,7 @@ public class SigninActivity extends AppCompatActivity {
     GcmDeviceDTO gcmDevice;
     MunicipalityDTO municipality;
     int userType;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +75,7 @@ public class SigninActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signin);
         ctx = getApplicationContext();
         activity = this;
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         municipality = SharedUtil.getMunicipality(ctx);
         int logo = getIntent().getIntExtra("logo", R.drawable.ic_action_globe);
         registerGCMDevice();
@@ -211,6 +213,11 @@ public class SigninActivity extends AppCompatActivity {
 
         btnSend.setEnabled(false);
         setProgressDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "signIN");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Citizen Sign In");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle);
+
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO resp) {

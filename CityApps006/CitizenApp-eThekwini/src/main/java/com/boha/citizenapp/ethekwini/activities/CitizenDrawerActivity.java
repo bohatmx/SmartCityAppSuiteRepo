@@ -298,7 +298,12 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                                 y.setCategoryName(x.getComplaintCategoryName());
                             }
                         }
-                        setupViewPager();
+                        if (isRefresh) {
+                            if (myComplaintsFragment != null)
+                                myComplaintsFragment.setComplaintList(resp.getComplaintList());
+                        } else {
+                            setupViewPager();
+                        }
                         complaintList = response.getComplaintList();
 
 
@@ -349,6 +354,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
     static final int THEME_REQUESTED = 8075;
     static boolean logOff;
+    boolean isRefresh;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -368,6 +374,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         }
         if (id == com.boha.library.R.id.action_refresh) {
             index = 0;
+            isRefresh = true;
             getLoginData();
             return true;
         }
@@ -453,7 +460,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         //complaintsAroundMeFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         newsListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 
-       // complaintsAroundMeFragment.setLogo(logo);
+        // complaintsAroundMeFragment.setLogo(logo);
         alertListFragment.setLogo(logo);
         newsListFragment.setLogo(logo);
 
@@ -462,7 +469,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
         alertListFragment.setPageTitle(ctx.getString(R.string.city_alerts));
         complaintCreateFragment.setPageTitle(ctx.getString(R.string.make_complaint));
-       // complaintsAroundMeFragment.setPageTitle(ctx.getString(R.string.complaints_around_me));
+        // complaintsAroundMeFragment.setPageTitle(ctx.getString(R.string.complaints_around_me));
         newsListFragment.setPageTitle(ctx.getString(R.string.headlines));
         faqFragment.setPageTitle(getString(R.string.faq));
 
@@ -472,7 +479,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         pageFragmentList.add(myComplaintsFragment);
         pageFragmentList.add(alertListFragment);
         pageFragmentList.add(newsListFragment);
-       // pageFragmentList.add(complaintsAroundMeFragment);
+        // pageFragmentList.add(complaintsAroundMeFragment);
         pageFragmentList.add(faqFragment);
 
         try {
