@@ -9,6 +9,7 @@
 
     <uses-permission android:name="com.boha.citizenapp.ethekwini.gcm.permission.C2D_MESSAGE" />
 
+
     <!--
         DEV KEY: AIzaSyCCqxtRIo4epdejyic7PxWv5rZLcZp5J1w
         3E:F3:AA:D7:B9:B4:71:22:A7:F0:CD:4F:89:74:84:6A:92:8C:99:E0;com.boha.citizenapp.ethekwini
@@ -23,7 +24,8 @@
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@style/BlueThemeOne"
-        tools:replace="android:theme">
+        tools:replace="android:theme"
+        android:hardwareAccelerated="true">
 
         <!-- Keys and metadata -->
         <meta-data
@@ -187,6 +189,7 @@
             android:parentActivityName=".activities.LandingPageActivity"/>
         <activity android:name="com.boha.library.activities.FullDetailActivity"
             android:screenOrientation="portrait"/>
+
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

@@ -2,10 +2,14 @@ package com.boha.library.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -50,7 +54,19 @@ public class FullDetailActivity extends AppCompatActivity {
         title_txt = (TextView) findViewById(R.id.details_title);
         detailImg = (ImageView) findViewById(R.id.DETAILSIMG);
         webView = (WebView) findViewById(R.id.details_webView);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setPluginState(WebSettings.PluginState.ON);
+        webView.setWebViewClient(new WebViewClient());
+        webView.getSettings().setDisplayZoomControls(true);
+
+        //
+       webView.getSettings().setLoadWithOverviewMode(true);
+       // webView.getSettings().setUseWideViewPort(true);
+      //  webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+       // webView.setScrollbarFadingEnabled(true);
+        //
         articletxt = (TextView) findViewById(R.id.testtxt);
+
 
         Intent intent = getIntent();
         title = intent.getStringExtra("newsTitle");
@@ -79,6 +95,9 @@ public class FullDetailActivity extends AppCompatActivity {
         switch (position) {
             case 0:
                 webView.loadData(articletxt.getText().toString(), TEXT, UTF);
+
+
+              //  webView.loadDataWithBaseURL("http://www.youtube.com", TEXT, UTF, "utf-8", null);
                 //       webView.loadData(alertReadRss.feedItems.get(position).getDescription(), TEXT, UTF);
                 break;
 
