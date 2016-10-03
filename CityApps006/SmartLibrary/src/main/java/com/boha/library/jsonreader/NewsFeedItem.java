@@ -3,7 +3,7 @@ package com.boha.library.jsonreader;
 /**
  * Created by Nkululeko on 2016/09/08.
  */
-public class NewsFeedItems {
+public class NewsFeedItem {
     String guid, title, link, description,
             thumbnailUrl, pubDate, expiryDate;
 

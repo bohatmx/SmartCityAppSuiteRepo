@@ -1,38 +1,26 @@
 package com.boha.library.jsonreader;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 
 import com.boha.library.R;
-import com.boha.library.rssreader.AlertReadRssAdapter;
-import com.boha.library.rssreader.FeedItem;
 import com.boha.library.util.Util;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import khandroid.ext.apache.http.HttpEntity;
 import khandroid.ext.apache.http.HttpResponse;
@@ -45,23 +33,19 @@ import khandroid.ext.apache.http.impl.client.DefaultHttpClient;
  */
 public class AlertsRead extends AsyncTask<Void,Void,Void>{
     Context context;
-    ProgressDialog progressDialog;
 
-    public ArrayList<AlertsFeedItems> alertsFeedItems;
+    public ArrayList<AlertsFeedItem> alertsFeedItems;
     RecyclerView recyclerView;
     public AlertsRead(Context context, RecyclerView recyclerView){
         this.context = context;
         this.recyclerView = recyclerView;
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Loading...");
+
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
         String url = "http://icsmnewsdev.oneconnectgroup.com/et/alerts/json/Alerts.json";
-        JSONObject json = getJSONFromUrl(url);
-
-        parseJson(json);
+        getJSONFromUrl(url);
         return null;
     }
 
@@ -69,18 +53,17 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
 
     @Override
     protected void onPreExecute() {
-        progressDialog.show();
         super.onPreExecute();
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-             progressDialog.dismiss();
-        if (alertsFeedItems != null) {
-            Log.i(LOG, "" + alertsFeedItems.size());
+        if (feeditems != null) {
+            Log.i(LOG, "onPostExecute: feedItems:" + feeditems.getFeedItems().size());
 
-            AlertsReadAdapter adapter = new AlertsReadAdapter(context, alertsFeedItems, new AlertsReadAdapter.NewsListListener() {
+            AlertsReadAdapter adapter = new AlertsReadAdapter(context,
+                    feeditems.feedItems, new AlertsReadAdapter.NewsListListener() {
                 @Override
                 public void onNewsClicked() {
 
@@ -96,10 +79,10 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
     Snackbar snackbar;
 
     public static final String LOG = AlertsRead.class.getSimpleName();
+    AlertFeedItems feeditems;
 
-
-    public JSONObject getJSONFromUrl(String url) {
-        Log.i(LOG, "getJSONFromUrl");
+    public void getJSONFromUrl(String url) {
+        Log.i(LOG, "getFeedItems");
         InputStream is = null;
         JSONObject jObj = null;
         String json = null;
@@ -120,6 +103,9 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
             }
             is.close();
             json = sb.toString();
+            feeditems = gson.fromJson(json,AlertFeedItems.class);
+            Log.d(LOG, "getFeedItems: feedItems: " + feeditems.feedItems.size());
+            Log.e(LOG, "getFeedItems: " + json );
         } catch (UnsupportedEncodingException e) {
             Log.e(LOG, e.getMessage());
         }catch (ClientProtocolException e) {
@@ -128,13 +114,7 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
             Log.e(LOG, e.getMessage());
         }
 
-        try{
-            jObj = new JSONObject(json);
-        } catch (JSONException e) {
-            Log.e("JSON Parser", "Error parsing data " + e.toString());
 
-        }
-        return jObj;
     }
 
     public void parseJson(JSONObject json) {
@@ -148,7 +128,7 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
 
             for (int i = 0; i < posts.length(); i++) {
                 JSONObject post = (JSONObject) posts.getJSONObject(i);
-                AlertsFeedItems item = new AlertsFeedItems();
+                AlertsFeedItem item = new AlertsFeedItem();
                 item.setCategory(post.getString("category"));
                 Log.i(LOG, post.getString("category"));
                 item.setExpiryDate(post.getString("expiryDate"));
@@ -206,4 +186,6 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
             Log.e(LOG, e.getMessage());
         }
     }
+
+    static final Gson gson = new Gson();
 }

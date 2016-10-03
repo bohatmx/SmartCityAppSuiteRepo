@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.FullDetailActivity;
-import com.boha.library.jsonreader.AlertsFeedItems;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

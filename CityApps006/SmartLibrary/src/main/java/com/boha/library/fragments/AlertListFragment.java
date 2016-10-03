@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.boha.library.R;
 import com.boha.library.activities.CityApplication;
 import com.boha.library.dto.AlertDTO;
-import com.boha.library.jsonreader.AlertsFeedItems;
+import com.boha.library.jsonreader.AlertsFeedItem;
 import com.boha.library.jsonreader.AlertsRead;
 import com.boha.library.jsonreader.AlertsReadAdapter;
 import com.boha.library.rssreader.AlertReadRss;
@@ -86,7 +86,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
 
     AlertReadRss alertReadRss;
     AlertsRead alertsRead;
-    ArrayList<AlertsFeedItems> alertsFeedItems;
+    ArrayList<AlertsFeedItem> alertsFeedItems;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
