@@ -1,7 +1,6 @@
 package com.boha.library.jsonreader;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -13,13 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.library.R;
-import com.boha.library.activities.FullDetailActivity;
-import com.boha.library.rssreader.FeedItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -28,9 +23,9 @@ import java.util.Date;
 public class AlertsReadAdapter extends RecyclerView.Adapter<AlertsReadAdapter.MyViewHolder> {
 
     NewsListListener listener;
-    ArrayList<AlertsFeedItems> alertsFeedItems;
+    ArrayList<AlertsFeedItem> alertsFeedItems;
     Context context;
-    public AlertsReadAdapter(Context context, ArrayList<AlertsFeedItems> alertsFeedItems, NewsListListener listener) {
+    public AlertsReadAdapter(Context context, ArrayList<AlertsFeedItem> alertsFeedItems, NewsListListener listener) {
         this.alertsFeedItems = alertsFeedItems;
         this.context = context;
         this.listener = listener;
@@ -52,13 +47,13 @@ public class AlertsReadAdapter extends RecyclerView.Adapter<AlertsReadAdapter.My
 
 
 
-        final AlertsFeedItems current = alertsFeedItems.get(position);
+        final AlertsFeedItem current = alertsFeedItems.get(position);
         //Collections.reverse(feedItems);
 
 
-      /*  Collections.sort(alertsFeedItems, new Comparator<AlertsFeedItems>() {
+      /*  Collections.sort(alertsFeedItems, new Comparator<AlertsFeedItem>() {
             @Override
-            public int compare(AlertsFeedItems alertFeedItem, AlertsFeedItems t1) {
+            public int compare(AlertsFeedItem alertFeedItem, AlertsFeedItem t1) {
                     *//*if (feedItem.getPubDate() == null || t1.getPubDate() == null)
                         return 0;*//*
                 return alertFeedItem.getPubDate().compareToIgnoreCase(t1.getPubDate());

@@ -2,13 +2,10 @@ package com.boha.library.jsonreader;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +15,9 @@ import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.FullDetailActivity;
-import com.boha.library.rssreader.FeedItem;
-import com.boha.library.util.Util;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -33,16 +26,16 @@ import java.util.Date;
 public class NewsReadAdapter extends RecyclerView.Adapter<NewsReadAdapter.MyViewHolder> {
 
     NewsListListener listener;
-    ArrayList<NewsFeedItems> newsFeedItems;
+    ArrayList<NewsFeedItem> newsFeedItems;
     Context context;
-    public NewsReadAdapter(Context context, ArrayList<NewsFeedItems> newsFeedItems, NewsListListener listener) {
+    public NewsReadAdapter(Context context, ArrayList<NewsFeedItem> newsFeedItems, NewsListListener listener) {
         this.newsFeedItems = newsFeedItems;
         this.context = context;
         this.listener = listener;
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-       /* if (newsFeedItems == null) {
+       /* if (feedItems == null) {
             View v = LayoutInflater.from(context).inflate(R.layout.no_news, parent, false);
             MyViewHolder1 holder1 = new MyViewHolder1(v);
             return holder1;
@@ -63,11 +56,11 @@ public class NewsReadAdapter extends RecyclerView.Adapter<NewsReadAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        final NewsFeedItems current = newsFeedItems.get(position);
+        final NewsFeedItem current = newsFeedItems.get(position);
         //Collections.reverse(feedItems);
-        /*Collections.sort(newsFeedItems, new Comparator<NewsFeedItems>() {
+        /*Collections.sort(feedItems, new Comparator<NewsFeedItem>() {
             @Override
-            public int compare(NewsFeedItems newsFeedItem, NewsFeedItems t1) {
+            public int compare(NewsFeedItem newsFeedItem, NewsFeedItem t1) {
                     *//*if (feedItem.getPubDate() == null || t1.getPubDate() == null)
                         return 0;*//*
                 return newsFeedItem.getPubDate().compareToIgnoreCase(t1.getPubDate());
@@ -112,7 +105,7 @@ public class NewsReadAdapter extends RecyclerView.Adapter<NewsReadAdapter.MyView
             super(itemView);
             Title = (TextView) itemView.findViewById(R.id.title_text);
             noNews = (TextView) itemView.findViewById(R.id.txtEmptyNews);
-            /*if (newsFeedItems == null) {
+            /*if (feedItems == null) {
                 noNews.setVisibility(View.VISIBLE);
             }*/
            /* Title.setOnClickListener(new View.OnClickListener() {

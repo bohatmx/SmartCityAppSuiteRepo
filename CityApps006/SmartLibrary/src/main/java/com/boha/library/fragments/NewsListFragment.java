@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.dto.NewsArticleDTO;
-import com.boha.library.jsonreader.NewsFeedItems;
+import com.boha.library.jsonreader.NewsFeedItem;
 import com.boha.library.jsonreader.NewsRead;
 import com.boha.library.rssreader.ReadRss;
 import com.boha.library.rssreader.ReadRssAdapter;
@@ -98,14 +98,14 @@ public class NewsListFragment extends Fragment implements PageFragment {
         return view;
     }
 
-    ArrayList<NewsFeedItems> newsFeedItems;
+    ArrayList<NewsFeedItem> newsFeedItems;
 
 
 
     private void setFields() {
         txtEmpty = (TextView)view.findViewById(R.id.NEWS_LIST_text);
         txtEmpty.setVisibility(View.GONE);
-        /*if (newsFeedItems != null) {
+        /*if (feedItems != null) {
             txtEmpty.setVisibility(View.GONE);
         } else {
             txtEmpty.setVisibility(View.VISIBLE);

@@ -54,7 +54,7 @@ public class CitizenApp extends Application {
         }
         if (isDebuggable) {
             Picasso.with(getApplicationContext())
-                    .setIndicatorsEnabled(true);
+                    .setIndicatorsEnabled(false);
             Picasso.with(getApplicationContext())
                     .setLoggingEnabled(true);
         }

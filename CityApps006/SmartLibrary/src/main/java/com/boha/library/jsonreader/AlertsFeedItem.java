@@ -3,7 +3,7 @@ package com.boha.library.jsonreader;
 /**
  * Created by Nkululeko on 2016/09/08.
  */
-public class AlertsFeedItems {
+public class AlertsFeedItem {
     String guid, title, category, thumbnailUrl,
             latitude, longitude, pubDate, expiryDate;
 
