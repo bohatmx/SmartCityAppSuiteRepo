@@ -36,6 +36,7 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
 
     public ArrayList<AlertsFeedItem> alertsFeedItems;
     RecyclerView recyclerView;
+    public static final String URL = "http://icsmnewsdev.oneconnectgroup.com/et/alerts/json/Alerts.json";
     public AlertsRead(Context context, RecyclerView recyclerView){
         this.context = context;
         this.recyclerView = recyclerView;
@@ -44,8 +45,7 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
 
     @Override
     protected Void doInBackground(Void... voids) {
-        String url = "http://icsmnewsdev.oneconnectgroup.com/et/alerts/json/Alerts.json";
-        getJSONFromUrl(url);
+        getJSONFromUrl(URL);
         return null;
     }
 

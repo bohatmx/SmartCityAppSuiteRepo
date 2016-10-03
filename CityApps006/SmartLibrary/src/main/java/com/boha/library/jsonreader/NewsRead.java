@@ -33,6 +33,8 @@ public class NewsRead extends AsyncTask<Void,Void,Void> {
 
     public NFeedItems feedItems;
     RecyclerView recyclerView;
+    public static final String URL = "http://icsmnewsdev.oneconnectgroup.com/et/news/json/News.json";;
+
     public  NewsRead(Context context, RecyclerView recyclerView){
         this.context = context;
         this.recyclerView = recyclerView;
@@ -69,8 +71,7 @@ public class NewsRead extends AsyncTask<Void,Void,Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        String url = "http://icsmnewsdev.oneconnectgroup.com/et/news/json/News.json";
-        getFeedItems(url);
+        getFeedItems(URL);
         return null;
     }
     public void getFeedItems(String url) {
