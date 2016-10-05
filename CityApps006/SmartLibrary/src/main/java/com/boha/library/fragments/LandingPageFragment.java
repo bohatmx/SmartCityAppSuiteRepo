@@ -2,6 +2,7 @@ package com.boha.library.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +21,9 @@ import com.boha.library.rssreader.ReadRss;
 import com.boha.library.rssreader.ReadRssAdapter;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.SharedUtil;
+import com.boha.library.util.Util;
+import com.boha.library.util.WebCheck;
+import com.boha.library.util.WebCheckResult;
 
 /**
  * Fragment manages FAQ UI. Downloads html FAQ files from the server
@@ -80,8 +84,13 @@ public class LandingPageFragment extends Fragment implements PageFragment {
      //   landingPageReadRss = new LandingPageReadRss(ctx, recyclerView);
      //   landingPageReadRss.execute();
 
-        alertReadRss = new AlertReadRss(ctx, recyclerView);
-        alertReadRss.execute();
+        WebCheckResult wcr = WebCheck.checkNetworkAvailability(ctx, true);
+        if (!wcr.isWifiConnected() && !wcr.isMobileConnected()) {
+            Util.showSnackBar(iconAlerts,"You are currently not connected to the network","OK", Color.parseColor("red"));
+        } else {
+            alertReadRss = new AlertReadRss(ctx, recyclerView);
+            alertReadRss.execute();
+        }
 
      //   setList();
 

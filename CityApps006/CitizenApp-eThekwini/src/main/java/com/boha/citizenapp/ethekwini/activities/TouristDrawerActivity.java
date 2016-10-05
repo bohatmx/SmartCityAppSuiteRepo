@@ -1,12 +1,9 @@
 package com.boha.citizenapp.ethekwini.activities;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -15,13 +12,10 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -43,11 +37,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.citizenapp.ethekwini.R;
-import com.boha.library.activities.AccountDetailActivity;
 import com.boha.library.activities.AlertDetailActivity;
 import com.boha.library.activities.EmergencyContactsActivity;
 import com.boha.library.activities.GeneralInfoActivity;
-import com.boha.library.activities.PictureActivity;
 import com.boha.library.activities.ThemeSelectorActivity;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.ComplaintCategoryDTO;
@@ -60,7 +52,6 @@ import com.boha.library.dto.UserDTO;
 import com.boha.library.fragments.AlertListFragment;
 import com.boha.library.fragments.ComplaintCreateFragment;
 import com.boha.library.fragments.ComplaintsAroundMeFragment;
-import com.boha.library.fragments.CreateAlertFragment;
 import com.boha.library.fragments.FaqFragment;
 import com.boha.library.fragments.LandingPageFragment;
 import com.boha.library.fragments.MyComplaintsFragment;
@@ -68,7 +59,6 @@ import com.boha.library.fragments.NavigationDrawerFragment;
 import com.boha.library.fragments.NewsListFragment;
 import com.boha.library.fragments.PageFragment;
 import com.boha.library.fragments.ProfileInfoFragment;
-import com.boha.library.jsonreader.AlertsRead;
 import com.boha.library.services.PhotoUploadService;
 import com.boha.library.services.RequestService;
 import com.boha.library.transfer.RequestDTO;
@@ -80,18 +70,14 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
-import com.firebase.ui.auth.ui.email.SignInActivity;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
+import com.boha.library.util.WebCheck;
+import com.boha.library.util.WebCheckResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 
 import org.acra.ACRA;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 
@@ -227,6 +213,11 @@ public class TouristDrawerActivity extends AppCompatActivity implements
 
     private void getLoginData() {
         Log.e(LOG, "@@@@@@@@@ .............. ............  getLoginData ...... ");
+        WebCheckResult wcr = WebCheck.checkNetworkAvailability(ctx, true);
+        if (!wcr.isWifiConnected() && !wcr.isMobileConnected()) {
+            Util.showSnackBar(mPager,"You are currently not connected to the network","OK", Color.parseColor("red"));
+            return;
+        }
         final RequestDTO w = new RequestDTO(RequestDTO.SIGN_IN_CITIZEN);
         if (user != null) {
             w.setUser(user);

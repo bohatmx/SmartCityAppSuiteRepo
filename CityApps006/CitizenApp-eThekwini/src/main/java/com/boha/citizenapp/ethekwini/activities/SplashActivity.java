@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,13 +32,12 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
-import com.crashlytics.android.Crashlytics;
+import com.boha.library.util.WebCheck;
+import com.boha.library.util.WebCheckResult;
 
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import io.fabric.sdk.android.Fabric;
 
 public class SplashActivity extends AppCompatActivity  {
 
@@ -143,6 +143,11 @@ public class SplashActivity extends AppCompatActivity  {
         if (municipality == null) {
             RequestDTO w = new RequestDTO(RequestDTO.GET_MUNICIPALITY_BY_NAME);
             w.setMunicipalityName(MUNICIPALITY_NAME);
+            WebCheckResult wcr = WebCheck.checkNetworkAvailability(ctx, true);
+            if (!wcr.isWifiConnected() && !wcr.isMobileConnected()) {
+                Util.showSnackBar(heroImage,"You are currently not connected to the network","OK", Color.parseColor("red"));
+                finish();
+            }
             setProgressDialog();
             NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
                 @Override

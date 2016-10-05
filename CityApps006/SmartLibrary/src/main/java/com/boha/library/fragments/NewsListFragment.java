@@ -2,6 +2,7 @@ package com.boha.library.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,6 +24,9 @@ import com.boha.library.rssreader.ReadRss;
 import com.boha.library.rssreader.ReadRssAdapter;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
+import com.boha.library.util.Util;
+import com.boha.library.util.WebCheck;
+import com.boha.library.util.WebCheckResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,22 +82,15 @@ public class NewsListFragment extends Fragment implements PageFragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_news_list, container, false);
 
-        //txtEmpty.setVisibility(View.GONE);
         ctx = getActivity();
         setFields();
-
-       // readRss = new ReadRss(ctx, newsRecyclerView);
-       // readRss.execute();
-        newsRead = new NewsRead(ctx, newsRecyclerView);
-        newsRead.execute();
-
-      /*  if (newsList != null) {
-            setList();
+        WebCheckResult wcr = WebCheck.checkNetworkAvailability(ctx, true);
+        if (!wcr.isWifiConnected() && !wcr.isMobileConnected()) {
+            Util.showSnackBar(view,"You are currently not connected to the network","OK", Color.parseColor("red"));
         } else {
-            newsList = new ArrayList<>();
-            setList();
-            getCachedNews();
-        } */
+            newsRead = new NewsRead(ctx, newsRecyclerView);
+            newsRead.execute();
+        }
 
         return view;
     }
