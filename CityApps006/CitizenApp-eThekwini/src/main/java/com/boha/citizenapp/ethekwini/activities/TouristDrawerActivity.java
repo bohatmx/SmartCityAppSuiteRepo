@@ -872,6 +872,7 @@ public class TouristDrawerActivity extends AppCompatActivity implements
     }
 
 
+
   /*  @Override
     public void onAlertClicked(final AlertDTO alert) {
         showAlertDetail(alert);

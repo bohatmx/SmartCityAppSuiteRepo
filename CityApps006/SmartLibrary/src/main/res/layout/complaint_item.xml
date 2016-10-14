@@ -237,7 +237,19 @@
         android:background="@color/white"
         android:padding="@dimen/mon_16">
         <TextView
+            android:padding="@dimen/mon_divider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/description_label"
+            android:text="Comment: "
+            android:layout_marginLeft="@dimen/mon_16"
+            style="@style/TextStyle"/>
+
+        <TextView
+            android:padding="@dimen/mon_divider_small"
+            android:layout_toRightOf="@+id/description_label"
             android:id="@+id/description"
+            style="@style/Title3TextStyleRed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Add complaint description"/>

@@ -132,6 +132,7 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
         } else {
             //item.txtDescription.setText("");
             item.txtDescription.setVisibility(View.GONE);
+            item.txtDescriptionLabel.setVisibility(View.GONE);
             //item.txtDescription.setText("No description to display");
           //  item.txtDescription.setText(p.getDescription());
         }

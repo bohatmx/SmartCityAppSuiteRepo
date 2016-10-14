@@ -60,6 +60,7 @@
             android:name=".services.ComplaintImageService"
             android:exported="false" />
 
+        <activity android:name=".activities.FAQFullDetailActivity"></activity>
     </application>
 
 </manifest>

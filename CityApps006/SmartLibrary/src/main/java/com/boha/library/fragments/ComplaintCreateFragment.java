@@ -195,7 +195,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         if (complaintDescription.getText().toString().isEmpty()) {
             Log.i(LOG, "complaint description is empty");
         } else {
-            complaint.setDescription(complaintDescription.getText().toString());
+            complaint.setDescription(complaintDescription.getText().toString().trim());
         }
         complaint.setCategory(complaintCategory.getComplaintCategoryName().trim());
         complaint.setSubCategory(complaintType.getComplaintTypeName());

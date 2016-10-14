@@ -15,6 +15,7 @@ import com.boha.library.R;
 import com.boha.library.activities.CityApplication;
 import com.boha.library.activities.FaqActivity;
 import com.boha.library.activities.FaqTypeActivity;
+import com.boha.library.activities.FullDetailActivity;
 import com.boha.library.dto.FreqQuestionTypeDTO;
 import com.boha.library.rssreader.FaqTest;
 import com.boha.library.util.FaqStrings;
@@ -43,7 +44,7 @@ public class FaqTypeAdapter extends ArrayAdapter<FreqQuestionTypeDTO> {
         super(context, textViewResourceId, list);
         this.mLayoutRes = textViewResourceId;
         this.darkColor = darkColor;
-        this.arrayList = new ArrayList<FaqTest>();
+        //this.arrayList = new ArrayList<FaqTest>();
         mList = list;
         ctx = context;
         this.mInflater = (LayoutInflater) context
@@ -96,8 +97,9 @@ public class FaqTypeAdapter extends ArrayAdapter<FreqQuestionTypeDTO> {
         }
 
 
-       // final FreqQuestionTypeDTO p = mList.get(position);
+        final FreqQuestionTypeDTO p = mList.get(position);
         //final FaqStrings fs = faqStringsList.get(position);
+        item.txtFaqType.setText(p.getFaqTypeName());
         item.txtNumber.setText("" + (position + 1));
 
         // http://icsmnewsdev.oneconnectgroup.com/et/faq/AccountsPayments.html
@@ -111,43 +113,50 @@ public class FaqTypeAdapter extends ArrayAdapter<FreqQuestionTypeDTO> {
         // http://icsmnewsdev.oneconnectgroup.com/et/faq/MetroPolice.html
 
 
+
         Statics.setRobotoFontLight(ctx, item.txtFaqType);
 
         switch(position) {
             case CityApplication.THEME_INDIGO:
+/*
                 item.txtFaqType.setText("Accounts & Payments");
+*/
                 item.txtNumber.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xindigo_oval_small));
                 break;
             case CityApplication.THEME_GREEN:
+/*
                 item.txtFaqType.setText("Water & Sanitation");
+*/
                 item.txtNumber.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xgreen_oval_small));
                 break;
             case CityApplication.THEME_BROWN:
+/*
                 item.txtFaqType.setText("Cleansing & Solid Waste");
+*/
                 item.txtNumber.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xbrown_oval_small));
                 break;
             case CityApplication.THEME_AMBER:
-                item.txtFaqType.setText("Rates & Taxes");
+                /*item.txtFaqType.setText("Rates & Taxes");*/
                 item.txtNumber.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xamber_oval_small));
                 break;
             case CityApplication.THEME_PURPLE:
-                item.txtFaqType.setText("Building Plans");
+                /*item.txtFaqType.setText("Building Plans");*/
                 item.txtNumber.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xpurple_oval_small));
                 break;
             case CityApplication.THEME_LIME:
-                item.txtFaqType.setText("Electricity");
+                /*item.txtFaqType.setText("Electricity");*/
                 item.txtNumber.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xlime_oval_small));
                 break;
             case CityApplication.THEME_GREY:
-                item.txtFaqType.setText("Social Services");
+                /*item.txtFaqType.setText("Social Services");*/
                 item.txtNumber.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xgrey_oval_small));
                 break;
             case CityApplication.THEME_BLUE:
-                item.txtFaqType.setText("Health");
+                /*item.txtFaqType.setText("Health");*/
                 item.txtNumber.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xblue_oval_small));
                 break;
             case CityApplication.THEME_BLUE_GRAY:
-                item.txtFaqType.setText("Metro Police");
+               /* item.txtFaqType.setText("Metro Police");*/
                 item.txtNumber.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xblue_gray_oval_small));
                 break;
             case CityApplication.THEME_TEAL:

@@ -23,6 +23,7 @@ import com.boha.library.rssreader.FaqTest;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.FAQCommsUtil;
+import com.boha.library.util.FAQs;
 import com.boha.library.util.FaqStrings;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
@@ -154,6 +155,11 @@ public class FaqTypeActivity extends AppCompatActivity implements FaqFragment.Fa
 
     }
 
+    /*@Override
+    public void onFaqCLicked() {
+
+    }
+*/
 
     String AccountFAQ =  "http://icsmnewsdev.oneconnectgroup.com/et/faq/AccountsPayments.html";
     //
@@ -177,72 +183,90 @@ public class FaqTypeActivity extends AppCompatActivity implements FaqFragment.Fa
 
     private void setWebView(int position) {
 
-//        txtTitle.setText("Faq Title"/*response.getFaqTypeList().get(position).getFaqTypeName()*/);
+      //  txtTitle.setText(/*"Faq Title"*/response.getFaqTypeList().get(position).getFaqTypeName());
         switch (position) {
             case 0:
-                Intent intent = new Intent(Intent.ACTION_VIEW);
+                /*Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/AccountsPayments.html"));
-                startActivity(intent);
+                startActivity(intent);*/
                // setAnalyticsEvent("guide", "AppGuide");
-              //  webView.loadData(AccountFAQ, TEXT, UTF);
-            //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.accounts_statement));
+                txtTitle.setText("Accounts & Payments");
+                webView.loadData(FAQs.getACCOUNTSPAYMENTS(), TEXT, UTF);
+
+                //webView.loadData(faqStrings.getAccountsFAQ(), TEXT, UTF);
+//                icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.accounts_statement));
                 break;
             case 1:
-                Intent intent1 = new Intent(Intent.ACTION_VIEW);
+                /*Intent intent1 = new Intent(Intent.ACTION_VIEW);
                 intent1.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/WaterSanitation.html"));
-                startActivity(intent1);
-               // webView.loadData(faqStrings.getBuildingPlansFAQ(), TEXT, UTF);
-             //   icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.building_plans));
+                startActivity(intent1);*/
+                webView.loadData(FAQs.getWATERSANITATION(), TEXT, UTF);
+                txtTitle.setText("Water & Sanitation");
+                /*webView.loadData(faqStrings.getBuildingPlansFAQ(), TEXT, UTF);*/
+               // icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.building_plans));
                 break;
             case 2:
-                Intent intent2 = new Intent(Intent.ACTION_VIEW);
+                /*Intent intent2 = new Intent(Intent.ACTION_VIEW);
                 intent2.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/CleansingSolidWaste.html"));
-                startActivity(intent2);
-               // webView.loadData(faqStrings.getCleaningWasteFAQ(), TEXT, UTF);
+                startActivity(intent2);*/
+                webView.loadData(FAQs.getCLEANINGSOLIDWASTE(), TEXT, UTF);
+                txtTitle.setText("Cleansing & Solid Waste");
+                //webView.loadData(faqStrings.getCleaningWasteFAQ(), TEXT, UTF);
              //   icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.cleaning_solid_waste));
                 break;
             case 3:
-                Intent intent3 = new Intent(Intent.ACTION_VIEW);
+                /*Intent intent3 = new Intent(Intent.ACTION_VIEW);
                 intent3.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/RatesTaxes.html"));
-                startActivity(intent3);
-                //webView.loadData(faqStrings.getElectricityFAQ(), TEXT, UTF);
-             //   icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.electricity));
+                startActivity(intent3);*/
+                webView.loadData(FAQs.getRATESTAXES(), TEXT, UTF);
+                txtTitle.setText("Rates & Taxes");
+               // webView.loadData(faqStrings.getElectricityFAQ(), TEXT, UTF);
+            //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.electricity));
                 break;
             case 4:
-                Intent intent4 = new Intent(Intent.ACTION_VIEW);
+                /*Intent intent4 = new Intent(Intent.ACTION_VIEW);
                 intent4.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/BuildingPlans.html"));
-                startActivity(intent4);
-             //   webView.loadData(faqStrings.getHealthFAQ(), TEXT, UTF);
-            //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.health));
+                startActivity(intent4);*/
+                webView.loadData(FAQs.getBUILDINGPLANS(), TEXT, UTF);
+                txtTitle.setText("Building Plans");
+               // webView.loadData(faqStrings.getHealthFAQ(), TEXT, UTF);
+             //   icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.health));
                 break;
             case 5:
-                Intent intent5 = new Intent(Intent.ACTION_VIEW);
+                /*Intent intent5 = new Intent(Intent.ACTION_VIEW);
                 intent5.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/Electricity.html"));
-                startActivity(intent5);
+                startActivity(intent5);*/
+                webView.loadData(FAQs.getELECTRICITY(), TEXT, UTF);
+                txtTitle.setText("Electricity");
                // webView.loadData(faqStrings.getMetroPoliceFAQ(), TEXT, UTF);
-            //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.metro_police));
+             //   icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.metro_police));
                 break;
             case 6:
-                Intent intent6 = new Intent(Intent.ACTION_VIEW);
+                /*Intent intent6 = new Intent(Intent.ACTION_VIEW);
                 intent6.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/SocialServices.html"));
-                startActivity(intent6);
-              //  webView.loadData(faqStrings.getRatesTaxesFAQ(), TEXT, UTF);
-            //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.rates_taxes));
+                startActivity(intent6);*/
+                webView.loadData(FAQs.getSOCIALSERVICES(), TEXT, UTF);
+                txtTitle.setText("Social Services");
+               // webView.loadData(faqStrings.getRatesTaxesFAQ(), TEXT, UTF);
+             //   icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.rates_taxes));
                 break;
             case 7:
-                Intent intent7 = new Intent(Intent.ACTION_VIEW);
+                /*Intent intent7 = new Intent(Intent.ACTION_VIEW);
                 intent7.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/Health.html"));
-                startActivity(intent7);
+                startActivity(intent7);*/
+                webView.loadData(FAQs.getHEALTH(), TEXT, UTF);
+                txtTitle.setText("Health");
               //  webView.loadData(faqStrings.getSocialServicesFAQ(), TEXT, UTF);
             //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.social_services));
                 break;
             case 8:
-                Intent intent8 = new Intent(Intent.ACTION_VIEW);
-
+                /*Intent intent8 = new Intent(Intent.ACTION_VIEW);
                 intent8.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/MetroPolice.html"));
-                startActivity(intent8);
-              //  webView.loadData(faqStrings.getWaterSanitationFAQ(), TEXT, UTF);
-            //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.water_sanitation));
+                startActivity(intent8);*/
+                webView.loadData(FAQs.getMETROPOLICE(), TEXT, UTF);
+                txtTitle.setText("Metro Police");
+               // webView.loadData(faqStrings.getWaterSanitationFAQ(), TEXT, UTF);
+             //   icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.water_sanitation));
                 break;
         }
 

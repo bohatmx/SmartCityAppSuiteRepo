@@ -73,21 +73,22 @@
             android:text="No FAQ Available"
             android:visibility="gone"/>
 
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/faqRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/grey"/>
-     <!--    <ListView
+        <!--<ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/FAQ_LIST"/> -->
+            android:id="@+id/FAQ_LIST"/>-->
 
-
-      <!--  <WebView
+<!--
+       <WebView
             android:id="@+id/FAQ_webView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>  -->
+            android:layout_height="match_parent"/>-->
     </RelativeLayout>
 
     <RelativeLayout

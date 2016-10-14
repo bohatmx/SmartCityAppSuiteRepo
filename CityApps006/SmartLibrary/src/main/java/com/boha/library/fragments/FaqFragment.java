@@ -18,6 +18,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.boha.library.R;
+import com.boha.library.activities.FAQFullDetailActivity;
+import com.boha.library.activities.FaqActivity;
+import com.boha.library.activities.FaqTypeActivity;
+import com.boha.library.activities.FullDetailActivity;
 import com.boha.library.adapters.FaqTypeAdapter;
 import com.boha.library.dto.FreqQuestionTypeDTO;
 import com.boha.library.rssreader.FaqAdapter;
@@ -25,6 +29,7 @@ import com.boha.library.rssreader.FaqTest;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.FAQCommsUtil;
+import com.boha.library.util.FAQs;
 import com.boha.library.util.FaqStrings;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
@@ -44,7 +49,7 @@ public class FaqFragment extends Fragment implements PageFragment {
 
     public interface FaqListener {
         void setBusy(boolean busy);
-        //void onFaqCLicked();
+      //  void onFaqCLicked();
     }
 
     ResponseDTO response;
@@ -77,7 +82,7 @@ public class FaqFragment extends Fragment implements PageFragment {
 //        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
         if (getArguments() != null) {
             response = (ResponseDTO) getArguments().getSerializable("response");
-        //    faqTypeList = response.getFaqTypeList();
+//            faqTypeList = response.getFaqTypeList();
         }
     }
     String [] FAQ = {"Account Payments", "Water Sanitation", "Cleaning & Solid Waste",
@@ -97,14 +102,14 @@ public class FaqFragment extends Fragment implements PageFragment {
 
 
         animateSomething();
-       /* if (faqTypeList != null) {
+        /*if (faqTypeList != null) {
             setList();
         } else {
             faqTypeList = new ArrayList<>();
             setList();
 
         }
-        getCachedFAQs(); */
+        getCachedFAQs();*/
         return view;
     }
 
@@ -265,21 +270,26 @@ public class FaqFragment extends Fragment implements PageFragment {
         progressBar.setVisibility(View.GONE);
         //FAQ_LIST = (ListView) view.findViewById(R.id.FAQ_LIST);
         recyclerView = (RecyclerView) view.findViewById(R.id.faqRecyclerView);
-       // LinearLayoutManager lm = new LinearLayoutManager(ctx,LinearLayoutManager.VERTICAL,false);
-       // recyclerView.setLayoutManager(lm);
+        LinearLayoutManager lm = new LinearLayoutManager(ctx,LinearLayoutManager.VERTICAL,false);
+        recyclerView.setLayoutManager(lm);
 
-        adapter = new FaqAdapter(ctx, FAQ, FAQ_NUMBER, new FaqAdapter.FaqListListener() {
+        faqAdapter = new FaqAdapter(ctx, FAQ, FAQ_NUMBER, new FaqAdapter.FaqListListener() {
             @Override
             public void onFaqClicked(int position) {
                 setWebView(position);
             }
         });
+        /*faqTypeAdapter = new FaqTypeAdapter(ctx, R.layout.faqtype_item, darkColor, faqTypeList, new FaqTypeAdapter.FaqTypeListListener() {
+            @Override
+            public void onFaqTypeClicked(int position) {
+                Intent intent = new Intent(ctx, FaqTypeActivity.class);
+                startActivity(intent);
+            }
+        });*/
         layoutManager = new LinearLayoutManager(ctx);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
-        //faqAdapter = new FaqAdapter(ctx, faqList);
-        //recyclerView.setAdapter(faqAdapter);
+        recyclerView.setAdapter(faqAdapter);
 
         fab.setVisibility(View.GONE);
       /*  fab.setOnClickListener(new View.OnClickListener() {
@@ -325,68 +335,58 @@ public class FaqFragment extends Fragment implements PageFragment {
 //        txtTitle.setText("Faq Title"/*response.getFaqTypeList().get(position).getFaqTypeName()*/);
         switch (position) {
             case 0:
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/AccountsPayments.html"));
-                startActivity(intent);
-                // setAnalyticsEvent("guide", "AppGuide");
-                //  webView.loadData(AccountFAQ, TEXT, UTF);
-                //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.accounts_statement));
+                Intent intent = new Intent(ctx, FAQFullDetailActivity.class);
+                intent.putExtra("newsTitle", "Account Payments");
+                intent.putExtra("newsArticle", FAQs.getACCOUNTSPAYMENTS());
+                ctx.startActivity(intent);
                 break;
             case 1:
-                Intent intent1 = new Intent(Intent.ACTION_VIEW);
-                intent1.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/WaterSanitation.html"));
-                startActivity(intent1);
-                // webView.loadData(faqStrings.getBuildingPlansFAQ(), TEXT, UTF);
-                //   icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.building_plans));
+                Intent intent1 = new Intent(ctx, FAQFullDetailActivity.class);
+                intent1.putExtra("newsTitle", "Water & Sanitation");
+                intent1.putExtra("newsArticle", FAQs.getWATERSANITATION());
+                ctx.startActivity(intent1);
                 break;
             case 2:
-                Intent intent2 = new Intent(Intent.ACTION_VIEW);
-                intent2.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/CleansingSolidWaste.html"));
-                startActivity(intent2);
-                // webView.loadData(faqStrings.getCleaningWasteFAQ(), TEXT, UTF);
-                //   icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.cleaning_solid_waste));
+                Intent intent2 = new Intent(ctx, FAQFullDetailActivity.class);
+                intent2.putExtra("newsTitle", "Cleansing & Solid Waste");
+                intent2.putExtra("newsArticle", FAQs.getCLEANINGSOLIDWASTE());
+                ctx.startActivity(intent2);
                 break;
             case 3:
-                Intent intent3 = new Intent(Intent.ACTION_VIEW);
-                intent3.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/RatesTaxes.html"));
-                startActivity(intent3);
-                //webView.loadData(faqStrings.getElectricityFAQ(), TEXT, UTF);
-                //   icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.electricity));
+                Intent intent3 = new Intent(ctx, FAQFullDetailActivity.class);
+                intent3.putExtra("newsTitle", "Rates & Taxes");
+                intent3.putExtra("newsArticle", FAQs.getRATESTAXES());
+                ctx.startActivity(intent3);
                 break;
             case 4:
-                Intent intent4 = new Intent(Intent.ACTION_VIEW);
-                intent4.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/BuildingPlans.html"));
-                startActivity(intent4);
-                //   webView.loadData(faqStrings.getHealthFAQ(), TEXT, UTF);
-                //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.health));
+                Intent intent4 = new Intent(ctx, FAQFullDetailActivity.class);
+                intent4.putExtra("newsTitle", "Building Plans");
+                intent4.putExtra("newsArticle", FAQs.getBUILDINGPLANS());
+                ctx.startActivity(intent4);
                 break;
             case 5:
-                Intent intent5 = new Intent(Intent.ACTION_VIEW);
-                intent5.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/Electricity.html"));
-                startActivity(intent5);
-                // webView.loadData(faqStrings.getMetroPoliceFAQ(), TEXT, UTF);
-                //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.metro_police));
+                Intent intent5 = new Intent(ctx, FAQFullDetailActivity.class);
+                intent5.putExtra("newsTitle", "Electricity");
+                intent5.putExtra("newsArticle", FAQs.getELECTRICITY());
+                ctx.startActivity(intent5);
                 break;
             case 6:
-                Intent intent6 = new Intent(Intent.ACTION_VIEW);
-                intent6.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/SocialServices.html"));
-                startActivity(intent6);
-                //  webView.loadData(faqStrings.getRatesTaxesFAQ(), TEXT, UTF);
-                //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.rates_taxes));
+                Intent intent6 = new Intent(ctx, FAQFullDetailActivity.class);
+                intent6.putExtra("newsTitle", "Social Services");
+                intent6.putExtra("newsArticle", FAQs.getSOCIALSERVICES());
+                ctx.startActivity(intent6);
                 break;
             case 7:
-                Intent intent7 = new Intent(Intent.ACTION_VIEW);
-                intent7.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/Health.html"));
-                startActivity(intent7);
-                //  webView.loadData(faqStrings.getSocialServicesFAQ(), TEXT, UTF);
-                //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.social_services));
+                Intent intent7 = new Intent(ctx, FAQFullDetailActivity.class);
+                intent7.putExtra("newsTitle", "Health");
+                intent7.putExtra("newsArticle", FAQs.getHEALTH());
+                ctx.startActivity(intent7);
                 break;
             case 8:
-                Intent intent8 = new Intent(Intent.ACTION_VIEW);
-                intent8.setData(Uri.parse("http://icsmnewsdev.oneconnectgroup.com/et/faq/MetroPolice.html"));
-                startActivity(intent8);
-                //  webView.loadData(faqStrings.getWaterSanitationFAQ(), TEXT, UTF);
-                //    icon.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.water_sanitation));
+                Intent intent8 = new Intent(ctx, FAQFullDetailActivity.class);
+                intent8.putExtra("newsTitle", "Metro Police");
+                intent8.putExtra("newsArticle", FAQs.getMETROPOLICE());
+                ctx.startActivity(intent8);
                 break;
         }
 
