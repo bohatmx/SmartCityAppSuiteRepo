@@ -2,6 +2,7 @@ package com.boha.library.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -29,6 +30,9 @@ import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.Statics;
+import com.boha.library.util.Util;
+import com.boha.library.util.WebCheck;
+import com.boha.library.util.WebCheckResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,13 +57,12 @@ public class AlertListFragment extends Fragment implements PageFragment {
     }
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             ResponseDTO r = (ResponseDTO) getArguments().getSerializable("response");
-          //  alertList = r.getAlertList();
+            //  alertList = r.getAlertList();
         }
     }
 
@@ -73,14 +76,14 @@ public class AlertListFragment extends Fragment implements PageFragment {
 
     static final int MIN_KM = 100;
     int radius = MIN_KM;
-    ImageView  heroImage;
+    ImageView heroImage;
     int logo;
     FloatingActionButton fab;
 
     public void setLocation(Location location) {
         this.location = location;
         Log.w(LOG, "### setLocation: will refresh alerts");
-      //  refreshAlerts();
+        //  refreshAlerts();
 
     }
 
@@ -94,26 +97,15 @@ public class AlertListFragment extends Fragment implements PageFragment {
         view = inflater.inflate(R.layout.fragment_alert_list, container, false);
         ctx = getActivity();
         setFields();
-      //  txtEmpty.setVisibility(View.GONE);
-       /* if (alertList != null) {
-            setList();
+        WebCheckResult wcr = WebCheck.checkNetworkAvailability(ctx, true);
+        if (!wcr.isWifiConnected() && !wcr.isMobileConnected()) {
+            Util.showSnackBar(view, "You are currently not connected to the network", "OK", Color.parseColor("red"));
         } else {
-            getCachedAlerts();
-        } */
-       // alertReadRss = new AlertReadRss(ctx, recyclerView);
-       // alertReadRss.execute();
-        alertsRead = new AlertsRead(ctx, recyclerView);
-        alertsRead.execute();
+            alertsRead = new AlertsRead(ctx, recyclerView);
+            alertsRead.execute();
+        }
 
-
-        /*AlertsRead.DownloadNews.execute(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        });*/
-
-        switch(primaryColor) {
+        switch (primaryColor) {
             case CityApplication.THEME_INDIGO:
                 view.findViewById(R.id.AI_color).setBackground(ContextCompat.getDrawable(ctx, R.drawable.xindigo_oval_small));
                 break;
@@ -167,9 +159,10 @@ public class AlertListFragment extends Fragment implements PageFragment {
         setList();
     }
 
-AlertsReadAdapter alertsReadAdapter;
+    AlertsReadAdapter alertsReadAdapter;
+
     private void setFields() {
-        txtEmpty = (TextView)view.findViewById(R.id.ALERT_LIST_text);
+        txtEmpty = (TextView) view.findViewById(R.id.ALERT_LIST_text);
         txtEmpty.setVisibility(View.GONE);
        /* if (alertsFeedItems != null) {
             txtEmpty.setVisibility(View.GONE);
@@ -179,9 +172,9 @@ AlertsReadAdapter alertsReadAdapter;
         Statics.setRobotoFontLight(ctx, txtEmpty);
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         recyclerView = (RecyclerView) view.findViewById(R.id.ALERT_LIST_listView);
-        LinearLayoutManager lm = new LinearLayoutManager(ctx,LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager lm = new LinearLayoutManager(ctx, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(lm);
-       // heroImage = (ImageView) view.findViewById(R.id.FAL_hero);
+        // heroImage = (ImageView) view.findViewById(R.id.FAL_hero);
 
        /* alertsReadAdapter = new AlertsReadAdapter(ctx, alertsFeedItems, new AlertsReadAdapter.NewsListListener() {
             @Override
@@ -333,7 +326,7 @@ AlertsReadAdapter alertsReadAdapter;
 
     }
 
-  //  AlertRecyclerAdapter alertListAdapter;
+    //  AlertRecyclerAdapter alertListAdapter;
     static final long THREE_DAYS = 1000 * 60 * 60 * 24 * 3;
 
    /* private void setList() {
@@ -358,8 +351,9 @@ AlertsReadAdapter alertsReadAdapter;
     } */
 
     ReadRssAdapter readRssAdapter;
-    private void setList(){
-        readRssAdapter = new ReadRssAdapter(ctx, alertReadRss.feedItems , new ReadRssAdapter.NewsListListener() {
+
+    private void setList() {
+        readRssAdapter = new ReadRssAdapter(ctx, alertReadRss.feedItems, new ReadRssAdapter.NewsListListener() {
             @Override
             public void onNewsClicked() {
 

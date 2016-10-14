@@ -17,15 +17,14 @@ public class Statics {
 
    // public static final String PREFIX = "http://icsmsdev1.oneconnectgroup.com:8585";
     public static final String PREFIX = "http://smartcitydev.ocgroup.co.za";
-   // public static final String PREFIX = "http://10.0.0.109:8080";
-    //192.168.1.253 // 10.0.0.109
+//    public static final String PREFIX = "http://192.168.1.233:40405";
 
     public static final String URL = PREFIX + "/sc/";
     public static final String IMAGE_URL = PREFIX + "/";
 
 
     /**
-     * SmartCity Production Serverz
+     * SmartCity Production Server
      */
 
 

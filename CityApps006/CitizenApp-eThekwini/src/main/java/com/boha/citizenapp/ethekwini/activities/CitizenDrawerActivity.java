@@ -77,6 +77,8 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
+import com.boha.library.util.WebCheck;
+import com.boha.library.util.WebCheckResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -244,6 +246,11 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
     private void getLoginData() {
         Log.e(LOG, "@@@@@@@@@ .............. ............  getLoginData ...... ");
+        WebCheckResult wcr = WebCheck.checkNetworkAvailability(ctx, true);
+        if (!wcr.isWifiConnected() && !wcr.isMobileConnected()) {
+            Util.showSnackBar(mDrawerLayout,"You are currently not connected to the network","OK", Color.parseColor("red"));
+            return;
+        }
         final RequestDTO w = new RequestDTO(RequestDTO.SIGN_IN_CITIZEN);
         if (user != null) {
             w.setUser(user);

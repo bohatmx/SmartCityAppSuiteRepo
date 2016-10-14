@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -34,6 +35,8 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
+import com.boha.library.util.WebCheck;
+import com.boha.library.util.WebCheckResult;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 
@@ -185,6 +188,11 @@ public class SigninActivity extends AppCompatActivity {
 
     public void sendSignInCitizen() {
 
+        WebCheckResult wcr = WebCheck.checkNetworkAvailability(this);
+        if (!wcr.isWifiConnected() && !wcr.isMobileConnected()) {
+            Util.showSnackBar(editPassword,"You are currently not connected to the network","OK", Color.parseColor("red"));
+            return;
+        }
         final long start = System.currentTimeMillis();
         Snackbar.make(editPassword, "Downloading information; may take a minute or two",
                 Snackbar.LENGTH_LONG).show();
