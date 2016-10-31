@@ -1,6 +1,7 @@
 package com.boha.library.jsonreader;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.boha.library.util.Util;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -49,8 +51,8 @@ public class NewsRead extends AsyncTask<Void,Void,Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
-        if (feedItems != null) {
-            Log.i(LOG, "feedItems: " + feedItems.getFeedItems().size());
+        if (feedItems.getFeedItems() != null) {
+                Log.i(LOG, "feedItems: " + feedItems.getFeedItems().size());
             NewsReadAdapter adapter = new NewsReadAdapter(context, feedItems.getFeedItems(), new NewsReadAdapter.NewsListListener() {
                 @Override
                 public void onNewsClicked() {
@@ -59,8 +61,9 @@ public class NewsRead extends AsyncTask<Void,Void,Void> {
             });
             recyclerView.setAdapter(adapter);
         } else {
-            Log.i(LOG, "feedItems is null" );
-            /* */
+            Log.i(LOG, "news feedItems is null" );
+            Util.showSnackBar(recyclerView, "No headlines to display", "Dismiss", Color.parseColor("RED"));
+
         }
 
     }

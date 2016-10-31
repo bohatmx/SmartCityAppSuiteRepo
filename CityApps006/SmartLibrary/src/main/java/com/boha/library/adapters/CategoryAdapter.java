@@ -101,6 +101,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             image.setImageDrawable(d);
         }
 
+        if (p.equalsIgnoreCase("Electricity")) {
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zpower_failure);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
+
 
     }
     @Override

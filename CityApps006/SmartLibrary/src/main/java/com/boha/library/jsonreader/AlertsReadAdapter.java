@@ -1,6 +1,7 @@
 package com.boha.library.jsonreader;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.library.R;
+import com.boha.library.activities.FullDetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -150,16 +152,16 @@ public class AlertsReadAdapter extends RecyclerView.Adapter<AlertsReadAdapter.My
 
                 }
             });
-            /*itemView.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, FullDetailActivity.class);
                     intent.putExtra("newsTitle", alertsFeedItems.get(getAdapterPosition()).getTitle());
-                 //   intent.putExtra("newsArticle", alertsFeedItems.get(getAdapterPosition()).getDescription());
+                    intent.putExtra("newsArticle", alertsFeedItems.get(getAdapterPosition()).getDescription());
                     intent.putExtra("newsImage", alertsFeedItems.get(getAdapterPosition()).getThumbnailUrl());
                     context.startActivity(intent);
                 }
-            });*/
+            });
             //  readMore.setVisibility(View.GONE);
             //MoreIMG = (ImageView) itemView.findViewById(R.id.more_img);
             // MoreIMG.setVisibility(View.GONE);

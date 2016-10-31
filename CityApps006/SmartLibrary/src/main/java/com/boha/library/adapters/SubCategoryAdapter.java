@@ -245,6 +245,31 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
         }
+        if (p.equalsIgnoreCase("No Supply (multiple customers)")) {
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zpower_failure);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
+        if (p.equalsIgnoreCase("No Supply (only affecting me)")) {
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zpower_failure);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
+        if (p.equalsIgnoreCase("Dangerous Situation")) {
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zpower_failure);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
+        if (p.equalsIgnoreCase("Street Light")) {
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zpower_failure);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
+
         if (p.equalsIgnoreCase("Uncategorized Complaint")) {
             image.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.ic_action_bell));
         }

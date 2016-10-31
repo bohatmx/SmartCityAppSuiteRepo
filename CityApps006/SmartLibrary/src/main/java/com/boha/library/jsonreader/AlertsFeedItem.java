@@ -5,7 +5,7 @@ package com.boha.library.jsonreader;
  */
 public class AlertsFeedItem {
     String guid, title, category, thumbnailUrl,
-            latitude, longitude, pubDate, expiryDate;
+            latitude, longitude, pubDate, expiryDate, description;
 
     public String getGuid() {
         return guid;
@@ -69,5 +69,13 @@ public class AlertsFeedItem {
 
     public void setExpiryDate(String expiryDate) {
         this.expiryDate = expiryDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

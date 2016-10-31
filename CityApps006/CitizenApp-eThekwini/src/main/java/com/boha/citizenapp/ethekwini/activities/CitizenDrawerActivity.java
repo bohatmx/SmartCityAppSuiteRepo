@@ -79,6 +79,8 @@ import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 import com.boha.library.util.WebCheck;
 import com.boha.library.util.WebCheckResult;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -208,6 +210,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         mDrawerLayout.openDrawer(GravityCompat.START);
         setAnalyticsEvent("main", "Main Screen");
     }
+
 
     private void setAnalyticsEvent(String id, String name) {
         Bundle bundle = new Bundle();

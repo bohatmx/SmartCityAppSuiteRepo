@@ -49,8 +49,6 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
         return null;
     }
 
-
-
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -59,7 +57,7 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        if (feeditems != null) {
+        if (feeditems.getFeedItems() != null) {
             Log.i(LOG, "onPostExecute: feedItems:" + feeditems.getFeedItems().size());
 
             AlertsReadAdapter adapter = new AlertsReadAdapter(context,
@@ -73,6 +71,7 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
             recyclerView.setAdapter(adapter);
         } else {
             Log.i(LOG, "alertsFeedItems is null" );
+            Util.showSnackBar(recyclerView, "No alerts to display", "Dismiss", Color.parseColor("RED"));
         }
 
     }
