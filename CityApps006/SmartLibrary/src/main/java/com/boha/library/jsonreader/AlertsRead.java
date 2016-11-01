@@ -103,7 +103,7 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
             is.close();
             json = sb.toString();
             feeditems = gson.fromJson(json,AlertFeedItems.class);
-            Log.d(LOG, "getFeedItems: feedItems: " + feeditems.feedItems.size());
+          //  Log.d(LOG, "getFeedItems: feedItems: " + feeditems.feedItems.size());
             Log.e(LOG, "getFeedItems: " + json );
         } catch (UnsupportedEncodingException e) {
             Log.e(LOG, e.getMessage());
