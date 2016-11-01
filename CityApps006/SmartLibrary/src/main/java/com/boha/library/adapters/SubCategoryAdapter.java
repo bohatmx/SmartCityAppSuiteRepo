@@ -246,25 +246,25 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
             image.setImageDrawable(d);
         }
         if (p.equalsIgnoreCase("No Supply (multiple customers)")) {
-            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zpower_failure);
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.power_failure_all);
             d.setColorFilter(new
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
         }
         if (p.equalsIgnoreCase("No Supply (only affecting me)")) {
-            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zpower_failure);
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.no_power);
             d.setColorFilter(new
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
         }
         if (p.equalsIgnoreCase("Dangerous Situation")) {
-            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zpower_failure);
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.danger);
             d.setColorFilter(new
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
         }
         if (p.equalsIgnoreCase("Street Light")) {
-            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zpower_failure);
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.streetlight32);
             d.setColorFilter(new
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);

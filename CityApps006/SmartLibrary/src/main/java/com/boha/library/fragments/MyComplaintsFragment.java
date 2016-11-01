@@ -115,6 +115,7 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
                 txtNoComp.setVisibility(View.GONE);
             }
         }
+
         txtCount.setText("" + complaintList.size());
 
         adapter = new ComplaintListAdapter(ctx, R.layout.my_complaint_item, primaryDarkColor,

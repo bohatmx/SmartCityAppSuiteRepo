@@ -39,14 +39,14 @@
             <TextView
                 android:id="@+id/GEN_txt"
                 android:textSize="@dimen/emergency_text_size"
-                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/first_gen_paragraph"/>
             <TextView
                 android:id="@+id/GEN_txt2"
                 android:textSize="@dimen/emergency_text_size"
-                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/GEN_txt"
@@ -54,7 +54,7 @@
             <TextView
                 android:id="@+id/GEN_txt3"
                 android:textSize="@dimen/emergency_text_size"
-                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/GEN_txt2"
@@ -62,7 +62,7 @@
             <TextView
                 android:id="@+id/GEN_txt4"
                 android:textSize="@dimen/emergency_text_size"
-                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/GEN_txt3"
@@ -70,7 +70,7 @@
             <TextView
                 android:id="@+id/GEN_txt5"
                 android:textSize="@dimen/emergency_text_size"
-                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/GEN_txt4"
@@ -78,7 +78,7 @@
             <TextView
                 android:id="@+id/GEN_txt6"
                 android:textSize="@dimen/emergency_text_size"
-                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/GEN_txt5"
@@ -86,7 +86,7 @@
             <TextView
                 android:id="@+id/GEN_txt7"
                 android:textSize="@dimen/emergency_text_size"
-                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/GEN_txt6"
@@ -94,7 +94,7 @@
             <TextView
                 android:id="@+id/GEN_txt8"
                 android:textSize="@dimen/emergency_text_size"
-                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/GEN_txt7"
@@ -102,7 +102,7 @@
             <TextView
                 android:id="@+id/GEN_txt9"
                 android:textSize="@dimen/emergency_text_size"
-                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/GEN_txt8"
@@ -110,7 +110,7 @@
             <TextView
                 android:id="@+id/GEN_txt10"
                 android:textSize="@dimen/emergency_text_size"
-                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/GEN_txt9"
@@ -118,7 +118,7 @@
             <TextView
                 android:id="@+id/GEN_txt11"
                 android:textSize="@dimen/emergency_text_size"
-                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/GEN_txt10"
@@ -127,7 +127,7 @@
             <TextView
                 android:id="@+id/GEN_txt12"
                 android:textSize="@dimen/emergency_text_size"
-                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/GEN_txt11"
