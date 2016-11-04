@@ -44,6 +44,7 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
 import com.boha.library.util.WebCheck;
+import com.boha.library.util.WebCheckResult;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crash.FirebaseCrash;
 
@@ -156,6 +157,13 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
 
     private void sendComplaint() {
+
+        WebCheckResult wcr = WebCheck.checkNetworkAvailability(ctx);
+        if (!wcr.isWifiConnected() && !wcr.isMobileConnected()) {
+            Util.showSnackBar(hero,"You are currently not connected to the network","OK", Color.parseColor("red"));
+            //   Toast.makeText(SplashActivity.this,"You are currently not connected to the network",Toast.LENGTH_LONG).show();
+            return;
+        }
 
 
         if (complaintCategory == null) {

@@ -30,6 +30,8 @@ import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Statics;
 import com.boha.library.util.Util;
+import com.boha.library.util.WebCheck;
+import com.boha.library.util.WebCheckResult;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
@@ -336,6 +338,12 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
 //        });
     }
     private void getCaseDetails(final String href, final int position) {
+        WebCheckResult wcr = WebCheck.checkNetworkAvailability(ctx);
+        if (!wcr.isWifiConnected() && !wcr.isMobileConnected()) {
+            Util.showSnackBar(txtCount,"You are currently not connected to the network","OK", Color.parseColor("red"));
+            //   Toast.makeText(SplashActivity.this,"You are currently not connected to the network",Toast.LENGTH_LONG).show();
+            return;
+        }
         RequestDTO w = new RequestDTO(RequestDTO.GET_COMPLAINT_STATUS);
         w.setReferenceNumber(href);
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
