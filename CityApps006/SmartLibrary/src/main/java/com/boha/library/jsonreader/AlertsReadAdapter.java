@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.library.R;
+import com.boha.library.activities.FullAlertDetailActivity;
 import com.boha.library.activities.FullDetailActivity;
 import com.squareup.picasso.Picasso;
 
@@ -155,7 +156,7 @@ public class AlertsReadAdapter extends RecyclerView.Adapter<AlertsReadAdapter.My
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(context, FullDetailActivity.class);
+                    Intent intent = new Intent(context, /*FullDetailActivity*/FullAlertDetailActivity.class);
                     intent.putExtra("newsTitle", alertsFeedItems.get(getAdapterPosition()).getTitle());
                     intent.putExtra("newsArticle", alertsFeedItems.get(getAdapterPosition()).getDescription());
                     intent.putExtra("newsImage", alertsFeedItems.get(getAdapterPosition()).getThumbnailUrl());

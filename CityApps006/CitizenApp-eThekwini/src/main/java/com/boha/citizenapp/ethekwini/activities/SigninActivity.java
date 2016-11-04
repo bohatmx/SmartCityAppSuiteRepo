@@ -287,7 +287,12 @@ public class SigninActivity extends AppCompatActivity {
                     public void run() {
                         progressDialog.dismiss();
                         btnSend.setEnabled(true);
-                        Util.showErrorToast(ctx, message);
+                        Log.e(LOG, message);
+                       // Util.showToast(ctx, "Incorrect email/password");
+                        Util.showSnackBar(editPassword, getString(com.boha.library.R.string.incorrect_credentials),
+                                "Dismiss", Color.parseColor("GREEN"));
+
+                        //   Util.showErrorToast(ctx, message);
                     }
                 });
             }

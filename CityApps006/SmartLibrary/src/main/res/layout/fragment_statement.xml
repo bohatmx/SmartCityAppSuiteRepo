@@ -82,7 +82,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/ST_list"
             android:layout_below="@id/ST_top"
-            android:layout_marginTop="@dimen/mon_wider"
+            android:layout_marginTop="@dimen/mon_12"
             android:padding="@dimen/mon_divider"
             android:layout_width="match_parent"
             android:layout_height="match_parent">

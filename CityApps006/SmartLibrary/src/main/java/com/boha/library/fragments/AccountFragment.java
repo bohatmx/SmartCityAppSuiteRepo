@@ -191,7 +191,7 @@ public class AccountFragment extends Fragment implements PageFragment {
         txtLastBillAmount = (TextView) view.findViewById(R.id.ACCT_lastBillAmount);
 
 
-        txtArrears.setOnClickListener(new View.OnClickListener() {
+        /*txtArrears.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Util.flashOnce(txtArrears, 300, new Util.UtilAnimationListener() {
@@ -201,7 +201,7 @@ public class AccountFragment extends Fragment implements PageFragment {
                     }
                 });
             }
-        });
+        });*/
 
         setAccountFields();
        // animateSomething();

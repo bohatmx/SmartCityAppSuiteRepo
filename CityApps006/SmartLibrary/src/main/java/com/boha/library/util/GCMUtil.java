@@ -89,7 +89,8 @@ public class GCMUtil {
             Log.i(LOG, "onPostExecute... ending GCM registration");
             if (result > 0) {
                 gcmUtilListener.onGCMError();
-                Util.showErrorToast(ctx, "Bad GCM Registration attempt");
+                //Util.showErrorToast(ctx, "Bad GCM Registration attempt");
+                Log.e(LOG, "Bad GCM Registration attempt");
                 return;
             }
             gcmUtilListener.onDeviceRegistered(registrationID);

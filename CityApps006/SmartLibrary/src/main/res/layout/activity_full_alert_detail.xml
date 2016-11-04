@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_full_alert_detail"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="com.boha.library.activities.FullAlertDetailActivity">
+
+    <ScrollView
+        android:id="@+id/ALERTDETAILSCROLL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/mon_16"
+            android:background="@color/white">
+
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card"
+                app:cardElevation="@dimen/mon_divider"
+                android:layout_margin="@dimen/mon_padding"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:padding="@dimen/mon_padding"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_below="@+id/alert_DETAILSIMG"
+                        android:id="@+id/alert_details_title"
+                        android:text="Alert Title"
+                        style="@style/TextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/mon_16"/>
+
+                    <ImageView
+                        android:padding="@dimen/mon_divider"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:id="@+id/alert_DETAILSIMG"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/alert_2x"/>
+                    <WebView
+                        android:id="@+id/alert_details_webView"
+                        android:layout_margin="@dimen/mon_divider"
+                        android:layout_below="@id/alert_details_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+
+
+
+
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/testtxt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

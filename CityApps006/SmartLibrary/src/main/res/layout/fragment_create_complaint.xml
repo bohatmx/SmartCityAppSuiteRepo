@@ -71,15 +71,19 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/ic_action_back" />
+
+            <ImageView
+                android:layout_below="@+id/backIcon"
+                android:id="@+id/cameraIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/mon_16"
+                android:src="@drawable/ic_action_camera" />
+
         </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/cameraIcon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/mon_16"
-            android:src="@drawable/ic_action_camera" />
+
 
 
     </RelativeLayout>

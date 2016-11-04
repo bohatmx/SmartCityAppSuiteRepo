@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,15 +12,24 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.boha.library.R;
+import com.boha.library.activities.AccountDetailActivity;
 import com.boha.library.adapters.StatementRecyclerAdapter;
 import com.boha.library.dto.AccountDTO;
 import com.boha.library.transfer.RequestDTO;
@@ -38,8 +48,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
@@ -206,12 +219,11 @@ public class StatementListFragment extends Fragment implements PageFragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.ST_list);
         txtLabel = (TextView) view.findViewById(R.id.ST_label);
 
-        if (filePathList != null) {
-            txtLabel.setText(R.string.downloaded_statement);
-        } else {
+         if (filePathList.size() == 0){
             txtLabel.setText(R.string.download_statement);
+        } else  {
+            txtLabel.setText(R.string.downloaded_statement);
         }
-
 
         txtDate.setText("Not Downloaded");
         txtCount.setText("0");
@@ -361,7 +373,8 @@ public class StatementListFragment extends Fragment implements PageFragment {
 
                                 } else {
                                     if (response.isMunicipalityAccessFailed()) {
-                                        Util.showSnackBar(txtTitle, ctx.getString(R.string.unable_connect_muni),"OK", Color.parseColor("RED"));
+                                        Util.showSnackBar(txtTitle, ctx.getString(R.string.unable_connect_muni),"OK",
+                                                Color.parseColor("RED"));
                                     } else {
                                         FirebaseCrash.report(new Exception("No statements found for: " + year + ":" + month));
                                         Util.showSnackBar(txtTitle, "No statements found for the month selected","OK", Color.parseColor("YELLOW"));
@@ -384,6 +397,11 @@ public class StatementListFragment extends Fragment implements PageFragment {
                             FirebaseCrash.report(new Exception("Statement download failed: " + message));
                             enableFab();
                             snackbar = Util.showSnackBar(txtTitle, message, "OK", Color.parseColor("RED"));
+                            Log.e(LOG, message);
+                            Toast.makeText(ctx, "The months statement requested is not available", Toast.LENGTH_LONG).show();
+                            getActivity().onBackPressed();
+                       //     getActivity().finish();
+
                         }
                     });
                 }

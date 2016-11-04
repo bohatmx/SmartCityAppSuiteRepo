@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.boha.library.R;
 import com.boha.library.dto.NewsArticleDTO;
@@ -86,7 +87,8 @@ public class NewsListFragment extends Fragment implements PageFragment {
         setFields();
         WebCheckResult wcr = WebCheck.checkNetworkAvailability(ctx, true);
         if (!wcr.isWifiConnected() && !wcr.isMobileConnected()) {
-            Util.showSnackBar(view,"You are currently not connected to the network","OK", Color.parseColor("red"));
+        //    Util.showSnackBar(view,"You are currently not connected to the network","OK", Color.parseColor("red"));
+            Toast.makeText(getActivity(),"You are currently not connected to the network",Toast.LENGTH_LONG).show();
         } else {
             newsRead = new NewsRead(ctx, newsRecyclerView);
             newsRead.execute();

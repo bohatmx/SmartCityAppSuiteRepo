@@ -238,7 +238,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                                 return;
                             } else {
                                 if (response.getComplaintList() != null && !response.getComplaintList().isEmpty()) {
-                                    snackbar = Util.showSnackBar(recyclerView, getString(R.string.complaint_received), "OK", Color.parseColor("GREEN"));
+                                    snackbar = Util.showSnackBar(recyclerView, getString(R.string.complaint_received_add_pictures), "OK", Color.parseColor("GREEN"));
                                     showCameraIcon(response.getComplaintList().get(0));
                                     setAnalyticsEvent("complaint1", "Complaint sent");
                                     mListener.onComplaintAdded(response.getComplaintList());
@@ -292,7 +292,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     }
 
     private void showCameraIcon(final ComplaintDTO complaint) {
-        cameraIcon.setVisibility(View.GONE);
+        cameraIcon.setVisibility(View.VISIBLE);
         this.complaint = complaint;
         Util.scaleUp(cameraIcon, 300);
     }
@@ -303,6 +303,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     private void setCategoryList() {
         Log.d(LOG, "setCategoryList: sss s------------------------------");
         iconBack.setVisibility(View.GONE);
+        cameraIcon.setVisibility(View.GONE);
         txtCategory.setText("");
         txtType.setText("");
         categoryAdapter = new CategoryAdapter(complaintCategoryList, ctx, new CategoryAdapter.CategoryAdapterListener() {

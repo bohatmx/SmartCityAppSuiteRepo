@@ -167,7 +167,7 @@
     <string name="complaint_not_found">Complaint not found</string>
 
     <string name="downloaded_statement">Below are your previously downloaded statements</string>
-    <string name="download_statement">To download your statements click the red search icon</string>
+    <string name="download_statement">To download your statements click the red icon</string>
 
 
     <!-- GeneralInfo-->
@@ -213,4 +213,5 @@ The application has emergency numbers from the municipality, such as ambulance n
     <string name="complaint_received_add_pictures">Complaint received. Add pictures to the complaint if you need to.</string>
     <string name="process_complaint_unable">Unable to process the complaint at this time. Please try later</string>
     <string name="complaint_description">Add description to complaint</string>
+    <string name="incorrect_credentials">Incorrect email/password</string>
 </resources>

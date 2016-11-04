@@ -176,7 +176,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                 .build();
         municipality = SharedUtil.getMunicipality(ctx);
         profileInfo = SharedUtil.getProfile(ctx);
-        Log.i(LOG, "accountList is: " + profileInfo.getAccountList().size());
+       // Log.i(LOG, "accountList is: " + profileInfo.getAccountList().size());
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         if (profileInfo != null) {

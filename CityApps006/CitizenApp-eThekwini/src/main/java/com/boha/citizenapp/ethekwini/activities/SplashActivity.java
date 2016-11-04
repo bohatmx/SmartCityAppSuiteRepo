@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.boha.citizenapp.ethekwini.R;
 import com.boha.library.dto.MunicipalityDTO;
@@ -65,6 +66,11 @@ public class SplashActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*WebCheckResult wcr = WebCheck.checkNetworkAvailability(this);
+        if (!wcr.isWifiConnected() && !wcr.isMobileConnected()) {
+            Util.showSnackBar(heroImage,"You are currently not connected to the network","OK", Color.parseColor("red"));
+            return;
+        }*/
        // Fabric.with(this, new Crashlytics());
         ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_splash);
@@ -89,7 +95,16 @@ public class SplashActivity extends AppCompatActivity  {
             window.setStatusBarColor(themeDarkColor);
             window.setNavigationBarColor(themeDarkColor);
         }
-        getMunicipality();
+
+        WebCheckResult wcr = WebCheck.checkNetworkAvailability(this);
+        if (!wcr.isWifiConnected() && !wcr.isMobileConnected()) {
+            Util.showSnackBar(heroImage,"You are currently not connected to the network","OK", Color.parseColor("red"));
+         //   Toast.makeText(SplashActivity.this,"You are currently not connected to the network",Toast.LENGTH_LONG).show();
+            return;
+        } else {
+            getMunicipality();
+        }
+
 //        //Track analytics
 //        CityApplication ca = (CityApplication) getApplication();
 //        Tracker t = ca.getTracker(
@@ -301,6 +316,12 @@ public class SplashActivity extends AppCompatActivity  {
     public void onResume() {
         super.onResume();
         Log.e("SplashActivity", "### onResume");
+        WebCheckResult wcr = WebCheck.checkNetworkAvailability(this);
+        if (!wcr.isWifiConnected() && !wcr.isMobileConnected()) {
+            Util.showSnackBar(heroImage,"You are currently not connected to the network","OK", Color.parseColor("red"));
+        //    Toast.makeText(SplashActivity.this,"You are currently not connected to the network",Toast.LENGTH_LONG).show();
+            return;
+        }
 
 
     }
