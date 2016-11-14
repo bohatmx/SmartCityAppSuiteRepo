@@ -51,7 +51,7 @@ public class NewsRead extends AsyncTask<Void,Void,Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
-        if (feedItems.getFeedItems() != null) {
+        if (feedItems.getFeedItems()/*.size() >1*/ != null) {
                 Log.i(LOG, "feedItems: " + feedItems.getFeedItems().size());
             NewsReadAdapter adapter = new NewsReadAdapter(context, feedItems.getFeedItems(), new NewsReadAdapter.NewsListListener() {
                 @Override
@@ -81,6 +81,8 @@ public class NewsRead extends AsyncTask<Void,Void,Void> {
         Log.i(LOG, "getFeedItems");
         InputStream is = null;
         String json = null;
+
+        feedItems = new NFeedItems();
 
         try{
             DefaultHttpClient httpClient = new DefaultHttpClient();

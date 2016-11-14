@@ -89,7 +89,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
         }
-        if (p.equalsIgnoreCase("Burst")) {
+        if (p.equalsIgnoreCase("Burst Pipe")) {
             Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zburst_pipe);
             d.setColorFilter(new
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
@@ -137,7 +137,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
         }
-        if (p.equalsIgnoreCase("Missing Manhole cover")) {
+        if (p.equalsIgnoreCase("Missing Manhole Cover")) {
             Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zmanhole_covers);
             d.setColorFilter(new
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
@@ -149,13 +149,13 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
         }
-        if (p.equalsIgnoreCase("Pot Hole")) {
+        if (p.equalsIgnoreCase("Pothole")) {
             Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zpothole);
             d.setColorFilter(new
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
         }
-        if (p.equalsIgnoreCase("Sink Hole")) {
+        if (p.equalsIgnoreCase("Sinkhole")) {
             Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zsinkhole);
             d.setColorFilter(new
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
@@ -179,7 +179,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
         }
-        if (p.equalsIgnoreCase("Over Flaw")) {
+        if (p.equalsIgnoreCase("Overflowing"/*"Over Flaw"*/)) {
             Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zoverflow);
             d.setColorFilter(new
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
@@ -252,7 +252,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
             image.setImageDrawable(d);
         }
         if (p.equalsIgnoreCase("No Supply (only affecting me)")) {
-            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.no_power);
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.home_shortage);
             d.setColorFilter(new
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);

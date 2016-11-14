@@ -1,7 +1,9 @@
 package com.boha.citizenapp.ethekwini.activities;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.boha.library.dto.MunicipalityDTO;
@@ -58,5 +60,11 @@ public class CitizenApp extends Application {
             Picasso.with(getApplicationContext())
                     .setLoggingEnabled(true);
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 }
