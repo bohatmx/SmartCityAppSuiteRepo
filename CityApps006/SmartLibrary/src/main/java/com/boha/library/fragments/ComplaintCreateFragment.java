@@ -231,7 +231,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         }
 
         mListener.setBusy(true);
-        snackbar = Util.showSnackBar(recyclerView, "Sending your complaint to the municipality ...", "OK", Color.parseColor("Cyan"));
+        snackbar = Util.showSnackBar(recyclerView, "Submitting your request ...", "OK", Color.parseColor("Cyan"));
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override
             public void onResponse(final ResponseDTO response) {
@@ -275,7 +275,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                     public void run() {
                         mListener.setBusy(false);
                         FirebaseCrash.report(new Exception("Error complaint: " + message));
-                        Util.showSnackBar(recyclerView, message, "Not OK", Color.parseColor("RED"));
+                        Util.showSnackBar(recyclerView, message, "OK", Color.parseColor("RED"));
 
                     }
                 });
@@ -397,7 +397,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     private void showReferenceDialog() {
         referenceDialog = new AlertDialog.Builder(getActivity());
         referenceDialog.setTitle("Reference Number")
-                .setMessage("Your complaint has been successfully submitted, your reference number is: \n\n"
+                .setMessage("Your complaint has been submitted successfully. Your reference number is: \n\n"
                         + complaint.getReferenceNumber())
                 .setPositiveButton("Done", new DialogInterface.OnClickListener() {
                     @Override

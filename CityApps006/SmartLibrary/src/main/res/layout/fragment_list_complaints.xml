@@ -43,7 +43,7 @@
             android:layout_alignParentBottom="true"
             android:padding="@dimen/mon_16"
             android:text="My sub title will occupy pride of place here"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/FLC_userName"
