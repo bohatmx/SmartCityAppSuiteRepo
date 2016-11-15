@@ -94,7 +94,9 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
             item.detailsView = convertView.findViewById(R.id.CI_detailsView);
             item.iconDetails = (ImageView)convertView.findViewById(R.id.CI_iconDetail);
             item.iconFollow = (ImageView)convertView.findViewById(R.id.CI_iconFollow);
+
             item.iconCamera = (ImageView)convertView.findViewById(R.id.CI_iconCamera);
+
             item.iconRoll = (ImageView)convertView.findViewById(R.id.CI_iconRoll);
             item.image = (ImageView)convertView.findViewById(R.id.CI_image);
 
@@ -106,6 +108,7 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
             item.txtDescriptionLabel = (TextView) convertView.findViewById(R.id.description_label);
 
             item.followBox = convertView.findViewById(R.id.iconBoxFollow);
+            item.followBox.setVisibility(view.GONE);
             item.cameraBox = convertView.findViewById(R.id.iconBoxCamera);
             item.statusBox = convertView.findViewById(R.id.iconBoxStatus);
 
@@ -225,7 +228,7 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
             item.txtAck.setText(y.getStatus());
 
         } else {
-            item.statusLayout.setVisibility(View.GONE);
+            item.statusLayout.setVisibility(View.VISIBLE);
         }
 
         item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xindigo_oval_small));
@@ -238,10 +241,10 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
             case MY_COMPLAINTS:
                  item.followBox.setVisibility(View.GONE);
                  item.statusBox.setVisibility(View.VISIBLE);
-                 item.cameraBox.setVisibility(View.VISIBLE);
+                 item.cameraBox.setVisibility(View.GONE);
                 break;
             case AROUND_ME:
-                item.followBox.setVisibility(View.VISIBLE);
+                item.followBox.setVisibility(View.GONE);
                 item.statusBox.setVisibility(View.VISIBLE);
                 item.cameraBox.setVisibility(View.GONE);
                 break;

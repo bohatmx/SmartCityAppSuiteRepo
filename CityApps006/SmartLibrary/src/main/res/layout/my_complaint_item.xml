@@ -275,7 +275,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/mon_12"
-            android:text="0" />
+            android:text="0"
+            android:visibility="gone"/>
 
         <TextView
             android:layout_below="@+id/description"
@@ -286,7 +287,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/mon_16"
             android:layout_toLeftOf="@id/CI_followers"
-            android:text="Followed By" />
+            android:text="Followed By"
+            android:visibility="gone"/>
     </RelativeLayout>
 
 

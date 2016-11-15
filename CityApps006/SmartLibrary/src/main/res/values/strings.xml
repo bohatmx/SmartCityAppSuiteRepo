@@ -119,7 +119,7 @@
     <string name="refresh">Refresh</string>
     <string name="select_complaint_type">Select ComplaintType</string>
     <string name="start_complaint">Start Complaint</string>
-    <string name="history">A history of my complaints to the City</string>
+    <string name="history">A history of my complaints</string>
     <string name="no_news">No Current News</string>
     <string name="no_alerts">No Current Alerts</string>
     <string name="nonews_map">No news to display on map</string>

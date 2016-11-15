@@ -109,8 +109,10 @@ public class ProfileInfoFragment extends Fragment implements PageFragment {
         String currency = "";
         txtAccounts.setText("" + profileInfo.getAccountList().size());
         txtArrears.setText(currency + df.format(totArrears));
+        txtArrears.setVisibility(View.GONE);
         txtBalance.setText(currency + df.format(totBalance));
-        btnAccountDetails.setText("My Account Details & Payment");
+        txtBalance.setVisibility(View.GONE);
+        btnAccountDetails.setText("My Account Details");
         txtComplaints.setText("0");
         txtResolved.setText("");
         if (complaintList != null) {

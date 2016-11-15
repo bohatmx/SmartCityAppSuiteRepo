@@ -140,7 +140,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         //
         disableFAB();
         mListener.setBusy(true);
-        snackbar = Util.showSnackBar(listView,"Searching for cases around you ...", "OK", Color.parseColor("TEAL"));
+        snackbar = Util.showSnackBar(listView,"Searching for Complaints around you ...", "OK", Color.parseColor("TEAL"));
         setAnalyticsEvent("cases", "CasesAroundMe");
         NetUtil.sendRequest(ctx, w, new NetUtil.NetUtilListener() {
             @Override

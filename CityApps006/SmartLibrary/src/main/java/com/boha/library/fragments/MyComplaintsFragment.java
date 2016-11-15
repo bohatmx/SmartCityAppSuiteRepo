@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static com.boha.library.R.drawable.complaint;
+
 /**
  * Manage the User's own complaints history
  */
@@ -121,6 +123,7 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
         adapter = new ComplaintListAdapter(ctx, R.layout.my_complaint_item, primaryDarkColor,
                 ComplaintListAdapter.MY_COMPLAINTS,
                 complaintList, new ComplaintListAdapter.ComplaintListListener() {
+
             @Override
             public void onComplaintFollowRequested(ComplaintDTO complaint) {
                 underConstruction();
