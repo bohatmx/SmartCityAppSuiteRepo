@@ -72,6 +72,8 @@ import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 import com.boha.library.util.WebCheck;
 import com.boha.library.util.WebCheckResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 
@@ -94,12 +96,14 @@ public class TouristDrawerActivity extends AppCompatActivity implements
 
     ActionBar ab;
     String page;
+    static final String MUNICIPALITY_NAME = "eThekwini";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_tourist_drawer);
         page = getIntent().getStringExtra("page");
+        //checkPlayServices();
         ctx = getApplicationContext();
         activity = this;
         //change topVIEW TO MATCH APP THEME
@@ -138,6 +142,7 @@ public class TouristDrawerActivity extends AppCompatActivity implements
             }
         });
 
+
       /*  googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -159,7 +164,7 @@ public class TouristDrawerActivity extends AppCompatActivity implements
         ActionBar actionBar = getSupportActionBar();
         Util.setCustomActionBar(ctx,
                 actionBar,
-                municipality.getMunicipalityName(),
+                MUNICIPALITY_NAME,
                 ContextCompat.getDrawable(ctx, R.drawable.logo), logo);
 
         //   getLoginData();
@@ -173,6 +178,22 @@ public class TouristDrawerActivity extends AppCompatActivity implements
         }
         // mDrawerLayout.openDrawer(GravityCompat.START);
            mDrawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    private boolean checkPlayServices() {
+        Log.w(LOG, "checking GooglePlayServices .................");
+        int resultCode = GooglePlayServicesUtil
+                .isGooglePlayServicesAvailable(ctx);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.gms")));
+                return false;
+            } else {
+                Log.i(LOG, "This device is not supported.");
+                throw new UnsupportedOperationException("GooglePlayServicesUtil resultCode: " + resultCode);
+            }
+        }
+        return true;
     }
 
 

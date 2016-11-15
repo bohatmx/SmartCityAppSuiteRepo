@@ -290,7 +290,7 @@ public class SigninActivity extends AppCompatActivity {
                         Log.e(LOG, message);
                        // Util.showToast(ctx, "Incorrect email/password");
                         Util.showSnackBar(editPassword, getString(com.boha.library.R.string.incorrect_credentials),
-                                "Dismiss", Color.parseColor("GREEN"));
+                                "Dismiss", Color.parseColor("red"));
 
                         //   Util.showErrorToast(ctx, message);
                     }

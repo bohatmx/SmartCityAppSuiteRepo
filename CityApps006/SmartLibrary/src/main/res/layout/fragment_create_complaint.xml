@@ -138,12 +138,18 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/add_complaint_description"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_marginTop="@dimen/mon_divider"
+    <ScrollView
+        android:layout_below="@+id/spinnerAccounts"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/spinnerAccounts" />
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_marginTop="@dimen/mon_divider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spinnerAccounts" />
+    </ScrollView>
+
 
 
 

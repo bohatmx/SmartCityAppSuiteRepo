@@ -327,7 +327,10 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                     @Override
                     public void run() {
                         setRefreshActionButtonState(false);
-                        Util.showSnackBar(mPager, message, "OK", Color.parseColor("RED"));
+                        //Util.showSnackBar(mPager, message, "OK", Color.parseColor("RED"));
+                        Log.e(LOG, message);
+                        Util.showSnackBar(mPager, "unable to get data, please try again later", "OK",
+                                Color.parseColor("RED"));
                     }
                 });
             }

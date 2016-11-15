@@ -1,8 +1,10 @@
 package com.boha.library.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -10,6 +12,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -20,6 +23,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListPopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.boha.library.R;
 import com.boha.library.dto.ComplaintDTO;
@@ -52,12 +56,15 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
-public class ComplaintMapActivity extends AppCompatActivity implements OnMapReadyCallback{
+public class ComplaintMapActivity extends AppCompatActivity implements OnMapReadyCallback,
+        GoogleMap.OnInfoWindowClickListener{
 
     GoogleMap googleMap;
     GoogleApiClient mGoogleApiClient;
@@ -143,19 +150,35 @@ public class ComplaintMapActivity extends AppCompatActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
+        googleMap.setOnInfoWindowClickListener(this);
         setGoogleMap();
     }
+
+    public static final int REQ_PERMISSION = 114;
     private void setGoogleMap() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.d(LOG, "onConnected: Requesting location permission");
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQ_PERMISSION);
+            return;
+        }
         googleMap.setMyLocationEnabled(true);
         googleMap.setBuildingsEnabled(true);
         location = googleMap.getMyLocation();
 
+        this.googleMap.setInfoWindowAdapter(infoWindowAdapter);
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker m) {
+                Log.i(LOG, "onMarkerClicked");
+              //  complaint = markerMap.get(m);
                 marker = m;
                 LatLng latLng = marker.getPosition();
-                Integer id = Integer.parseInt(marker.getTitle());
+
+                m.showInfoWindow();
+
+              /*  Integer id = Integer.parseInt(marker.getTitle());
                 if (complaintList != null) {
                     for (ComplaintDTO x : complaintList) {
                         if (x.getComplaintID().intValue() == id.intValue()) {
@@ -163,8 +186,8 @@ public class ComplaintMapActivity extends AppCompatActivity implements OnMapRead
                             break;
                         }
                     }
-                }
-                showPopup(latLng.latitude, latLng.longitude, marker.getTitle());
+                }*/
+                showPopup(latLng.latitude, latLng.longitude/*, marker.getTitle()*/);
 
                 return true;
             }
@@ -178,6 +201,76 @@ public class ComplaintMapActivity extends AppCompatActivity implements OnMapRead
 
     }
 
+    private GoogleMap.InfoWindowAdapter infoWindowAdapter = new GoogleMap.InfoWindowAdapter() {
+        @Override
+        public View getInfoWindow(Marker marker) {
+            return null;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+           final ComplaintDTO c = complaintList.get(336);
+            View v = getLayoutInflater().inflate(R.layout.complaint_map_info_window, null);
+            TextView number  = (TextView) v.findViewById(R.id.CI_reference);
+            TextView referenceLabel = (TextView) v.findViewById(R.id.CI_referenceLabel);
+            TextView date = (TextView) v.findViewById(R.id.CI_date);
+            TextView complaintName = (TextView) v.findViewById(R.id.complaint);
+            TextView complaintType = (TextView) v.findViewById(R.id.type);
+            complaintType.setText("Latitude: " + c.getLatitude() + "Longitude: " + c.getLongitude());
+            number.setText(c.getReferenceNumber());
+            complaintName.setText(c.getCategory() + "-" + c.getSubCategory());
+           // complaintType.setText(c.getSubCategory());
+            date.setText(sdfDate.format(new Date(c.getComplaintDate())));
+            if (c.getLatitude() != null){
+            Log.i(LOG, "LATITUDE: " + c.getLatitude() + "LONGITUDE: " + c.getLongitude());
+            showPopup(c.getLatitude(), c.getLongitude());
+            }
+          /*  final ImageView direction = (ImageView) v.findViewById(R.id.direction);
+            final ImageView picture = (ImageView) v.findViewById(R.id.picture);
+            final ImageView distance = (ImageView) v.findViewById(R.id.distance);
+
+
+            direction.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Util.flashOnce(txtCount, 300, new Util.UtilAnimationListener() {
+                        @Override
+                        public void onAnimationEnded() {
+
+                            startDirectionsMap(c.getLatitude(), c.getLongitude());
+                        }
+                    });
+                }
+            });
+
+            picture.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Util.flashOnce(picture, 300, new Util.UtilAnimationListener() {
+                        @Override
+                        public void onAnimationEnded() {
+
+                        }
+                    });
+                }
+            });
+
+            distance.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Util.flashOnce(distance, 300, new Util.UtilAnimationListener() {
+                        @Override
+                        public void onAnimationEnded() {
+
+                        }
+                    });
+                }
+            });
+*/
+            return  v;
+        }
+    };
+    static final SimpleDateFormat sdfDate = new SimpleDateFormat("EEEE dd MMMM yyyy HH:mm", loc);
 
     private void setComplaintMarkers() {
         googleMap.clear();
@@ -193,6 +286,7 @@ public class ComplaintMapActivity extends AppCompatActivity implements OnMapRead
             View dot = inflater.inflate(R.layout.dot_red, null);
             TextView txtNumber = (TextView) dot.findViewById(R.id.DOT_text);
             txtNumber.setText("" + (index + 1));
+            //desc = BitmapDescriptorFactory.fromResource(R.drawable.ic_place_black_48dp);
             desc = BitmapDescriptorFactory.fromBitmap(Util.createBitmapFromView(ctx, dot, displayMetrics));
 
             Marker m =
@@ -223,6 +317,14 @@ public class ComplaintMapActivity extends AppCompatActivity implements OnMapRead
 //                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 1.0f));
                     googleMap.animateCamera(cu);
                 }
+            }
+        });
+
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                return false;
             }
         });
 
@@ -308,7 +410,7 @@ public class ComplaintMapActivity extends AppCompatActivity implements OnMapRead
 
     List<String> list;
 
-    private void showPopup(final double lat, final double lng, final String title) {
+    private void showPopup(final double lat, final double lng/*, final String title*/) {
         list = new ArrayList<>();
         list.add(getString(R.string.directions));
         list.add(getString(R.string.compl_pics));
@@ -440,6 +542,13 @@ public class ComplaintMapActivity extends AppCompatActivity implements OnMapRead
 
     Address address;
     TextView txtAddress;
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+
+        Toast.makeText(ctx, "window clicked so magic", Toast.LENGTH_SHORT).show();
+       // showPopup();
+    }
 
     class GeoTask extends AsyncTask<Void, Void, Integer> {
 

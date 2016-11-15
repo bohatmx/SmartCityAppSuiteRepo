@@ -57,7 +57,7 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        if (feeditems.getFeedItems() != null) {
+        if (feeditems.getFeedItems()/*.size() > 1*/!= null) {
             Log.i(LOG, "onPostExecute: feedItems:" + feeditems.getFeedItems().size());
 
             AlertsReadAdapter adapter = new AlertsReadAdapter(context,
@@ -85,6 +85,7 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
         InputStream is = null;
         JSONObject jObj = null;
         String json = null;
+        feeditems = new AlertFeedItems();
 
         try{
             DefaultHttpClient httpClient = new DefaultHttpClient();

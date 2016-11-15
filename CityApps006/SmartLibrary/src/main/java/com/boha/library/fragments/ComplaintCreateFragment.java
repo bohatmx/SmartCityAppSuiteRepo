@@ -512,7 +512,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         List<String> list = new ArrayList<>();
         list.add("Please select an Account");
         for (AccountDTO acc : profile.getAccountList()) {
-            list.add("Account No: " + acc.getAccountNumber());
+            list.add(/*"Account No: "*/acc.getAccountNumber() + ": " + acc.getCustomerAccountName().substring(0, Math.min(acc.getCustomerAccountName().length(), 15)));
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.category_spinner_item, list);
