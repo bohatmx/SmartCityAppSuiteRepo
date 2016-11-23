@@ -186,7 +186,16 @@
             android:screenOrientation="portrait"
             android:parentActivityName=".activities.LandingPageActivity"/>
         <activity android:name="com.boha.library.activities.FullDetailActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".activities.CitizenDrawerActivity"/>
+        <activity android:name="com.boha.library.activities.FullAlertDetailActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".activities.CitizenDrawerActivity"/>
+        <activity android:name="com.boha.library.activities.FAQFullDetailActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".activities.CitizenDrawerActivity"/>
+
+
 
         <meta-data
             android:name="io.fabric.ApiKey"

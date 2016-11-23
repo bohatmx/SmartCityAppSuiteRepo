@@ -7,7 +7,47 @@
     android:layout_height="wrap_content"
     tools:context="com.boha.library.activities.FullAlertDetailActivity">
 
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/mon_16">
+                <ImageView
+                    android:padding="@dimen/mon_divider"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:id="@+id/alert_DETAILSIMG"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/alert_2x"
+                    android:tint="@color/white"/>
+
+                <TextView
+                    android:layout_toRightOf="@+id/alert_DETAILSIMG"
+                    android:id="@+id/alert_details_title"
+                    android:text="Alert Title"
+                    style="@style/Title3TextStyleWhite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mon_16"/>
+
+            </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
     <ScrollView
+        android:layout_below="@+id/appBar"
         android:id="@+id/ALERTDETAILSCROLL"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,7 +55,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/mon_16"
             android:background="@color/white">
 
 
@@ -29,27 +68,12 @@
                     android:padding="@dimen/mon_padding"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                    <TextView
-                        android:layout_below="@+id/alert_DETAILSIMG"
-                        android:id="@+id/alert_details_title"
-                        android:text="Alert Title"
-                        style="@style/TextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/mon_16"/>
 
-                    <ImageView
-                        android:padding="@dimen/mon_divider"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"
-                        android:id="@+id/alert_DETAILSIMG"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/alert_2x"/>
+
+
                     <WebView
                         android:id="@+id/alert_details_webView"
                         android:layout_margin="@dimen/mon_divider"
-                        android:layout_below="@id/alert_details_title"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </RelativeLayout>

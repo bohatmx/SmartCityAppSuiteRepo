@@ -402,14 +402,14 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
                 Util.flashOnce(txtCount, 300, new Util.UtilAnimationListener() {
                     @Override
                     public void onAnimationEnded() {
-                       /* if (complaintList != null && !complaintList.isEmpty()) {
+                        if (complaintList != null && !complaintList.isEmpty()) {
                             Intent w = new Intent(ctx, ComplaintMapActivity.class);
                             ResponseDTO x = new ResponseDTO();
                             x.setComplaintList(complaintList);
                             w.putExtra("complaintList", x);
                             w.putExtra("logo", logo);
                             startActivity(w);
-                        }*/
+                        }
                     }
                 });
             }

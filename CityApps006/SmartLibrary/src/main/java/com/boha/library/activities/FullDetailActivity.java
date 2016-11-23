@@ -2,11 +2,18 @@ package com.boha.library.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -18,7 +25,9 @@ import android.widget.TextView;
 import com.boha.library.R;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.util.SharedUtil;
+import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Picasso;
 
 public class FullDetailActivity extends AppCompatActivity {
@@ -32,24 +41,33 @@ public class FullDetailActivity extends AppCompatActivity {
     String title;
     String description;
     String image;
-    int position;
+    int position, darkColor, primaryColor, logo;
     MunicipalityDTO municipality;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeChooser.setTheme(this);
         setContentView(R.layout.activity_full_detail);
         ctx = getApplicationContext();
 
         municipality = SharedUtil.getMunicipality(ctx);
-        int logo = getIntent().getIntExtra("logo", R.drawable.ic_action_globe);
-
+        darkColor = getIntent().getIntExtra("darkColor", R.color.black);
+        primaryColor = getIntent().getIntExtra("primaryColor", R.color.black);
+        logo = getIntent().getIntExtra("logo", R.drawable.ic_action_globe);
         ActionBar actionBar = getSupportActionBar();
         Util.setCustomActionBar(ctx,
                 actionBar,
                 municipality.getMunicipalityName(),
                 ctx.getResources().getDrawable(R.drawable.logo), logo);
         getSupportActionBar().setTitle("");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(themeDarkColor);
+            window.setNavigationBarColor(themeDarkColor);
+        }
 
         scrollView = (ScrollView) findViewById(R.id.DETAILSCROLL);
         title_txt = (TextView) findViewById(R.id.details_title);
@@ -105,5 +123,52 @@ public class FullDetailActivity extends AppCompatActivity {
 
     }
 
+    Menu mMenu;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_tourist_pager, menu);
+        mMenu = menu;
+        MenuItem favoriteItem = menu.findItem(com.boha.library.R.id.action_refresh);
+        Drawable newIcon = (Drawable)favoriteItem.getIcon();
+        newIcon.mutate().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_IN);
+        favoriteItem.setIcon(newIcon);
+
+
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == com.boha.library.R.id.action_info) {
+            Intent intent = new Intent(FullDetailActivity.this, GeneralInfoActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == com.boha.library.R.id.action_emergency) {
+            Intent intent = new Intent(FullDetailActivity.this, EmergencyContactsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == com.boha.library.R.id.action_theme) {
+            Intent w = new Intent(FullDetailActivity.this, ThemeSelectorActivity.class);
+            w.putExtra("darkColor", themeDarkColor);
+            startActivityForResult(w, THEME_REQUESTED);
+            return true;
+        }
+        if (id == com.boha.library.R.id.action_app_guide) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("http://etmobileguide.oneconnectgroup.com/"));
+            startActivity(intent);
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    int themeDarkColor;
+    static final int THEME_REQUESTED = 8075;
     static final String LOG = FullDetailActivity.class.getSimpleName();
 }

@@ -206,6 +206,9 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             complaint.setDescription(complaintDescription.getText().toString().trim());
         }
         complaint.setCategory(complaintCategory.getComplaintCategoryName().trim());
+        if (complaintType.getComplaintTypeName().matches("Burst Pipe")) {
+            complaintType.setComplaintTypeName("Burst");
+        }
         complaint.setSubCategory(complaintType.getComplaintTypeName());
         complaint.setComplaintDate(new Date().getTime());
 
@@ -246,7 +249,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                                 return;
                             } else {
                                 if (response.getComplaintList() != null && !response.getComplaintList().isEmpty()) {
-                                    snackbar = Util.showSnackBar(recyclerView, getString(R.string.complaint_received_add_pictures), "OK", Color.parseColor("GREEN"));
+                                    snackbar = Util.showSnackBar(recyclerView, getString(R.string.complaint_received), "OK", Color.parseColor("GREEN"));
                                     showCameraIcon(response.getComplaintList().get(0));
                                     setAnalyticsEvent("complaint1", "Complaint sent");
                                     mListener.onComplaintAdded(response.getComplaintList());
@@ -300,7 +303,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     }
 
     private void showCameraIcon(final ComplaintDTO complaint) {
-        cameraIcon.setVisibility(View.VISIBLE);
+        cameraIcon.setVisibility(View.GONE);
         this.complaint = complaint;
         Util.scaleUp(cameraIcon, 300);
     }
@@ -333,6 +336,9 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             @Override
             public void onComplaintTypeClicked(ComplaintTypeDTO type) {
                 complaintType = type;
+                if (type.getComplaintTypeName().matches("Burst")){
+                    type.setComplaintTypeName("Burst Pipe");
+                }
                 txtType.setText(type.getComplaintTypeName());
                 showConfirmDialog();
             }
@@ -404,7 +410,28 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
+                })
+                .setNegativeButton("Add Picture", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mListener.onPictureRequired(complaint);
+                    }
                 }).show();
+    }
+
+    AlertDialog.Builder cameraDialog;
+    private void showCameraDialog() {
+        cameraDialog = new AlertDialog.Builder(getActivity());
+        cameraDialog.setTitle("Add Picture")
+                .setMessage("Would you like to add a picture, to this complaint" + complaint.getCategory() +
+                        complaint.getSubCategory())
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mListener.onPictureRequired(complaint);
+                    }
+                }).show();
+
     }
 
     ProfileInfoDTO profile;
@@ -425,6 +452,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         radioAccount = (RadioButton) view.findViewById(R.id.radioAccount);
         radioAnywhere = (RadioButton) view.findViewById(R.id.radioAnywhere);
         hero = (ImageView) view.findViewById(R.id.CC_hero);
+        hero.setVisibility(View.GONE);
         spinner = (Spinner) view.findViewById(R.id.spinnerAccounts);
         txtCategory.setText("");
         txtType.setText("");
@@ -512,7 +540,8 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         List<String> list = new ArrayList<>();
         list.add("Please select an Account");
         for (AccountDTO acc : profile.getAccountList()) {
-            list.add(/*"Account No: "*/acc.getAccountNumber() + ": " + acc.getCustomerAccountName().substring(0, Math.min(acc.getCustomerAccountName().length(), 15)));
+            list.add(acc.getAccountNumber() + ": " + acc.getCustomerAccountName().substring(0,
+                    Math.min(acc.getCustomerAccountName().length(), 15)));
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.category_spinner_item, list);

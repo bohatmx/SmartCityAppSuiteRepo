@@ -59,6 +59,7 @@ import com.boha.library.dto.UserDTO;
 import com.boha.library.fragments.AlertListFragment;
 import com.boha.library.fragments.ComplaintCreateFragment;
 import com.boha.library.fragments.ComplaintsAroundMeFragment;
+import com.boha.library.fragments.CouncillorsListFragment;
 import com.boha.library.fragments.CreateAlertFragment;
 import com.boha.library.fragments.FaqFragment;
 import com.boha.library.fragments.MyComplaintsFragment;
@@ -112,7 +113,8 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         ProfileInfoFragment.ProfileInfoListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        FaqFragment.FaqListener {
+        FaqFragment.FaqListener,
+        CouncillorsListFragment.CouncillorListener{
 
 
     ActionBar ab;
@@ -463,20 +465,21 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         newsListFragment = NewsListFragment.newInstance(response);
         myComplaintsFragment = MyComplaintsFragment.newInstance(response);
         faqFragment = FaqFragment.newInstance(response);
+        councillorsListFragment = CouncillorsListFragment.newInstance(response);
 
 
         alertListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         complaintCreateFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         faqFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         myComplaintsFragment.setThemeColors(themePrimaryColor, themeDarkColor);
-
+        councillorsListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         complaintsAroundMeFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         newsListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 
          complaintsAroundMeFragment.setLogo(logo);
         alertListFragment.setLogo(logo);
         newsListFragment.setLogo(logo);
-
+        councillorsListFragment.setLogo(logo);
 
         myComplaintsFragment.setPageTitle(getString(R.string.my_complaints));
 
@@ -485,6 +488,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         complaintsAroundMeFragment.setPageTitle(ctx.getString(R.string.complaints_around_me));
         newsListFragment.setPageTitle(ctx.getString(R.string.headlines));
         faqFragment.setPageTitle(getString(R.string.faq));
+        councillorsListFragment.setPageTitle(getString(R.string.ward_councillors));
 
 
         pageFragmentList.add(profileInfoFragment);
@@ -494,6 +498,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         pageFragmentList.add(newsListFragment);
         pageFragmentList.add(complaintsAroundMeFragment);
         pageFragmentList.add(faqFragment);
+        pageFragmentList.add(councillorsListFragment);
 
         try {
             adapter = new PagerAdapter(getSupportFragmentManager());
@@ -600,6 +605,10 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                 }
                 if (menuItem.getItemId() == R.id.nav_faq) {
                     mPager.setCurrentItem(6, true);
+                    return true;
+                }
+                if (menuItem.getItemId() == R.id.nav_ward_councillors) {
+                    mPager.setCurrentItem(7, true);
                     return true;
                 }
                 if (menuItem.getItemId() == R.id.nav_gallery) {
@@ -1067,6 +1076,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
     NewsListFragment newsListFragment;
     MyComplaintsFragment myComplaintsFragment;
     FaqFragment faqFragment;
+    CouncillorsListFragment councillorsListFragment;
     android.support.v4.view.PagerAdapter adapter;
     Context ctx;
     int currentPageIndex;

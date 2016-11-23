@@ -5,8 +5,38 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.boha.library.activities.FullDetailActivity">
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/mon_16">
+
+                <TextView
+                    android:id="@+id/details_title"
+                    android:text="News Article Title"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Title3TextStyleWhite"/>
+
+            </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
 
     <ScrollView
+        android:layout_below="@+id/appBar"
         android:id="@+id/DETAILSCROLL"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -26,16 +56,9 @@
                     android:padding="@dimen/mon_padding"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                    <TextView
-                        android:id="@+id/details_title"
-                        android:text="News Article Title"
-                        android:layout_centerHorizontal="true"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+
 
                     <ImageView
-                        android:layout_below="@+id/details_title"
                         android:id="@+id/DETAILSIMG"
                         android:layout_width="match_parent"
                         android:layout_height="300dp"

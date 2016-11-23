@@ -59,51 +59,6 @@
             android:layout_centerHorizontal="true"
             android:src="@drawable/news"/>
 
-        <!--  <TextView
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:textAppearance="?android:attr/textAppearanceMedium"
-              android:text="Medium Text"
-              android:id="@+id/description_text"
-              android:layout_alignParentLeft="true"
-              android:layout_alignParentRight="true"
-              android:layout_below="@+id/thumb_img"/> -->
-        <WebView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
-            android:id="@+id/description_text"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/thumb_img"/>
-        <android.support.v7.widget.CardView
-            android:layout_below="@+id/description_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/more_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SHOW MORE"
-                android:layout_gravity="center"/>
-
-            <TextView
-                android:layout_gravity="center"
-                android:id="@+id/less_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SHOW LESS"/>
-        </android.support.v7.widget.CardView>
-        <!--     <TextView
-                 android:layout_margin="10dp"
-                 android:id="@+id/more_txt"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:text="read more.."
-                 android:layout_alignBottom="@+id/description_text"
-                 android:layout_alignParentRight="true"
-                 android:textSize="20dp"/> -->
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

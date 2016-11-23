@@ -36,6 +36,10 @@
             android:visible="false"
             android:icon="@android:drawable/ic_menu_gallery"
             android:title="@string/city_gallery" />
+        <item
+            android:id="@+id/nav_ward_councillors"
+            android:icon="@android:drawable/ic_menu_agenda"
+            android:title="@string/ward_councillors"/>
     </group>
 
     <!--<item android:title="Sub items">-->

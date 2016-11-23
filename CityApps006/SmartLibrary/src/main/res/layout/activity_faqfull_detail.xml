@@ -6,7 +6,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.boha.library.activities.FAQFullDetailActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/mon_16">
+
+                <TextView
+                    android:id="@+id/faq_title"
+                    android:text="FAQ Title"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Title3TextStyleWhite"/>
+
+            </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
     <ScrollView
+        android:layout_below="@+id/appBar"
         android:id="@+id/FAQ_DETAILSCROLL"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -26,18 +57,11 @@
                     android:padding="@dimen/mon_padding"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                    <TextView
-                        android:id="@+id/faq_title"
-                        android:text="FAQ Title"
-                        android:layout_centerHorizontal="true"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+
 
                     <WebView
                         android:id="@+id/faq_details_webView"
                         android:layout_margin="@dimen/mon_divider"
-                        android:layout_below="@id/faq_title"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </RelativeLayout>

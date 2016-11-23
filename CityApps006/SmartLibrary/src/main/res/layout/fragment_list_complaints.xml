@@ -14,7 +14,8 @@
         android:id="@+id/FLC_titleLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/mon_hero_height_small"
-        android:background="@color/midnight_blue">
+        android:background="@color/midnight_blue"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/FLC_hero"

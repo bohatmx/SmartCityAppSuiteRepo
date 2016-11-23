@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/lay1"
+        android:layout_margin="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v4.widget.CircleImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/mon_12"
+            android:src="@android:drawable/stat_sys_phone_call"
+            android:tint="@color/green"
+            android:id="@+id/phone_icon"/>
+        <TextView
+            android:layout_toRightOf="@+id/phone_icon"
+            android:layout_marginLeft="@dimen/mon_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(W)"
+            android:id="@+id/work_phone"
+            style="@style/MediumTextStyle"
+            />
+
+        <TextView
+            android:id="@+id/councillor_work_phonenumber"
+            android:layout_toRightOf="@+id/work_phone"
+            android:layout_marginLeft="@dimen/mon_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0928349567"
+            android:autoLink="phone"
+            style="@style/MediumTextStyle"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/lay2"
+        android:layout_below="@+id/lay1"
+        android:layout_margin="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v4.widget.CircleImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/mon_12"
+            android:src="@android:drawable/stat_sys_phone_call"
+            android:tint="@color/green"
+            android:id="@+id/phone_icon_home"/>
+        <TextView
+            android:layout_toRightOf="@+id/phone_icon_home"
+            android:layout_marginLeft="@dimen/mon_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(H)"
+            android:id="@+id/home_phone"
+            style="@style/MediumTextStyle"
+            />
+
+        <TextView
+            android:id="@+id/councillor_home_phonenumber"
+            android:layout_toRightOf="@+id/home_phone"
+            android:layout_marginLeft="@dimen/mon_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0928349567"
+            android:autoLink="phone"
+            style="@style/MediumTextStyle"/>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/lay3"
+        android:layout_below="@+id/lay2"
+        android:layout_margin="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v4.widget.CircleImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/mon_12"
+            android:src="@android:drawable/stat_sys_phone_call"
+            android:tint="@color/green"
+            android:id="@+id/phone_icon_fax"/>
+
+        <TextView
+            android:layout_toRightOf="@+id/phone_icon_fax"
+            android:layout_marginLeft="@dimen/mon_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(F)"
+            android:id="@+id/fax_phone"
+            style="@style/MediumTextStyle"
+            />
+
+        <TextView
+            android:id="@+id/councillor_fax_phonenumber"
+            android:layout_toRightOf="@+id/fax_phone"
+            android:layout_marginLeft="@dimen/mon_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0928349567"
+            android:autoLink="phone"
+            style="@style/MediumTextStyle"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/lay4"
+        android:layout_below="@+id/lay3"
+        android:layout_margin="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v4.widget.CircleImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/mon_12"
+            android:src="@android:drawable/stat_sys_phone_call"
+            android:tint="@color/green"
+            android:id="@+id/phone_icon_mobile"/>
+        <TextView
+            android:layout_toRightOf="@+id/phone_icon_mobile"
+            android:layout_marginLeft="@dimen/mon_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(M)"
+            android:id="@+id/mobile_phone"
+            style="@style/MediumTextStyle"
+            />
+
+        <TextView
+            android:id="@+id/councillor_mobile_phonenumber"
+            android:layout_toRightOf="@+id/mobile_phone"
+            android:layout_marginLeft="@dimen/mon_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0928349567"
+            android:autoLink="phone"
+            style="@style/MediumTextStyle"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/lay5"
+        android:layout_below="@+id/lay4"
+        android:layout_margin="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v4.widget.CircleImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/mon_12"
+            android:src="@android:drawable/stat_sys_phone_call"
+            android:tint="@color/green"
+            android:id="@+id/email_icon"/>
+
+
+        <TextView
+            android:id="@+id/councillor_email"
+            android:layout_toRightOf="@+id/email_icon"
+            android:layout_marginLeft="@dimen/mon_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bongumusa.Mkhize@durban.gov.za/"
+            style="@style/MediumTextStyle"/>
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>

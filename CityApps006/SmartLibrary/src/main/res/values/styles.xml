@@ -717,4 +717,6 @@
 
     <style name="day_of_week_label_condensed" />
 
+    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

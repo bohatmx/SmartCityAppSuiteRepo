@@ -46,6 +46,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
         return new ComplaintTypeViewHolder(v);
     }
 
+    String BURST_PIPE = "Burst Pipe";
     @Override
     public void onBindViewHolder(final ComplaintTypeViewHolder holder, final int position) {
 
@@ -53,7 +54,9 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
         holder.complaintType.setText(p.getComplaintTypeName());
         setIcon(p.getComplaintTypeName(),holder.icon, ctx);
 
-
+       if (p.getComplaintTypeName().matches("Burst"))  {
+           holder.complaintType.setText(BURST_PIPE);
+       }
         holder.main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +85,11 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
         }
 
     }
+    private static void setDisplayName(String displayName,/*, ImageView image,*/ Context ctx) {
+        if (displayName == "Burst") {
+            displayName.replace("Burst", "Burst Pipe");
+        }
+    }
     public static void setIcon(String p, ImageView image, Context ctx) {
         if (p.equalsIgnoreCase("Water")) {
             Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zwater);
@@ -90,6 +98,13 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
             image.setImageDrawable(d);
         }
         if (p.equalsIgnoreCase("Burst Pipe")) {
+            Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zburst_pipe);
+            d.setColorFilter(new
+                    PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
+            image.setImageDrawable(d);
+        }
+        if (p.equalsIgnoreCase("Burst")) {
+            p = "Burst Pipe";
             Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zburst_pipe);
             d.setColorFilter(new
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));

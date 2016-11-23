@@ -17,7 +17,8 @@
         android:title="Help"
         android:icon="@drawable/ic_help"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:visible="false"/>
     <item
         android:id="@+id/action_theme"
         android:title="Set Appearance Colours"

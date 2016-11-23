@@ -63,8 +63,8 @@ import java.util.Locale;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
-public class ComplaintMapActivity extends AppCompatActivity implements OnMapReadyCallback,
-        GoogleMap.OnInfoWindowClickListener{
+public class ComplaintMapActivity extends AppCompatActivity implements OnMapReadyCallback/*,
+        GoogleMap.OnInfoWindowClickListener*/{
 
     GoogleMap googleMap;
     GoogleApiClient mGoogleApiClient;
@@ -150,7 +150,7 @@ public class ComplaintMapActivity extends AppCompatActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        googleMap.setOnInfoWindowClickListener(this);
+        //googleMap.setOnInfoWindowClickListener(this);
         setGoogleMap();
     }
 
@@ -167,7 +167,6 @@ public class ComplaintMapActivity extends AppCompatActivity implements OnMapRead
         googleMap.setBuildingsEnabled(true);
         location = googleMap.getMyLocation();
 
-        this.googleMap.setInfoWindowAdapter(infoWindowAdapter);
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker m) {
@@ -176,7 +175,6 @@ public class ComplaintMapActivity extends AppCompatActivity implements OnMapRead
                 marker = m;
                 LatLng latLng = marker.getPosition();
 
-                m.showInfoWindow();
 
               /*  Integer id = Integer.parseInt(marker.getTitle());
                 if (complaintList != null) {
@@ -201,22 +199,25 @@ public class ComplaintMapActivity extends AppCompatActivity implements OnMapRead
 
     }
 
-    private GoogleMap.InfoWindowAdapter infoWindowAdapter = new GoogleMap.InfoWindowAdapter() {
+    /*private GoogleMap.InfoWindowAdapter infoWindowAdapter = new GoogleMap.InfoWindowAdapter() {
         @Override
         public View getInfoWindow(Marker marker) {
             return null;
         }
 
+        int position;
         @Override
         public View getInfoContents(Marker marker) {
-           final ComplaintDTO c = complaintList.get(336);
+           // position = complaintList.size();
+           final ComplaintDTO c = complaintList.get(3);
             View v = getLayoutInflater().inflate(R.layout.complaint_map_info_window, null);
             TextView number  = (TextView) v.findViewById(R.id.CI_reference);
             TextView referenceLabel = (TextView) v.findViewById(R.id.CI_referenceLabel);
             TextView date = (TextView) v.findViewById(R.id.CI_date);
             TextView complaintName = (TextView) v.findViewById(R.id.complaint);
             TextView complaintType = (TextView) v.findViewById(R.id.type);
-            complaintType.setText("Latitude: " + c.getLatitude() + "Longitude: " + c.getLongitude());
+            complaintType.setVisibility(View.GONE);
+
             number.setText(c.getReferenceNumber());
             complaintName.setText(c.getCategory() + "-" + c.getSubCategory());
            // complaintType.setText(c.getSubCategory());
@@ -225,7 +226,7 @@ public class ComplaintMapActivity extends AppCompatActivity implements OnMapRead
             Log.i(LOG, "LATITUDE: " + c.getLatitude() + "LONGITUDE: " + c.getLongitude());
             showPopup(c.getLatitude(), c.getLongitude());
             }
-          /*  final ImageView direction = (ImageView) v.findViewById(R.id.direction);
+          *//*  final ImageView direction = (ImageView) v.findViewById(R.id.direction);
             final ImageView picture = (ImageView) v.findViewById(R.id.picture);
             final ImageView distance = (ImageView) v.findViewById(R.id.distance);
 
@@ -266,10 +267,10 @@ public class ComplaintMapActivity extends AppCompatActivity implements OnMapRead
                     });
                 }
             });
-*/
+*//*
             return  v;
         }
-    };
+    };*/
     static final SimpleDateFormat sdfDate = new SimpleDateFormat("EEEE dd MMMM yyyy HH:mm", loc);
 
     private void setComplaintMarkers() {
@@ -543,12 +544,7 @@ public class ComplaintMapActivity extends AppCompatActivity implements OnMapRead
     Address address;
     TextView txtAddress;
 
-    @Override
-    public void onInfoWindowClick(Marker marker) {
 
-        Toast.makeText(ctx, "window clicked so magic", Toast.LENGTH_SHORT).show();
-       // showPopup();
-    }
 
     class GeoTask extends AsyncTask<Void, Void, Integer> {
 

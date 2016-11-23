@@ -72,7 +72,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="56dp"
                 android:layout_toRightOf="@id/CAR_labelKM"
-
                 android:max="100"
                 android:progress="10" />
         </RelativeLayout>
@@ -85,7 +84,7 @@
             android:layout_marginRight="@dimen/mon_16"
             android:elevation="@dimen/mon_16"
             android:src="@android:drawable/ic_menu_search"
-            android:layout_alignBottom="@+id/CAR_seekLayout"
+            android:layout_margin="@dimen/mon_12"
             app:backgroundTint="@color/blue_800"
             app:borderWidth="0dp"
             app:rippleColor="@color/blue_200" />

@@ -6,10 +6,12 @@ import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import com.boha.library.R;
 import com.boha.library.util.Util;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,10 +73,22 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
             recyclerView.setAdapter(adapter);
         } else {
             Log.i(LOG, "alertsFeedItems is null" );
-            Util.showSnackBar(recyclerView, "No alerts to display", "Dismiss", Color.parseColor("RED"));
+            /*view = View.inflate(context, R.layout.no_alert, null);*/
+            NoAlertsAdapter noAlertsAdapter = new NoAlertsAdapter(/*context*//*, feeditems.feedItems*/);
+            recyclerView.setAdapter(noAlertsAdapter);
+
+           // View v = getLayoutInflater().inflate(R.layout.complaint_map_info_window, null);
+           // Util.showSnackBar(recyclerView, "No alerts to display", "Dismiss", Color.parseColor("RED"));
         }
 
     }
+
+    private AlertsRead() {
+
+    }
+
+
+    View view;
     Snackbar snackbar;
 
     public static final String LOG = AlertsRead.class.getSimpleName();
@@ -111,6 +125,8 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
         }catch (ClientProtocolException e) {
             Log.e(LOG, e.getMessage());
         } catch (IOException e) {
+            Log.e(LOG, e.getMessage());
+        } catch (JsonSyntaxException e) {
             Log.e(LOG, e.getMessage());
         }
 

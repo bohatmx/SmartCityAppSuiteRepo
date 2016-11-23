@@ -52,6 +52,7 @@ import com.boha.library.dto.UserDTO;
 import com.boha.library.fragments.AlertListFragment;
 import com.boha.library.fragments.ComplaintCreateFragment;
 import com.boha.library.fragments.ComplaintsAroundMeFragment;
+import com.boha.library.fragments.CouncillorsListFragment;
 import com.boha.library.fragments.FaqFragment;
 import com.boha.library.fragments.LandingPageFragment;
 import com.boha.library.fragments.MyComplaintsFragment;
@@ -86,7 +87,9 @@ import java.util.Timer;
 public class TouristDrawerActivity extends AppCompatActivity implements
         AlertListFragment.AlertListener,
         NewsListFragment.NewsListFragmentListener,
-        FaqFragment.FaqListener, LandingPageFragment.LandingPageListener {
+        FaqFragment.FaqListener,
+        LandingPageFragment.LandingPageListener,
+        CouncillorsListFragment.CouncillorListener{
     //  ComplaintsAroundMeFragment.ComplaintAroundMeListener,
     //  LocationListener,
     //  GoogleApiClient.ConnectionCallbacks,
@@ -408,23 +411,27 @@ public class TouristDrawerActivity extends AppCompatActivity implements
         alertListFragment = AlertListFragment.newInstance(response);
         newsListFragment = NewsListFragment.newInstance(response);
         faqFragment = FaqFragment.newInstance(response);
+        councillorsListFragment = CouncillorsListFragment.newInstance(response);
         //  landingPageFragment = LandingPageFragment.newInstance(response);
 
 
         alertListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         faqFragment.setThemeColors(themePrimaryColor, themeDarkColor);
+        councillorsListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 //        landingPageFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 
         newsListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 
         alertListFragment.setLogo(logo);
         newsListFragment.setLogo(logo);
+        councillorsListFragment.setLogo(logo);
         //landingPageFragment.setLogo(logo);
 
         alertListFragment.setPageTitle(ctx.getString(R.string.city_alerts));
        /* newsListFragment.setPageTitle(ctx.getString(R.string.city_news));*/
         newsListFragment.setPageTitle(ctx.getString(R.string.headlines));
         faqFragment.setPageTitle(getString(R.string.faq));
+        councillorsListFragment.setPageTitle(getString(R.string.ward_councillors));
 //        landingPageFragment.setPageTitle(getString(R.string.headlines));
 
         // pageFragmentList.add(landingPageFragment);
@@ -432,6 +439,7 @@ public class TouristDrawerActivity extends AppCompatActivity implements
         pageFragmentList.add(newsListFragment);
         //pageFragmentList.add(complaintsAroundMeFragment);
         pageFragmentList.add(faqFragment);
+        pageFragmentList.add(councillorsListFragment);
 
         try {
             adapter = new PagerAdapter(getSupportFragmentManager());
@@ -513,6 +521,10 @@ public class TouristDrawerActivity extends AppCompatActivity implements
                 }
                 if (menuItem.getItemId() == R.id.nav_faq) {
                     mPager.setCurrentItem(2, true);
+                    return true;
+                }
+                if (menuItem.getItemId() == R.id.nav_ward_councillors) {
+                    mPager.setCurrentItem(3, true);
                     return true;
                 }
                 if(menuItem.getItemId() == R.id.nav_signin) {
@@ -914,6 +926,7 @@ public class TouristDrawerActivity extends AppCompatActivity implements
     private DrawerLayout mDrawerLayout;
     ProfileInfoFragment profileInfoFragment;
     AlertListFragment alertListFragment;
+    CouncillorsListFragment councillorsListFragment;
     ComplaintCreateFragment complaintCreateFragment;
     ComplaintsAroundMeFragment complaintsAroundMeFragment;
     NewsListFragment newsListFragment;

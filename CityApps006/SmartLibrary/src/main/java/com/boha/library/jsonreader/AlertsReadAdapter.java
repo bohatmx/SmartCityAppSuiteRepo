@@ -113,8 +113,8 @@ public class AlertsReadAdapter extends RecyclerView.Adapter<AlertsReadAdapter.My
                     listener.onNewsClicked();
                 }
             });*/
-            webViewDescription = (WebView) itemView.findViewById(R.id.description_text);
-            webViewDescription.setVisibility(View.GONE);
+            /*webViewDescription = (WebView) itemView.findViewById(R.id.description_text);
+            webViewDescription.setVisibility(View.GONE);*/
 
             //  Description = (TextView) itemView.findViewById(R.id.description_text);
             Date = (TextView) itemView.findViewById(R.id.date_text);
@@ -128,31 +128,6 @@ public class AlertsReadAdapter extends RecyclerView.Adapter<AlertsReadAdapter.My
                 }
             });*/
 
-            cardView = (CardView) itemView.findViewById(R.id.cardView);
-
-            readMore = (TextView) itemView.findViewById(R.id.more_text);
-            readMore.setVisibility(View.GONE);
-            readMore.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    webViewDescription.setVisibility(View.VISIBLE);
-                    readLess.setVisibility(View.VISIBLE);
-                    readMore.setVisibility(View.GONE);
-                }
-            });
-            readLess = (TextView) itemView.findViewById(R.id.less_text);
-            readLess.setVisibility(View.GONE);
-            readLess.setVisibility(View.GONE);
-            readLess.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    readMore.setVisibility(View.VISIBLE);
-                    webViewDescription.setVisibility(View.GONE);
-                    readLess.setVisibility(View.GONE);
-
-
-                }
-            });
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -163,9 +138,6 @@ public class AlertsReadAdapter extends RecyclerView.Adapter<AlertsReadAdapter.My
                     context.startActivity(intent);
                 }
             });
-            //  readMore.setVisibility(View.GONE);
-            //MoreIMG = (ImageView) itemView.findViewById(R.id.more_img);
-            // MoreIMG.setVisibility(View.GONE);
 
         }
     }

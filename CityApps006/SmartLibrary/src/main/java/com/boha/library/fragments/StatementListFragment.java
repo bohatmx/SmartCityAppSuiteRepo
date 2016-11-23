@@ -217,6 +217,7 @@ public class StatementListFragment extends Fragment implements PageFragment {
         txtCount = (TextView) view.findViewById(R.id.ST_count);
         txtAccount = (TextView) view.findViewById(R.id.ST_account);
         heroImage = (ImageView) view.findViewById(R.id.ST_hero);
+        heroImage.setVisibility(View.GONE);
         txtTitle = (TextView) view.findViewById(R.id.ST_title);
         recyclerView = (RecyclerView) view.findViewById(R.id.ST_list);
         txtLabel = (TextView) view.findViewById(R.id.ST_label);
@@ -287,7 +288,7 @@ public class StatementListFragment extends Fragment implements PageFragment {
                     @Override
                     public void run() {
                         timer.cancel();
-                        heroImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+                       /* heroImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
                         Util.expand(heroImage, 1000, new Util.UtilAnimationListener() {
                             @Override
                             public void onAnimationEnded() {
@@ -297,7 +298,7 @@ public class StatementListFragment extends Fragment implements PageFragment {
                                     }
                                 });
                             }
-                        });
+                        });*/
                     }
                 });
             }

@@ -1,44 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="@dimen/mon_16"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/FAQTYPE_main"
     android:background="@color/white"
-    android:layout_marginBottom="2dp">
+    android:layout_margin="@dimen/mon_divider">
 
-    <RelativeLayout
+ <!--   <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:padding="@dimen/mon_12"> -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
 
-        <TextView
-            android:id="@+id/FTYPE_number"
-            style="@style/OrangeCircleSmall"
-            android:text="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:layout_margin="@dimen/mon_12"
+                android:id="@+id/FTYPE_number"
+                style="@style/OrangeCircleSmall"
+                android:text="0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"/>
 
-       <!-- <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/FTYPE_ICON"
-            android:src="@drawable/water_sanitation"
-            android:layout_toRightOf="@+id/FTYPE_number"
-            android:padding="@dimen/mon_padding"/> -->
+            <!-- <ImageView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/FTYPE_ICON"
+                 android:src="@drawable/water_sanitation"
+                 android:layout_toRightOf="@+id/FTYPE_number"
+                 android:padding="@dimen/mon_padding"/> -->
 
-        <TextView
-            android:id="@+id/FTYPE_faqType"
-            android:layout_toRightOf="@id/FTYPE_number"
-            style="@style/Title3TextStyleBlack"
-            android:layout_marginLeft="@dimen/mon_16"
-            android:text="FAQ TYpe here"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
+            <TextView
+                android:layout_centerHorizontal="true"
+                android:id="@+id/FTYPE_faqType"
+                android:layout_toRightOf="@id/FTYPE_number"
+                style="@style/Title3TextStyleBlack"
+                android:layout_marginLeft="@dimen/mon_16"
+                android:text="FAQ TYpe here"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+      </RelativeLayout>
+  <!--  </android.support.v7.widget.CardView>
+
+-->
 
 
 
-
-
-</RelativeLayout>
+</android.support.v7.widget.CardView>

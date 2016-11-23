@@ -38,6 +38,7 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
     public static final int MY_COMPLAINTS = 1, AROUND_ME = 2;
     private ArrayList<ComplaintDTO> arrayList;
     static final String LOG = ComplaintListAdapter.class.getSimpleName();
+    boolean statusLayoutOpen, statusLayoutClosed;
 
     public ComplaintListAdapter(Context context, int textViewResourceId,
                                 int darkColor, int type,
@@ -174,6 +175,31 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
             item.image.setVisibility(View.GONE);
         }
 
+        if (statusLayoutOpen) {
+            statusLayoutOpen = true;
+            statusLayoutClosed = false;
+        item.txtComplaintType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                item.statusLayout.setVisibility(View.GONE);
+                statusLayoutOpen = false;
+                statusLayoutClosed = true;
+            }
+        });
+        }
+        if (statusLayoutClosed) {
+            statusLayoutClosed = true;
+            statusLayoutOpen = false;
+            item.txtComplaintType.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    item.statusLayout.setVisibility(View.VISIBLE);
+                    statusLayoutOpen = true;
+                    statusLayoutClosed = false;
+                }
+            });
+        }
+
         item.iconFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -222,6 +248,7 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
 
         if (p.getComplaintUpdateStatusList() != null && !p.getComplaintUpdateStatusList().isEmpty()) {
             item.statusLayout.setVisibility(View.VISIBLE);
+            /*statusLayoutOpen = true;*/
             ComplaintUpdateStatusDTO y = p.getComplaintUpdateStatusList().get(0);
             item.txtStatusDate.setText(sdfDate.format(new Date(y.getDateUpdated())));
             item.txtRemarks.setText(y.getRemarks());

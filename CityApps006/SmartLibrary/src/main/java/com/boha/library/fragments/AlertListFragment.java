@@ -164,8 +164,9 @@ public class AlertListFragment extends Fragment implements PageFragment {
     AlertsReadAdapter alertsReadAdapter;
 
     private void setFields() {
-        txtEmpty = (TextView) view.findViewById(R.id.ALERT_LIST_text);
-        txtEmpty.setVisibility(View.GONE);
+            txtEmpty = (TextView) view.findViewById(R.id.ALERT_LIST_text);
+            txtEmpty.setVisibility(View.GONE);
+        /*txtEmpty.setVisibility(View.GONE);*/
        /* if (alertsFeedItems != null) {
             txtEmpty.setVisibility(View.GONE);
         } else {

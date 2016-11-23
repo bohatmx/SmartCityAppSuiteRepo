@@ -35,6 +35,10 @@
             android:id="@+id/nav_contacts"
             android:icon="@android:drawable/ic_menu_call"
             android:title="@string/contacts"/>
+        <item
+            android:id="@+id/nav_ward_councillors"
+            android:icon="@android:drawable/ic_menu_agenda"
+            android:title="@string/ward_councillors"/>
        <!-- <item
             android:id="@+id/nav_gallery"
             android:visible="false"

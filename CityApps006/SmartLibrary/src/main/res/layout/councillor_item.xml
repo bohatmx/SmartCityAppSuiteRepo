@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/councillor_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/councillor_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.v4.widget.CircleImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/back2"
+                android:id="@+id/profile_image"/>
+            <TextView
+                android:layout_toRightOf="@+id/profile_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mkhize Maxwell Mvikelwa"
+                style="@style/MediumTextStyle"
+                android:id="@+id/profile_name"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ward_label"
+                android:text="Ward No: "
+                style="@style/MediumTextStyle"
+                android:layout_toRightOf="@+id/profile_image"
+                android:layout_below="@+id/profile_name"/>
+            <TextView
+                android:id="@+id/ward_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:layout_toRightOf="@+id/ward_label"
+                android:layout_below="@+id/profile_name"
+                style="@style/MediumTextStyle"/>
+            <android.support.v4.widget.CircleImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_person"
+                android:layout_below="@+id/ward_label"
+                android:layout_toRightOf="@+id/profile_image"
+                android:id="@+id/profile_party_icon"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/profile_party_icon"
+                android:layout_below="@+id/ward_label"
+                android:text="ANC"
+                style="@style/MediumTextStyle"
+                android:id="@+id/party_name"/>
+
+            <RelativeLayout
+                android:id="@+id/councillor_contact_layout"
+                android:layout_marginTop="@dimen/mon_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/party_name">
+                <include
+
+                    layout="@layout/councillor_contact_details"/>
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+
+
+    </android.support.v7.widget.CardView>
+
+
+
+</RelativeLayout>
