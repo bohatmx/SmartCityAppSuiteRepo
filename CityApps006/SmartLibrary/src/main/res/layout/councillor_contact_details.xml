@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:layout_margin="@dimen/mon_12"
+    android:layout_marginTop="@dimen/mon_12">
     <RelativeLayout
         android:id="@+id/lay1"
         android:layout_margin="4dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <android.support.v4.widget.CircleImageView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/mon_12"
@@ -42,7 +45,7 @@
         android:layout_margin="4dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <android.support.v4.widget.CircleImageView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/mon_12"
@@ -76,7 +79,7 @@
         android:layout_margin="4dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <android.support.v4.widget.CircleImageView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/mon_12"
@@ -112,7 +115,7 @@
         android:layout_margin="4dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <android.support.v4.widget.CircleImageView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/mon_12"
@@ -147,11 +150,11 @@
         android:layout_margin="4dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <android.support.v4.widget.CircleImageView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/mon_12"
-            android:src="@android:drawable/stat_sys_phone_call"
+            android:src="@android:drawable/sym_action_email"
             android:tint="@color/green"
             android:id="@+id/email_icon"/>
 
@@ -163,7 +166,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Bongumusa.Mkhize@durban.gov.za/"
-            style="@style/MediumTextStyle"/>
+            style="@style/MediumTextStyle"
+            android:autoLink="email"/>
 
     </RelativeLayout>
 

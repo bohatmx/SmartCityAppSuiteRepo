@@ -69,8 +69,8 @@ public class EmergencyContactsActivity extends AppCompatActivity {
         setAnalyticsEvent("emergency","EmergencyContacts");
     }
     private void setFields(){
-        EM_hero = (ImageView) findViewById(R.id.EM_hero);
-        EM_hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+        /*EM_hero = (ImageView) findViewById(R.id.EM_hero);
+        EM_hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));*/
         EMC_title = (TextView) findViewById(R.id.EMC_title);
         EC_title1 = (TextView) findViewById(R.id.EC_title1);
         EC_POLICE_NO = (TextView) findViewById(R.id.EC_POLICE_NO_);
@@ -163,8 +163,8 @@ public class EmergencyContactsActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         timer.cancel();
-                        EM_hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-                        Util.flashOnce(EM_hero, 300, null);
+                        /*EM_hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+                        Util.flashOnce(EM_hero, 300, null);*/
                     }
                 });
             }

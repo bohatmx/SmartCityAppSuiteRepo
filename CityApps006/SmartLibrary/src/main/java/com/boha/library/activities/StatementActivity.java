@@ -53,7 +53,7 @@ public class StatementActivity extends AppCompatActivity
         ActionBar actionBar = getSupportActionBar();
         Util.setCustomActionBar(ctx,
                 actionBar,
-                municipality.getMunicipalityName(), ContextCompat.getDrawable(ctx,logo), logo);
+                municipality.getMunicipalityName(), ctx.getResources().getDrawable(R.drawable.logo), logo);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();

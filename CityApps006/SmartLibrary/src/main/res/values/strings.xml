@@ -191,7 +191,7 @@ You can receive personalised news and alerts, these will be profile and location
 The mobile app will also enable citizens to report incorrect billing to the municipality. Other features includes Frequently Asked Questions about the city services. Users with the registered E-services account will get more personalised information about the services.
 The application has emergency numbers from the municipality, such as ambulance number, fire department and metro police department etc.
 </string>
-    <string name="first_gen_paragraph">eThekwini Municipality has released a new and improved mobile application for citizen engagement. In this updated version you can log cases such as :</string>
+    <string name="first_gen_paragraph">eThekwini Municipality has released a new and improved mobile application for citizen engagement. In this updated version you can log cases such as:</string>
     <string name="report_electricity_outages">- Report electricity outages</string>
     <string name="no_water">- No water</string>
     <string name="missing_manhole_covers">- Missing manhole covers</string>

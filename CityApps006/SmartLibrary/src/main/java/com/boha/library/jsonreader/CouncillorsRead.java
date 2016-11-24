@@ -1,10 +1,12 @@
 package com.boha.library.jsonreader;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.boha.library.util.Util;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -64,14 +66,17 @@ public class CouncillorsRead extends AsyncTask<Void,Void,Void> {
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             StringBuilder sb = new StringBuilder();
             String line = null;
+
             while ((line = reader.readLine()) != null) {
                 sb.append(line /*+ "\n"*/);
+              //  Log.i(LOG, line);
             }
 
             is.close();
             json = sb.toString();
+           // Log.e(LOG, "getFeedItems: " + json.substring(500) );
             councillors = gson.fromJson(json,CouncillorFeedItems.class);
-            Log.e(LOG, "getFeedItems: " + json );
+            Log.i(LOG, " "+ councillors.getCouncillors().size());
         } catch (UnsupportedEncodingException e) {
             Log.e(LOG, e.getMessage());
         }catch (ClientProtocolException e) {
@@ -89,10 +94,10 @@ public class CouncillorsRead extends AsyncTask<Void,Void,Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        if (councillors.getCouncillorsFeedItems()!= null) {
-            Log.i(LOG, "onPostExecute: feedItems:" + councillors.getCouncillorsFeedItems().size());
+        if (councillors.getCouncillors()!= null) {
+            Log.i(LOG, "onPostExecute: feedItems:" + councillors.getCouncillors().size());
 
-            CouncillorsReadAdapter adapter = new CouncillorsReadAdapter(context, councillors.councillorsFeedItems);
+            CouncillorsReadAdapter adapter = new CouncillorsReadAdapter(context, councillors.getCouncillors());
             recyclerView.setAdapter(adapter);
         } else {
             Log.i(LOG, "councillorsFeedItems is null" );
@@ -101,7 +106,7 @@ public class CouncillorsRead extends AsyncTask<Void,Void,Void> {
           //  recyclerView.setAdapter(noAlertsAdapter);
 
             // View v = getLayoutInflater().inflate(R.layout.complaint_map_info_window, null);
-            // Util.showSnackBar(recyclerView, "No alerts to display", "Dismiss", Color.parseColor("RED"));
+             Util.showSnackBar(recyclerView, "No Councillors to display", "Dismiss", Color.parseColor("RED"));
         }
     }
 

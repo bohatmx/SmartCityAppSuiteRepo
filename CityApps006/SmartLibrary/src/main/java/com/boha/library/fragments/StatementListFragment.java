@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -85,6 +86,7 @@ public class StatementListFragment extends Fragment implements PageFragment {
     AccountDTO account;
     StatementRecyclerAdapter statementAdapter;
     RecyclerView recyclerView;
+    FloatingActionButton faButton;
 
     public void setAccount(AccountDTO account) {
         Log.d(LOG, "### setAccount");
@@ -230,6 +232,18 @@ public class StatementListFragment extends Fragment implements PageFragment {
 
         txtDate.setText("Not Downloaded");
         txtCount.setText("0");
+        faButton = (FloatingActionButton) view.findViewById(R.id.fab);
+        faButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.flashOnce(faButton, 300, new Util.UtilAnimationListener() {
+                    @Override
+                    public void onAnimationEnded() {
+                        showDatePicker();
+                    }
+                });
+            }
+        });
         fab = view.findViewById(R.id.FAB);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

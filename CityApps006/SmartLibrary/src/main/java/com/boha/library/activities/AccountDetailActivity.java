@@ -78,7 +78,7 @@ public class AccountDetailActivity extends AppCompatActivity implements AccountF
         Drawable d = ContextCompat.getDrawable(ctx,logo);
         Util.setCustomActionBar(ctx,
                 getSupportActionBar(),
-                municipality.getMunicipalityName(), d, logo);
+                municipality.getMunicipalityName(), ctx.getResources().getDrawable(R.drawable.logo), logo);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);

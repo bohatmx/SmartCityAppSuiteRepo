@@ -121,9 +121,14 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
         final ComplaintDTO p = mList.get(position);
         item.txtColor.setText("" + (position + 1));
 
+
         item.txtComplaintType.setText(
                     p.getCategory() + " - " +
                     p.getSubCategory());
+
+        if (p.getSubCategory().matches("Burst")) {
+            item.txtComplaintType.setText(p.getCategory() + " - " + "Burst Pipe");
+        }
 
         if (p.getComplaintDate() != null) {
             item.txtDate.setText(sdfDate.format(new Date(p.getComplaintDate())));
@@ -175,31 +180,6 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
             item.image.setVisibility(View.GONE);
         }
 
-        if (statusLayoutOpen) {
-            statusLayoutOpen = true;
-            statusLayoutClosed = false;
-        item.txtComplaintType.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                item.statusLayout.setVisibility(View.GONE);
-                statusLayoutOpen = false;
-                statusLayoutClosed = true;
-            }
-        });
-        }
-        if (statusLayoutClosed) {
-            statusLayoutClosed = true;
-            statusLayoutOpen = false;
-            item.txtComplaintType.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    item.statusLayout.setVisibility(View.VISIBLE);
-                    statusLayoutOpen = true;
-                    statusLayoutClosed = false;
-                }
-            });
-        }
-
         item.iconFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -248,14 +228,13 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
 
         if (p.getComplaintUpdateStatusList() != null && !p.getComplaintUpdateStatusList().isEmpty()) {
             item.statusLayout.setVisibility(View.VISIBLE);
-            /*statusLayoutOpen = true;*/
             ComplaintUpdateStatusDTO y = p.getComplaintUpdateStatusList().get(0);
             item.txtStatusDate.setText(sdfDate.format(new Date(y.getDateUpdated())));
             item.txtRemarks.setText(y.getRemarks());
             item.txtAck.setText(y.getStatus());
 
         } else {
-            item.statusLayout.setVisibility(View.VISIBLE);
+            item.statusLayout.setVisibility(View.GONE);
         }
 
         item.txtColor.setBackground(ContextCompat.getDrawable(ctx, R.drawable.xindigo_oval_small));

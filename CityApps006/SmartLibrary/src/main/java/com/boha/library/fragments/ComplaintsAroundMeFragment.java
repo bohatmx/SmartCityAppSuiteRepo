@@ -135,6 +135,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         w.setLongitude(location.getLongitude());
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
 
+        w.setZipResponse(false);
         //todo remove when done testing
         w.setSpoof(false);
         //

@@ -79,8 +79,8 @@ public class GeneralInfoActivity extends AppCompatActivity {
         GEN_txt10 = (TextView) findViewById(R.id.GEN_txt10);
         GEN_txt11 = (TextView) findViewById(R.id.GEN_txt11);
         GEN_txt12 = (TextView) findViewById(R.id.GEN_txt12);
-        GEN_hero = (ImageView) findViewById(R.id.GEN_hero);
-        GEN_hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+        /*GEN_hero = (ImageView) findViewById(R.id.GEN_hero);
+        GEN_hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));*/
         GEN_txt_title = (TextView) findViewById(R.id.GEN_txt_title);
         GEN_SCROLL = (ScrollView) findViewById(R.id.GEN_SCROLL);
     }
@@ -132,8 +132,8 @@ public class GeneralInfoActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         timer.cancel();
-                        GEN_hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-                        Util.flashOnce(GEN_hero, 300, null);
+                       // GEN_hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+                       // Util.flashOnce(GEN_hero, 300, null);
                     }
                 });
             }

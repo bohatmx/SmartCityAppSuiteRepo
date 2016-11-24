@@ -25,9 +25,9 @@ public class NoAlertsAdapter extends RecyclerView.Adapter<NoAlertsAdapter.MyView
     Context ctx;
     ArrayList<AlertsFeedItem> alertsFeedItems;
 
-    public NoAlertsAdapter(/*Context context*//*, ArrayList<AlertsFeedItem> alertsFeedItems*/) {
+    public NoAlertsAdapter(Context context, ArrayList<AlertsFeedItem> alertsFeedItems) {
         this.alertsFeedItems = alertsFeedItems;
-      //  this.ctx = context;
+        this.ctx = context;
         }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -41,10 +41,10 @@ public class NoAlertsAdapter extends RecyclerView.Adapter<NoAlertsAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-      //  final AlertsFeedItem current = alertsFeedItems.get(position);
-       // if (current.getCategory().isEmpty() || current.getCategory() == null) {
+        final AlertsFeedItem current = alertsFeedItems.get(position);
+        if (current.getCategory().isEmpty() || current.getCategory() == null) {
             holder.noAlert.setText("No Alerts available");
-       // }
+        }
     }
 
     @Override
@@ -57,7 +57,7 @@ public class NoAlertsAdapter extends RecyclerView.Adapter<NoAlertsAdapter.MyView
         public MyViewHolder(View itemView) {
             super(itemView);
             noAlert = (TextView) itemView.findViewById(R.id.txtEmptyAlert1);
-            noAlert.setVisibility(View.VISIBLE);
+
 
 
         }

@@ -73,6 +73,7 @@ public class CouncillorsListFragment extends Fragment implements PageFragment {
 
     private void setFields() {
 
+
         recyclerView = (RecyclerView) view.findViewById(R.id.COUNCILLORS_LIST_listView);
         LinearLayoutManager lm = new LinearLayoutManager(ctx, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(lm);

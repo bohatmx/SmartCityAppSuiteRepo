@@ -8,13 +8,13 @@ import java.util.ArrayList;
 
 public class CouncillorFeedItems {
 
-    ArrayList<CouncillorsFeedItem> councillorsFeedItems;
+    ArrayList<CouncillorsFeedItem> councillors;
 
-    public ArrayList<CouncillorsFeedItem> getCouncillorsFeedItems() {
-        return councillorsFeedItems;
+    public ArrayList<CouncillorsFeedItem> getCouncillors() {
+        return councillors;
     }
 
-    public void setCouncillorsFeedItems(ArrayList<CouncillorsFeedItem> councillorsFeedItems) {
-        this.councillorsFeedItems = councillorsFeedItems;
+    public void setCouncillors(ArrayList<CouncillorsFeedItem> councillors) {
+        this.councillors = councillors;
     }
 }

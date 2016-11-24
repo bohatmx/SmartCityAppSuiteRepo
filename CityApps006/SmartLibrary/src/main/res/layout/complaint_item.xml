@@ -235,7 +235,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/CI_image"
         android:background="@color/white"
-        android:padding="@dimen/mon_16">
+        android:padding="@dimen/mon_16"
+        android:visibility="gone">
         <TextView
             android:padding="@dimen/mon_divider"
             android:layout_width="wrap_content"

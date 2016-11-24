@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -39,8 +40,9 @@ public class ThemeSelectorActivity extends AppCompatActivity {
         int logo = getIntent().getIntExtra("logo", R.drawable.ic_action_globe);
         themeDarkColor = getIntent().getIntExtra("darkColor", R.color.teal_900);
         MunicipalityDTO muni = SharedUtil.getMunicipality(ctx);
+
         Util.setCustomActionBar(ctx, getSupportActionBar(),
-                muni.getMunicipalityName(),ctx.getResources().getDrawable(logo),logo);
+                muni.getMunicipalityName(),ctx.getResources().getDrawable(R.drawable.logo), logo);
         //
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();

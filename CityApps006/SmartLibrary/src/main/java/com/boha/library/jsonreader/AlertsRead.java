@@ -1,12 +1,17 @@
 package com.boha.library.jsonreader;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.util.Util;
@@ -33,8 +38,8 @@ import khandroid.ext.apache.http.impl.client.DefaultHttpClient;
 /**
  * Created by Nkululeko on 2016/09/08.
  */
-public class AlertsRead extends AsyncTask<Void,Void,Void>{
-    Context context;
+public class AlertsRead extends AsyncTask<Void,Void,Void> {
+    static Context context;
 
     public ArrayList<AlertsFeedItem> alertsFeedItems;
     RecyclerView recyclerView;
@@ -51,6 +56,7 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
         return null;
     }
 
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -59,7 +65,7 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        if (feeditems.getFeedItems()/*.size() > 1*/!= null) {
+        if (feeditems.getFeedItems()!= null) {
             Log.i(LOG, "onPostExecute: feedItems:" + feeditems.getFeedItems().size());
 
             AlertsReadAdapter adapter = new AlertsReadAdapter(context,
@@ -74,16 +80,72 @@ public class AlertsRead extends AsyncTask<Void,Void,Void>{
         } else {
             Log.i(LOG, "alertsFeedItems is null" );
             /*view = View.inflate(context, R.layout.no_alert, null);*/
-            NoAlertsAdapter noAlertsAdapter = new NoAlertsAdapter(/*context*//*, feeditems.feedItems*/);
-            recyclerView.setAdapter(noAlertsAdapter);
-
+           // displayEmptyText(inflater, container);
+           /* NoAlertsAdapter noAlertsAdapter = new NoAlertsAdapter(context, feeditems.feedItems);
+            recyclerView.setAdapter(noAlertsAdapter);*/
            // View v = getLayoutInflater().inflate(R.layout.complaint_map_info_window, null);
            // Util.showSnackBar(recyclerView, "No alerts to display", "Dismiss", Color.parseColor("RED"));
         }
 
     }
 
-    private AlertsRead() {
+    /*private static class AlertsReading extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            getJSONFromUrl(URL);
+            return null;
+        }
+
+        public void getJSONFromUrl(String url) {
+            Log.i(LOG, "getFeedItems");
+            InputStream is = null;
+            JSONObject jObj = null;
+            String json = null;
+            feeditems = new AlertFeedItems();
+
+            try{
+                DefaultHttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost(url);
+
+                HttpResponse httpResponse = httpClient.execute(httpPost);
+                HttpEntity httpEntity = httpResponse.getEntity();
+                is = httpEntity.getContent();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line + "\n");
+                }
+                is.close();
+                json = sb.toString();
+                feeditems = gson.fromJson(json,AlertFeedItems.class);
+                //  Log.d(LOG, "getFeedItems: feedItems: " + feedItems.size());
+                Log.e(LOG, "getFeedItems: " + json );
+            } catch (UnsupportedEncodingException e) {
+                Log.e(LOG, e.getMessage());
+            }catch (ClientProtocolException e) {
+                Log.e(LOG, e.getMessage());
+            } catch (IOException e) {
+                Log.e(LOG, e.getMessage());
+            } catch (JsonSyntaxException e) {
+                Log.e(LOG, e.getMessage());
+            }
+
+
+        }
+    }*/
+
+
+    static TextView emptyTxt;
+    static LayoutInflater inflater;
+    static ViewGroup container;
+    private static View displayEmptyText(LayoutInflater inflater, ViewGroup container) {
+        View v = inflater.inflate(R.layout.no_alert, container, false);
+        emptyTxt = (TextView) v.findViewById(R.id.txtEmptyAlert1);
+        /*txtEmpty = (TextView) v.findViewById(R.id.ALERT_LIST_text);*/
+        return v;
 
     }
 

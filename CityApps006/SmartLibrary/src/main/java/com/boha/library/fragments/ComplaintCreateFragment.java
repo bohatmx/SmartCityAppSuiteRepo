@@ -216,6 +216,8 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             if (location != null) {
                 complaint.setLatitude(location.getLatitude());
                 complaint.setLongitude(location.getLongitude());
+            } else if (location.getLatitude() == 0.0) {
+                Util.showSnackBar(recyclerView, "location was not found, try again", "OK", Color.parseColor("CYAN"));
             }
         }
 

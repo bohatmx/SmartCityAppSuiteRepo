@@ -1,9 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/mon_padding"
-    android:background="@color/grey">
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/mon_padding">
 
 
   <!--  <ImageView
@@ -18,9 +17,8 @@
         android:id="@+id/ALERT_LIST_listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:dividerHeight="@dimen/mon_padding"
         app:layout_anchor="@id/fab"
-        android:background="@color/white"/>
+        android:layout_margin="@dimen/mon_padding"/>
 
 
     <TextView
@@ -29,7 +27,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="No Current Alerts" />
+        android:text="No Current Alerts"
+        android:textColor="@color/black"/>
 
 
     <android.support.design.widget.FloatingActionButton
@@ -50,4 +49,4 @@
         app:rippleColor="@color/blue_200" />
 
 
-</RelativeLayout>
+</android.support.v7.widget.CardView>

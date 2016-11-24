@@ -25,7 +25,9 @@
                 android:layout_below="@+id/ST_handle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/appBar">
+                android:id="@+id/appBar"
+                android:layout_weight="1">
+
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -42,7 +44,9 @@
                         android:layout_height="match_parent"
                         android:visibility="gone"/>
 
+
                     <RelativeLayout
+                        android:layout_weight="0.6"
                         android:padding="@dimen/mon_16"
                         android:id="@+id/acctLayout"
                         android:layout_width="match_parent"
@@ -64,6 +68,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                         <TextView
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
                             android:layout_marginTop="50dp"
                             android:id="@+id/ST_account"
                             android:text="1324536467"
@@ -79,16 +84,14 @@
                             android:text="Latest Statement Available"
                             android:layout_marginTop="@dimen/mon_padding"
                             android:layout_marginLeft="@dimen/mon_16"
-                            style="@style/TextStyleSmall"
-                            android:textColor="@color/grey"
+                            style="@style/TextStyleSmallWhite"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </RelativeLayout>
                 </android.support.v7.widget.Toolbar>
 
+
             </android.support.design.widget.AppBarLayout>
-
-
 
             <TextView
                 android:id="@+id/ST_subtitle"
@@ -98,7 +101,23 @@
                 android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+
         </RelativeLayout>
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_search"
+            app:layout_anchor="@+id/ST_list"
+            app:layout_anchorGravity="bottom|right|end"
+            android:layout_alignParentRight="true"
+            app:backgroundTint="@color/white"
+            app:rippleColor="@color/white"
+            android:layout_marginTop="100dp"
+            android:layout_marginRight="@dimen/mon_wide" />
 
 
         <android.support.v7.widget.RecyclerView
@@ -116,7 +135,11 @@
             android:layout_height="56dp"
             android:layout_alignParentRight="true"
             android:layout_marginTop="70dp"
-            android:layout_marginRight="@dimen/mon_wide" />
+            android:layout_marginRight="@dimen/mon_wide"
+            android:visibility="gone"/>
+
+
+
 
         <TextView
             android:id="@+id/ST_count"
@@ -129,5 +152,7 @@
             android:layout_height="wrap_content"/>
 
     </RelativeLayout>
+
+
 
 </android.support.v7.widget.CardView>
