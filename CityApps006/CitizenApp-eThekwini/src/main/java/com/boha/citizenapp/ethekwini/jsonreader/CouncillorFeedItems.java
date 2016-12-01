@@ -1,4 +1,4 @@
-package com.boha.library.jsonreader;
+package com.boha.citizenapp.ethekwini.jsonreader;
 
 import java.util.ArrayList;
 

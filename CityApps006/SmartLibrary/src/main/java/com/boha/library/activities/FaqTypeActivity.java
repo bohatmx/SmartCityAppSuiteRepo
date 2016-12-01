@@ -18,8 +18,7 @@ import android.widget.TextView;
 import com.boha.library.R;
 import com.boha.library.dto.FreqQuestionTypeDTO;
 import com.boha.library.dto.MunicipalityDTO;
-import com.boha.library.fragments.FaqFragment;
-import com.boha.library.rssreader.FaqTest;
+/*import com.boha.library.fragments.FaqFragment;*/
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.FAQCommsUtil;
@@ -30,7 +29,7 @@ import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-public class FaqTypeActivity extends AppCompatActivity implements FaqFragment.FaqListener{
+public class FaqTypeActivity extends AppCompatActivity /*implements FaqFragment.FaqListener*/{
 
     WebView webView;
     Context ctx;
@@ -117,7 +116,7 @@ public class FaqTypeActivity extends AppCompatActivity implements FaqFragment.Fa
 
             @Override
             public void onError() {
-                mListener.setBusy(false);
+             //   mListener.setBusy(false);
             }
         });
     }
@@ -147,13 +146,13 @@ public class FaqTypeActivity extends AppCompatActivity implements FaqFragment.Fa
     private static final String TEXT = "text/html", UTF = "UTF-8";
 
     FreqQuestionTypeDTO faqType;
-    FaqFragment.FaqListener mListener;
+    //FaqFragment.FaqListener mListener;
     ImageView icon;
 
-    @Override
+    /*@Override
     public void setBusy(boolean busy) {
 
-    }
+    }*/
 
     /*@Override
     public void onFaqCLicked() {

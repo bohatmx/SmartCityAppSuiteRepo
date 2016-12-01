@@ -42,12 +42,12 @@ package="com.boha.citizenapp.msunduzi" >
     <activity android:name=".activities.MainDrawerActivity"
         android:screenOrientation="portrait"
         />
-    <activity android:name="com.boha.library.activities.AccountActivity"
+    <activity android:name="com.boha.library.activities.AccountDetailActivity"
         android:screenOrientation="portrait"
         android:parentActivityName=".activities.MainDrawerActivity"/>
     <activity android:name="com.boha.library.activities.PaymentStartActivity"
         android:screenOrientation="portrait"
-        android:parentActivityName="com.boha.library.activities.AccountActivity"
+        android:parentActivityName="com.boha.library.activities.AccountDetailActivity"
         android:windowSoftInputMode="stateAlwaysHidden"/>
     <activity android:name=".activities.RegistrationActivity"
         android:screenOrientation="portrait"
@@ -73,11 +73,11 @@ package="com.boha.citizenapp.msunduzi" >
         android:screenOrientation="portrait"
         android:parentActivityName=".activities.SplashActivity"
         android:windowSoftInputMode="stateAlwaysHidden"/>
-    <activity
+   <!-- <activity
         android:name="com.boha.library.activities.MyComplaintsActivity"
         android:screenOrientation="portrait"
         android:parentActivityName=".activities.MainDrawerActivity" >
-    </activity>
+    </activity>-->
     <activity android:name="com.boha.library.activities.AlertPictureGridActivity"
         android:screenOrientation="portrait"/>
     <activity android:name="com.boha.library.activities.FullPhotoActivity"
@@ -90,7 +90,7 @@ package="com.boha.citizenapp.msunduzi" >
     <activity
         android:name="com.boha.library.activities.StatementActivity"
         android:screenOrientation="portrait"
-        android:parentActivityName="com.boha.library.activities.AccountActivity" >
+        android:parentActivityName="com.boha.library.activities.AccountDetailActivity" >
     </activity>
     <activity
         android:name="com.boha.library.activities.MuniContactsActivity"
@@ -98,10 +98,10 @@ package="com.boha.citizenapp.msunduzi" >
         android:parentActivityName=".activities.MainDrawerActivity" >
     </activity>
 
-    <activity
+    <!--<activity
         android:name="com.boha.library.activities.AccountDetailActivity"
-        android:parentActivityName="com.boha.library.activities.AccountActivity" >
-    </activity>
+        android:parentActivityName="com.boha.library.activities.AccountDetailActivity" >
+    </activity>-->
     <activity
         android:name="com.boha.library.activities.AlertDetailActivity"
         android:parentActivityName=".activities.MainDrawerActivity" >

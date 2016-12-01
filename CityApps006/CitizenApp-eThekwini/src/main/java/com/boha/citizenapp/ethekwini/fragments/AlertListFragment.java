@@ -1,8 +1,7 @@
-package com.boha.library.fragments;
+package com.boha.citizenapp.ethekwini.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,14 +18,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.boha.citizenapp.ethekwini.jsonreader.AlertFeedItems;
+import com.boha.citizenapp.ethekwini.jsonreader.AlertsFeedItem;
+import com.boha.citizenapp.ethekwini.jsonreader.AlertsRead;
+import com.boha.citizenapp.ethekwini.jsonreader.AlertsReadAdapter;
 import com.boha.library.R;
 import com.boha.library.activities.CityApplication;
 import com.boha.library.dto.AlertDTO;
-import com.boha.library.jsonreader.AlertFeedItems;
-import com.boha.library.jsonreader.AlertsFeedItem;
-import com.boha.library.jsonreader.AlertsRead;
-import com.boha.library.jsonreader.AlertsReadAdapter;
-import com.boha.library.jsonreader.NoAlertsAdapter;
+import com.boha.library.fragments.PageFragment;
 import com.boha.library.rssreader.AlertReadRss;
 import com.boha.library.rssreader.ReadRssAdapter;
 import com.boha.library.transfer.RequestDTO;
@@ -34,32 +33,16 @@ import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.Statics;
-import com.boha.library.util.Util;
 import com.boha.library.util.WebCheck;
 import com.boha.library.util.WebCheckResult;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-
-import khandroid.ext.apache.http.HttpEntity;
-import khandroid.ext.apache.http.HttpResponse;
-import khandroid.ext.apache.http.client.ClientProtocolException;
-import khandroid.ext.apache.http.client.methods.HttpPost;
-import khandroid.ext.apache.http.impl.client.DefaultHttpClient;
 
 /**
  * Fragment to house local pictures
  */
-public class AlertListFragment extends Fragment implements PageFragment {
+public class AlertListFragment extends Fragment implements PageFragment,
+        AlertsRead.AsyncResponse{
 
     private AlertListener mListener;
 
@@ -122,8 +105,8 @@ public class AlertListFragment extends Fragment implements PageFragment {
           //  Util.showSnackBar(view, "You are currently not connected to the network", "OK", Color.parseColor("red"));
         } else {
             alertsRead = new AlertsRead(ctx, recyclerView);
+            alertsRead.delegate = this;
             alertsRead.execute();
-           // new AlertsReading().execute();
         }
 
         switch (primaryColor) {
@@ -186,17 +169,6 @@ public class AlertListFragment extends Fragment implements PageFragment {
     private void setFields() {
         txtEmpty = (TextView) view.findViewById(R.id.ALERT_LIST_text);
         txtEmpty.setVisibility(View.GONE);
-       /* if (feeditems.getFeedItems().size() > 0) {
-            txtEmpty.setVisibility(View.GONE);
-        } else {
-            txtEmpty.setVisibility(View.VISIBLE);
-        }*/
-        /*txtEmpty.setVisibility(View.GONE);*/
-       /* if (alertsFeedItems != null) {
-            txtEmpty.setVisibility(View.GONE);
-        } else {
-            txtEmpty.setVisibility(View.VISIBLE);
-        }*/
         Statics.setRobotoFontLight(ctx, txtEmpty);
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         recyclerView = (RecyclerView) view.findViewById(R.id.ALERT_LIST_listView);
@@ -354,7 +326,6 @@ public class AlertListFragment extends Fragment implements PageFragment {
 
     }
 
-    //  AlertRecyclerAdapter alertListAdapter;
     static final long THREE_DAYS = 1000 * 60 * 60 * 24 * 3;
 
    /* private void setList() {
@@ -462,6 +433,12 @@ public class AlertListFragment extends Fragment implements PageFragment {
         this.pageTitle = pageTitle;
     }
 
+    @Override
+    public void processFinish(String output) {
+        txtEmpty.setText(output);
+        txtEmpty.setVisibility(View.VISIBLE);
+    }
+
     public interface AlertListener {
         void onAlertClicked(AlertDTO alert);
 
@@ -471,100 +448,7 @@ public class AlertListFragment extends Fragment implements PageFragment {
 
     }
 
-
-    public static class AlertsReading extends AsyncTask<Void,Void,Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            getJSONFromUrl(URL);
-            return null;
-        }
-
-        public void getJSONFromUrl(String url) {
-            Log.i(LOG, "getFeedItems");
-            InputStream is = null;
-            JSONObject jObj = null;
-            String json = null;
-            feeditems = new AlertFeedItems();
-
-            try{
-                DefaultHttpClient httpClient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost(url);
-
-                HttpResponse httpResponse = httpClient.execute(httpPost);
-                HttpEntity httpEntity = httpResponse.getEntity();
-                is = httpEntity.getContent();
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-                StringBuilder sb = new StringBuilder();
-                String line = null;
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line + "\n");
-                }
-                is.close();
-                json = sb.toString();
-                feeditems = gson.fromJson(json,AlertFeedItems.class);
-                //  Log.d(LOG, "getFeedItems: feedItems: " + feedItems.size());
-                Log.e(LOG, "getFeedItems: " + json );
-            } catch (UnsupportedEncodingException e) {
-                Log.e(LOG, e.getMessage());
-            }catch (ClientProtocolException e) {
-                Log.e(LOG, e.getMessage());
-            } catch (IOException e) {
-                Log.e(LOG, e.getMessage());
-            } catch (JsonSyntaxException e) {
-                Log.e(LOG, e.getMessage());
-            }
-
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            if (feeditems.getFeedItems()!= null) {
-                Log.i(LOG, "onPostExecute: feedItems:" + feeditems.getFeedItems().size());
-
-                AlertsReadAdapter adapter = new AlertsReadAdapter(ctx,
-                        feeditems.getFeedItems(), new AlertsReadAdapter.NewsListListener() {
-                    @Override
-                    public void onNewsClicked() {
-
-                    }
-                });
-
-                recyclerView.setAdapter(adapter);
-            } else {
-                Log.i(LOG, "alertsFeedItems is null" );
-              //  displayEmptyText();
-                /* View v = View.inflate(ctx, R.layout.no_alert, null);*/
-               /* NoAlertsAdapter noAlertsAdapter = new NoAlertsAdapter(ctx, feeditems.getFeedItems());
-                recyclerView.setAdapter(noAlertsAdapter);*/
-                 View v = View.inflate(ctx, R.layout.no_alert, null);
-                // Util.showSnackBar(recyclerView, "No alerts to display", "Dismiss", Color.parseColor("RED"));
-            }
-
-        }
-
-
-    }
-
-    private static View displayEmptyText() {
-        View v = View.inflate(ctx, R.layout.no_alert, null);
-        txtEmpty = (TextView) v.findViewById(R.id.ALERT_LIST_text);
-        return v;
-
-    }
-    static final String URL = "http://icsmnewsdev.oneconnectgroup.com/et/alerts/json/Alerts.json";
-
-    private static AlertFeedItems feeditems;
     static final String LOG = AlertListFragment.class.getSimpleName();
-    static final Gson gson = new Gson();
 
     public void setLogo(int logo) {
         this.logo = logo;

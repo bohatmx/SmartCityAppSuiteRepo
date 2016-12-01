@@ -1,8 +1,7 @@
-package com.boha.library.fragments;
+package com.boha.citizenapp.ethekwini.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -19,13 +18,13 @@ import android.widget.Toast;
 
 import com.boha.library.R;
 import com.boha.library.dto.NewsArticleDTO;
-import com.boha.library.jsonreader.NewsFeedItem;
-import com.boha.library.jsonreader.NewsRead;
+import com.boha.citizenapp.ethekwini.jsonreader.NewsFeedItem;
+import com.boha.citizenapp.ethekwini.jsonreader.NewsRead;
+import com.boha.library.fragments.PageFragment;
 import com.boha.library.rssreader.ReadRss;
 import com.boha.library.rssreader.ReadRssAdapter;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
-import com.boha.library.util.Util;
 import com.boha.library.util.WebCheck;
 import com.boha.library.util.WebCheckResult;
 
@@ -35,7 +34,8 @@ import java.util.List;
 /**
  * Fragment to house local pictures
  */
-public class NewsListFragment extends Fragment implements PageFragment {
+public class NewsListFragment extends Fragment implements PageFragment,
+        NewsRead.AsyncResponse{
 
     private NewsListFragmentListener mListener;
 
@@ -91,6 +91,7 @@ public class NewsListFragment extends Fragment implements PageFragment {
             Toast.makeText(getActivity(),"You are currently not connected to the network",Toast.LENGTH_LONG).show();
         } else {
             newsRead = new NewsRead(ctx, newsRecyclerView);
+            newsRead.delegate = this;
             newsRead.execute();
         }
 
@@ -293,6 +294,11 @@ public class NewsListFragment extends Fragment implements PageFragment {
     @Override
     public void setPageTitle(String pageTitle) {
         this.pageTitle = pageTitle;
+    }
+
+    @Override
+    public void processFinish(String output) {
+        txtEmpty.setVisibility(View.VISIBLE);
     }
 
     public interface NewsListFragmentListener {

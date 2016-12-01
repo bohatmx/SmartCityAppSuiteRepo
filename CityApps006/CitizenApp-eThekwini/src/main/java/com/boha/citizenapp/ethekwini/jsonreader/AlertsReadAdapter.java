@@ -1,4 +1,4 @@
-package com.boha.library.jsonreader;
+package com.boha.citizenapp.ethekwini.jsonreader;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,9 +12,8 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.boha.citizenapp.ethekwini.activities.FullAlertDetailActivity;
 import com.boha.library.R;
-import com.boha.library.activities.FullAlertDetailActivity;
-import com.boha.library.activities.FullDetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

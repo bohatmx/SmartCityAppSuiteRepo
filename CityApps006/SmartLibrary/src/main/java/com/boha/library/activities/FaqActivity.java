@@ -14,14 +14,13 @@ import android.view.WindowManager;
 
 import com.boha.library.R;
 import com.boha.library.dto.MunicipalityDTO;
-import com.boha.library.fragments.FaqFragment;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 
-public class FaqActivity extends AppCompatActivity implements FaqFragment.FaqListener {
+public class FaqActivity extends AppCompatActivity /*implements FaqFragment.FaqListener*/ {
 
-    FaqFragment faqFragment;
+    /*FaqFragment faqFragment;*/
     Context ctx;
 
     @Override
@@ -35,8 +34,8 @@ public class FaqActivity extends AppCompatActivity implements FaqFragment.FaqLis
         theme.resolveAttribute(com.boha.library.R.attr.colorPrimaryDark, typedValue, true);
         int themeDarkColor = typedValue.data;
 
-        faqFragment = (FaqFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
-        faqFragment.setThemeColors(0,themeDarkColor);
+        /*faqFragment = (FaqFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+        faqFragment.setThemeColors(0,themeDarkColor);*/
 
         MunicipalityDTO municipality = SharedUtil.getMunicipality(ctx);
         int logo = getIntent().getIntExtra("logo", R.drawable.ic_action_globe);
@@ -73,7 +72,7 @@ public class FaqActivity extends AppCompatActivity implements FaqFragment.FaqLis
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
-            faqFragment.getRemoteFAQs();
+          //  faqFragment.getRemoteFAQs();
             return true;
         }
         if (id == R.id.action_help) {
@@ -98,10 +97,10 @@ public class FaqActivity extends AppCompatActivity implements FaqFragment.FaqLis
         }
     }
 
-    @Override
+   /* @Override
     public void setBusy(boolean busy) {
         setRefreshActionButtonState(busy);
-    }
+    }*/
 
     /*@Override
     public void onFaqCLicked() {

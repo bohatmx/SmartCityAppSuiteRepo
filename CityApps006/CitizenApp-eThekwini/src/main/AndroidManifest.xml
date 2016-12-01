@@ -65,7 +65,7 @@
             android:parentActivityName=".activities.CitizenDrawerActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.boha.library.activities.ComplaintMapActivity"
+            android:name=".activities.ComplaintMapActivity"
             android:parentActivityName=".activities.CitizenDrawerActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -77,7 +77,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SigninActivity"
-            android:parentActivityName=".activities.LandingPageActivity"
+            android:parentActivityName=".activities.SplashActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
@@ -185,13 +185,13 @@
         <activity android:name="com.boha.library.rssreader.FullArticleViewActivity"
             android:screenOrientation="portrait"
             android:parentActivityName=".activities.LandingPageActivity"/>
-        <activity android:name="com.boha.library.activities.FullDetailActivity"
+        <activity android:name=".activities.FullDetailActivity"
             android:screenOrientation="portrait"
             android:parentActivityName=".activities.CitizenDrawerActivity"/>
-        <activity android:name="com.boha.library.activities.FullAlertDetailActivity"
+        <activity android:name=".activities.FullAlertDetailActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName=".activities.CitizenDrawerActivity"/>
-        <activity android:name="com.boha.library.activities.FAQFullDetailActivity"
+            android:parentActivityName=".activities.CitizenDrawerActivity" />
+        <activity android:name=".activities.FAQFullDetailActivity"
             android:screenOrientation="portrait"
             android:parentActivityName=".activities.CitizenDrawerActivity"/>
 

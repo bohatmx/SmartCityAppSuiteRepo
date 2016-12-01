@@ -1,4 +1,4 @@
-package com.boha.library.jsonreader;
+package com.boha.citizenapp.ethekwini.jsonreader;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;

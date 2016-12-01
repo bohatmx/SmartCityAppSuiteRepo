@@ -38,21 +38,19 @@ import android.widget.ProgressBar;
 import com.boha.citizenapp.msunduzi.R;
 import com.boha.library.activities.AccountDetailActivity;
 import com.boha.library.activities.AlertDetailActivity;
-import com.boha.library.activities.AlertMapActivity;
 import com.boha.library.activities.CityApplication;
 import com.boha.library.activities.PictureActivity;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.MunicipalityDTO;
-import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.UserDTO;
-import com.boha.library.fragments.AlertListFragment;
+/*import com.boha.library.fragments.AlertListFragment;*/
 import com.boha.library.fragments.ComplaintCreateFragment;
 import com.boha.library.fragments.ComplaintsAroundMeFragment;
 import com.boha.library.fragments.CreateAlertFragment;
 import com.boha.library.fragments.NavigationDrawerFragment;
-import com.boha.library.fragments.NewsListFragment;
+/*import com.boha.library.fragments.NewsListFragment;*/
 import com.boha.library.fragments.PageFragment;
 import com.boha.library.fragments.ProfileInfoFragment;
 import com.boha.library.services.PhotoUploadService;
@@ -85,8 +83,8 @@ import java.util.concurrent.TimeUnit;
 public class MainDrawerActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerListener,
         CreateAlertFragment.CreateAlertFragmentListener,
-        AlertListFragment.AlertListener,
-        NewsListFragment.NewsListFragmentListener,
+       /* AlertListFragment.AlertListener,
+        NewsListFragment.NewsListFragmentListener,*/
         ComplaintCreateFragment.ComplaintFragmentListener,
         ComplaintsAroundMeFragment.ComplaintAroundMeListener,
         LocationListener,
@@ -94,10 +92,10 @@ public class MainDrawerActivity extends ActionBarActivity
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     ProfileInfoFragment profileInfoFragment;
-    AlertListFragment alertListFragment;
+    /*AlertListFragment alertListFragment;*/
     ComplaintCreateFragment complaintCreateFragment;
     ComplaintsAroundMeFragment complaintsAroundMeFragment;
-    NewsListFragment newsListFragment;
+    /*NewsListFragment newsListFragment;*/
     PagerAdapter adapter;
     Context ctx;
     int currentPageIndex;
@@ -370,12 +368,12 @@ public class MainDrawerActivity extends ActionBarActivity
                         } else {
                             SharedUtil.saveUser(ctx, response.getUserList().get(0));
                         }
-                        if (alertListFragment != null) {
+                        /*if (alertListFragment != null) {
                             if (isRefresh) {
                                 isRefresh = false;
-                                alertListFragment.refreshAlerts();
+                           //     alertListFragment.refreshAlerts();
                             }
-                        }
+                        }*/
 
 
                         CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
@@ -472,33 +470,33 @@ public class MainDrawerActivity extends ActionBarActivity
 //        }
 //        response.setNewsArticleList(alist);
         complaintCreateFragment = ComplaintCreateFragment.newInstance();
-        alertListFragment = AlertListFragment.newInstance(response);
+    //    alertListFragment = AlertListFragment.newInstance(response);
         complaintsAroundMeFragment = ComplaintsAroundMeFragment.newInstance();
-        newsListFragment = NewsListFragment.newInstance(response);
+     //   newsListFragment = NewsListFragment.newInstance(response);
 
 
-        alertListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
+     //   alertListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         complaintCreateFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 
         complaintsAroundMeFragment.setThemeColors(themePrimaryColor, themeDarkColor);
-        newsListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
+    //    newsListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 
         complaintsAroundMeFragment.setLogo(logo);
-        alertListFragment.setLogo(logo);
-        newsListFragment.setLogo(logo);
+    //    alertListFragment.setLogo(logo);
+   //     newsListFragment.setLogo(logo);
 
-        alertListFragment.setPageTitle(ctx.getString(R.string.city_alerts));
+    //    alertListFragment.setPageTitle(ctx.getString(R.string.city_alerts));
         complaintCreateFragment.setPageTitle(ctx.getString(R.string.make_complaint));
         complaintsAroundMeFragment.setPageTitle(ctx.getString(R.string.complaints_around_me));
-        newsListFragment.setPageTitle(ctx.getString(R.string.city_news));
+     //   newsListFragment.setPageTitle(ctx.getString(R.string.city_news));
 
         if (profileInfoFragment != null) {
             pageFragmentList.add(profileInfoFragment);
         }
-        pageFragmentList.add(alertListFragment);
+    //    pageFragmentList.add(alertListFragment);
         pageFragmentList.add(complaintCreateFragment);
         pageFragmentList.add(complaintsAroundMeFragment);
-        pageFragmentList.add(newsListFragment);
+    //    pageFragmentList.add(newsListFragment);
 
 
         try {
@@ -578,7 +576,7 @@ public class MainDrawerActivity extends ActionBarActivity
         startLocationUpdates();
     }
 
-    @Override
+   /* @Override
     public void onNewsClicked(NewsArticleDTO newsArticleDTO) {
 
     }
@@ -586,7 +584,7 @@ public class MainDrawerActivity extends ActionBarActivity
     @Override
     public void onCreateNewsArticleRequested() {
 
-    }
+    }*/
 
     @Override
     public void onAccountDetailRequested() {
@@ -642,7 +640,7 @@ public class MainDrawerActivity extends ActionBarActivity
         super.onPause();
     }
 
-    @Override
+   /* @Override
     public void onAlertClicked(final AlertDTO alert) {
 
         if (alert.getLatitude() != null) {
@@ -671,7 +669,7 @@ public class MainDrawerActivity extends ActionBarActivity
         }
 
 
-    }
+    }*/
 
     private void showAlertDetail(AlertDTO a) {
         Intent w = new Intent(this, AlertDetailActivity.class);
@@ -679,7 +677,7 @@ public class MainDrawerActivity extends ActionBarActivity
         startActivity(w);
     }
 
-    @Override
+   /* @Override
     public void onCreateAlertRequested() {
 
     }
@@ -688,7 +686,7 @@ public class MainDrawerActivity extends ActionBarActivity
     public void onFreshLocationRequested() {
         Log.d(LOG, "##### onFreshLocationRequested");
         startLocationUpdates();
-    }
+    }*/
 
     @Override
     public void onAlertSent(AlertDTO alert) {

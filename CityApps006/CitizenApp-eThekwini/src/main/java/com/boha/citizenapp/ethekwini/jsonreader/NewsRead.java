@@ -1,4 +1,4 @@
-package com.boha.library.jsonreader;
+package com.boha.citizenapp.ethekwini.jsonreader;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -32,7 +32,10 @@ public class NewsRead extends AsyncTask<Void,Void,Void> {
     public ImageView image;
     public TextView title;
     LayoutInflater inflater;
-
+    public interface AsyncResponse {
+        void processFinish(String output);
+    }
+    public AsyncResponse delegate = null;
     public NFeedItems feedItems;
     RecyclerView recyclerView;
     public static final String URL = "http://icsmnewsdev.oneconnectgroup.com/et/news/json/News.json";
@@ -51,7 +54,7 @@ public class NewsRead extends AsyncTask<Void,Void,Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
-        if (feedItems.getFeedItems()/*.size() >1*/ != null) {
+        if (feedItems.getFeedItems() != null) {
                 Log.i(LOG, "feedItems: " + feedItems.getFeedItems().size());
             NewsReadAdapter adapter = new NewsReadAdapter(context, feedItems.getFeedItems(), new NewsReadAdapter.NewsListListener() {
                 @Override
@@ -62,7 +65,8 @@ public class NewsRead extends AsyncTask<Void,Void,Void> {
             recyclerView.setAdapter(adapter);
         } else {
             Log.i(LOG, "news feedItems is null" );
-            Util.showSnackBar(recyclerView, "No headlines to display", "Dismiss", Color.parseColor("RED"));
+            delegate.processFinish("No Current News");
+            /*Util.showSnackBar(recyclerView, "No headlines to display", "Dismiss", Color.parseColor("RED"));*/
 
         }
 

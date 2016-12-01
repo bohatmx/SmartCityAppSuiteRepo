@@ -1,26 +1,17 @@
 package com.boha.library.rssreader;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.CityApplication;
-import com.boha.library.dto.AlertDTO;
-import com.boha.library.fragments.FaqFragment;
+/*import com.boha.library.fragments.FaqFragment;*/
 import com.boha.library.util.Statics;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Nkululeko on 2016/08/30.

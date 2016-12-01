@@ -5,24 +5,23 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.dto.MunicipalityDTO;
+import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
-import com.squareup.picasso.Picasso;
 
 public class FAQFullDetailActivity extends AppCompatActivity {
 
@@ -35,6 +34,7 @@ public class FAQFullDetailActivity extends AppCompatActivity {
     String description;
     int position, darkColor, primaryColor;
     MunicipalityDTO municipality;
+    ProfileInfoDTO profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +53,7 @@ public class FAQFullDetailActivity extends AppCompatActivity {
                 municipality.getMunicipalityName(),
                 ctx.getResources().getDrawable(R.drawable.logo), logo);
         getSupportActionBar().setTitle("");
+        profile = SharedUtil.getProfile(getApplicationContext());
 
         scrollView = (ScrollView) findViewById(R.id.FAQ_DETAILSCROLL);
         title_txt = (TextView) findViewById(R.id.faq_title);
@@ -101,7 +102,7 @@ public class FAQFullDetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_tourist_pager, menu);
         mMenu = menu;
-        MenuItem favoriteItem = menu.findItem(com.boha.library.R.id.action_refresh);
+        MenuItem favoriteItem = menu.findItem(R.id.action_refresh);
         Drawable newIcon = (Drawable)favoriteItem.getIcon();
         newIcon.mutate().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_IN);
         favoriteItem.setIcon(newIcon);
@@ -114,27 +115,42 @@ public class FAQFullDetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == com.boha.library.R.id.action_info) {
+        if (id == R.id.action_info) {
             Intent intent = new Intent(FAQFullDetailActivity.this, GeneralInfoActivity.class);
             startActivity(intent);
             return true;
         }
-        if (id == com.boha.library.R.id.action_emergency) {
+        if (id == R.id.action_emergency) {
             Intent intent = new Intent(FAQFullDetailActivity.this, EmergencyContactsActivity.class);
             startActivity(intent);
             return true;
         }
-        if (id == com.boha.library.R.id.action_theme) {
+        if (id == R.id.action_theme) {
             Intent w = new Intent(FAQFullDetailActivity.this, ThemeSelectorActivity.class);
             w.putExtra("darkColor", themeDarkColor);
             startActivityForResult(w, THEME_REQUESTED);
             return true;
         }
-        if (id == com.boha.library.R.id.action_app_guide) {
+        if (id == R.id.action_app_guide) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("http://etmobileguide.oneconnectgroup.com/"));
             startActivity(intent);
+            return true;
         }
+        /*if (id == android.R.id.home){
+            if (profile != null) {
+                Intent m = new Intent(getApplicationContext(), CitizenDrawerActivity.class);
+                m.putExtra("page", "Faqs");
+                startActivity(m);
+                return true;
+            }
+        } else {
+            Intent m = new Intent(getApplicationContext(), TouristDrawerActivity.class);
+            m.putExtra("page", "Faqs");
+            startActivity(m);
+            return true;
+        }*/
+
 
 
         return super.onOptionsItemSelected(item);

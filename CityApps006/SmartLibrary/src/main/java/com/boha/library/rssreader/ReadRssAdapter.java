@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.boha.library.R;
 
-import com.boha.library.activities.FullDetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -141,7 +140,7 @@ public class ReadRssAdapter extends RecyclerView.Adapter<ReadRssAdapter.MyViewHo
 
                 }
             });
-            itemView.setOnClickListener(new View.OnClickListener() {
+          /*  itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, FullDetailActivity.class);
@@ -150,7 +149,7 @@ public class ReadRssAdapter extends RecyclerView.Adapter<ReadRssAdapter.MyViewHo
                     intent.putExtra("newsImage", feedItems.get(getAdapterPosition()).getThumbnailUrl());
                     context.startActivity(intent);
                 }
-            });
+            });*/
           //  readMore.setVisibility(View.GONE);
             //MoreIMG = (ImageView) itemView.findViewById(R.id.more_img);
            // MoreIMG.setVisibility(View.GONE);

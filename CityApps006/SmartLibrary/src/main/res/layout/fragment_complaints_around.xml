@@ -3,6 +3,7 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     android:padding="@dimen/mon_divider">
 
@@ -41,6 +42,19 @@
         android:elevation="@dimen/mon_padding"
         android:text="0"
         android:visibility="visible" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_toLeftOf="@+id/CAR_count"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_action_map"
+        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/CAR_count"
+        android:layout_margin="@dimen/mon_16"
+        android:elevation="@dimen/mon_padding"
+        android:id="@+id/map_icon"
+        app:backgroundTint="@color/white"
+        app:rippleColor="@color/white"/>
 
 
 </RelativeLayout>

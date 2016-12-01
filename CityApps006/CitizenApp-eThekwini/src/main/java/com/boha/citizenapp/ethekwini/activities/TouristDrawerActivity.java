@@ -49,15 +49,15 @@ import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.UserDTO;
-import com.boha.library.fragments.AlertListFragment;
+import com.boha.citizenapp.ethekwini.fragments.AlertListFragment;
 import com.boha.library.fragments.ComplaintCreateFragment;
-import com.boha.library.fragments.ComplaintsAroundMeFragment;
-import com.boha.library.fragments.CouncillorsListFragment;
-import com.boha.library.fragments.FaqFragment;
+import com.boha.citizenapp.ethekwini.fragments.ComplaintsAroundMeFragment;
+import com.boha.citizenapp.ethekwini.fragments.CouncillorsListFragment;
+import com.boha.citizenapp.ethekwini.fragments.FaqFragment;
 import com.boha.library.fragments.LandingPageFragment;
 import com.boha.library.fragments.MyComplaintsFragment;
 import com.boha.library.fragments.NavigationDrawerFragment;
-import com.boha.library.fragments.NewsListFragment;
+import com.boha.citizenapp.ethekwini.fragments.NewsListFragment;
 import com.boha.library.fragments.PageFragment;
 import com.boha.library.fragments.ProfileInfoFragment;
 import com.boha.library.services.PhotoUploadService;
@@ -117,6 +117,7 @@ public class TouristDrawerActivity extends AppCompatActivity implements
         theme.resolveAttribute(com.boha.library.R.attr.colorPrimary, typedValue, true);
         themePrimaryColor = typedValue.data;
         logo = R.drawable.logo;
+
 
 
         ab = getSupportActionBar();

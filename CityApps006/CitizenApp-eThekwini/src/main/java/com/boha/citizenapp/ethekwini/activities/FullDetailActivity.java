@@ -1,12 +1,14 @@
-package com.boha.library.activities;
+package com.boha.citizenapp.ethekwini.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -19,6 +21,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.boha.library.R;
+import com.boha.library.activities.EmergencyContactsActivity;
+import com.boha.library.activities.GeneralInfoActivity;
+import com.boha.library.activities.ThemeSelectorActivity;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.util.SharedUtil;
@@ -135,17 +140,17 @@ public class FullDetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_info) {
+        if (id == com.boha.library.R.id.action_info) {
             Intent intent = new Intent(FullDetailActivity.this, GeneralInfoActivity.class);
             startActivity(intent);
             return true;
         }
-        if (id == R.id.action_emergency) {
+        if (id == com.boha.library.R.id.action_emergency) {
             Intent intent = new Intent(FullDetailActivity.this, EmergencyContactsActivity.class);
             startActivity(intent);
             return true;
         }
-        if (id == R.id.action_theme) {
+        if (id == com.boha.library.R.id.action_theme) {
             Intent w = new Intent(FullDetailActivity.this, ThemeSelectorActivity.class);
             w.putExtra("darkColor", themeDarkColor);
             startActivityForResult(w, THEME_REQUESTED);
@@ -157,7 +162,7 @@ public class FullDetailActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
-        /*if (id == android.R.id.home) {
+        if (id == android.R.id.home) {
             if (profile != null) {
                 Intent m = new Intent(getApplicationContext(), CitizenDrawerActivity.class);
                 m.putExtra("page", "News");
@@ -169,7 +174,7 @@ public class FullDetailActivity extends AppCompatActivity {
             m.putExtra("page", "News");
             startActivity(m);
             return true;
-        }*/
+        }
 
 
 

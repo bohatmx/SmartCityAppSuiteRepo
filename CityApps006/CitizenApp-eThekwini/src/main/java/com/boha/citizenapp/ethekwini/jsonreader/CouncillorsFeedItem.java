@@ -1,4 +1,4 @@
-package com.boha.library.jsonreader;
+package com.boha.citizenapp.ethekwini.jsonreader;
 
 /**
  * Created by Nkululeko on 2016/11/18.

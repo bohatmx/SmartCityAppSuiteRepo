@@ -2,6 +2,7 @@ package com.boha.library.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -14,6 +15,7 @@ import android.widget.ListPopupWindow;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.boha.library.R;
 import com.boha.library.adapters.ComplaintListAdapter;
@@ -29,6 +31,8 @@ import com.boha.library.util.CacheUtil;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.Util;
+import com.boha.library.util.WebCheck;
+import com.boha.library.util.WebCheckResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -165,7 +169,13 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     }
 
     private void getCaseDetails(final String href, final int position) {
-        Log.e(LOG, "##getCaseDetails....., href: " + href);
+        WebCheckResult wcr = WebCheck.checkNetworkAvailability(ctx, true);
+        if (!wcr.isWifiConnected() && !wcr.isMobileConnected()) {
+          //  Toast.makeText(getActivity(),"You are currently not connected to the network",Toast.LENGTH_LONG).show();
+              Util.showSnackBar(view, "You are currently not connected to the network", "OK", Color.parseColor("red"));
+        }
+
+            Log.e(LOG, "##getCaseDetails....., href: " + href);
         RequestDTO w = new RequestDTO(RequestDTO.GET_COMPLAINT_STATUS);
         w.setReferenceNumber(href);
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
@@ -213,7 +223,7 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     private void setFields() {
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
-        handle = view.findViewById(R.id.FLC_handle);
+       // handle = view.findViewById(R.id.FLC_handle);
         topView = view.findViewById(R.id.FLC_titleLayout);
         topView.setBackgroundColor(primaryDarkColor);
         hero = (ImageView) view.findViewById(R.id.FLC_hero);

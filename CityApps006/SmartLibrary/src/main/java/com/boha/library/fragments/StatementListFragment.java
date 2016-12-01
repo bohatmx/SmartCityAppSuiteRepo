@@ -182,6 +182,8 @@ public class StatementListFragment extends Fragment implements PageFragment {
         } catch (Exception e) {
             txtDate.setText("Unavailable Date");
         }
+
+        // suggest pdf reader: https://play.google.com/store/apps/details?id=com.adobe.reader
         statementAdapter = new StatementRecyclerAdapter(filePathList, getActivity(),
                 new StatementRecyclerAdapter.StatementAdapterListener() {
             @Override
@@ -391,6 +393,7 @@ public class StatementListFragment extends Fragment implements PageFragment {
                                     for (String key : response.getPdfHashMap().keySet()) {
                                         byte[] data = response.getPdfHashMap().get(key);
                                         savePDF(key, data);
+
                                     }
                                     setAnalyticsEvent("statement","StatementDownloaded");
 
@@ -422,9 +425,8 @@ public class StatementListFragment extends Fragment implements PageFragment {
                             snackbar = Util.showSnackBar(txtTitle, message, "OK", Color.parseColor("RED"));
                             Log.e(LOG, message);
                             Toast.makeText(ctx, "The months statement requested is not available", Toast.LENGTH_LONG).show();
-                            /*getActivity().onBackPressed();*/
-                          //  getActivity().finish();
-
+                            /* getActivity().onBackPressed(); */
+                           // getActivity().finish();
                         }
                     });
                     getActivity().finish();
@@ -440,24 +442,23 @@ public class StatementListFragment extends Fragment implements PageFragment {
 
     private void savePDF(String key, byte[] data) {
         Log.d(LOG, "savePDF: data length: " + data.length);
-        File directory = Environment.getExternalStorageDirectory();
-        File myDir = new File(directory, "smartCity");
-        if (!myDir.exists()) {
-            myDir.mkdir();
-        }
-        File pdfFile = new File(myDir, key + "-statement.pdf");
-        try {
-            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(pdfFile));
-            bos.write(data);
-            bos.flush();
-            bos.close();
+            File directory = Environment.getExternalStorageDirectory();
+            File myDir = new File(directory, "smartCity");
+            if (!myDir.exists()) {
+                myDir.mkdir();
+            }
+            File pdfFile = new File(myDir, key + "-statement.pdf");
+            try {
+                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(pdfFile));
+                bos.write(data);
+                bos.flush();
+                bos.close();
 
-            Log.w(LOG, "savePDF: monthly Statement pdf file: " + pdfFile.getAbsolutePath() + " written to disk" );
-            getCachedStatements();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+                Log.w(LOG, "savePDF: monthly Statement pdf file: " + pdfFile.getAbsolutePath() + " written to disk" );
+                getCachedStatements();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
     }
 
     FirebaseAnalytics mFirebaseAnalytics;

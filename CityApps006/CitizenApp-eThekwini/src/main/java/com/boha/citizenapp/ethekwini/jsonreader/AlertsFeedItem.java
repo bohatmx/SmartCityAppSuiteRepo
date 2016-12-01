@@ -1,11 +1,11 @@
-package com.boha.library.jsonreader;
+package com.boha.citizenapp.ethekwini.jsonreader;
 
 /**
  * Created by Nkululeko on 2016/09/08.
  */
-public class NewsFeedItem {
-    String guid, title, link, description,
-            thumbnailUrl, pubDate, expiryDate;
+public class AlertsFeedItem {
+    String guid, title, category, thumbnailUrl,
+            latitude, longitude, pubDate, expiryDate, description;
 
     public String getGuid() {
         return guid;
@@ -23,20 +23,12 @@ public class NewsFeedItem {
         this.title = title;
     }
 
-    public String getLink() {
-        return link;
+    public String getCategory() {
+        return category;
     }
 
-    public void setLink(String link) {
-        this.link = link;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getThumbnailUrl() {
@@ -45,6 +37,22 @@ public class NewsFeedItem {
 
     public void setThumbnailUrl(String thumbnailUrl) {
         this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     public String getPubDate() {
@@ -61,5 +69,13 @@ public class NewsFeedItem {
 
     public void setExpiryDate(String expiryDate) {
         this.expiryDate = expiryDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

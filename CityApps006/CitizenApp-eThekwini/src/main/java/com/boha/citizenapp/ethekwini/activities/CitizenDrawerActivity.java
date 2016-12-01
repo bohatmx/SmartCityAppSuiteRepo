@@ -56,15 +56,15 @@ import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.UserDTO;
-import com.boha.library.fragments.AlertListFragment;
+import com.boha.citizenapp.ethekwini.fragments.AlertListFragment;
 import com.boha.library.fragments.ComplaintCreateFragment;
-import com.boha.library.fragments.ComplaintsAroundMeFragment;
-import com.boha.library.fragments.CouncillorsListFragment;
+import com.boha.citizenapp.ethekwini.fragments.ComplaintsAroundMeFragment;
+import com.boha.citizenapp.ethekwini.fragments.CouncillorsListFragment;
 import com.boha.library.fragments.CreateAlertFragment;
-import com.boha.library.fragments.FaqFragment;
+import com.boha.citizenapp.ethekwini.fragments.FaqFragment;
 import com.boha.library.fragments.MyComplaintsFragment;
 import com.boha.library.fragments.NavigationDrawerFragment;
-import com.boha.library.fragments.NewsListFragment;
+import com.boha.citizenapp.ethekwini.fragments.NewsListFragment;
 import com.boha.library.fragments.PageFragment;
 import com.boha.library.fragments.ProfileInfoFragment;
 import com.boha.library.services.PhotoUploadService;
@@ -80,8 +80,6 @@ import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 import com.boha.library.util.WebCheck;
 import com.boha.library.util.WebCheckResult;
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -209,7 +207,8 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             window.setNavigationBarColor(themeDarkColor);
         }
 
-        mDrawerLayout.openDrawer(GravityCompat.START);
+      //  mDrawerLayout.openDrawer(GravityCompat.START);
+        mDrawerLayout.closeDrawer(GravityCompat.START);
         setAnalyticsEvent("main", "Main Screen");
     }
 
@@ -540,27 +539,34 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
             if (page != null) {
                 if (page.equalsIgnoreCase("Alerts")) {
-                    mPager.setCurrentItem(4);
+                    mPager.setCurrentItem(3);
                 }
                 if (page.equalsIgnoreCase("News")) {
+                    mPager.setCurrentItem(4);
+                }
+                if (page.equalsIgnoreCase("Complaints")) {
                     mPager.setCurrentItem(5);
                 }
                 if (page.equalsIgnoreCase("Faqs")) {
-                    mPager.setCurrentItem(7);
+                    mPager.setCurrentItem(6);
                 }
             }
         }
 
         if (page != null) {
             if (page.equalsIgnoreCase("Alerts")) {
-                mPager.setCurrentItem(1);
-            }
-            if (page.equalsIgnoreCase("News")) {
-                mPager.setCurrentItem(2);
-            }
-            if (page.equalsIgnoreCase("Faqs")) {
                 mPager.setCurrentItem(3);
             }
+            if (page.equalsIgnoreCase("News")) {
+                mPager.setCurrentItem(4);
+            }
+            if (page.equalsIgnoreCase("Complaints")) {
+                mPager.setCurrentItem(5);
+            }
+            if (page.equalsIgnoreCase("Faqs")) {
+                mPager.setCurrentItem(6);
+            }
+
         }
     }
 

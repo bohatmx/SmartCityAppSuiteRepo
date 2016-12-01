@@ -1,4 +1,4 @@
-package com.boha.library.activities;
+package com.boha.citizenapp.ethekwini.activities;
 
 import android.Manifest;
 import android.app.Activity;
@@ -25,6 +25,7 @@ import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
 import com.boha.library.R;
+import com.boha.library.activities.AlertPictureGridActivity;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintTypeDTO;
 import com.boha.library.dto.MunicipalityDTO;
@@ -505,7 +506,7 @@ public class ComplaintMapActivity extends AppCompatActivity implements OnMapRead
 //        if (id == R.id.action_settings) {
 //            return true;
 //        }
-        /*if (id == android.R.id.home){
+        if (id == android.R.id.home){
             if (profile != null) {
                 Intent m = new Intent(getApplicationContext(), CitizenDrawerActivity.class);
                 m.putExtra("page", "Complaints");

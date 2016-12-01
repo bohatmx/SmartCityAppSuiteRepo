@@ -1,24 +1,18 @@
 package com.boha.library.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.library.R;
 import com.boha.library.activities.CityApplication;
-import com.boha.library.activities.FaqActivity;
-import com.boha.library.activities.FaqTypeActivity;
-import com.boha.library.activities.FullDetailActivity;
 import com.boha.library.dto.FreqQuestionTypeDTO;
 import com.boha.library.rssreader.FaqTest;
-import com.boha.library.util.FaqStrings;
 import com.boha.library.util.Statics;
 
 import java.util.ArrayList;

@@ -1,25 +1,20 @@
-package com.boha.library.fragments;
+package com.boha.citizenapp.ethekwini.fragments;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.boha.library.R;
-import com.boha.library.dto.AlertDTO;
-import com.boha.library.jsonreader.AlertsRead;
-import com.boha.library.jsonreader.CouncillorsRead;
+import com.boha.citizenapp.ethekwini.jsonreader.CouncillorsRead;
+import com.boha.library.fragments.PageFragment;
 import com.boha.library.transfer.ResponseDTO;
-import com.boha.library.util.Statics;
 import com.boha.library.util.WebCheck;
 import com.boha.library.util.WebCheckResult;
 

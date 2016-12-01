@@ -27,19 +27,17 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 
-import com.boha.library.activities.AlertMapActivity;
 import com.boha.library.activities.CityApplication;
 import com.boha.library.activities.FaqActivity;
 import com.boha.library.activities.PictureActivity;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.MunicipalityStaffDTO;
-import com.boha.library.dto.NewsArticleDTO;
-import com.boha.library.fragments.AlertListFragment;
+/*import com.boha.library.fragments.AlertListFragment;*/
 import com.boha.library.fragments.ComplaintsAroundMeFragment;
 import com.boha.library.fragments.CreateAlertFragment;
 import com.boha.library.fragments.NavigationDrawerFragment;
-import com.boha.library.fragments.NewsListFragment;
+/*import com.boha.library.fragments.NewsListFragment;*/
 import com.boha.library.fragments.PageFragment;
 import com.boha.library.services.PhotoUploadService;
 import com.boha.library.transfer.RequestDTO;
@@ -67,16 +65,16 @@ import java.util.List;
 public class MainDrawerActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerListener,
         CreateAlertFragment.CreateAlertFragmentListener,
-        AlertListFragment.AlertListener,
+        /*AlertListFragment.AlertListener,*/
         ComplaintsAroundMeFragment.ComplaintAroundMeListener,
         LocationListener,
-        NewsListFragment.NewsListFragmentListener,
+        /*NewsListFragment.NewsListFragmentListener,*/
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     CreateAlertFragment createAlertFragment;
-    AlertListFragment alertListFragment;
+    /*AlertListFragment alertListFragment;*/
     ComplaintsAroundMeFragment complaintsAroundMeFragment;
-    NewsListFragment newsListFragment;
+    /*NewsListFragment newsListFragment;*/
     PagerAdapter adapter;
     Context ctx;
     int currentPageIndex;
@@ -285,9 +283,9 @@ public class MainDrawerActivity extends ActionBarActivity
                         Log.i("Splash", "### response OK from server");
                         staff = response.getMunicipalityStaffList().get(0);
 
-                        if (alertListFragment != null) {
+                       /* if (alertListFragment != null) {
                             alertListFragment.refreshAlerts();
-                        }
+                        }*/
 
                         MunicipalityStaffDTO sp = new MunicipalityStaffDTO();
                         sp.setMunicipalityID(municipality.getMunicipalityID());
@@ -334,29 +332,29 @@ public class MainDrawerActivity extends ActionBarActivity
         startService(x);
         pageFragmentList = new ArrayList<>();
         createAlertFragment = CreateAlertFragment.newInstance(SharedUtil.getMunicipalityStaff(ctx));
-        alertListFragment = AlertListFragment.newInstance(response);
+      //  alertListFragment = AlertListFragment.newInstance(response);
         complaintsAroundMeFragment = ComplaintsAroundMeFragment.newInstance();
-        newsListFragment = NewsListFragment.newInstance(response);
+      //  newsListFragment = NewsListFragment.newInstance(response);
 
         createAlertFragment.setPageTitle(ctx.getString(R.string.create_alert));
-        alertListFragment.setPageTitle(ctx.getString(R.string.city_alerts));
-        alertListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
+       // alertListFragment.setPageTitle(ctx.getString(R.string.city_alerts));
+       // alertListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         createAlertFragment.setThemeColors(themePrimaryColor, themeDarkColor);
         complaintsAroundMeFragment.setThemeColors(themePrimaryColor, themeDarkColor);
-        newsListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
+       // newsListFragment.setThemeColors(themePrimaryColor, themeDarkColor);
 
-        alertListFragment.setPageTitle(ctx.getString(R.string.city_alerts));
+       // alertListFragment.setPageTitle(ctx.getString(R.string.city_alerts));
         createAlertFragment.setPageTitle(ctx.getString(R.string.create_alert));
         complaintsAroundMeFragment.setPageTitle(ctx.getString(R.string.complaints_around_me));
-        newsListFragment.setPageTitle(ctx.getString(R.string.city_news));
+       // newsListFragment.setPageTitle(ctx.getString(R.string.city_news));
 
-        alertListFragment.setLogo(logo);
+       // alertListFragment.setLogo(logo);
         complaintsAroundMeFragment.setLogo(logo);
 
-        pageFragmentList.add(alertListFragment);
+       // pageFragmentList.add(alertListFragment);
         pageFragmentList.add(createAlertFragment);
         pageFragmentList.add(complaintsAroundMeFragment);
-        pageFragmentList.add(newsListFragment);
+       // pageFragmentList.add(newsListFragment);
 
         try {
             adapter = new PagerAdapter(getSupportFragmentManager());
@@ -413,7 +411,7 @@ public class MainDrawerActivity extends ActionBarActivity
 
     }
 
-    @Override
+   /* @Override
     public void onNewsClicked(NewsArticleDTO news) {
 
     }
@@ -421,7 +419,7 @@ public class MainDrawerActivity extends ActionBarActivity
     @Override
     public void onCreateNewsArticleRequested() {
 
-    }
+    }*/
 
 
     /**
@@ -459,7 +457,7 @@ public class MainDrawerActivity extends ActionBarActivity
         super.onPause();
     }
 
-    @Override
+    /*@Override
     public void onAlertClicked(AlertDTO alert) {
         Intent intent = new Intent(ctx, AlertMapActivity.class);
         intent.putExtra("alert", alert);
@@ -479,17 +477,17 @@ public class MainDrawerActivity extends ActionBarActivity
 
             index++;
         }
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void onFreshLocationRequested() {
         startLocationUpdates();
-    }
+    } */
 
     @Override
     public void onAlertSent(final AlertDTO alert) {
         getLoginData();
-        alertListFragment.onNewAlertSent(alert);
+      //  alertListFragment.onNewAlertSent(alert);
 
         AlertDialog.Builder d = new AlertDialog.Builder(this);
         d.setTitle("Alert Pictures")
@@ -592,9 +590,9 @@ public class MainDrawerActivity extends ActionBarActivity
             if (createAlertFragment != null) {
                 createAlertFragment.setLocation(location);
             }
-            if (alertListFragment != null) {
+            /*if (alertListFragment != null) {
                 alertListFragment.setLocation(location);
-            }
+            }*/
         }
     }
 

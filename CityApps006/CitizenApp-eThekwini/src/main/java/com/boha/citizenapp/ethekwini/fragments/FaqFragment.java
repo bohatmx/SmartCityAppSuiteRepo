@@ -1,4 +1,4 @@
-package com.boha.library.fragments;
+package com.boha.citizenapp.ethekwini.fragments;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,10 +16,11 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.boha.citizenapp.ethekwini.activities.FAQFullDetailActivity;
 import com.boha.library.R;
-import com.boha.library.activities.FAQFullDetailActivity;
 import com.boha.library.adapters.FaqTypeAdapter;
 import com.boha.library.dto.FreqQuestionTypeDTO;
+import com.boha.library.fragments.PageFragment;
 import com.boha.library.rssreader.FaqAdapter;
 import com.boha.library.rssreader.FaqTest;
 import com.boha.library.transfer.ResponseDTO;

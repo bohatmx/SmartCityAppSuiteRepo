@@ -13,6 +13,9 @@
         android:scaleType="centerCrop" /> -->
 
     <!-- The List here-->
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ALERT_LIST_listView"
         android:layout_width="match_parent"
@@ -22,14 +25,14 @@
 
 
     <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:id="@+id/ALERT_LIST_text"
         style="@style/Title1TextStyleGrey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:text="No Current Alerts"
         android:textColor="@color/black"/>
-
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -46,7 +49,11 @@
         app:layout_anchor="@id/ALERT_LIST_listView"
         app:layout_anchorGravity="bottom|right|end"
         app:pressedTranslationZ="@dimen/mon_wide"
-        app:rippleColor="@color/blue_200" />
+        app:rippleColor="@color/blue_200" /></RelativeLayout>
+
+
+
+
 
 
 </android.support.v7.widget.CardView>

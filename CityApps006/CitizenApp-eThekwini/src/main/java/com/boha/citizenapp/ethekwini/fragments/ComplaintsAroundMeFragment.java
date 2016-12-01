@@ -1,4 +1,4 @@
-package com.boha.library.fragments;
+package com.boha.citizenapp.ethekwini.fragments;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,11 +19,13 @@ import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.boha.citizenapp.ethekwini.activities.ComplaintMapActivity;
 import com.boha.library.R;
-import com.boha.library.activities.ComplaintMapActivity;
+
 import com.boha.library.adapters.ComplaintListAdapter;
 import com.boha.library.dto.ComplaintDTO;
 import com.boha.library.dto.ComplaintUpdateStatusDTO;
+import com.boha.library.fragments.PageFragment;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.NetUtil;

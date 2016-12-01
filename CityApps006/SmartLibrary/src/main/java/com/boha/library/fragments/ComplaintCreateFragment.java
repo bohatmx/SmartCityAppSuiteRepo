@@ -16,6 +16,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.boha.library.R;
 import com.boha.library.adapters.CategoryAdapter;
@@ -218,6 +220,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                 complaint.setLongitude(location.getLongitude());
             } else if (location.getLatitude() == 0.0) {
                 Util.showSnackBar(recyclerView, "location was not found, try again", "OK", Color.parseColor("CYAN"));
+                return;
             }
         }
 
@@ -256,7 +259,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                                     setAnalyticsEvent("complaint1", "Complaint sent");
                                     mListener.onComplaintAdded(response.getComplaintList());
                                     showReferenceDialog();
-
+                                    complaintDescription.setText("");
                                 } else {
                                     setAnalyticsEvent("complaint0", "Error complaint");
                                     snackbar = Util.showSnackBar(recyclerView, getString(R.string.process_complaint_unable), "OK", Color.parseColor("YELLOW"));
@@ -353,6 +356,7 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     private void addDescriptionDialog() {
         confirmDialog = new AlertDialog.Builder(getActivity());
         final EditText input = new EditText(getActivity());
+        input.setGravity(Gravity.FILL_VERTICAL);
         confirmDialog.setView(input);
         confirmDialog.setTitle("Complaint Comment")
                 .setMessage("Add a comment to this complaint below\n\n" + complaintDescription.getText().toString())
@@ -360,8 +364,13 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         complaintDescription.setText(input.getText().toString().trim());
-                        dialog.dismiss();
-                        sendComplaint();
+                        if (complaintDescription.getText().toString().isEmpty()){
+                            Util.showSnackBar(complaintDescription, "Please add comment", "OK", Color.parseColor("RED"));
+                            return;
+                        } else {
+                            sendComplaint();
+                            dialog.dismiss();
+                        }
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -371,12 +380,14 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                         sendComplaint();
                     }
                 })
-                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                 .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        setCategoryList();
                     }
                 }).show();
+
     }
 
     private void showConfirmDialog() {
@@ -397,7 +408,14 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
-                }).show();
+                })
+        .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                setCategoryList();
+            }
+        }).show();
     }
 
     AlertDialog.Builder referenceDialog;
@@ -413,12 +431,12 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton("Add Picture", new DialogInterface.OnClickListener() {
+               /* .setNegativeButton("Add Picture", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mListener.onPictureRequired(complaint);
                     }
-                }).show();
+                })*/.show();
     }
 
     AlertDialog.Builder cameraDialog;
