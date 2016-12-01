@@ -33,9 +33,6 @@ import khandroid.ext.apache.http.client.ClientProtocolException;
 import khandroid.ext.apache.http.client.methods.HttpPost;
 import khandroid.ext.apache.http.impl.client.DefaultHttpClient;
 
-/**
- * Created by Nkululeko on 2016/09/08.
- */
 public class AlertsRead extends AsyncTask<Void,Void,Void> {
     static Context context;
 

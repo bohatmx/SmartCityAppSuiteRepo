@@ -19,9 +19,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * Created by Nkululeko on 2016/09/08.
- */
+
 public class AlertsReadAdapter extends RecyclerView.Adapter<AlertsReadAdapter.MyViewHolder> {
 
     NewsListListener listener;

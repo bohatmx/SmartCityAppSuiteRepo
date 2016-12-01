@@ -524,7 +524,7 @@ public class TouristDrawerActivity extends AppCompatActivity implements
                     mPager.setCurrentItem(2, true);
                     return true;
                 }
-                if (menuItem.getItemId() == R.id.nav_ward_councillors) {
+                if (menuItem.getItemId() == R.id.nav_ward_councillor) {
                     mPager.setCurrentItem(3, true);
                     return true;
                 }
