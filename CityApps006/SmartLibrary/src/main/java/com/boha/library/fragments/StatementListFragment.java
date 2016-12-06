@@ -343,6 +343,7 @@ public class StatementListFragment extends Fragment implements PageFragment {
     boolean busyDownloading;
 
     public void getPDFStatement() {
+        Log.i(LOG, "getPDFStatement.....");
         WebCheckResult wcr = WebCheck.checkNetworkAvailability(ctx);
         if (!wcr.isWifiConnected() && !wcr.isMobileConnected()) {
             Util.showSnackBar(fab,"You are currently not connected to the network","OK", Color.parseColor("red"));
@@ -419,17 +420,14 @@ public class StatementListFragment extends Fragment implements PageFragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            busyDownloading = false;
                             statementFragmentListener.setBusy(false);
                             FirebaseCrash.report(new Exception("Statement download failed: " + message));
                             enableFab();
                             snackbar = Util.showSnackBar(txtTitle, message, "OK", Color.parseColor("RED"));
                             Log.e(LOG, message);
-                            Toast.makeText(ctx, "The months statement requested is not available", Toast.LENGTH_LONG).show();
-                            /* getActivity().onBackPressed(); */
-                           // getActivity().finish();
                         }
                     });
-                    getActivity().finish();
                 }
             }
 
@@ -503,29 +501,39 @@ public class StatementListFragment extends Fragment implements PageFragment {
                 StatementListFragment.this.month = month + 1;
 
                 getPDFStatement();
-//                int index = 0;
-//                boolean found = false;
-//                final Pattern patt = Pattern.compile("-");
-//
-//                for (String s : filePathList) {
-//                    if (s.contains(account.getAccountNumber())) {
-//                        String[] parts = patt.split(s);
-//                        int y = Integer.parseInt(parts[1]);
-//                        int m = Integer.parseInt(parts[2]);
-//                        if (y == year && m == month) {
-//                            found = true;
-//                            break;
-//                        }
-//
-//                    }
-//                    index++;
-//                }
-//                if (!found) {
-//
-//                } else {
+                int index = 0;
+                boolean found = false;
+                final Pattern patt = Pattern.compile("-");
+
+                for (String s : filePathList) {
+                    if (s.contains(account.getAccountNumber())) {
+                        String[] parts = patt.split(s);
+                        int y = Integer.parseInt(parts[1]);
+                        int m = Integer.parseInt(parts[2]);
+                        if (y == year && m == month) {
+                            found = true;
+                            //
+                            File file = new File(filePathList.get(index));
+                            Log.e(LOG, "pdf file: " + file.getAbsolutePath() + " length: " + file.length());
+                            if (file.exists()) {
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                ctx.startActivity(intent);
+                            }
+
+                            break;
+                        }
+
+                    }
+                    index++;
+                }
+                if (!found) {
+
+                } else {
 //                    recyclerView.setSelection(index);
-//                    Util.showSnackBar(txtAccount,ctx.getString(R.string.stmt_exists), "OK", Color.parseColor("BLUE"));
-//                }
+                    Util.showSnackBar(txtAccount,ctx.getString(R.string.stmt_exists), "OK", Color.parseColor("BLUE"));
+                }
             }
         });
 

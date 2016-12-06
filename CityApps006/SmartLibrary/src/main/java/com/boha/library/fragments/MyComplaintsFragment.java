@@ -84,6 +84,7 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.w(LOG, "onCreateView: MyComplaintsFragment ...............................");
         view = inflater.inflate(R.layout.fragment_list_complaints, container, false);
 
         ctx = getActivity();
@@ -104,6 +105,11 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Log.w(LOG, "onResume: ...................." );
+    }
+    @Override
     public void onSaveInstanceState(Bundle b) {
         b.putSerializable("response", response);
         super.onSaveInstanceState(b);
@@ -121,8 +127,12 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
                 txtNoComp.setVisibility(View.GONE);
             }
         }
-
-        txtCount.setText("" + complaintList.size());
+        if (txtCount != null) {
+            txtCount.setText(" " + complaintList.size());
+        } else {
+            Log.e(LOG, "setList: txtCount is NULL. Please check!!" );
+            return;
+        }
 
         adapter = new ComplaintListAdapter(ctx, R.layout.my_complaint_item, primaryDarkColor,
                 ComplaintListAdapter.MY_COMPLAINTS,
@@ -171,11 +181,11 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     private void getCaseDetails(final String href, final int position) {
         WebCheckResult wcr = WebCheck.checkNetworkAvailability(ctx, true);
         if (!wcr.isWifiConnected() && !wcr.isMobileConnected()) {
-          //  Toast.makeText(getActivity(),"You are currently not connected to the network",Toast.LENGTH_LONG).show();
-              Util.showSnackBar(view, "You are currently not connected to the network", "OK", Color.parseColor("red"));
+            //  Toast.makeText(getActivity(),"You are currently not connected to the network",Toast.LENGTH_LONG).show();
+            Util.showSnackBar(view, "You are currently not connected to the network", "OK", Color.parseColor("red"));
         }
 
-            Log.e(LOG, "##getCaseDetails....., href: " + href);
+        Log.e(LOG, "##getCaseDetails....., href: " + href);
         RequestDTO w = new RequestDTO(RequestDTO.GET_COMPLAINT_STATUS);
         w.setReferenceNumber(href);
         w.setMunicipalityID(SharedUtil.getMunicipality(ctx).getMunicipalityID());
@@ -223,7 +233,7 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     private void setFields() {
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
-       // handle = view.findViewById(R.id.FLC_handle);
+        // handle = view.findViewById(R.id.FLC_handle);
         topView = view.findViewById(R.id.FLC_titleLayout);
         topView.setBackgroundColor(primaryDarkColor);
         hero = (ImageView) view.findViewById(R.id.FLC_hero);
@@ -255,43 +265,42 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     Random random = new Random(System.currentTimeMillis());
 
 
-
     private void setNoCompImage() {
         noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.happy1));
         int index = random.nextInt(9);
         switch (index) {
             case 0:
-                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy1));
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.happy1));
                 return;
             case 1:
-                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy2));
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.happy2));
                 return;
             case 2:
-                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy3));
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.happy3));
                 return;
             case 3:
-                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy4));
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.happy4));
                 return;
             case 4:
-                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy5));
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.happy5));
                 return;
             case 5:
-                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy6));
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.happy6));
                 return;
             case 6:
-                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy7));
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.happy7));
                 return;
             case 7:
-                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy1));
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.happy1));
                 return;
             case 8:
-                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy2));
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.happy2));
                 return;
             case 9:
-                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy5));
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.happy5));
                 return;
             default:
-                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.happy1));
+                noCompImage.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.happy1));
                 return;
         }
     }
@@ -352,7 +361,9 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
 
     public interface MyComplaintsListener {
         void setBusy(boolean busy);
+
         void onRefreshRequested(ComplaintDTO complaint);
+
         void onCameraRequested(ComplaintDTO complaint);
     }
 
@@ -364,6 +375,7 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     ListPopupWindow categoryPopup, complaintPopup;
 
     List<ComplaintTypeDTO> complaintTypeList;
+
     private void getCachedComplaintTypes() {
         CacheUtil.getCacheLoginData(ctx, new CacheUtil.CacheRetrievalListener() {
             @Override

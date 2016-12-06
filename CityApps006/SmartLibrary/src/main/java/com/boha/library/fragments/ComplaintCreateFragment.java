@@ -218,9 +218,6 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
             if (location != null) {
                 complaint.setLatitude(location.getLatitude());
                 complaint.setLongitude(location.getLongitude());
-            } else if (location.getLatitude() == 0.0) {
-                Util.showSnackBar(recyclerView, "location was not found, try again", "OK", Color.parseColor("CYAN"));
-                return;
             }
         }
 
@@ -665,8 +662,37 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
     Location location;
 
     public void setLocation(Location location) {
-        Log.w(LOG, "$$$$==============================>>  setLocation, acc: " + location.getAccuracy());
+        Log.w(LOG, "$$$$==============================>>  setLocation, latitude: " + location.getLatitude());
+        if (location.getLatitude() == 0.0) {
+            location = null;
+            showLocationDialog();
+            return;
+        }
+        if (location.getLongitude() == 0.0) {
+            location = null;
+            showLocationDialog();
+            return;
+        }
         this.location = location;
+    }
+
+    private void showLocationDialog() {
+        AlertDialog.Builder d = new AlertDialog.Builder(getActivity());
+        d.setTitle("Location not found")
+                .setMessage("Unable to get GPS coordinates from the device. Do you want to try again?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mListener.onComplaintLocationRequested();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .show();
     }
 
     static final String LOG = ComplaintCreateFragment.class.getSimpleName();
