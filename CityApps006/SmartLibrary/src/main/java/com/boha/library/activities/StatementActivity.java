@@ -35,6 +35,7 @@ public class StatementActivity extends AppCompatActivity
     Menu mMenu;
     AccountDTO account;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

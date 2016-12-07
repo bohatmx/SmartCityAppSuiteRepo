@@ -314,7 +314,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
                         }
                         if (isRefresh) {
                             if (myComplaintsFragment != null)
-                                myComplaintsFragment.setComplaintList(resp.getComplaintList());
+                                myComplaintsFragment.setComplaintList(response.getComplaintList());
                         } else {
                             setupViewPager();
                         }
