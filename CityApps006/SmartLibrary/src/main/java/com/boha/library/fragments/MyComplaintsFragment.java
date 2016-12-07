@@ -90,14 +90,14 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
         ctx = getActivity();
         activity = getActivity();
         setFields();
-
+/*
         if (savedInstanceState != null) {
             ResponseDTO w = (ResponseDTO) savedInstanceState.getSerializable("response");
             if (w != null) {
                 response = w;
                 complaintList = response.getComplaintList();
             }
-        }
+        }*/
 
         setList();
         getCachedComplaintTypes();
@@ -111,7 +111,7 @@ public class MyComplaintsFragment extends Fragment implements PageFragment {
     }
     @Override
     public void onSaveInstanceState(Bundle b) {
-        b.putSerializable("response", response);
+       // b.putSerializable("response", response);
         super.onSaveInstanceState(b);
     }
 

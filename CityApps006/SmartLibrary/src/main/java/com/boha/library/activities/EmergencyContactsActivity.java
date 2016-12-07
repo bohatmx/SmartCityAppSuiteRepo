@@ -155,7 +155,7 @@ public class EmergencyContactsActivity extends AppCompatActivity {
 
 
     private void animateSomething() {
-        final Timer timer = new Timer();
+      /*  final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -163,11 +163,11 @@ public class EmergencyContactsActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         timer.cancel();
-                        /*EM_hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-                        Util.flashOnce(EM_hero, 300, null);*/
+                        EM_hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+                        Util.flashOnce(EM_hero, 300, null);
                     }
                 });
             }
-        }, 500);
+        }, 500);*/
     }
 }

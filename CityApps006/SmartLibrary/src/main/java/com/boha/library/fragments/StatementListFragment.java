@@ -296,7 +296,7 @@ public class StatementListFragment extends Fragment implements PageFragment {
 
     @Override
     public void animateSomething() {
-        final Timer timer = new Timer();
+      /*  final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -304,7 +304,7 @@ public class StatementListFragment extends Fragment implements PageFragment {
                     @Override
                     public void run() {
                         timer.cancel();
-                       /* heroImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+                        heroImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
                         Util.expand(heroImage, 1000, new Util.UtilAnimationListener() {
                             @Override
                             public void onAnimationEnded() {
@@ -314,11 +314,11 @@ public class StatementListFragment extends Fragment implements PageFragment {
                                     }
                                 });
                             }
-                        });*/
+                        });
                     }
                 });
             }
-        }, 500);
+        }, 500);*/
     }
 
     @Override

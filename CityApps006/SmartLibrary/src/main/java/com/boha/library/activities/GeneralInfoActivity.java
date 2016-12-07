@@ -124,7 +124,7 @@ public class GeneralInfoActivity extends AppCompatActivity {
     }
 
     private void animateSomething() {
-        final Timer timer = new Timer();
+        /*final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -132,11 +132,11 @@ public class GeneralInfoActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         timer.cancel();
-                       // GEN_hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-                       // Util.flashOnce(GEN_hero, 300, null);
+                        GEN_hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+                        Util.flashOnce(GEN_hero, 300, null);
                     }
                 });
             }
-        }, 500);
+        }, 500);*/
     }
 }

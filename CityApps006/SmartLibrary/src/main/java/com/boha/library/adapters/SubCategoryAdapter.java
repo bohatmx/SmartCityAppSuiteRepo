@@ -158,7 +158,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
         }
-        if (p.equalsIgnoreCase("Over flowing")) {
+        if (p.equalsIgnoreCase("Road Overflowing")) {
             Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zoverflow);
             d.setColorFilter(new
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));

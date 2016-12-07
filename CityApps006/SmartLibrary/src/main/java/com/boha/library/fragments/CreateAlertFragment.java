@@ -341,25 +341,6 @@ public class CreateAlertFragment extends Fragment implements PageFragment {
     @Override
     public void animateSomething() {
 
-        final Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        timer.cancel();
-                        hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-                        Util.expand(hero, 1000, new Util.UtilAnimationListener() {
-                            @Override
-                            public void onAnimationEnded() {
-                                Util.flashSeveralTimes(btnGetType, 30, 3, null);
-                            }
-                        });
-                    }
-                });
-            }
-        }, 500);
 
     }
 

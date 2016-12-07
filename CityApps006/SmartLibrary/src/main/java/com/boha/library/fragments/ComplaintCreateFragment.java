@@ -614,27 +614,6 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
     @Override
     public void animateSomething() {
-//        timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                if (getActivity() == null) return;
-//                getActivity().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        timer.purge();
-//                        timer.cancel();
-//                        hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-//                        Util.expand(hero, 1000, new Util.UtilAnimationListener() {
-//                            @Override
-//                            public void onAnimationEnded() {
-//                                Util.flashOnce(icon, 300, null);
-//                            }
-//                        });
-//                    }
-//                });
-//            }
-//        }, 500);
     }
 
     int primaryColor, primaryDarkColor;
