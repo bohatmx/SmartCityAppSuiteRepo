@@ -211,6 +211,9 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         if (complaintType.getComplaintTypeName().matches("Burst Pipe")) {
             complaintType.setComplaintTypeName("Burst");
         }
+        if (complaintType.getComplaintTypeName().matches("Road Overflowing")) {
+            complaintType.setComplaintTypeName("Over flowing");
+        }
         complaint.setSubCategory(complaintType.getComplaintTypeName());
         complaint.setComplaintDate(new Date().getTime());
 
@@ -340,6 +343,9 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                 complaintType = type;
                 if (type.getComplaintTypeName().matches("Burst")){
                     type.setComplaintTypeName("Burst Pipe");
+                }
+                if (type.getComplaintTypeName().matches("Over flowing")) {
+                    type.setComplaintTypeName("Road Overflowing");
                 }
                 txtType.setText(type.getComplaintTypeName());
                 showConfirmDialog();

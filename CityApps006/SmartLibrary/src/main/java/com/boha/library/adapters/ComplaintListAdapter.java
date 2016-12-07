@@ -129,6 +129,9 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
         if (p.getSubCategory().matches("Burst")) {
             item.txtComplaintType.setText(p.getCategory() + " - " + "Burst Pipe");
         }
+        if (p.getSubCategory().matches("Over flowing")) {
+            item.txtComplaintType.setText(p.getCategory() + " - " + "Road Overflowing");
+        }
 
         if (p.getComplaintDate() != null) {
             item.txtDate.setText(sdfDate.format(new Date(p.getComplaintDate())));

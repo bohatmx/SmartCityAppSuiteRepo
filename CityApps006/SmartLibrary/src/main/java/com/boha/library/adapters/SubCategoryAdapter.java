@@ -47,6 +47,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
     }
 
     String BURST_PIPE = "Burst Pipe";
+    String ROAD_OVERFLOWING = "Road Overflowing";
     @Override
     public void onBindViewHolder(final ComplaintTypeViewHolder holder, final int position) {
 
@@ -57,6 +58,10 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
        if (p.getComplaintTypeName().matches("Burst"))  {
            holder.complaintType.setText(BURST_PIPE);
        }
+        if (p.getComplaintTypeName().matches("Over flowing")) {
+            holder.complaintType.setText(ROAD_OVERFLOWING);
+        }
+
         holder.main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,7 +163,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
             image.setImageDrawable(d);
         }
-        if (p.equalsIgnoreCase("Road Overflowing")) {
+        if (p.equalsIgnoreCase("Overflowing")) {
             Drawable d = ContextCompat.getDrawable(ctx, R.drawable.zoverflow);
             d.setColorFilter(new
                     PorterDuffColorFilter(Color.parseColor("BLACK"), PorterDuff.Mode.MULTIPLY));
