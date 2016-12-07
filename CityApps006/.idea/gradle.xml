@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/CitizenApp-eThekwini" />
             <option value="$PROJECT_DIR$/SmartLibrary" />
             <option value="$PROJECT_DIR$/StaffApp-eThekwini" />
+            <option value="$PROJECT_DIR$/backendsmart" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

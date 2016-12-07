@@ -34,7 +34,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Fragment manages FAQ UI. Downloads html FAQ files from the server
@@ -238,7 +237,7 @@ public class FaqFragment extends Fragment implements PageFragment {
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
 
         if (mFirebaseAnalytics == null) {
-            mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
         }
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
         Log.w(LOG, "analytics event sent .....");

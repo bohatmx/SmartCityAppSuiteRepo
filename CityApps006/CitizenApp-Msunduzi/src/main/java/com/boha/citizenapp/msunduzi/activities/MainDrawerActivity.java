@@ -721,6 +721,11 @@ public class MainDrawerActivity extends ActionBarActivity
     }
 
     @Override
+    public void getLocationAddress(Location location) {
+
+    }
+
+    @Override
     public void onConnected(Bundle bundle) {
         Log.i(LOG,
                 "+++  GoogleApiClient onConnected() ...");

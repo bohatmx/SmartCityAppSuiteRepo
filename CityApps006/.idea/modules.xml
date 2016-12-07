@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/CityApps006.iml" filepath="$PROJECT_DIR$/CityApps006.iml" />
       <module fileurl="file://$PROJECT_DIR$/SmartLibrary/SmartLibrary.iml" filepath="$PROJECT_DIR$/SmartLibrary/SmartLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/StaffApp-eThekwini/StaffApp-eThekwini.iml" filepath="$PROJECT_DIR$/StaffApp-eThekwini/StaffApp-eThekwini.iml" />
+      <module fileurl="file://$PROJECT_DIR$/backendsmart/backendsmart.iml" filepath="$PROJECT_DIR$/backendsmart/backendsmart.iml" />
     </modules>
   </component>
 </project>

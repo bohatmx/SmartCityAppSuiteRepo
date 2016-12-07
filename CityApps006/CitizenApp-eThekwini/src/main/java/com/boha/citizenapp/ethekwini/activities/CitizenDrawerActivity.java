@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.os.ResultReceiver;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -67,6 +68,7 @@ import com.boha.library.fragments.NavigationDrawerFragment;
 import com.boha.citizenapp.ethekwini.fragments.NewsListFragment;
 import com.boha.library.fragments.PageFragment;
 import com.boha.library.fragments.ProfileInfoFragment;
+import com.boha.library.services.AddressIntentService;
 import com.boha.library.services.PhotoUploadService;
 import com.boha.library.services.RequestService;
 import com.boha.library.transfer.RequestDTO;
@@ -76,6 +78,7 @@ import com.boha.library.util.CommsUtil;
 import com.boha.library.util.DepthPageTransformer;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
+import com.boha.library.util.Statics;
 import com.boha.library.util.ThemeChooser;
 import com.boha.library.util.Util;
 import com.boha.library.util.WebCheck;
@@ -87,8 +90,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crash.FirebaseCrash;
-
-import org.acra.ACRA;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -210,6 +211,8 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
       //  mDrawerLayout.openDrawer(GravityCompat.START);
         mDrawerLayout.closeDrawer(GravityCompat.START);
         setAnalyticsEvent("main", "Main Screen");
+        mResultReceiver = new AddressResultReceiver(new Handler());
+        //registerReceiver(mResultReceiver, Statics.RECEIVER);
     }
 
 
@@ -530,7 +533,6 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
             Log.e(LOG, "PagerAdapter failed", e);
             try {
                 Util.showErrorToast(ctx, e.getMessage());
-                ACRA.getErrorReporter().handleException(e, false);
                 finish();
                 Intent w = new Intent(this, CitizenDrawerActivity.class);
                 startActivity(w);
@@ -572,6 +574,7 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
 
     Timer timer;
 
+    @SuppressWarnings("RestrictedApi")
     private void setMenuDestinations() {
 
 
@@ -1008,6 +1011,15 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         getLoginData();
     }
 
+    private AddressResultReceiver mResultReceiver;
+    @Override
+    public void getLocationAddress(Location location) {
+        Intent intent = new Intent(this, AddressIntentService.class);
+        intent.putExtra(Statics.RECEIVER, mResultReceiver);
+        intent.putExtra(Statics.LOCATION_DATA_EXTRA, location);
+        startService(intent);
+    }
+
     @Override
     public void onRefreshRequested(ComplaintDTO complaint) {
         mRefreshFromComplaint = true;
@@ -1264,5 +1276,26 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         };
         r.run();
 
+    }
+    class AddressResultReceiver extends ResultReceiver {
+        public AddressResultReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+
+            // Display the address string
+            // or an error message sent from the intent service.
+            String address = resultData.getString(Statics.RESULT_DATA_KEY);
+
+            // Show a toast message if an address was found.
+            Log.e("CitizenDrawerActivity", "onReceiveResult: " +  resultCode + " " + address );
+            if (resultCode == Statics.SUCCESS_RESULT) {
+                Log.w("CitizenDrawerActivity", "onReceiveResult: telling complaintCreateFragment the address " );
+                complaintCreateFragment.setAddress(address);
+            }
+
+        }
     }
 }

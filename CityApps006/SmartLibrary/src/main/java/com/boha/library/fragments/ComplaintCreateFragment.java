@@ -659,14 +659,20 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         void onPictureRequired(ComplaintDTO complaint);
 
         void onRefreshRequested();
+        void getLocationAddress(Location location);
 
     }
 
     Location location;
+    String address;
 
     public void setLocation(Location location) {
         Log.w(LOG, "$$$$==============================>>  setLocation, acc: " + location.getAccuracy());
         this.location = location;
+        mListener.getLocationAddress(location);
+    }
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     static final String LOG = ComplaintCreateFragment.class.getSimpleName();

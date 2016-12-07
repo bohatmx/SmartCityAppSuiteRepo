@@ -60,8 +60,11 @@
             android:name=".services.ComplaintImageService"
             android:exported="false" />
 
-        <activity android:name="com.boha.library.activities.FAQFullDetailActivity" />
-        <activity android:name="com.boha.library.activities.FullAlertDetailActivity"></activity>
+        <activity android:name=".activities.FAQFullDetailActivity" />
+
+        <service
+            android:name=".services.AddressIntentService"
+            android:exported="false" />
     </application>
 
 </manifest>
