@@ -30,8 +30,8 @@ import java.util.TimerTask;
 public class GeneralInfoActivity extends AppCompatActivity {
 
     TextView GEN_txt, GEN_txt2, GEN_txt3, GEN_txt4, GEN_txt5, GEN_txt6,
-            GEN_txt7, GEN_txt8, GEN_txt9, GEN_txt10, GEN_txt11, GEN_txt12, GEN_txt_title;
-    ImageView GEN_hero;
+            GEN_txt7, GEN_txt8, GEN_txt9, GEN_txt10, GEN_txt11, GEN_txt12, GEN_txt13, GEN_txt_title;
+    ImageView GEN_hero, newsIMG, eServicesIMG;
     ScrollView GEN_SCROLL;
     Context ctx;
     int logo;
@@ -39,6 +39,7 @@ public class GeneralInfoActivity extends AppCompatActivity {
     boolean isDebuggable;
     int darkColor, primaryColor;
 
+    static final String MUNICIPALITY_NAME = "eThekwini";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +53,7 @@ public class GeneralInfoActivity extends AppCompatActivity {
         municipality = SharedUtil.getMunicipality(getApplicationContext());
 
         ActionBar actionBar = getSupportActionBar();
-        if (logo != 0) {
+        /*if (logo != 0) {
             Drawable d = ctx.getResources().getDrawable(logo);
             Util.setCustomActionBar(ctx,
                     actionBar,
@@ -61,7 +62,11 @@ public class GeneralInfoActivity extends AppCompatActivity {
 
         } else {
             getSupportActionBar().setTitle(municipality.getMunicipalityName());
-        }
+        }*/
+        Util.setCustomActionBar(ctx,
+                actionBar,
+                MUNICIPALITY_NAME,
+                ContextCompat.getDrawable(ctx, R.drawable.logo), logo);
 
         animateSomething();
         setFields();
@@ -79,8 +84,10 @@ public class GeneralInfoActivity extends AppCompatActivity {
         GEN_txt10 = (TextView) findViewById(R.id.GEN_txt10);
         GEN_txt11 = (TextView) findViewById(R.id.GEN_txt11);
         GEN_txt12 = (TextView) findViewById(R.id.GEN_txt12);
-        /*GEN_hero = (ImageView) findViewById(R.id.GEN_hero);
-        GEN_hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));*/
+        GEN_txt13 = (TextView) findViewById(R.id.GEN_txt13);
+        GEN_hero = (ImageView) findViewById(R.id.img);
+        newsIMG = (ImageView) findViewById(R.id.news_alerts) ;
+        eServicesIMG = (ImageView) findViewById(R.id.e_services);
         GEN_txt_title = (TextView) findViewById(R.id.GEN_txt_title);
         GEN_SCROLL = (ScrollView) findViewById(R.id.GEN_SCROLL);
     }

@@ -70,6 +70,8 @@ public class SigninActivity extends AppCompatActivity {
     int userType;
     FirebaseAnalytics mFirebaseAnalytics;
 
+    static final String MUNICIPALITY_NAME = "eThekwini";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +89,7 @@ public class SigninActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         Util.setCustomActionBar(ctx,
                 actionBar,
-                municipality.getMunicipalityName(),
+                MUNICIPALITY_NAME,
                 ctx.getResources().getDrawable(R.drawable.logo), logo);
         getSupportActionBar().setTitle("");
         //Track Signin
@@ -289,7 +291,7 @@ public class SigninActivity extends AppCompatActivity {
                         btnSend.setEnabled(true);
                         Log.e(LOG, message);
                        // Util.showToast(ctx, "Incorrect email/password");
-                        Util.showSnackBar(editPassword, getString(com.boha.library.R.string.incorrect_credentials),
+                        Util.showSnackBar(editPassword, message/*getString(com.boha.library.R.string.incorrect_credentials)*/,
                                 "Dismiss", Color.parseColor("red"));
 
                         //   Util.showErrorToast(ctx, message);

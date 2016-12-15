@@ -42,6 +42,7 @@ public class FullAlertDetailActivity extends AppCompatActivity implements ThemeL
     int position, darkColor, primaryColor;
     MunicipalityDTO municipality;
     int logo;
+    static final String MUNICIPALITY_NAME = "eThekwini";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +57,7 @@ public class FullAlertDetailActivity extends AppCompatActivity implements ThemeL
         darkColor = getIntent().getIntExtra("darkColor", R.color.black);
         primaryColor = getIntent().getIntExtra("primaryColor", R.color.black);
         ActionBar actionBar = getSupportActionBar();
-        Util.setCustomActionBar(ctx, actionBar, municipality.getMunicipalityName(),
+        Util.setCustomActionBar(ctx, actionBar, MUNICIPALITY_NAME,
                 ctx.getResources().getDrawable(R.drawable.logo), logo);
         getSupportActionBar().setTitle("");
 

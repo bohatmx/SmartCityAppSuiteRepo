@@ -158,7 +158,7 @@ public class AlertMapActivity extends AppCompatActivity implements OnMapReadyCal
     Marker marker;
 
     private void setGoogleMap() {
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+      /*  if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    Activity#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -167,8 +167,8 @@ public class AlertMapActivity extends AppCompatActivity implements OnMapReadyCal
             // to handle the case where the user grants the permission. See the documentation
             // for Activity#requestPermissions for more details.
             return;
-        }
-        googleMap.setMyLocationEnabled(true);
+        }*/
+        //googleMap.setMyLocationEnabled(true);
         googleMap.setBuildingsEnabled(true);
         location = googleMap.getMyLocation();
 

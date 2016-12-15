@@ -18,8 +18,11 @@ public class Statics {
     // public static final String PREFIX = "http://icsmsdev1.oneconnectgroup.com:8585";
     public static final String PREFIX = "http://smartcitydev.ocgroup.co.za";
     // public static final String PREFIX = "http://10.0.0.112:8080";
+    //uat https://uatscrouter.ocgroup.co.za/sc/smart?
+   // public static final String PREFIX = "https://uatscrouter.ocgroup.co.za";
 
-    public static final String URL = PREFIX + "/sc/";
+
+    public static final String URL = PREFIX + /*"/sc-0.1/"*/"/sc/";
     public static final String IMAGE_URL = PREFIX + "/";
 
 

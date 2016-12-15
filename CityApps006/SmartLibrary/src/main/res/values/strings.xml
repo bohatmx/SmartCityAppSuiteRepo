@@ -203,8 +203,10 @@ The application has emergency numbers from the municipality, such as ambulance n
     <string name="high_bill">- High bill</string>
     <string name="illegal_dumping">- Illegal dumping</string>
     <string name="view_complaints_around_you">- View complaints around you</string>
-    <string name="second_gen_paragraph">You can receive personalised news and alerts, these will be profile and location based. Users have the option to view alerts on a map. Users will also be able to view multiple municipal accounts and balances, pay for their accounts, download their statements in PDF as well as email and print a statement.<br />
-The mobile app will also enable citizens to report incorrect billing to the municipality. Other features includes Frequently Asked Questions about the city services. Users with the registered E-services account will get more personalised information about the services.
+    <string name="second_gen_paragraph">You can receive personalised news and alerts, these will be profile and location based. Users have the option to view alerts on a map.
+        Users will also be able to view multiple municipal accounts and balances, pay for their accounts, download their statements in PDF as well as email and print a statement.<br />
+The mobile app will also enable citizens to report incorrect billing to the municipality. Other features includes Frequently Asked Questions about the city services.</string>
+    <string name="third_gen_paragraph">Users with the registered E-services account will get more personalised information about the services.
 The application has emergency numbers from the municipality, such as ambulance number, fire department and metro police department etc.</string>
 
     <string name="general_info_title">eThekwini Municipality Mobile Application</string>

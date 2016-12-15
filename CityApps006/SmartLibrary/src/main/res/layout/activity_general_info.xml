@@ -25,8 +25,8 @@
                     android:id="@+id/GEN_txt_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="25dp"
-                    android:textColor="@color/white"
+                    style="@style/Title3TextStyleWhite"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="@string/general_info_title"/>
 
             </RelativeLayout>
@@ -38,113 +38,296 @@
         android:layout_below="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/GEN_SCROLL"
-        android:layout_margin="@dimen/mon_padding">
+        android:id="@+id/GEN_SCROLL">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <android.support.v7.widget.CardView
+            android:id="@+id/card1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/mon_padding">
+
 
         <RelativeLayout
             android:id="@+id/general_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:src="@drawable/durban3"
+                android:scaleType="fitXY"/>
             <TextView
+                android:layout_below="@+id/img"
                 android:id="@+id/GEN_txt"
                 android:textSize="@dimen/emergency_text_size"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/first_gen_paragraph"/>
+           <RelativeLayout
+               android:layout_below="@+id/GEN_txt"
+               android:id="@+id/eletricity_lay"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/electricity_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/electricity"
+                android:tint="@color/black"/>
             <TextView
+                android:layout_toRightOf="@+id/electricity_icon"
                 android:id="@+id/GEN_txt2"
                 android:textSize="@dimen/emergency_text_size"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/GEN_txt"
                 android:text="@string/report_electricity_outages"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_below="@+id/eletricity_lay"
+                android:id="@+id/no_water_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/no_water_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/zno_water"
+                    android:tint="@color/black"/>
             <TextView
+                android:layout_toRightOf="@+id/no_water_icon"
                 android:id="@+id/GEN_txt3"
                 android:textSize="@dimen/emergency_text_size"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/GEN_txt2"
                 android:text="@string/no_water"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/missing_manhole_layout"
+                android:layout_below="@+id/no_water_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/missing_manhole_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/zmanhole_cover"
+                    android:tint="@color/black"/>
             <TextView
+                android:layout_toRightOf="@+id/missing_manhole_icon"
                 android:id="@+id/GEN_txt4"
                 android:textSize="@dimen/emergency_text_size"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/GEN_txt3"
                 android:text="@string/missing_manhole_covers"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_below="@+id/missing_manhole_layout"
+                android:id="@+id/pothole_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/pothole_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/zpothole"
+                    android:tint="@color/black"/>
             <TextView
+                android:layout_toRightOf="@+id/pothole_icon"
                 android:id="@+id/GEN_txt5"
                 android:textSize="@dimen/emergency_text_size"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/GEN_txt4"
                 android:text="@string/potholes"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/traffic_layout"
+                android:layout_below="@+id/pothole_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/traffic_lights_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ztraffic_light_management"
+                    android:tint="@color/black"/>
             <TextView
+                android:layout_toRightOf="@+id/traffic_lights_icon"
                 android:id="@+id/GEN_txt6"
                 android:textSize="@dimen/emergency_text_size"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/GEN_txt5"
                 android:text="@string/broken_traffic_lights"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/noise_layout"
+                android:layout_below="@+id/traffic_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/noise_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/znuisance_reporting"
+                    android:tint="@color/black"/>
             <TextView
+                android:layout_toRightOf="@+id/noise_icon"
                 android:id="@+id/GEN_txt7"
                 android:textSize="@dimen/emergency_text_size"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/GEN_txt6"
                 android:text="@string/noise"/>
-            <TextView
-                android:id="@+id/GEN_txt8"
-                android:textSize="@dimen/emergency_text_size"
-                android:textColor="@color/black"
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/burst_pipe_layout"
+                android:layout_below="@+id/noise_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/GEN_txt7"
-                android:text="@string/burst_water_pipe"/>
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/burst_pipe_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/zburst_pipe"
+                    android:tint="@color/black"/>
+                <TextView
+                    android:layout_toRightOf="@+id/burst_pipe_icon"
+                    android:id="@+id/GEN_txt8"
+                    android:textSize="@dimen/emergency_text_size"
+                    android:textColor="@color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/burst_water_pipe"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/high_bill_layout"
+                android:layout_below="@+id/burst_pipe_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/high_bill_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/zhigh_bill"
+                    android:tint="@color/black"/>
             <TextView
+                android:layout_toRightOf="@+id/high_bill_icon"
                 android:id="@+id/GEN_txt9"
                 android:textSize="@dimen/emergency_text_size"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/GEN_txt8"
                 android:text="@string/high_bill"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/illegal_dumping_layout"
+                android:layout_below="@+id/high_bill_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/illegal_dumping_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/zillegal_dumping"
+                    android:tint="@color/black"/>
             <TextView
+                android:layout_toRightOf="@+id/illegal_dumping_icon"
                 android:id="@+id/GEN_txt10"
                 android:textSize="@dimen/emergency_text_size"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/GEN_txt9"
                 android:text="@string/illegal_dumping"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/complaints_around_me_layout"
+                android:layout_below="@+id/illegal_dumping_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/complaints_around_me_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_menu_myplaces"
+                    android:tint="@color/black"/>
             <TextView
+                android:layout_toRightOf="@+id/complaints_around_me_icon"
                 android:id="@+id/GEN_txt11"
                 android:textSize="@dimen/emergency_text_size"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/GEN_txt10"
                 android:text="@string/view_complaints_around_you"/>
-
-            <TextView
-                android:id="@+id/GEN_txt12"
-                android:textSize="@dimen/emergency_text_size"
-                android:textColor="@color/black"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/GEN_txt11"
-                android:text="@string/second_gen_paragraph"/>
-
+            </RelativeLayout>
         </RelativeLayout>
 
+        </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:id="@+id/card2"
+                android:layout_below="@+id/card1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/mon_padding">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/news_alerts"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/durban4"
+                        android:scaleType="fitXY"/>
+                    <TextView
+                        android:layout_below="@+id/news_alerts"
+                        android:id="@+id/GEN_txt12"
+                        android:textSize="@dimen/emergency_text_size"
+                        android:textColor="@color/black"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:text="@string/second_gen_paragraph"/>
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card3"
+                android:layout_below="@+id/card2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/mon_padding">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/e_services"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/e_services"
+                        android:scaleType="fitXY"/>
+                    <TextView
+                        android:layout_below="@+id/e_services"
+                        android:id="@+id/GEN_txt13"
+                        android:textSize="@dimen/emergency_text_size"
+                        android:textColor="@color/black"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/third_gen_paragraph"/>
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+        </RelativeLayout>
       </ScrollView>
 
 </RelativeLayout>

@@ -38,6 +38,7 @@ public class EmergencyContactsActivity extends AppCompatActivity {
     MunicipalityDTO municipality;
     Context ctx;
 
+    static final String MUNICIPALITY_NAME = "eThekwini";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,16 +53,20 @@ public class EmergencyContactsActivity extends AppCompatActivity {
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
         ActionBar actionBar = getSupportActionBar();
-        if (logo != 0) {
+        /*if (logo != 0) {
             Drawable d = ctx.getResources().getDrawable(logo);
             Util.setCustomActionBar(ctx,
                     actionBar,
-                    municipality.getMunicipalityName(),
+                    MUNICIPALITY_NAME,
                     ContextCompat.getDrawable(ctx, R.drawable.elogo), logo);
 
         } else {
             getSupportActionBar().setTitle(municipality.getMunicipalityName());
-        }
+        }*/
+        Util.setCustomActionBar(ctx,
+                actionBar,
+                MUNICIPALITY_NAME,
+                ContextCompat.getDrawable(ctx, R.drawable.logo), logo);
 
 
         setFields();
