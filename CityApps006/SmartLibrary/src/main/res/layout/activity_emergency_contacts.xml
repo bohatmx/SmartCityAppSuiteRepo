@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context="com.boha.library.activities.EmergencyContactsActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -23,13 +22,13 @@
                 android:padding="@dimen/mon_16">
 
                 <TextView
-                    android:padding="@dimen/emergency_padding"
+                    android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/EMC_title"
                     android:text="@string/emergency_title"
-                    android:textSize="25dp"
-                    android:textColor="@color/white"/>
+                    style="@style/Title3TextStyleWhite"
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
 
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
@@ -41,10 +40,16 @@
         android:layout_below="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/EMERGENCY_SCROLL"
-        android:layout_margin="@dimen/mon_padding">
+        android:id="@+id/EMERGENCY_SCROLL">
         <RelativeLayout
-
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <android.support.v7.widget.CardView
+            android:id="@+id/fire_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/mon_padding">
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
@@ -115,55 +120,98 @@
                 android:layout_below="@+id/EC_REPORT_NAME"
                 android:text="@string/emergency_metro_name"/>
 
-            <TextView
-                android:padding="@dimen/emergency_padding"
-                android:layout_below="@+id/EC_EMERGENCY_NO."
-                android:id="@+id/EC_title2"
-                android:layout_width="wrap_content"
+
+        </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+    <!-- end of emergency metro-->
+
+            <android.support.v7.widget.CardView
+                android:layout_below="@+id/fire_layout"
+                android:id="@+id/emergency_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/water_traffic_title"
-                style="@style/Title3TextStyleBlack"/>
-            <TextView
-                android:textSize="@dimen/emergency_text_size"
-                android:textStyle="bold"
-                android:padding="@dimen/emergency_padding"
-                android:autoLink="phone"
-                android:layout_width="wrap_content"
+                android:layout_margin="@dimen/mon_padding">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:padding="@dimen/emergency_padding"
+                        android:id="@+id/EC_title2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/water_traffic_title"
+                        style="@style/Title3TextStyleBlack"/>
+                    <TextView
+                        android:textSize="@dimen/emergency_text_size"
+                        android:textStyle="bold"
+                        android:padding="@dimen/emergency_padding"
+                        android:autoLink="phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/EC_WATER_TRAFFIC_NO."
+                        android:layout_below="@+id/EC_title2"
+                        android:text="@string/water_traffic_number"/>
+                    <TextView
+                        android:textSize="@dimen/emergency_text_size"
+                        android:textStyle="bold"
+                        android:padding="@dimen/emergency_padding"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/EC_WATER_TRAFFIC_NAME"
+                        android:layout_toRightOf="@+id/EC_WATER_TRAFFIC_NO."
+                        android:layout_below="@+id/EC_title2"
+                        android:text="@string/water_traffic_name"/>
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+
+
+            <!-- end of call centre-->
+            <android.support.v7.widget.CardView
+                android:layout_below="@+id/emergency_layout"
+                android:id="@+id/water_traffic_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/EC_WATER_TRAFFIC_NO."
-                android:layout_below="@+id/EC_title2"
-                android:text="@string/water_traffic_number"/>
-            <TextView
-                android:textSize="@dimen/emergency_text_size"
-                android:textStyle="bold"
-                android:padding="@dimen/emergency_padding"
-                android:layout_width="wrap_content"
+                android:layout_margin="@dimen/mon_padding">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:padding="@dimen/emergency_padding"
+                        android:id="@+id/EC_title3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/water_traffic_title"
+                        style="@style/Title3TextStyleBlack"/>
+                    <TextView
+                        android:textSize="@dimen/emergency_text_size"
+                        android:textStyle="bold"
+                        android:padding="@dimen/emergency_padding"
+                        android:autoLink="phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/EC_ELECTRICITY_NO."
+                        android:layout_below="@+id/EC_title3"
+                        android:text="@string/electricity_number"/>
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+
+
+            <!-- end of water and traffic hotline-->
+            <android.support.v7.widget.CardView
+                android:layout_below="@+id/water_traffic_layout"
+                android:id="@+id/ambulance_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/EC_WATER_TRAFFIC_NAME"
-                android:layout_toRightOf="@+id/EC_WATER_TRAFFIC_NO."
-                android:layout_below="@+id/EC_title2"
-                android:text="@string/water_traffic_name"/>
+                android:layout_margin="@dimen/mon_padding">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <TextView
                 android:padding="@dimen/emergency_padding"
-                android:layout_below="@+id/EC_WATER_TRAFFIC_NO."
-                android:id="@+id/EC_title3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/water_traffic_title"
-                style="@style/Title3TextStyleBlack"/>
-            <TextView
-                android:textSize="@dimen/emergency_text_size"
-                android:textStyle="bold"
-                android:padding="@dimen/emergency_padding"
-                android:autoLink="phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/EC_ELECTRICITY_NO."
-                android:layout_below="@+id/EC_title3"
-                android:text="@string/electricity_number"/>
-            <TextView
-                android:padding="@dimen/emergency_padding"
-                android:layout_below="@+id/EC_ELECTRICITY_NO."
                 android:id="@+id/EC_title4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -294,9 +342,21 @@
                 android:layout_toRightOf="@+id/EC_NETCARE_NO2"
                 android:layout_below="@+id/EC_STJOHNS_AMBULANCE_NAME"
                 android:text="@string/netcare_name"/>
+            </RelativeLayout>
+            </android.support.v7.widget.CardView>
+            <!--end of ambulance -->
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ambulance_layout"
+                android:layout_margin="@dimen/mon_padding">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
             <TextView
                 android:padding="5dp"
-                android:layout_below="@+id/EC_NETCARE_NO1"
                 android:id="@+id/EC_title5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -343,6 +403,9 @@
                 android:layout_toRightOf="@+id/EC_FAULTS_NO"
                 android:layout_below="@+id/EC_title5"
                 android:text="@string/fault_description_2"/>
+            </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
         </RelativeLayout>
 
     </ScrollView>

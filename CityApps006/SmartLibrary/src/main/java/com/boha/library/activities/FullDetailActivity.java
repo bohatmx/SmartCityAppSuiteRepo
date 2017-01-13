@@ -41,6 +41,7 @@ public class FullDetailActivity extends AppCompatActivity {
     MunicipalityDTO municipality;
     ProfileInfoDTO profile;
 
+    static final String MUNICIPALITY_NAME = "eThekwini";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +56,7 @@ public class FullDetailActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         Util.setCustomActionBar(ctx,
                 actionBar,
-                municipality.getMunicipalityName(),
+                MUNICIPALITY_NAME,
                 ctx.getResources().getDrawable(R.drawable.logo), logo);
         getSupportActionBar().setTitle("");
 

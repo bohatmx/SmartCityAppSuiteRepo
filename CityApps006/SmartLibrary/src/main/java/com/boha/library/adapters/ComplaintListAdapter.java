@@ -104,7 +104,7 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
             item.txtStatusDate = (TextView) convertView.findViewById(R.id.SL_statusDate);
             item.txtAck = (TextView) convertView.findViewById(R.id.SL_ack);
             item.txtRemarks = (TextView) convertView.findViewById(R.id.SL_statusText);
-
+            item.txtRemarks.setVisibility(View.GONE);
             item.txtDescription = (TextView) convertView.findViewById(R.id.description);
             item.txtDescriptionLabel = (TextView) convertView.findViewById(R.id.description_label);
 
@@ -128,6 +128,9 @@ public class ComplaintListAdapter extends ArrayAdapter<ComplaintDTO> {
 
         if (p.getSubCategory().matches("Burst")) {
             item.txtComplaintType.setText(p.getCategory() + " - " + "Burst Pipe");
+        }
+        if (p.getSubCategory().matches("Over flowing")) {
+            item.txtComplaintType.setText(p.getCategory() + " - " + "Road Overflowing");
         }
 
         if (p.getComplaintDate() != null) {

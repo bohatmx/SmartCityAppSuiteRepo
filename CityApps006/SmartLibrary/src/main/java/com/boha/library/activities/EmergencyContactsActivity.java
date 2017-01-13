@@ -38,6 +38,7 @@ public class EmergencyContactsActivity extends AppCompatActivity {
     MunicipalityDTO municipality;
     Context ctx;
 
+    static final String MUNICIPALITY_NAME = "eThekwini";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,16 +53,20 @@ public class EmergencyContactsActivity extends AppCompatActivity {
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
         ActionBar actionBar = getSupportActionBar();
-        if (logo != 0) {
+        /*if (logo != 0) {
             Drawable d = ctx.getResources().getDrawable(logo);
             Util.setCustomActionBar(ctx,
                     actionBar,
-                    municipality.getMunicipalityName(),
+                    MUNICIPALITY_NAME,
                     ContextCompat.getDrawable(ctx, R.drawable.elogo), logo);
 
         } else {
             getSupportActionBar().setTitle(municipality.getMunicipalityName());
-        }
+        }*/
+        Util.setCustomActionBar(ctx,
+                actionBar,
+                MUNICIPALITY_NAME,
+                ContextCompat.getDrawable(ctx, R.drawable.logo), logo);
 
 
         setFields();
@@ -155,7 +160,7 @@ public class EmergencyContactsActivity extends AppCompatActivity {
 
 
     private void animateSomething() {
-        final Timer timer = new Timer();
+      /*  final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -163,11 +168,11 @@ public class EmergencyContactsActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         timer.cancel();
-                        /*EM_hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-                        Util.flashOnce(EM_hero, 300, null);*/
+                        EM_hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
+                        Util.flashOnce(EM_hero, 300, null);
                     }
                 });
             }
-        }, 500);
+        }, 500);*/
     }
 }

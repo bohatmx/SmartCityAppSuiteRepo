@@ -278,7 +278,7 @@ public static final String TAG = ProfileInfoFragment.class.getSimpleName();
     @Override
     public void animateSomething() {
 
-        Util.flashSeveralTimes(btnAccountDetails, 50, 3, null);
+       /* Util.flashSeveralTimes(btnAccountDetails, 50, 3, null);
         final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -296,7 +296,7 @@ public static final String TAG = ProfileInfoFragment.class.getSimpleName();
                     timer.cancel();
                 }
             }
-        }, 50);
+        }, 50);*/
 
     }
 

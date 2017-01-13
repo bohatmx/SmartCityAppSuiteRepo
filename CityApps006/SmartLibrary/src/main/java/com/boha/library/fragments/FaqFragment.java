@@ -418,25 +418,6 @@ public class FaqFragment extends Fragment implements PageFragment {
 
     @Override
     public void animateSomething() {
-//        final Timer timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                getActivity().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        timer.cancel();
-//                        heroImage.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-//                        Util.expand(heroImage, 1000, new Util.UtilAnimationListener() {
-//                            @Override
-//                            public void onAnimationEnded() {
-//                                Util.flashOnce(fab, 300, null);
-//                            }
-//                        });
-//                    }
-//                });
-//            }
-//        }, 500);
     }
 
     @Override

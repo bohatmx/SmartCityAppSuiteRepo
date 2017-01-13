@@ -483,23 +483,8 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
 //        refWatcher.watch(this);
     }
 
-    @Override
+   @Override
     public void animateSomething() {
-
-        final Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        timer.cancel();
-                        /*hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-                        Util.flashSeveralTimes(fab, 100, 2, null);*/
-                    }
-                });
-            }
-        }, 50);
     }
 
     int primaryColor, primaryDarkColor;

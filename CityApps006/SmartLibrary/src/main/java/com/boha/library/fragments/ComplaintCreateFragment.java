@@ -211,6 +211,9 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
         if (complaintType.getComplaintTypeName().matches("Burst Pipe")) {
             complaintType.setComplaintTypeName("Burst");
         }
+        if (complaintType.getComplaintTypeName().matches("Road Overflowing")) {
+            complaintType.setComplaintTypeName("Over flowing");
+        }
         complaint.setSubCategory(complaintType.getComplaintTypeName());
         complaint.setComplaintDate(new Date().getTime());
 
@@ -340,6 +343,9 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
                 complaintType = type;
                 if (type.getComplaintTypeName().matches("Burst")){
                     type.setComplaintTypeName("Burst Pipe");
+                }
+                if (type.getComplaintTypeName().matches("Over flowing")) {
+                    type.setComplaintTypeName("Road Overflowing");
                 }
                 txtType.setText(type.getComplaintTypeName());
                 showConfirmDialog();
@@ -614,27 +620,6 @@ public class ComplaintCreateFragment extends Fragment implements PageFragment {
 
     @Override
     public void animateSomething() {
-//        timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                if (getActivity() == null) return;
-//                getActivity().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        timer.purge();
-//                        timer.cancel();
-//                        hero.setImageDrawable(Util.getRandomBackgroundImage(ctx));
-//                        Util.expand(hero, 1000, new Util.UtilAnimationListener() {
-//                            @Override
-//                            public void onAnimationEnded() {
-//                                Util.flashOnce(icon, 300, null);
-//                            }
-//                        });
-//                    }
-//                });
-//            }
-//        }, 500);
     }
 
     int primaryColor, primaryDarkColor;
