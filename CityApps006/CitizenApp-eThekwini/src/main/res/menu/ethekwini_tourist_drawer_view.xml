@@ -39,6 +39,10 @@
             android:id="@+id/nav_ward_councillor"
             android:icon="@android:drawable/ic_menu_agenda"
             android:title="@string/ward_councillors"/>
+        <item
+            android:id="@+id/nav_pick_suburb"
+            android:icon="@android:drawable/ic_dialog_map"
+            android:title="@string/pick_suburb"/>
        <!-- <item
             android:id="@+id/nav_gallery"
             android:visible="false"

@@ -56,7 +56,7 @@ public class RequestDTO {
 
     private Integer requestType, radius,
             municipalityID;
-    private String message;
+    private String message, oldToken, newToken;
     private List<String> emailList;
     private Integer year, month, count;
     private String userName, password, referenceNumber,
@@ -103,6 +103,22 @@ public class RequestDTO {
     private RequestList requestList;
     private GISAddressDTO address;
     private PaymentSurveyDTO paymentSurvey;
+
+    public String getOldToken() {
+        return oldToken;
+    }
+
+    public void setOldToken(String oldToken) {
+        this.oldToken = oldToken;
+    }
+
+    public String getNewToken() {
+        return newToken;
+    }
+
+    public void setNewToken(String newToken) {
+        this.newToken = newToken;
+    }
 
     public String getMessage() {
         return message;
@@ -268,7 +284,8 @@ public class RequestDTO {
             UPDATE_COMPLAINT = 1111,
             UPDATE_ACCOUNT = 1112,
             UPDATE_CUSTOMER_STATUS_TYPES = 1113,
-            UPDATE_FREQUENTLY_ASKED_QUESTION = 1115;
+            UPDATE_FREQUENTLY_ASKED_QUESTION = 1115,
+            UPDATE_FCM_TOKEN = 1116;
 
     //get lookup lists
     public static final int 

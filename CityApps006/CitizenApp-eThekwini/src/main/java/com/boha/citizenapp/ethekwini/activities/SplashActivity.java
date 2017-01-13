@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -19,7 +18,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.boha.citizenapp.ethekwini.R;
 import com.boha.library.dto.MunicipalityDTO;
@@ -84,10 +82,10 @@ public class SplashActivity extends AppCompatActivity  {
         themePrimaryColor = typedValue.data;
         setTitle(MUNICIPALITY_NAME + " SmartCity");
         ActionBar actionBar = getSupportActionBar();
-        Util.setCustomActionBar(ctx,
-                actionBar,
-                MUNICIPALITY_NAME,
-                ContextCompat.getDrawable(ctx, R.drawable.logo), R.drawable.logo);
+//        Util.setCustomActionBar(ctx,
+//                actionBar,
+//                MUNICIPALITY_NAME,
+//                ContextCompat.getDrawable(ctx, R.drawable.logo), R.drawable.logo);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();

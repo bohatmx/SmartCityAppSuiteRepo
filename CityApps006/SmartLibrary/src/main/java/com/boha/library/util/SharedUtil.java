@@ -240,7 +240,7 @@ public class SharedUtil {
         SharedPreferences.Editor ed = sp.edit();
         ed.putString(GCMDEVICE, x);
         ed.commit();
-        Log.e("SharedUtil", "%%%%% Device saved in SharedPreferences");
+        Log.e("SharedUtil", "%%%%% Device saved in SharedPreferences, has FCM token: " + dto.getGcmRegistrationID());
     }
 
 

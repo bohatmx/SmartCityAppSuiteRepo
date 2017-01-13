@@ -65,5 +65,6 @@
     <dimen name="navigation_drawer_width">240dp</dimen>
     <dimen name="emergency_text_size">15dp</dimen>
     <dimen name="emergency_padding">5dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 </resources>

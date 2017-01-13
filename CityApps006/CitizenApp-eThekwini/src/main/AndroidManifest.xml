@@ -8,7 +8,7 @@
         android:protectionLevel="signature" />
 
     <uses-permission android:name="com.boha.citizenapp.ethekwini.gcm.permission.C2D_MESSAGE" />
-
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <!--
         DEV KEY: AIzaSyCCqxtRIo4epdejyic7PxWv5rZLcZp5J1w
@@ -21,11 +21,11 @@
     <application
         android:name=".activities.CitizenApp"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@style/BlueThemeOne"
-        tools:replace="android:theme"
-        android:hardwareAccelerated="true">
+        tools:replace="android:theme">
 
         <!-- Keys and metadata -->
         <meta-data
@@ -34,7 +34,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
 
         <!-- Activities -->
         <activity
@@ -121,8 +120,9 @@
             android:name="com.boha.library.activities.ThemeSelectorActivity"
             android:label="@string/title_activity_theme_selector"
             android:parentActivityName=".activities.CitizenDrawerActivity" />
-        <activity android:name=".activities.LandingPageActivity"
-            android:parentActivityName=".activities.SplashActivity"/>
+        <activity
+            android:name=".activities.LandingPageActivity"
+            android:parentActivityName=".activities.SplashActivity" />
 
         <!-- RECEIVERS and SERVICES -->
 
@@ -131,33 +131,6 @@
             android:exported="false" />
 
         <!-- SERVICES -->
-        <service android:name="com.boha.library.services.RegistrationIntentService" />
-
-        <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-
-                <category android:name="com.boha.citizenapp.ethekwini" />
-            </intent-filter>
-        </receiver>
-
-        <service
-            android:name=".services.CitizenGCMListenerService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-            </intent-filter>
-        </service>
-        <service
-            android:name="com.boha.library.services.MonInstanceIDListenerService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID" />
-            </intent-filter>
-        </service>
 
         <activity
             android:name="com.boha.library.activities.CardPaymentsActivity"
@@ -165,43 +138,45 @@
         <activity
             android:name="com.boha.library.activities.SIDPaymentsActivity"
             android:parentActivityName="com.boha.library.activities.AccountDetailActivity" />
-        <!--
-            <activity
-            android:name=".activities.AddressActivity"
-            android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
-
         <activity
             android:name=".activities.TouristDrawerActivity"
-            android:label="@string/title_activity_tourist_drawer" />
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.TouristAddressActivity"
-            android:label="@string/title_activity_tourist_address"></activity>
-        -->
-
-        <activity android:name=".activities.TouristDrawerActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name="com.boha.library.rssreader.FullArticleViewActivity"
+            android:name="com.boha.library.rssreader.FullArticleViewActivity"
+            android:parentActivityName=".activities.LandingPageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.FullDetailActivity"
+            android:parentActivityName=".activities.CitizenDrawerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.FullAlertDetailActivity"
+            android:parentActivityName=".activities.CitizenDrawerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.FAQFullDetailActivity"
+            android:parentActivityName=".activities.CitizenDrawerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.boha.library.activities.NotificationActivity"
+            android:parentActivityName=".activities.CitizenDrawerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.boha.library.activities.PickSuburbActivity"
+            android:parentActivityName=".activities.CitizenDrawerActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName=".activities.LandingPageActivity"/>
-        <activity android:name=".activities.FullDetailActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".activities.CitizenDrawerActivity"/>
-        <activity android:name=".activities.FullAlertDetailActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".activities.CitizenDrawerActivity" />
-        <activity android:name=".activities.FAQFullDetailActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".activities.CitizenDrawerActivity"/>
-
-
+            android:theme="@style/TealTheme" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="8419153fba562e57532d0502ff0e71266daa9d2b" />
 
+        <activity
+            android:name=".activities.PickDistrictActivity"
+            android:label="@string/title_activity_pick_district" />
+        <activity
+            android:name=".activities.PickPlaceActivity"
+            android:label="@string/title_activity_pick_place"></activity>
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

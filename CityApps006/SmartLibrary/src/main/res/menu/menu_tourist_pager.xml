@@ -5,6 +5,13 @@
     tools:context="com.boha.citizenapp.activities.TouristDrawerActivity">
 
     <item
+        android:id="@+id/action_pick_suburb"
+        android:title="Pick Suburb"
+        android:icon="@drawable/ic_file_upload"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:visible="true"/>
+    <item
         android:id="@+id/action_refresh"
         android:title="Refresh Data"
         android:icon="@drawable/ic_action_refresh"

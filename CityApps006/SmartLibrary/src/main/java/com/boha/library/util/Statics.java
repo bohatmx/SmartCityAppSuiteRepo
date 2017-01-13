@@ -15,12 +15,12 @@ public class Statics {
      * PECANWOOD BACKEND APP_URL'S - pecanwood back end endpoint on laptop
      */
 
-   // public static final String PREFIX = "http://icsmsdev1.oneconnectgroup.com:8585";
+    // public static final String PREFIX = "http://icsmsdev1.oneconnectgroup.com:8585";
 //    public static final String PREFIX = "http://smartcitydev.ocgroup.co.za";
 //    public static final String PREFIX = "http://10.0.0.109:8080";
-public static final String PREFIX = "http://192.168.1.233:40405";
+    public static final String PREFIX = "http://192.168.1.233:8080";
 
-    public static final String URL = PREFIX + "/sc/";
+    public static final String URL = PREFIX + "/sc-0.1/";
     public static final String IMAGE_URL = PREFIX + "/";
 
 
@@ -92,6 +92,7 @@ public static final String PREFIX = "http://192.168.1.233:40405";
                 "fonts/Neuton-SC-Extrabold.ttf");
         txt.setTypeface(font);
     }
+
     public static final int SUCCESS_RESULT = 0;
     public static final int FAILURE_RESULT = 1;
     public static final String PACKAGE_NAME = "com.boha.citizenapp.ethekwini";

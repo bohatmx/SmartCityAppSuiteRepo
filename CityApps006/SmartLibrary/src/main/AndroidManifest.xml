@@ -12,20 +12,26 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <application android:allowBackup="true">
+    <application
+        android:allowBackup="true"
+        android:theme="@style/GreenTheme">
         <service android:name=".services.GCMDeviceService" />
         <service android:name=".services.PhotoUploadService" />
         <service
             android:name=".services.StatementService"
             android:exported="false" />
 
-        <!--
-        <activity
-            android:name=".activities.ThemeSelectorActivity"
-            android:label="@string/title_activity_theme_selector" />
-        <activity android:name="com.boha.citizenapp.ethekwini.activities.LandingPageActivity" />
-        -->
-
+        <!-- GCM Service Definitions -->
+        <service android:name=".services.SmartCityInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".services.SmartCityMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <service
             android:name=".services.RequestService"
             android:exported="false" />
@@ -60,11 +66,11 @@
             android:name=".services.ComplaintImageService"
             android:exported="false" />
 
-        <activity android:name=".activities.FAQFullDetailActivity" />
-
         <service
             android:name=".services.AddressIntentService"
             android:exported="false" />
+
+
     </application>
 
 </manifest>

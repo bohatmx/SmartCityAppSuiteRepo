@@ -43,10 +43,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.citizenapp.ethekwini.R;
+import com.boha.citizenapp.ethekwini.fragments.AlertListFragment;
+import com.boha.citizenapp.ethekwini.fragments.ComplaintsAroundMeFragment;
+import com.boha.citizenapp.ethekwini.fragments.CouncillorsListFragment;
+import com.boha.citizenapp.ethekwini.fragments.FaqFragment;
+import com.boha.citizenapp.ethekwini.fragments.NewsListFragment;
 import com.boha.library.activities.AccountDetailActivity;
 import com.boha.library.activities.AlertDetailActivity;
 import com.boha.library.activities.EmergencyContactsActivity;
 import com.boha.library.activities.GeneralInfoActivity;
+import com.boha.library.activities.PickSuburbActivity;
 import com.boha.library.activities.PictureActivity;
 import com.boha.library.activities.ThemeSelectorActivity;
 import com.boha.library.dto.AlertDTO;
@@ -57,15 +63,10 @@ import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.UserDTO;
-import com.boha.citizenapp.ethekwini.fragments.AlertListFragment;
 import com.boha.library.fragments.ComplaintCreateFragment;
-import com.boha.citizenapp.ethekwini.fragments.ComplaintsAroundMeFragment;
-import com.boha.citizenapp.ethekwini.fragments.CouncillorsListFragment;
 import com.boha.library.fragments.CreateAlertFragment;
-import com.boha.citizenapp.ethekwini.fragments.FaqFragment;
 import com.boha.library.fragments.MyComplaintsFragment;
 import com.boha.library.fragments.NavigationDrawerFragment;
-import com.boha.citizenapp.ethekwini.fragments.NewsListFragment;
 import com.boha.library.fragments.PageFragment;
 import com.boha.library.fragments.ProfileInfoFragment;
 import com.boha.library.services.AddressIntentService;
@@ -378,6 +379,11 @@ public class CitizenDrawerActivity extends AppCompatActivity implements
         int id = item.getItemId();
         if (id == android.R.id.home) {
             mDrawerLayout.openDrawer(GravityCompat.START);
+            return true;
+        }
+        if (id == R.id.action_pick_suburb) {
+            Intent m = new Intent(this, PickSuburbActivity.class);
+            startActivity(m);
             return true;
         }
 

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_pick_suburb"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.boha.library.activities.PickSuburbActivity"
+    tools:showIn="@layout/activity_pick_suburb">
+    <RelativeLayout
+        android:id="@+id/toplayout"
+        android:layout_marginLeft="@dimen/mon_16"
+        android:layout_marginRight="@dimen/mon_16"
+        android:layout_marginTop="@dimen/mon_16"
+        android:layout_marginBottom="@dimen/mon_56"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/title"
+            style="@style/Title3TextStyleBlack"
+
+            android:text="Pick Your Suburb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <AutoCompleteTextView
+            android:id="@+id/autoDistrict"
+            android:layout_below="@id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/districtSpinner"
+            android:layout_below="@id/autoDistrict"
+            android:layout_marginTop="@dimen/mon_16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/suburbSpinner"
+            android:layout_below="@id/districtSpinner"
+            android:layout_marginBottom="@dimen/mon_24"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/iconHelp"
+            android:src="@drawable/ic_action_refresh"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/mon_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/district"
+        style="@style/Title2TextStyleBlack"
+        android:text="Selected District"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/toplayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/suburb"
+        style="@style/Title2TextStyleBlack"
+        android:text="Selected Suburb"
+        android:layout_below="@id/district"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/mon_56"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

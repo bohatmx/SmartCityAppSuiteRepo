@@ -215,4 +215,5 @@ The application has emergency numbers from the municipality, such as ambulance n
     <string name="process_complaint_unable">Unable to process the complaint at this time. Please try later</string>
     <string name="complaint_description">Add description to complaint</string>
     <string name="incorrect_credentials">Incorrect email/password</string>
+    <string name="title_activity_pick_suburb">PickSuburbActivity</string>
 </resources>

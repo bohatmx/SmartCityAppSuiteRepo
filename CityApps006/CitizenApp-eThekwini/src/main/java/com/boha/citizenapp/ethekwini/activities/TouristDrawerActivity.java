@@ -37,9 +37,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boha.citizenapp.ethekwini.R;
+import com.boha.citizenapp.ethekwini.fragments.AlertListFragment;
+import com.boha.citizenapp.ethekwini.fragments.ComplaintsAroundMeFragment;
+import com.boha.citizenapp.ethekwini.fragments.CouncillorsListFragment;
+import com.boha.citizenapp.ethekwini.fragments.FaqFragment;
+import com.boha.citizenapp.ethekwini.fragments.NewsListFragment;
 import com.boha.library.activities.AlertDetailActivity;
 import com.boha.library.activities.EmergencyContactsActivity;
 import com.boha.library.activities.GeneralInfoActivity;
+import com.boha.library.activities.PickSuburbActivity;
 import com.boha.library.activities.ThemeSelectorActivity;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.ComplaintCategoryDTO;
@@ -49,15 +55,10 @@ import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.NewsArticleDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.UserDTO;
-import com.boha.citizenapp.ethekwini.fragments.AlertListFragment;
 import com.boha.library.fragments.ComplaintCreateFragment;
-import com.boha.citizenapp.ethekwini.fragments.ComplaintsAroundMeFragment;
-import com.boha.citizenapp.ethekwini.fragments.CouncillorsListFragment;
-import com.boha.citizenapp.ethekwini.fragments.FaqFragment;
 import com.boha.library.fragments.LandingPageFragment;
 import com.boha.library.fragments.MyComplaintsFragment;
 import com.boha.library.fragments.NavigationDrawerFragment;
-import com.boha.citizenapp.ethekwini.fragments.NewsListFragment;
 import com.boha.library.fragments.PageFragment;
 import com.boha.library.fragments.ProfileInfoFragment;
 import com.boha.library.services.PhotoUploadService;
@@ -83,6 +84,8 @@ import org.acra.ACRA;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
+
+import static com.boha.citizenapp.ethekwini.activities.SigninActivity.PICK_SUBURB;
 
 public class TouristDrawerActivity extends AppCompatActivity implements
         AlertListFragment.AlertListener,
@@ -120,9 +123,9 @@ public class TouristDrawerActivity extends AppCompatActivity implements
 
 
 
-        ab = getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.drawable.ic_menu);
-        ab.setDisplayHomeAsUpEnabled(true);
+//        ab = getSupportActionBar();
+//        ab.setHomeAsUpIndicator(R.drawable.ic_menu);
+//        ab.setDisplayHomeAsUpEnabled(true);
 
 //        checkAddress();
 
@@ -165,11 +168,11 @@ public class TouristDrawerActivity extends AppCompatActivity implements
         //  }
 
 
-        ActionBar actionBar = getSupportActionBar();
-        Util.setCustomActionBar(ctx,
-                actionBar,
-                MUNICIPALITY_NAME,
-                ContextCompat.getDrawable(ctx, R.drawable.logo), logo);
+//        ActionBar actionBar = getSupportActionBar();
+//        Util.setCustomActionBar(ctx,
+//                actionBar,
+//                MUNICIPALITY_NAME,
+//                ContextCompat.getDrawable(ctx, R.drawable.logo), logo);
 
         //   getLoginData();
         //getCachedLoginData();
@@ -359,7 +362,11 @@ public class TouristDrawerActivity extends AppCompatActivity implements
             navigationView.setVisibility(View.VISIBLE);
             return true;
         }
-
+        if (id == com.boha.library.R.id.action_pick_suburb) {
+            Intent intent = new Intent(this, PickSuburbActivity.class);
+            startActivityForResult(intent, PICK_SUBURB);
+            return true;
+        }
       /*  if (id == com.boha.library.R.id.action_exit) {
             SharedUtil.clearProfile(ctx);
             Intent intent = new Intent(TouristDrawerActivity.this, LandingPageActivity.class);
@@ -512,6 +519,11 @@ public class TouristDrawerActivity extends AppCompatActivity implements
                     mPager.setCurrentItem(0);
                     return true;
                 }*/
+                if (menuItem.getItemId() == R.id.nav_pick_suburb) {
+                    Intent m = new Intent(getApplicationContext(), PickSuburbActivity.class);
+                    startActivity(m);
+                    return true;
+                }
                 if (menuItem.getItemId() == R.id.nav_alerts) {
                     mPager.setCurrentItem(0, true);
                     return true;

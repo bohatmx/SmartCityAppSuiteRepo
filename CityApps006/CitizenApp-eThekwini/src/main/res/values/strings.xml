@@ -14,5 +14,8 @@
     <string name="title_activity_tourist_drawer">TouristDrawerActivity</string>
     <string name="title_activity_tourist_address">TouristAddressActivity</string>
     <string name="enter_email">Enter Email Address</string>
+    <string name="pick_suburb">Pick Suburb</string>
+    <string name="title_activity_pick_district">PickDistrictActivity</string>
+    <string name="title_activity_pick_place">PickPlaceActivity</string>
 
 </resources>

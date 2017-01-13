@@ -8,6 +8,11 @@
         android:icon="@drawable/ic_refresh"
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
+    <item android:id="@+id/action_pick_suburb"
+        android:title="Pick Suburb"
+        android:icon="@drawable/ic_action_news"
+        android:orderInCategory="100"
+        app:showAsAction="always"/>
     <item android:id="@+id/action_app_guide"
         android:title="Smartcity Guide"
         android:orderInCategory="100"

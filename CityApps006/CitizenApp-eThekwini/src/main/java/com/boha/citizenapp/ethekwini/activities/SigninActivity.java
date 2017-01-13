@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -23,14 +22,13 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.boha.citizenapp.ethekwini.R;
-import com.boha.library.dto.GcmDeviceDTO;
+import com.boha.library.activities.PickSuburbActivity;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.UserDTO;
 import com.boha.library.transfer.RequestDTO;
 import com.boha.library.transfer.ResponseDTO;
 import com.boha.library.util.CacheUtil;
-import com.boha.library.util.GCMUtil;
 import com.boha.library.util.NetUtil;
 import com.boha.library.util.SharedUtil;
 import com.boha.library.util.ThemeChooser;
@@ -38,6 +36,7 @@ import com.boha.library.util.Util;
 import com.boha.library.util.WebCheck;
 import com.boha.library.util.WebCheckResult;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
 import java.util.Timer;
@@ -65,7 +64,6 @@ public class SigninActivity extends AppCompatActivity {
     static final String LOG = SigninActivity.class.getSimpleName();
     ResponseDTO response;
     ProfileInfoDTO profileInfo;
-    GcmDeviceDTO gcmDevice;
     MunicipalityDTO municipality;
     int userType;
     FirebaseAnalytics mFirebaseAnalytics;
@@ -81,7 +79,6 @@ public class SigninActivity extends AppCompatActivity {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         municipality = SharedUtil.getMunicipality(ctx);
         int logo = getIntent().getIntExtra("logo", R.drawable.ic_action_globe);
-        registerGCMDevice();
 
         setFields();
         ActionBar actionBar = getSupportActionBar();
@@ -90,13 +87,7 @@ public class SigninActivity extends AppCompatActivity {
                 municipality.getMunicipalityName(),
                 ctx.getResources().getDrawable(R.drawable.logo), logo);
         getSupportActionBar().setTitle("");
-        //Track Signin
-//        CityApplication ca = (CityApplication) getApplication();
-//        Tracker t = ca.getTracker(
-//                CityApplication.TrackerName.APP_TRACKER);
-//        t.setScreenName(SigninActivity.class.getSimpleName());
-//        t.send(new HitBuilders.ScreenViewBuilder().build());
-        //
+
     }
 
     @Override
@@ -209,7 +200,7 @@ public class SigninActivity extends AppCompatActivity {
         w.setUserName(editEmail.getText().toString());
         w.setPassword(editPassword.getText().toString());
         w.setEmail(editEmail.getText().toString());
-        w.setGcmDevice(gcmDevice);
+        w.setGcmDevice(SharedUtil.getGCMDevice(this));
 
         w.setLatitude(0.0);
         w.setLongitude(0.0);
@@ -251,7 +242,11 @@ public class SigninActivity extends AppCompatActivity {
 
                             SharedUtil.saveProfile(ctx, profileInfo);
                             SharedUtil.setUserType(ctx, userType);
-                            SharedUtil.saveGCMDevice(ctx, gcmDevice);
+                            MunicipalityDTO mu = SharedUtil.getMunicipality(getApplicationContext());
+                            FirebaseMessaging.getInstance().subscribeToTopic(
+                                    "general-" + mu.getMunicipalityName().replaceAll(" ",""));
+
+                            Log.w(LOG, "Subscribed to topic: general-" + mu.getMunicipalityName().replaceAll(" ",""));
                             CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
                                 @Override
                                 public void onDataCached() {
@@ -260,8 +255,7 @@ public class SigninActivity extends AppCompatActivity {
                                     profileInfo = SharedUtil.getProfile(ctx);
                                     UserDTO user = SharedUtil.getUser(ctx);
                                     if (profileInfo != null) {
-                                        Intent intent = new Intent(SigninActivity.this, CitizenDrawerActivity.class);
-                                        startActivity(intent);
+                                        selectSuburb();
                                     }
                                     //  check();
                                 }
@@ -304,7 +298,16 @@ public class SigninActivity extends AppCompatActivity {
         });
     }
 
-
+    public static final int PICK_SUBURB = 917;
+    @Override
+    public void onActivityResult(int reqCode, int resultCode, Intent data) {
+        switch (reqCode) {
+            case PICK_SUBURB:
+                Intent intent = new Intent(SigninActivity.this, CitizenDrawerActivity.class);
+                startActivity(intent);
+                break;
+        }
+    }
     public void sendSignInUser() {
 
 
@@ -312,7 +315,7 @@ public class SigninActivity extends AppCompatActivity {
         UserDTO u = new UserDTO();
         u.setMunicipalityID(municipality.getMunicipalityID());
         u.setEmail(editEmail.getText().toString());
-        u.setGcmDevice(gcmDevice);
+        u.setGcmDevice(SharedUtil.getGCMDevice(this));
         w.setUser(u);
         w.setMunicipalityID(municipality.getMunicipalityID());
 
@@ -334,11 +337,15 @@ public class SigninActivity extends AppCompatActivity {
 
                         SharedUtil.saveUser(ctx, response.getUserList().get(0));
                         SharedUtil.setUserType(ctx, userType);
+                        MunicipalityDTO mu = SharedUtil.getMunicipality(getApplicationContext());
+                        FirebaseMessaging.getInstance().subscribeToTopic(
+                                "general-" + mu.getMunicipalityName().replaceAll(" ",""));
+
+                        Log.w(LOG, "Subscribed to topic: general-" + mu.getMunicipalityName().replaceAll(" ",""));
                         CacheUtil.cacheLoginData(ctx, response, new CacheUtil.CacheListener() {
                             @Override
                             public void onDataCached() {
-                                onBackPressed();
-                                //  check();
+                                selectSuburb();
                             }
 
                             @Override
@@ -370,11 +377,9 @@ public class SigninActivity extends AppCompatActivity {
         });
     }
 
-    //Tourist Test
-    public void sendSignInTourist() {
-        Intent intent = new Intent(SigninActivity.this, TouristDrawerActivity.class);
-        startActivity(intent);
-
+    private void selectSuburb() {
+        Intent intent = new Intent(SigninActivity.this, PickSuburbActivity.class);
+        startActivityForResult(intent, PICK_SUBURB);
     }
 
     void hideKeyboard() {
@@ -438,30 +443,6 @@ public class SigninActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    private void registerGCMDevice() {
-
-        Log.e(LOG, "############# Starting Google Cloud Messaging registration");
-        GCMUtil.startGCMRegistration(ctx, new GCMUtil.GCMUtilListener() {
-            @Override
-            public void onDeviceRegistered(String id) {
-                Log.e(LOG, "############# GCM - we cool, cool.....: " + id);
-                gcmDevice = new GcmDeviceDTO();
-                gcmDevice.setManufacturer(Build.MANUFACTURER);
-                gcmDevice.setModel(Build.MODEL);
-                gcmDevice.setSerialNumber(Build.SERIAL);
-                gcmDevice.setAndroidVersion(Build.VERSION.RELEASE);
-                gcmDevice.setGcmRegistrationID(id);
-
-            }
-
-            @Override
-            public void onGCMError() {
-                Log.e(LOG, "############# onGCMError --- we got GCM problems");
-
-            }
-        });
-
-    }
 
 
 }
