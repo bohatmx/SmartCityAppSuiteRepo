@@ -22,7 +22,6 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.boha.citizenapp.ethekwini.R;
-import com.boha.library.activities.PickSuburbActivity;
 import com.boha.library.dto.MunicipalityDTO;
 import com.boha.library.dto.ProfileInfoDTO;
 import com.boha.library.dto.UserDTO;
@@ -208,6 +207,7 @@ public class SigninActivity extends AppCompatActivity {
         w.setLongitude(0.0);
         w.setMunicipalityID(municipality.getMunicipalityID());
 
+
         //todo reset after testing complete
         w.setSpoof(false);
         //
@@ -257,7 +257,8 @@ public class SigninActivity extends AppCompatActivity {
                                     profileInfo = SharedUtil.getProfile(ctx);
                                     UserDTO user = SharedUtil.getUser(ctx);
                                     if (profileInfo != null) {
-                                        selectSuburb();
+                                        loginET();
+                                     //   selectSuburb();
                                     }
                                     //  check();
                                 }
@@ -382,6 +383,11 @@ public class SigninActivity extends AppCompatActivity {
     private void selectSuburb() {
         Intent intent = new Intent(SigninActivity.this, PickSuburbActivity.class);
         startActivityForResult(intent, PICK_SUBURB);
+    }
+    private void loginET(){
+        Log.i(LOG, "*** Logging in");
+        Intent intent = new Intent(SigninActivity.this, CitizenDrawerActivity.class);
+        startActivity(intent);
     }
 
     void hideKeyboard() {

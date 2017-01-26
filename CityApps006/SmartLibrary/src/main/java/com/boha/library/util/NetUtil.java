@@ -52,9 +52,114 @@ public class NetUtil {
 
     }
 
+    public static void sendDistrictMessageRequest(Context ctx, RequestDTO request, NetUtilListener utilListener) {
+        listener = utilListener;
+
+        WebCheckResult wcr = WebCheck.checkNetworkAvailability(ctx, true);
+        if (!wcr.isWifiConnected() && !wcr.isMobileConnected()) {
+            listener.onError(ctx.getString(R.string.no_network));
+            return;
+        }
+        if (request.getRideWebSocket()) {
+            if (request.getRequestList() == null) {
+                sendViaWebSocket(ctx, request);
+            } else {
+                sendCachedRequestsViaWebSocket(ctx, request);
+            }
+        } else {
+            if (request.getRequestList() == null) {
+                sendDistrictMessageViaHttp(ctx, request);
+            } else {
+                sendCachedRequestsViaHttp(ctx, request);
+            }
+        }
+
+    }
+
+    public static void sendSuburbMessageRequest(Context ctx, RequestDTO request, NetUtilListener utilListener) {
+        listener = utilListener;
+
+        WebCheckResult wcr = WebCheck.checkNetworkAvailability(ctx, true);
+        if (!wcr.isWifiConnected() && !wcr.isMobileConnected()) {
+            listener.onError(ctx.getString(R.string.no_network));
+            return;
+        }
+        if (request.getRideWebSocket()) {
+            if (request.getRequestList() == null) {
+                sendViaWebSocket(ctx, request);
+            } else {
+                sendCachedRequestsViaWebSocket(ctx, request);
+            }
+        } else {
+            if (request.getRequestList() == null) {
+                sendSuburbMessageViaHttp(ctx, request);
+            } else {
+                sendCachedRequestsViaHttp(ctx, request);
+            }
+        }
+
+    }
+
 
     private static void sendViaHttp(final Context ctx, RequestDTO request) {
         BaseVolley.getRemoteData(Statics.GATEWAY_SERVLET, request, ctx, new BaseVolley.BohaVolleyListener() {
+            @Override
+            public void onResponseReceived(ResponseDTO response) {
+                if (response == null) {
+                    listener.onError("Corrupted, null response from server. Please try again.");
+                } else {
+                    if (response.isMunicipalityAccessFailed()) {
+                        FirebaseCrash.report(new Exception("Municipality Service failed or unavailable"));
+                    }
+                    if (response.getStatusCode() > 0) {
+                        listener.onError(response.getMessage());
+                        setAnalyticsEvent(ctx,"app", "Unsuccessful");
+                        FirebaseCrash.report(new Exception("Application Error, status code: " + response.getMessage()));
+                    } else {
+                        listener.onResponse(response);
+                    }
+                }
+            }
+
+            @Override
+            public void onVolleyError(VolleyError error) {
+                listener.onError("Error communicating with server");
+                setAnalyticsEvent(ctx,"network", "Error");
+                FirebaseCrash.report(new Exception("Server Network Error: " + error.getMessage()));
+            }
+        });
+    }
+
+    private static void sendSuburbMessageViaHttp(final Context ctx, RequestDTO request) {
+        BaseVolley.getRemoteData(Statics.SUBURB_MESSAGE_SERVLET, request, ctx, new BaseVolley.BohaVolleyListener() {
+            @Override
+            public void onResponseReceived(ResponseDTO response) {
+                if (response == null) {
+                    listener.onError("Corrupted, null response from server. Please try again.");
+                } else {
+                    if (response.isMunicipalityAccessFailed()) {
+                        FirebaseCrash.report(new Exception("Municipality Service failed or unavailable"));
+                    }
+                    if (response.getStatusCode() > 0) {
+                        listener.onError(response.getMessage());
+                        setAnalyticsEvent(ctx,"app", "Unsuccessful");
+                        FirebaseCrash.report(new Exception("Application Error, status code: " + response.getMessage()));
+                    } else {
+                        listener.onResponse(response);
+                    }
+                }
+            }
+
+            @Override
+            public void onVolleyError(VolleyError error) {
+                listener.onError("Error communicating with server");
+                setAnalyticsEvent(ctx,"network", "Error");
+                FirebaseCrash.report(new Exception("Server Network Error: " + error.getMessage()));
+            }
+        });
+    }
+    private static void sendDistrictMessageViaHttp(final Context ctx, RequestDTO request) {
+        BaseVolley.getRemoteData(Statics.DISTRICT_MESSAGE_SERVLET, request, ctx, new BaseVolley.BohaVolleyListener() {
             @Override
             public void onResponseReceived(ResponseDTO response) {
                 if (response == null) {

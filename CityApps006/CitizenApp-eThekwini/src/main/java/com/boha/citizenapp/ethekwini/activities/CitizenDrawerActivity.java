@@ -52,7 +52,6 @@ import com.boha.library.activities.AccountDetailActivity;
 import com.boha.library.activities.AlertDetailActivity;
 import com.boha.library.activities.EmergencyContactsActivity;
 import com.boha.library.activities.GeneralInfoActivity;
-import com.boha.library.activities.PickSuburbActivity;
 import com.boha.library.activities.PictureActivity;
 import com.boha.library.activities.ThemeSelectorActivity;
 import com.boha.library.dto.AlertDTO;

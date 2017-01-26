@@ -16,9 +16,13 @@ public class Statics {
      */
 
     // public static final String PREFIX = "http://icsmsdev1.oneconnectgroup.com:8585";
-//    public static final String PREFIX = "http://smartcitydev.ocgroup.co.za";
-//    public static final String PREFIX = "http://10.0.0.109:8080";
-    public static final String PREFIX = "http://192.168.1.233:8086";
+   // public static final String PREFIX = "http://smartcitydev.ocgroup.co.za";
+    public static final String PREFIX = "http://10.0.0.194:8080";
+   // public static final String PREFIX = "http://192.168.1.233:8086";
+    //
+
+    //
+  //  public static final String PREFIX = "https://smartcity.ocgroup.co.za";
 
     public static final String URL = PREFIX + "/sc/";
     public static final String IMAGE_URL = PREFIX + "/";
@@ -33,6 +37,8 @@ public class Statics {
     public static final String GATEWAY_SOCKET = "wssmart";
     public static final String CACHED_REQUESTS_SOCKET = "wsrequests";
     public static final String CACHED_REQUESTS_SERVLET = "cachedRequests?";
+    public static final String DISTRICT_MESSAGE_SERVLET = "districtmessage?";
+    public static final String SUBURB_MESSAGE_SERVLET = "suburbmessage?";
 
     public static final String INVITE_DESTINATION = "https://play.google.com/store/apps/details?id=";
     public static final String INVITE_EXEC = INVITE_DESTINATION + "com.boha.monitor.exec";

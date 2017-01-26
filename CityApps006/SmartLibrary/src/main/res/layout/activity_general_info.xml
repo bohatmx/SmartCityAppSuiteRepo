@@ -292,6 +292,7 @@
                         android:layout_below="@+id/news_alerts"
                         android:id="@+id/GEN_txt12"
                         android:textSize="@dimen/emergency_text_size"
+                        android:layout_margin="@dimen/mon_12"
                         android:textColor="@color/black"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -321,6 +322,7 @@
                         android:id="@+id/GEN_txt13"
                         android:textSize="@dimen/emergency_text_size"
                         android:textColor="@color/black"
+                        android:layout_margin="@dimen/mon_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/third_gen_paragraph"/>

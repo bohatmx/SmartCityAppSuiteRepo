@@ -47,8 +47,9 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':SmartLibrary')
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.4@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
         transitive = true;
     }
+    compile 'com.android.support:appcompat-v7:24.2.1'
 }
 apply plugin: 'com.google.gms.google-services'

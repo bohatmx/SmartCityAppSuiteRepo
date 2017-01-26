@@ -45,7 +45,6 @@ import com.boha.citizenapp.ethekwini.fragments.NewsListFragment;
 import com.boha.library.activities.AlertDetailActivity;
 import com.boha.library.activities.EmergencyContactsActivity;
 import com.boha.library.activities.GeneralInfoActivity;
-import com.boha.library.activities.PickSuburbActivity;
 import com.boha.library.activities.ThemeSelectorActivity;
 import com.boha.library.dto.AlertDTO;
 import com.boha.library.dto.ComplaintCategoryDTO;
@@ -168,11 +167,11 @@ public class TouristDrawerActivity extends AppCompatActivity implements
         //  }
 
 
-//        ActionBar actionBar = getSupportActionBar();
-//        Util.setCustomActionBar(ctx,
-//                actionBar,
-//                MUNICIPALITY_NAME,
-//                ContextCompat.getDrawable(ctx, R.drawable.logo), logo);
+        ActionBar actionBar = getSupportActionBar();
+        Util.setCustomActionBar(ctx,
+                actionBar,
+                MUNICIPALITY_NAME,
+                ContextCompat.getDrawable(ctx, R.drawable.logo), logo);
 
         //   getLoginData();
         //getCachedLoginData();
@@ -402,6 +401,7 @@ public class TouristDrawerActivity extends AppCompatActivity implements
             intent.setData(Uri.parse("http://etmobileguide.oneconnectgroup.com/"));
             startActivity(intent);
         }
+
 
 
         return super.onOptionsItemSelected(item);

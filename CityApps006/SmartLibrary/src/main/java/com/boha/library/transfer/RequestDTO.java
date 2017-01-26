@@ -16,6 +16,8 @@ import com.boha.library.dto.ComplaintTypeDTO;
 import com.boha.library.dto.CountryDTO;
 import com.boha.library.dto.CustomerStatusDTO;
 import com.boha.library.dto.CustomerTypeDTO;
+import com.boha.library.dto.DistrictDTO;
+import com.boha.library.dto.DistrictMessageDTO;
 import com.boha.library.dto.FaqDTO;
 import com.boha.library.dto.GISAddressDTO;
 import com.boha.library.dto.GcmDeviceDTO;
@@ -32,6 +34,8 @@ import com.boha.library.dto.ProvinceDTO;
 import com.boha.library.dto.SIDPaymentRequestDTO;
 import com.boha.library.dto.StaffImageDTO;
 import com.boha.library.dto.StaffTypeDTO;
+import com.boha.library.dto.SuburbDTO;
+import com.boha.library.dto.SuburbMessageDTO;
 import com.boha.library.dto.UserDTO;
 import com.boha.library.util.RequestList;
 
@@ -103,6 +107,80 @@ public class RequestDTO {
     private RequestList requestList;
     private GISAddressDTO address;
     private PaymentSurveyDTO paymentSurvey;
+
+    //
+    private DistrictMessageDTO districtMessage;
+    private SuburbMessageDTO suburbMessage;
+    private DistrictDTO district;
+    private SuburbDTO suburb;
+
+    //{"message":"MKHAZANA: Bring your words to life with updated and entirely new emoji, and the ability to use two or more languages at the same time.",
+    // "suburbName":"MKHAZANA","messageDate":1484815524169,"messageExpiryDate":1484816524169,"suburbID":566}
+
+    private String suburbName;
+
+    //{"message":"ADAMS RURAL: Google turns Firebase into its unified platform for mobile developers"
+    // ,"districtName":"ADAMS RURAL","messageDate":1484815524167,"messageExpiryDate":1484816524167,"districtID":92}
+    private String districtName;
+    private Long messageDate, messageExpiryDate;
+    private Integer districtID, suburbID, profileInfoID;
+
+    public Integer getProfileInfoID() {
+        return profileInfoID;
+    }
+
+    public void setProfileInfoID(Integer profileInfoID) {
+        this.profileInfoID = profileInfoID;
+    }
+
+    public Integer getSuburbID() {
+        return suburbID;
+    }
+
+    public void setSuburbID(Integer suburbID) {
+        this.suburbID = suburbID;
+    }
+
+    public String getSuburbName() {
+        return suburbName;
+    }
+
+    public void setSuburbName(String suburbName) {
+        this.suburbName = suburbName;
+    }
+
+    public Long getMessageExpiryDate() {
+        return messageExpiryDate;
+    }
+
+    public void setMessageExpiryDate(Long messageExpiryDate) {
+        this.messageExpiryDate = messageExpiryDate;
+    }
+
+    public Long getMessageDate() {
+        return messageDate;
+    }
+
+    public void setMessageDate(Long messageDate) {
+        this.messageDate = messageDate;
+    }
+
+    public Integer getDistrictID() {
+        return districtID;
+    }
+
+    public void setDistrictID(Integer districtID) {
+        this.districtID = districtID;
+    }
+
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
+    }
+    //
 
     public String getOldToken() {
         return oldToken;
@@ -243,7 +321,10 @@ public class RequestDTO {
             SEND_CLOUD_MESSAGE = 13,
             GET_SID_PAYMENT_RESPONSES = 14,
             GET_CARD_PAYMENT_RESPONSES = 15,
-            SEND_CLOUD_MESSAGE_TO_LIST = 16;
+            SEND_CLOUD_MESSAGE_TO_LIST = 16,
+          //
+            SEND_DISTRICT_MESSAGE = 17,
+            SEND_SUBURB_MESSAGE = 18;;
 
     //Create new data
     public static final int 
@@ -666,6 +747,35 @@ public class RequestDTO {
         this.customerStatusList = customerStatusList;
     }
 
- 
+    public SuburbDTO getSuburb() {
+        return suburb;
+    }
 
+    public void setSuburb(SuburbDTO suburb) {
+        this.suburb = suburb;
+    }
+
+    public SuburbMessageDTO getSuburbMessage() {
+        return suburbMessage;
+    }
+
+    public void setSuburbMessage(SuburbMessageDTO suburbMessage) {
+        this.suburbMessage = suburbMessage;
+    }
+
+    public DistrictDTO getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(DistrictDTO district) {
+        this.district = district;
+    }
+
+    public DistrictMessageDTO getDistrictMessage() {
+        return districtMessage;
+    }
+
+    public void setDistrictMessage(DistrictMessageDTO districtMessage) {
+        this.districtMessage = districtMessage;
+    }
 }

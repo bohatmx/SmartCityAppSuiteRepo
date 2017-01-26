@@ -1,5 +1,6 @@
-package com.boha.library.activities;
+package com.boha.citizenapp.ethekwini.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -48,6 +49,8 @@ public class PickSuburbActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pick_suburb);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setSubtitleTextColor(Color.WHITE);
         getSupportActionBar().setTitle("Suburb Selection");
         getSupportActionBar().setSubtitle("Enable subscription to news and alerts");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -73,7 +76,7 @@ public class PickSuburbActivity extends AppCompatActivity {
         } else {
             FirebaseMessaging.getInstance().subscribeToTopic("district-" + district.getDistrictName().replaceAll(" ",""));
             showSnackBar("Subscribed to " + district.getDistrictName(),"OK","green");
-            Log.w(TAG, ".......subscribed to: " + district.getDistrictName() );
+            Log.w(TAG, ".......subscribed to: " + district.getDistrictName());
         }
         if (suburb == null) {
             return;
@@ -91,6 +94,7 @@ public class PickSuburbActivity extends AppCompatActivity {
         distSpinner = (Spinner) findViewById(R.id.districtSpinner);
         subSpinner = (Spinner) findViewById(R.id.suburbSpinner);
 
+        fab.setColorFilter(Color.WHITE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,11 +106,13 @@ public class PickSuburbActivity extends AppCompatActivity {
     private void setDistrictSpinner() {
         List<String> list = new ArrayList<>();
         districts = municipality.getDistricts();
-        for (DistrictDTO d: districts) {
-            list.add(d.getDistrictName());
+        if (districts != null) {
+            for (DistrictDTO d : districts) {
+                list.add(d.getDistrictName());
+            }
         }
-        Collections.sort(list);
-        list.add(0,"Select District");
+      //  Collections.sort(list);
+        list.add(0, "Select District");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,list);
         distSpinner.setAdapter(adapter);
@@ -117,7 +123,8 @@ public class PickSuburbActivity extends AppCompatActivity {
                     district = null;
                     txtDistrict.setText("");
                     suburbs = new ArrayList<>();
-                    setSuburbSpinner();
+                   // setSuburbSpinner();
+                    return;
                 } else {
                     district = districts.get(i - 1);
                     txtDistrict.setText(district.getDistrictName());
@@ -142,7 +149,6 @@ public class PickSuburbActivity extends AppCompatActivity {
         if (!list.isEmpty()) {
             list.add(0,"Select Suburb");
         }
-
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,list);
         subSpinner.setAdapter(adapter);

@@ -129,6 +129,13 @@
         <service
             android:name="com.boha.library.services.GCMDeviceService"
             android:exported="false" />
+        <service
+            android:name="com.boha.library.services.SmartCityMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
 
         <!-- SERVICES -->
 
@@ -162,7 +169,7 @@
             android:parentActivityName=".activities.CitizenDrawerActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.boha.library.activities.PickSuburbActivity"
+            android:name=".activities.PickSuburbActivity"
             android:parentActivityName=".activities.CitizenDrawerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/TealTheme" />
@@ -177,6 +184,7 @@
         <activity
             android:name=".activities.PickPlaceActivity"
             android:label="@string/title_activity_pick_place"></activity>
+
     </application>
 
 </manifest>

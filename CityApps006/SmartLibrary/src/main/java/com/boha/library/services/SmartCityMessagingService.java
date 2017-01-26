@@ -43,8 +43,8 @@ public class SmartCityMessagingService extends FirebaseMessagingService {
                 dm.setDistrictName(map.get("districtName"));
                 dm.setMessage(map.get("message"));
                 dm.setMessageDate(Long.parseLong(map.get("messageDate")));
-
-                sendNotification(dm);
+              //  dm.setMessageExpiryDate(Long.parseLong(map.get("messageExpiryDate")));
+                sendNotification((MessageInterface) dm);
             }
             if (map.get("suburbName") != null) {
                 SuburbMessageDTO sm = new SuburbMessageDTO();
@@ -52,17 +52,19 @@ public class SmartCityMessagingService extends FirebaseMessagingService {
                 sm.setSuburbName(map.get("suburbName"));
                 sm.setMessage(map.get("message"));
                 sm.setMessageDate(Long.parseLong(map.get("messageDate")));
-                sendNotification(sm);
+             //   sm.setMessageExpiryDate(Long.parseLong(map.get("messageExpiryDate")));
+                sendNotification((MessageInterface) sm);
             }
-            if (map.get("email") != null) {
+            if (map.get("message"/*"email"*/) != null) {
                 ClientMessageDTO dm = new ClientMessageDTO();
                 dm.setMessage(map.get("message"));
                 dm.setEmail(map.get("email"));
                 dm.setProfileInfoID(Integer.parseInt(map.get("profileInfoID")));
                 dm.setMessageDate(Long.parseLong(map.get("messageDate")));
+           //     dm.setMessageExpiryDate(Long.parseLong(map.get("messageExpiryDate")));
 
 
-                sendNotification(dm);
+                sendNotification((MessageInterface) dm);
             }
 
             Log.d(TAG, "onMessageReceived: " + gson.toJson(data));

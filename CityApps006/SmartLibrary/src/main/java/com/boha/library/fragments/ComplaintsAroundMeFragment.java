@@ -398,7 +398,7 @@ public class ComplaintsAroundMeFragment extends Fragment implements PageFragment
         listView = (ListView) view.findViewById(R.id.CAR_listView);
         mapIcon = (ImageView) view.findViewById(R.id.map_icon);
         mapIcon.setVisibility(View.GONE);
-
+        mapIcon.setColorFilter(Color.WHITE);
         mapIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

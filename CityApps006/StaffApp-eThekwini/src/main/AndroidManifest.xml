@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.boha.staffapp.ethekwini" >
+    package="com.boha.staffapp.ethekwini">
 
+    <permission
+        android:name="com.boha.staffapp.ethekwini.gcm.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.boha.staffapp.ethekwini.gcm.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <!--
         DEV KEY: AIzaSyACd65HVyLDIF7x26P9NYR2VhykAAgON5E
         88:04:DF:2B:68:40:60:A3:31:81:2F:71:1F:2D:71:FB:F7:71:F9:57;com.boha.staffapp.ethekwini
@@ -11,64 +17,65 @@
             PROD KEY: AIzaSyBqstBvhRJUPcR-0tMjZSL9Uy3M87plIdk
         4F:72:A0:21:0F:AD:8D:6B:EC:B5:83:49:13:CB:64:75:74:62:1A:A7;com.boha.staffapp.ethekwini
     -->
-
     <application
+        android:name="com.boha.library.activities.CityApplication"
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/my_name"
-        android:name="com.boha.library.activities.CityApplication"
         android:theme="@style/StaffThemeTeal"
         tools:replace="android:theme">
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBqstBvhRJUPcR-0tMjZSL9Uy3M87plIdk" />
+
         <activity
-            android:name="com.boha.staffapp.ethekwini.activities.SplashActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/my_name" >
-            <intent-filter>
+            android:name=".activities.SplashActivity"
+            android:label="@string/my_name"
+            android:screenOrientation="portrait">
+          <!--  <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter> -->
         </activity>
-        <activity android:name="com.boha.staffapp.ethekwini.activities.SigninActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.boha.staffapp.ethekwini.activities.MainDrawerActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.boha.library.activities.AlertMapActivity"
-            android:parentActivityName="com.boha.staffapp.ethekwini.activities.MainDrawerActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.boha.library.activities.ComplaintMapActivity"
-            android:parentActivityName="com.boha.staffapp.ethekwini.activities.MainDrawerActivity"/>
-
-        <activity android:name="com.boha.library.activities.AlertPictureGridActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.boha.library.activities.FullPhotoActivity" />
-
-        <activity android:name="com.boha.library.activities.PictureActivity"
+        <activity
+            android:name=".activities.SigninActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName="com.boha.staffapp.ethekwini.activities.MainDrawerActivity"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".activities.MainDrawerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.boha.library.activities.AlertMapActivity"
+            android:parentActivityName=".activities.MainDrawerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.boha.library.activities.ComplaintMapActivity"
+            android:parentActivityName=".activities.MainDrawerActivity" />
+        <activity
+            android:name="com.boha.library.activities.AlertPictureGridActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.boha.library.activities.FullPhotoActivity" />
+        <activity
+            android:name="com.boha.library.activities.PictureActivity"
+            android:parentActivityName=".activities.MainDrawerActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.boha.library.activities.FaqActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName="com.boha.staffapp.ethekwini.activities.MainDrawerActivity" >
-
-        </activity>
-        <activity android:name="com.boha.library.activities.NewsMapActivity"
-            android:parentActivityName="com.boha.staffapp.ethekwini.activities.MainDrawerActivity"/>
+            android:parentActivityName=".activities.MainDrawerActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="com.boha.library.activities.NewsMapActivity"
+            android:parentActivityName=".activities.MainDrawerActivity" />
         <activity
             android:name="com.boha.library.activities.MuniContactsActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName="com.boha.staffapp.ethekwini.activities.MainDrawerActivity" >
-        </activity>
-
+            android:parentActivityName=".activities.MainDrawerActivity"
+            android:screenOrientation="portrait"></activity>
 
         <!-- RECEIVERS and SERVICES -->
         <receiver
-            android:name="com.boha.staffapp.ethekwini.services.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:name=".services.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
 
@@ -76,18 +83,26 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="com.boha.staffapp.ethekwini.services.GcmIntentService" />
+        <service android:name=".services.GcmIntentService" />
+
+        <service
+            android:name="com.boha.library.services.SmartCityMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="8419153fba562e57532d0502ff0e71266daa9d2b" />
+
+        <activity android:name=".activities.MessageActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
-    <permission
-        android:name="com.boha.staffapp.ethekwini.gcm.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.boha.staffapp.ethekwini.gcm.permission.C2D_MESSAGE" />
-
-
-    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

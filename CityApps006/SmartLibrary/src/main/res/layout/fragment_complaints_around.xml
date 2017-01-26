@@ -52,9 +52,7 @@
         android:layout_above="@+id/CAR_count"
         android:layout_margin="@dimen/mon_16"
         android:elevation="@dimen/mon_padding"
-        android:id="@+id/map_icon"
-        app:backgroundTint="@color/white"
-        app:rippleColor="@color/white"/>
+        android:id="@+id/map_icon"/>
 
 
 </RelativeLayout>
